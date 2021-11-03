@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">得家</string>
+    <!--渠道名-->
+    <string name="marketv">ziran</string>
+</resources>
