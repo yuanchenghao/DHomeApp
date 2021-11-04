@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- 圆角 -->
+    <corners
+        android:topLeftRadius="@dimen/dp_11"
+        android:topRightRadius="@dimen/dp_11"
+        android:bottomLeftRadius="@dimen/dp_11"
+        android:bottomRightRadius="@dimen/dp_11"/>
+    <!-- 填充 -->
+    <solid
+        android:color="#EBF6FF"/>
+    <!-- 描边 -->
+    <stroke android:width="@dimen/dp_1" android:color="#33A7FF" />
+</shape>

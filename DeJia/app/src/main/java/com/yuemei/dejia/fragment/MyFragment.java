@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,8 +34,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MyFragment extends BaseFragment {
-    @BindView(R.id.iv_close)
-    ImageView iv_close;
     @BindView(R.id.iv_scan_code)
     ImageView iv_scan_code;
     @BindView(R.id.iv_drawer)
@@ -76,12 +73,6 @@ public class MyFragment extends BaseFragment {
         layoutParams.height = statusbarHeight + SizeUtils.dp2px(44);
         ll_title.setLayoutParams(layoutParams);
         ll_title.setPadding(0, statusbarHeight, 0, 0);
-        navigation.getHeaderView(0).findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.closeDrawers();
-            }
-        });
         navigation.getHeaderView(0).findViewById(R.id.ll_about).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

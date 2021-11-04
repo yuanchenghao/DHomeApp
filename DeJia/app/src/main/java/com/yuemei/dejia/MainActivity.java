@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.yuemei.dejia.activity.OneClickLoginActivity;
@@ -35,6 +36,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     LinearLayout ll_message;
     @BindView(R.id.ll_my)
     LinearLayout ll_my;
+    @BindView(R.id.iv_home)
+    ImageView iv_home;
+    @BindView(R.id.iv_circle)
+    ImageView iv_circle;
+    @BindView(R.id.iv_message)
+    ImageView iv_message;
+    @BindView(R.id.iv_my)
+    ImageView iv_my;
+    @BindView(R.id.iv_dots)
+    ImageView iv_dots;
     private Fragment homeFragment;
     private Fragment circleFragment;
     private Fragment toolFragment;
@@ -91,10 +102,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initFragment(int index) {
-        // 由于是引用了V4包下的Fragment，所以这里的管理器要用getSupportFragmentManager获取
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        manager = getSupportFragmentManager();
         // 开启事务
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction = manager.beginTransaction();
         // 隐藏所有Fragment
         hideFragment(transaction);
         switch (index) {
@@ -105,6 +115,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     transaction.show(homeFragment);
                 }
+                iv_home.setImageResource(R.mipmap.home_yes_icon_bottom);
+                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
+                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
+                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 break;
             case 1:
                 if (circleFragment == null) {
@@ -113,7 +127,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     transaction.show(circleFragment);
                 }
-
+                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
+                iv_circle.setImageResource(R.mipmap.circle_yes_icon_bottom);
+                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
+                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 break;
             case 2:
                 if (toolFragment == null) {
@@ -122,6 +139,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     transaction.show(toolFragment);
                 }
+                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
+                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
+                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
+                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 break;
             case 3:
                 if (messageFragment == null) {
@@ -130,6 +151,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     transaction.show(messageFragment);
                 }
+                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
+                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
+                iv_message.setImageResource(R.mipmap.message_yes_icon_bottom);
+                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 break;
             case 4:
                 if (myFragment == null) {
@@ -138,8 +163,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     transaction.show(myFragment);
                 }
+                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
+                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
+                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
+                iv_my.setImageResource(R.mipmap.my_yes_icon_bottom);
                 break;
-
             default:
                 break;
         }
@@ -172,7 +200,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initOneClickLogin() {
-        OneClickLoginActivity.invoke(mContext,"0");
+        OneClickLoginActivity.invoke(mContext, "0");
     }
 
 }
