@@ -10,7 +10,6 @@ import static org.apache.http.HttpVersion.HTTP;
 public class FinalConstant1 {
     // token
     public static final String YUEMEI_APP_KEY = "84ea4af0199361f0b15f1ac1a0d87e57";
-    //悦美调试（正式包记得关闭）
     public static final boolean YUEMEI_DEBUG = false;
     //公共参数key
     public static final String CITY = "city";
