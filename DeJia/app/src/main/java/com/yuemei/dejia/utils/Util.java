@@ -1,5 +1,6 @@
 package com.yuemei.dejia.utils;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,16 +22,16 @@ public final class Util {
      * @return
      */
     public static String getImei() {
-//        if (Cfg.loadInt(MyApplication.getContext(), "privacy_agreement", 0) == 1) {
+        if(KVUtils.getInstance().decodeInt("privacy_agreement") == 1){
             String imei = ImeiUtils.getInstance().getImei();
             if (TextUtils.isEmpty(imei)) {
                 imei = ImeiUtils.getBringItem2();
                 ImeiUtils.getInstance().saveLocalItem(imei);
             }
             return imei;
-//        }else{
-//            return "";
-//        }
+        }else{
+            return "";
+        }
     }
 
     /**
@@ -125,6 +126,31 @@ public final class Util {
 //        if (MainTableActivity.mainBottomBar != null) {
 //            MainTableActivity.mainBottomBar.setMessageNum(0);
 //        }
+    }
+
+    /**
+     * 获取YuemeiInfo
+     *
+     * @return
+     */
+    public static String getYuemeiInfo() {
+        return KVUtils.getInstance().decodeString(Constants.YUEMEIINFO,"0").replace("+", "%2B");
+    }
+
+    /**
+     * 保存YuemeiInfo
+     */
+    public static void setYuemeiInfo(String yuemeiInfo) {
+        KVUtils.getInstance().encode(Constants.YUEMEIINFO, yuemeiInfo);
+    }
+
+    /**
+     * 判断是否登录
+     *
+     * @return:true:已登录，false未登录
+     */
+    public static boolean isLogin() {
+        return !"0".equals(getUid());
     }
 
 }

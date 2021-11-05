@@ -91,4 +91,7 @@ dependencies {
     //刷新控件
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-12'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
+    //okhttp
+    implementation 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.yuemei.dejia.R;
 import com.yuemei.dejia.base.BaseFragment;
 import com.yuemei.dejia.utils.SizeUtils;
@@ -17,11 +18,13 @@ import com.zhangyue.we.x2c.ano.Xml;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 import static android.app.Notification.EXTRA_CHANNEL_ID;
 import static android.provider.Settings.EXTRA_APP_PACKAGE;
 
+//私信列表页
 public class MessageFragment extends BaseFragment implements View.OnClickListener{
     @BindView(R.id.ll_title)
     LinearLayout ll_title;
@@ -39,6 +42,10 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     LinearLayout ll3;
     @BindView(R.id.ll4)
     LinearLayout ll4;
+    @BindView(R.id.smartRefreshLayout)
+    SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.rv)
+    RecyclerView rv;
 
     public static MessageFragment newInstance() {
         Bundle args = new Bundle();

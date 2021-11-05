@@ -1,10 +1,20 @@
 package com.yuemei.dejia;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.os.CountDownTimer;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
+
 import com.yuemei.dejia.base.BaseActivity;
 import com.yuemei.dejia.base.Constants;
 import com.yuemei.dejia.utils.DialogUtils;
 import com.yuemei.dejia.utils.KVUtils;
 import com.zhangyue.we.x2c.ano.Xml;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 
 import static com.yuemei.dejia.net.BuildConfig.registeredInterface;
 
@@ -67,8 +77,18 @@ public class SplashActivity extends BaseActivity {
                 }
             });
         } else {
-            MainActivity.invoke(mContext);
-            finish();
+            new CountDownTimer(5000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    MainActivity.invoke(mContext);
+                    finish();
+                }
+            }.start();
         }
     }
 

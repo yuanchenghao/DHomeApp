@@ -10,11 +10,16 @@ import android.widget.LinearLayout;
 
 import com.yuemei.dejia.activity.OneClickLoginActivity;
 import com.yuemei.dejia.base.BaseActivity;
+import com.yuemei.dejia.base.Constants;
 import com.yuemei.dejia.fragment.CircleFragment;
 import com.yuemei.dejia.fragment.HomeFragment;
 import com.yuemei.dejia.fragment.MessageFragment;
 import com.yuemei.dejia.fragment.MyFragment;
 import com.yuemei.dejia.fragment.ToolFragment;
+import com.yuemei.dejia.utils.Util;
+import com.yuemei.dejia.webSocket.IMManager;
+import com.yuemei.dejia.webSocket.NetEvent;
+import com.yuemei.dejia.webSocket.NetStatus;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import androidx.fragment.app.Fragment;
@@ -23,7 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 
 //主页面
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, NetEvent {
     @BindView(R.id.fl)
     FrameLayout fl;
     @BindView(R.id.ll_home)
@@ -53,6 +58,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Fragment myFragment;
     private FragmentManager manager;
     private FragmentTransaction transaction;
+    public static NetStatus mNetStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void initView() {
         // 初始化并设置当前Fragment
         initFragment(0);
+        IMManager.getInstance(mContext).getIMNetInstance().connWebSocket("wss://chats.yuemei.com/");
     }
 
     @Override
@@ -199,8 +206,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         context.startActivity(intent);
     }
 
+    public static void setNetStatus(NetStatus netStatus) {
+        mNetStatus = netStatus;
+    }
+
     private void initOneClickLogin() {
         OneClickLoginActivity.invoke(mContext, "0");
     }
 
+    @Override
+    public void onNetChange(int netMobile) {
+        if (Util.isLogin() && mNetStatus != null) {
+            mNetStatus.netStatus(netMobile);
+        }
+    }
 }

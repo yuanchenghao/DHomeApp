@@ -180,7 +180,7 @@
     </LinearLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/community_web_view"
+        android:id="@+id/smartRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_17"
@@ -192,8 +192,10 @@
             android:layout_height="wrap_content" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
