@@ -91,16 +91,16 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         super.onClick(v);
         switch (v.getId()) {
             case R.id.ll1:
-
+                //回复我的
                 break;
             case R.id.ll2:
-
+                //@我的
                 break;
             case R.id.ll3:
-
+                //收到的赞
                 break;
             case R.id.ll4:
-
+                //公告通知
                 break;
             case R.id.iv_close_notice:
                 ll_notice.setVisibility(View.GONE);
@@ -116,7 +116,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                     //这种方案适用于 API21——25，即 5.0——7.1 之间的版本可以使用
                     intent.putExtra("app_package", mContext.getPackageName());
                     intent.putExtra("app_uid", mContext.getApplicationInfo().uid);
-                    // 小米6 -MIUI9.6-8.0.0系统，是个特例，通知设置界面只能控制"允许使用通知圆点"——然而这个玩意并没有卵用，我想对雷布斯说：I'm not ok!!!
+                    // 小米6 -MIUI9.6-8.0.0系统，是个特例，通知设置界面只能控制"允许使用通知圆点"
                     //  if ("MI 6".equals(Build.MODEL)) {
                     //      intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                     //      Uri uri = Uri.fromParts("package", getPackageName(), null);
