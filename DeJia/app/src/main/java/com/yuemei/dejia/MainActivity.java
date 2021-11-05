@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import com.yuemei.dejia.activity.OneClickLoginActivity;
 import com.yuemei.dejia.base.BaseActivity;
-import com.yuemei.dejia.base.Constants;
 import com.yuemei.dejia.fragment.CircleFragment;
 import com.yuemei.dejia.fragment.HomeFragment;
 import com.yuemei.dejia.fragment.MessageFragment;

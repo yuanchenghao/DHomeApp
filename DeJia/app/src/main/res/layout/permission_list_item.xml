@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dp_20"
+    >
+    <ImageView
+        android:id="@+id/permission_img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_8"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/permission_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="定位信息"
+            android:textColor="#ff333333"
+            android:textSize="14sp"
+            />
+        <TextView
+            android:id="@+id/permission_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用于缓存列表，商品图片等信息，将加快您的访问速度并节省流量"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/dp_3"
+            android:maxEms="16"
+            />
+    </LinearLayout>
+</LinearLayout>

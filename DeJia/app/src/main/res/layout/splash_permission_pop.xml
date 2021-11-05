@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/splah_permission_shap"
+    android:layout_marginLeft="@dimen/dp_35"
+    android:layout_marginRight="@dimen/dp_35"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="欢迎使用得家APP"
+        android:textColor="#ff333333"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_24" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="在您使用我们的产品服务时，可能会使用到以下权限"
+        android:textColor="#ff333333"
+        android:textSize="15sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:layout_marginRight="@dimen/dp_25" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/permission_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:layout_marginRight="@dimen/dp_25"
+        tools:itemCount="1"
+        tools:listitem="@layout/permission_list_item" />
+
+    <Button
+        android:id="@+id/permission_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_36"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginRight="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_36"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:background="@drawable/shape_24_33a7ff"
+        android:text="我知道了"
+        android:textColor="#ffffffff"
+        android:textSize="15sp" />
+
+</LinearLayout>
