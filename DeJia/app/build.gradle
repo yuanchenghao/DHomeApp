@@ -6,7 +6,7 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
     defaultConfig {
-        applicationId "com.yuemei.dejia"
+        applicationId "com.dejia.anju"
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
@@ -20,20 +20,20 @@ android {
 
     //签名信息
     signingConfigs {
-//        debug {
-//            keyAlias 'dj'
-//            keyPassword 'DHomeApp@2021'
-//            storeFile file('dejia')
-//            storePassword 'DHomeApp@2021'
-//            v1SigningEnabled true
-//            v2SigningEnabled true
-//        }
+        debug {
+            keyAlias 'dj'
+            keyPassword 'DHomeApp@2021'
+            storeFile file('D:\\DHomeApp\\DeJia\\dejia.jks')
+            storePassword 'DHomeApp@2021'
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
 
         release {
             keyAlias 'dj'
             keyPassword 'DHomeApp@2021'
-            storeFile file('dejia')
-            storePassword 'DhomeApp@2021'
+            storeFile file('D:\\DHomeApp\\DeJia\\dejia.jks')
+            storePassword 'DHomeApp@2021'
             v1SigningEnabled true
             v2SigningEnabled true
         }
@@ -81,7 +81,7 @@ android {
             debuggable true
             aaptOptions.cruncherEnabled = false
             aaptOptions.useNewCruncher = false
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
         release {
             minifyEnabled false
@@ -183,4 +183,5 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
     //Glide
     implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation files('libs/miit_mdid_1.0.8.aar')
 }

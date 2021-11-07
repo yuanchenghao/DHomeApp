@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yuemei.dejia">
+    package="com.dejia.anju">
     //网络
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     //手机识别码
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name="com.yuemei.dejia.DeJiaApp"
+        android:name="com.dejia.anju.DeJiaApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
         <!--启动页-->
         <activity
-            android:name=".SplashActivity"
+            android:name="com.dejia.anju.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -28,20 +28,20 @@
         </activity>
         <!--主页面-->
         <activity
-            android:name=".MainActivity"
+            android:name="com.dejia.anju.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".activity.OneClickLoginActivity"
+            android:name="com.dejia.anju.activity.OneClickLoginActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".activity.SendVerificationCodeActivity"
+            android:name="com.dejia.anju.activity.SendVerificationCodeActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".activity.VerificationCodeActivity"
+            android:name="com.dejia.anju.activity.VerificationCodeActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".activity.QRCodeActivity"
+            android:name="com.dejia.anju.activity.QRCodeActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 

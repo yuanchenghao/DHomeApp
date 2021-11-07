@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="@dimen/dp_12"
-        android:text="已发送4位验证码至  18511579333"
+        android:text="已发送4位验证码至"
         android:textColor="#919699"
         android:textSize="12sp" />
 
@@ -42,7 +42,7 @@
         android:layout_marginRight="@dimen/dp_35"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-        <com.yuemei.dejia.view.VerificationCodeInput
+        <com.dejia.anju.view.VerificationCodeInput
             android:id="@+id/input"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -53,8 +53,7 @@
             app:box_bg_normal="@drawable/verification_edit_bg_normal"
             app:box_bg_focus="@drawable/verification_edit_bg_focus"
             app:child_h_padding="5dp"
-            android:layout_centerInParent="true"
-            />
+            android:layout_centerInParent="true" />
     </LinearLayout>
 
     <TextView
@@ -79,7 +78,6 @@
         android:layout_marginTop="@dimen/dp_24"
         android:textColor="#0095FF"
         android:textSize="12sp"
-        android:text="点此重新获取验证码"
-        />
+        android:text="点此重新获取验证码" />
 </LinearLayout>
 

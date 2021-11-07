@@ -36,8 +36,7 @@
             android:gravity="center"
             android:textStyle="bold"
             android:textColor="#1C2125"
-            android:layout_gravity="center"
-            />
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <LinearLayout
@@ -184,9 +183,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlDisableContentWhenRefresh="true"
-        app:srlEnableLoadMore="false">
+        app:srlEnableLoadMore="true">
 
-        <com.yuemei.dejia.base.smart.YMRefreshHeader
+        <com.dejia.anju.base.smart.YMRefreshHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
