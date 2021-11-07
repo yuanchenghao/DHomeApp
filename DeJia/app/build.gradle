@@ -1,19 +1,42 @@
 plugins {
     id 'com.android.application'
 }
-
+apply plugin: 'channel'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
-
     defaultConfig {
         applicationId "com.yuemei.dejia"
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+    }
+
+    //签名信息
+    signingConfigs {
+//        debug {
+//            keyAlias 'dj'
+//            keyPassword 'DHomeApp@2021'
+//            storeFile file('dejia')
+//            storePassword 'DHomeApp@2021'
+//            v1SigningEnabled true
+//            v2SigningEnabled true
+//        }
+
+        release {
+            keyAlias 'dj'
+            keyPassword 'DHomeApp@2021'
+            storeFile file('dejia')
+            storePassword 'DhomeApp@2021'
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
     }
 
     dexOptions {
@@ -28,7 +51,6 @@ android {
         //线程数
         threadCount = 8
     }
-
     android {
         useLibrary 'org.apache.http.legacy'
         lintOptions {abortOnError false}
@@ -36,20 +58,83 @@ android {
         lintOptions { disable 'MissingTranslation', 'ExtraTranslation' }
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
+
+
+
+    buildTypes {
+        debug {
+            minifyEnabled false // 是否进行混淆
+            debuggable true
+            aaptOptions.cruncherEnabled = false
+            aaptOptions.useNewCruncher = false
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false
+            debuggable false
+            aaptOptions.cruncherEnabled = false
+            aaptOptions.useNewCruncher = false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INFTICE.txt'
+        exclude 'META-INFTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INFtice.txt'
+        exclude 'META-INFcense.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        doNotStrip "*/armeabi-v7a/*.so"
+        doNotStrip "*/x86/*.so"
+    }
+
+    splits {
+        abi {
+            enable false
+            reset()
+            include "armeabi-v7a" //select ABIs to build APKs for
+            universalApk true //generate an additional APK that contains all the ABIs
+        }
+    }
+
+    channel {
+        //指定渠道文件
+        channelFile = file("../channel.txt")
+        //多渠道包的输出目录，默认为new File(project.buildDir,"channel")
+        baseOutputDir = new File("../DHomeApp/Dejia")
+        //多渠道包的命名规则，默认为：${appName}-${versionName}-${versionCode}-${flavorName}-${buildType}
+        apkNameFormat = 'Dejia_${flavorName}'
+        //快速模式：生成渠道包时不进行校验（速度可以提升10倍以上，默认为false）
+        isFastMode = false
+
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

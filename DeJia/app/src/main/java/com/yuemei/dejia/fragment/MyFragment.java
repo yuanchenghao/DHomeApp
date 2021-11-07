@@ -157,12 +157,9 @@ public class MyFragment extends BaseFragment {
     }
 
     @SuppressLint("WrongConstant")
-    @OnClick({R.id.iv_close, R.id.iv_scan_code, R.id.iv_drawer})
+    @OnClick({R.id.iv_scan_code, R.id.iv_drawer})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_close:
-
-                break;
             case R.id.iv_scan_code:
                 QRCodeActivity.invoke(mContext);
                 break;

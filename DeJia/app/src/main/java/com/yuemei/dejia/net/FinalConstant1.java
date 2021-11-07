@@ -89,5 +89,27 @@ public class FinalConstant1 {
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "verificationCodeLogin", POST);
         //修改用户资料
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "setUser", POST);
+        //图片上传
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "ugc", "uploadImage", POST);
+        //文章提交
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "ugc", "save", POST);
+        //获取用户信息
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "tour", "getBuilding", POST);
+
+        //私信
+        //WebSocket解绑
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "chat", "close", POST);
+        //WebSocket绑定
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "chat", "bind", POST);
+        //私信列表
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "chat", "list", POST);
+        //聊天页
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "chat", "index", POST);
+        //发私信
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "chat", "send", POST);
+        //聊天页面获取数据
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "chat", "getMessage", POST);
+        //私信修改未读标示
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "chat", "updateRead", POST);
     }
 }
