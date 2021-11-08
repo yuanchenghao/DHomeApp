@@ -43,6 +43,12 @@
         <activity
             android:name="com.dejia.anju.activity.QRCodeActivity"
             android:screenOrientation="portrait"></activity>
+<!--        <activity-->
+<!--        android:name="com.dejia.anju.activity.CancellationActivity"-->
+<!--        android:screenOrientation="portrait" />-->
     </application>
 
+    <meta-data
+        android:name="android.max_aspect"
+        android:value="2.1" /> <!-- required -->
 </manifest>

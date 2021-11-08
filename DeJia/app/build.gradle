@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
 }
 apply plugin: 'channel'
+//apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
@@ -184,4 +187,8 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation files('libs/miit_mdid_1.0.8.aar')
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

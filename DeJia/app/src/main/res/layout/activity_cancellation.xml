@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:src="@mipmap/back_black" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="注销账号"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="#1C2125"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+        <!--    布局1-->
+        <LinearLayout
+            android:id="@+id/ll_layout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="49dp"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_25"
+                android:gravity="center"
+                android:text="您的账号符合注销条件"
+                android:textColor="#333333"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_29"
+                android:text="注销告知"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_12"
+                android:layout_marginRight="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/shape_cccccc_6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_12"
+                    android:text="您账号下的昵称、头像、手机号、问诊卡、联系方式等项信息将被清空且无法恢复"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_9"
+                android:layout_marginRight="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/shape_cccccc_6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_12"
+                    android:text="您的历史订单、交易记录将被清空"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_9"
+                android:layout_marginRight="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/shape_cccccc_6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_12"
+                    android:text="您的日记、帖子、问答、回复均被清空"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_9"
+                android:layout_marginRight="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/shape_cccccc_6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_12"
+                    android:text="您获得的余额、卡券、特权等权益将视为自动放弃"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_9"
+                android:layout_marginRight="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/shape_cccccc_6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_12"
+                    android:text="将解除您在悦美与其他网站、其它APP的绑定关系"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_9"
+                android:layout_marginRight="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/shape_cccccc_6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_12"
+                    android:text="注销后，您的登录账号将不能再次用来注册悦美账户"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_check"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="39dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_check"
+                    android:layout_width="@dimen/dp_14"
+                    android:layout_height="@dimen/dp_14"
+                    android:src="@mipmap/unchecked" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_7"
+                    android:text="我已阅读并接受以上告知内容"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_12" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginLeft="@dimen/dp_40"
+                android:layout_marginTop="@dimen/dp_25"
+                android:layout_marginRight="@dimen/dp_40"
+                android:background="@drawable/shape_cccccc_24"
+                android:gravity="center"
+                android:text="申请注销"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!--    布局3-->
+        <LinearLayout
+            android:id="@+id/ll_layout3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="49dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rl_title"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_21"
+                    android:layout_height="@dimen/dp_21"
+                    android:src="@mipmap/revoke_yes" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_6"
+                    android:text="您的账号已注销"
+                    android:textColor="#333333"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:gravity="center"
+                android:text="感谢使用悦美的服务"
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:layout_marginTop="65dp"
+                android:layout_marginRight="@dimen/dp_30"
+                android:background="@drawable/shape_gradient2_ff3535_24"
+                android:gravity="center"
+                android:text="返回首页"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
