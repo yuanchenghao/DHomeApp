@@ -11,7 +11,6 @@
 //import com.dejia.anju.utils.DialogUtils
 //import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 //import com.zhangyue.we.x2c.ano.Xml
-//import kotlinx.android.synthetic.main.activity_cancellation.*
 //
 ////注销账号
 //class CancellationActivity : BaseActivity() {

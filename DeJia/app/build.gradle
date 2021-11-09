@@ -1,13 +1,14 @@
 plugins {
     id 'com.android.application'
+    id 'channel'
+    id 'kotlin-android'
 }
-apply plugin: 'channel'
-//apply plugin: 'kotlin-android'
-//apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
+    viewBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "com.dejia.anju"
         minSdkVersion 17
@@ -187,7 +188,10 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation files('libs/miit_mdid_1.0.8.aar')
-//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation 'com.wuxiaolong.pullloadmorerecyclerview:library:1.1.2'
 }
 repositories {
     mavenCentral()
