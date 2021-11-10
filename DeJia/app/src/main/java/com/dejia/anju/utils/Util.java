@@ -3,6 +3,8 @@ package com.dejia.anju.utils;
 import android.content.Context;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.dejia.anju.base.Constants;
 import com.dejia.anju.model.SessionidData;
@@ -155,4 +157,20 @@ public final class Util {
         return Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
+
+    public static void hideKeyBoard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0); // 强制隐藏键盘
+    }
+
+    public static void showKeyBoard(Context context, View view) {
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.findFocus();
+        InputMethodManager imm = (InputMethodManager) context
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
 }

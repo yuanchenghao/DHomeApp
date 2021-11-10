@@ -43,6 +43,10 @@
         <activity
             android:name="com.dejia.anju.activity.QRCodeActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.dejia.anju.activity.ChatActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:screenOrientation="portrait"></activity>
 <!--        <activity-->
 <!--        android:name="com.dejia.anju.activity.CancellationActivity"-->
 <!--        android:screenOrientation="portrait" />-->
