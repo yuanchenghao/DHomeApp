@@ -17,7 +17,7 @@
 //    //发起注销接口
 //    private var postlogoutApi: BaseNetWorkCallBackApi? = null
 //    private var isSheck: Boolean = false
-//
+//    private val binding: ActivityCellationBinding? = null
 //    @Xml(layouts = ["activity_cancellation"])
 //    override fun getLayoutId(): Int {
 //        return R.layout.activity_cancellation
@@ -62,7 +62,7 @@
 ////                })
 //            } else {
 //                //没勾选
-//                Toast.makeText(mContext,"需要您先勾选同意告知内容",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(mContext, "需要您先勾选同意告知内容", Toast.LENGTH_SHORT).show()
 //
 //            }
 //        }
@@ -88,7 +88,7 @@
 //                ll_layout1?.visibility = View.GONE
 //                ll_layout3?.visibility = View.VISIBLE
 //            } else {
-//                Toast.makeText(mContext,it.message,Toast.LENGTH_SHORT).show()
+//                Toast.makeText(mContext, it.message, Toast.LENGTH_SHORT).show()
 //            }
 //        }
 //    }
