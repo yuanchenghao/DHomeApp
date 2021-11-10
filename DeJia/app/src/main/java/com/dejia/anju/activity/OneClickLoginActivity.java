@@ -37,18 +37,12 @@ import butterknife.OnClick;
  */
 
 public class OneClickLoginActivity extends BaseActivity {
-    @BindView(R.id.tv_close)
-    TextView tv_close;
-    @BindView(R.id.iv_close)
-    ImageView iv_close;
-    @BindView(R.id.tv_phone)
-    TextView tv_phone;
-    @BindView(R.id.tv_login_bt)
-    TextView tv_login_bt;
-    @BindView(R.id.tv_phone_login)
-    TextView tv_phone_login;
-    @BindView(R.id.tv_agreement)
-    TextView tv_agreement;
+    @BindView(R.id.tv_close) TextView tv_close;
+    @BindView(R.id.iv_close) ImageView iv_close;
+    @BindView(R.id.tv_phone) TextView tv_phone;
+    @BindView(R.id.tv_login_bt) TextView tv_login_bt;
+    @BindView(R.id.tv_phone_login) TextView tv_phone_login;
+    @BindView(R.id.tv_agreement) TextView tv_agreement;
     private boolean isChecked;
     //区分来源
     private String type;

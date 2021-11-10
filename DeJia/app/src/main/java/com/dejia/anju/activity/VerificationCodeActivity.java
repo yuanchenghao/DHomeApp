@@ -47,16 +47,11 @@ import butterknife.OnClick;
  */
 
 public class VerificationCodeActivity extends BaseActivity {
-    @BindView(R.id.iv_close)
-    ImageView iv_close;
-    @BindView(R.id.tv_phone)
-    TextView tv_phone;
-    @BindView(R.id.input)
-    VerificationCodeInput input;
-    @BindView(R.id.tv_get_code)
-    TextView tv_get_code;
-    @BindView(R.id.tv_bottom)
-    TextView tv_bottom;
+    @BindView(R.id.iv_close) ImageView iv_close;
+    @BindView(R.id.tv_phone) TextView tv_phone;
+    @BindView(R.id.input) VerificationCodeInput input;
+    @BindView(R.id.tv_get_code) TextView tv_get_code;
+    @BindView(R.id.tv_bottom) TextView tv_bottom;
     private String mPhone;
     private CountDownTimer countDownTimer;
     private String verificationCode;

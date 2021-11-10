@@ -51,18 +51,12 @@ import butterknife.OnClick;
  */
 
 public class SendVerificationCodeActivity extends BaseActivity {
-    @BindView(R.id.iv_close)
-    ImageView iv_close;
-    @BindView(R.id.ed)
-    EditText ed;
-    @BindView(R.id.tv_get_code)
-    TextView tv_get_code;
-    @BindView(R.id.autologin_checkbox)
-    ImageView autologin_checkbox;
-    @BindView(R.id.tv_agreement)
-    TextView tv_agreement;
-    @BindView(R.id.sku_bubble)
-    LinearLayout sku_bubble;
+    @BindView(R.id.iv_close) ImageView iv_close;
+    @BindView(R.id.ed) EditText ed;
+    @BindView(R.id.tv_get_code) TextView tv_get_code;
+    @BindView(R.id.autologin_checkbox) ImageView autologin_checkbox;
+    @BindView(R.id.tv_agreement) TextView tv_agreement;
+    @BindView(R.id.sku_bubble) LinearLayout sku_bubble;
     private String TEXT_VIEW1 = "我已阅读并同意";
     private String TEXT_VIEW2 = "《的家使用协议》";
     private String TEXT_VIEW3 = "《的家用户隐私协议》";

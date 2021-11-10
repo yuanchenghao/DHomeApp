@@ -35,10 +35,8 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
  */
 
 public class QRCodeActivity extends BaseActivity  implements QRCodeView.Delegate{
-    @BindView(R.id.iv_close)
-    ImageView iv_close;
-    @BindView(R.id.zxingview)
-    ZXingView mZXingView;
+    @BindView(R.id.iv_close) ImageView iv_close;
+    @BindView(R.id.zxingview) ZXingView mZXingView;
 
     @Xml(layouts = "activity_qr_code")
     @Override

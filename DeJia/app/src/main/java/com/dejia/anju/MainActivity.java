@@ -44,34 +44,20 @@ import butterknife.BindView;
 
 //主页面
 public class MainActivity extends BaseActivity implements View.OnClickListener, NetEvent {
-    @BindView(R.id.fl)
-    FrameLayout fl;
-    @BindView(R.id.ll_home)
-    LinearLayout ll_home;
-    @BindView(R.id.ll_circle)
-    LinearLayout ll_circle;
-    @BindView(R.id.ll_tool)
-    LinearLayout ll_tool;
-    @BindView(R.id.ll_message)
-    LinearLayout ll_message;
-    @BindView(R.id.ll_my)
-    LinearLayout ll_my;
-    @BindView(R.id.iv_home)
-    ImageView iv_home;
-    @BindView(R.id.iv_circle)
-    ImageView iv_circle;
-    @BindView(R.id.iv_message)
-    ImageView iv_message;
-    @BindView(R.id.iv_my)
-    ImageView iv_my;
-    @BindView(R.id.iv_dots)
-    ImageView iv_dots;
-    @BindView(R.id.drawerLayout)
-    public DrawerLayout drawerLayout;
-    @BindView(R.id.navigation)
-    NavigationView navigation;
-    @BindView(R.id.ll_main)
-    LinearLayout ll_main;
+    @BindView(R.id.fl) FrameLayout fl;
+    @BindView(R.id.ll_home) LinearLayout ll_home;
+    @BindView(R.id.ll_circle) LinearLayout ll_circle;
+    @BindView(R.id.ll_tool) LinearLayout ll_tool;
+    @BindView(R.id.ll_message) LinearLayout ll_message;
+    @BindView(R.id.ll_my) LinearLayout ll_my;
+    @BindView(R.id.iv_home) ImageView iv_home;
+    @BindView(R.id.iv_circle) ImageView iv_circle;
+    @BindView(R.id.iv_message) ImageView iv_message;
+    @BindView(R.id.iv_my) ImageView iv_my;
+    @BindView(R.id.iv_dots) ImageView iv_dots;
+    @BindView(R.id.drawerLayout) public DrawerLayout drawerLayout;
+    @BindView(R.id.navigation) NavigationView navigation;
+    @BindView(R.id.ll_main) LinearLayout ll_main;
     private Fragment homeFragment;
     private Fragment circleFragment;
     private Fragment toolFragment;

@@ -34,26 +34,16 @@ import static android.provider.Settings.EXTRA_APP_PACKAGE;
 
 //私信列表页
 public class MessageFragment extends BaseFragment implements View.OnClickListener {
-    @BindView(R.id.ll_title)
-    LinearLayout ll_title;
-    @BindView(R.id.ll_notice)
-    LinearLayout ll_notice;
-    @BindView(R.id.iv_close_notice)
-    ImageView iv_close_notice;
-    @BindView(R.id.tv_open_notice)
-    TextView tv_open_notice;
-    @BindView(R.id.ll1)
-    LinearLayout ll1;
-    @BindView(R.id.ll2)
-    LinearLayout ll2;
-    @BindView(R.id.ll3)
-    LinearLayout ll3;
-    @BindView(R.id.ll4)
-    LinearLayout ll4;
-    @BindView(R.id.smartRefreshLayout)
-    SmartRefreshLayout smartRefreshLayout;
-    @BindView(R.id.rv)
-    RecyclerView rv;
+    @BindView(R.id.ll_title) LinearLayout ll_title;
+    @BindView(R.id.ll_notice) LinearLayout ll_notice;
+    @BindView(R.id.iv_close_notice) ImageView iv_close_notice;
+    @BindView(R.id.tv_open_notice) TextView tv_open_notice;
+    @BindView(R.id.ll1) LinearLayout ll1;
+    @BindView(R.id.ll2) LinearLayout ll2;
+    @BindView(R.id.ll3) LinearLayout ll3;
+    @BindView(R.id.ll4) LinearLayout ll4;
+    @BindView(R.id.smartRefreshLayout) SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.rv) RecyclerView rv;
     private int page = 1;
 
     public static MessageFragment newInstance() {

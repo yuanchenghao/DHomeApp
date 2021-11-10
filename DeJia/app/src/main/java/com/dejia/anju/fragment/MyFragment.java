@@ -20,16 +20,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MyFragment extends BaseFragment {
-    @BindView(R.id.iv_scan_code)
-    ImageView iv_scan_code;
-    @BindView(R.id.iv_drawer)
-    ImageView iv_drawer;
-    @BindView(R.id.ll_title)
-    LinearLayout ll_title;
-//    @BindView(R.id.drawerLayout)
-//    DrawerLayout drawerLayout;
-//    @BindView(R.id.navigation)
-//    NavigationView navigation;
+    @BindView(R.id.iv_scan_code) ImageView iv_scan_code;
+    @BindView(R.id.iv_drawer) ImageView iv_drawer;
+    @BindView(R.id.ll_title) LinearLayout ll_title;
 
     public static MyFragment newInstance() {
         Bundle args = new Bundle();
