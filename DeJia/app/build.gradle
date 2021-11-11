@@ -6,9 +6,6 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
-    viewBinding {
-        enabled = true
-    }
     defaultConfig {
         applicationId "com.dejia.anju"
         minSdkVersion 17
@@ -19,6 +16,9 @@ android {
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"
+        }
+        viewBinding {
+            enabled = true
         }
     }
 

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
-    tools:viewBindingIgnore="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,7 +24,6 @@
             <ImageView
                 android:layout_width="@dimen/dp_24"
                 android:layout_height="@dimen/dp_24"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:src="@mipmap/back_black" />
@@ -51,8 +49,7 @@
             android:layout_marginTop="49dp"
             android:orientation="vertical"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:ignore="MissingConstraints">
+            app:layout_constraintRight_toRightOf="parent">
 
             <TextView
                 android:layout_width="match_parent"
@@ -92,8 +89,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_12"
-                    android:text="您账号下的昵称、头像、手机号、问诊卡、联系方式等项信息将被清空且无法恢复"
-                    android:textColor="#333333"
+                    android:text="您账号下的昵称、头像、手机号、联系方式、认证信息等各项信息将被清空且无法恢复"
+                    android:textColor="#1C2125"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
@@ -115,8 +112,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_12"
-                    android:text="您的历史订单、交易记录将被清空"
-                    android:textColor="#333333"
+                    android:text="您参与过的带看记录、私信对话消息将被清空"
+                    android:textColor="#1C2125"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
@@ -138,8 +135,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_12"
-                    android:text="您的日记、帖子、问答、回复均被清空"
-                    android:textColor="#333333"
+                    android:text="您发表的帖子、内容、评论、回复等将被清空"
+                    android:textColor="#1C2125"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
@@ -162,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_12"
                     android:text="您获得的余额、卡券、特权等权益将视为自动放弃"
-                    android:textColor="#333333"
+                    android:textColor="#1C2125"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
@@ -184,8 +181,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_12"
-                    android:text="将解除您在悦美与其他网站、其它APP的绑定关系"
-                    android:textColor="#333333"
+                    android:text="您获得的优惠券、特权等权益将视为自动放弃"
+                    android:textColor="#1C2125"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
@@ -207,8 +204,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_12"
-                    android:text="注销后，您的登录账号将不能再次用来注册悦美账户"
-                    android:textColor="#333333"
+                    android:text="将解除您在得家与其他网站及APP的绑定关系"
+                    android:textColor="#1C2125"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
@@ -263,8 +260,7 @@
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rl_title"
-            tools:ignore="MissingConstraints">
+            app:layout_constraintTop_toBottomOf="@id/rl_title">
 
             <LinearLayout
                 android:layout_width="match_parent"

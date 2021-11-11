@@ -5,9 +5,13 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.dejia.anju.base.Constants;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.SessionidData;
+
+import org.greenrobot.eventbus.EventBus;
 
 public final class Util {
     /**
@@ -116,10 +120,11 @@ public final class Util {
 //        cookieStore.removeCookie(httpUrl);
 //        Cookie yuemeiinfo = new Cookie.Builder().name("yuemeiinfo").value("").domain("chat.yuemei.com").expiresAt(1544493729973L).path("/").build();
 //        cookieStore.saveCookie(httpUrl, yuemeiinfo);
-//        Log.d("MainTableActivity", "退出登录");
 //        if (MainTableActivity.mainBottomBar != null) {
 //            MainTableActivity.mainBottomBar.setMessageNum(0);
 //        }
+        KVUtils.getInstance().encode(Constants.UID,"0");
+        KVUtils.getInstance().encode("user","");
     }
 
     /**

@@ -124,7 +124,6 @@ public class VerificationCodeActivity extends BaseActivity {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-
     }
 
     @OnClick({R.id.iv_close, R.id.tv_get_code, R.id.tv_bottom})

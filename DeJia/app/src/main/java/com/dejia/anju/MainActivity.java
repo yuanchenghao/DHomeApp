@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,9 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.dejia.anju.activity.CancellationActivity;
 import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.activity.OneClickLoginActivity;
 import com.dejia.anju.base.BaseActivity;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.fragment.CircleFragment;
 import com.dejia.anju.fragment.HomeFragment;
 import com.dejia.anju.fragment.MessageFragment;
@@ -27,13 +27,16 @@ import com.dejia.anju.mannger.DataCleanManager;
 import com.dejia.anju.utils.AppUtils;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ScreenUtils;
-import com.dejia.anju.utils.SizeUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.webSocket.IMManager;
 import com.dejia.anju.webSocket.NetEvent;
 import com.dejia.anju.webSocket.NetStatus;
 import com.google.android.material.navigation.NavigationView;
 import com.zhangyue.we.x2c.ano.Xml;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 
@@ -68,10 +71,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private FragmentTransaction transaction;
     public static NetStatus mNetStatus;
 
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEventMainThread(Event msgEvent) {
+        switch (msgEvent.getCode()) {
+            case 0:
+                initFragment(0);
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         //开屏阻断
         initOneClickLogin();
     }
@@ -101,6 +115,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
                 //退出登录
+                Util.clearUserData();
+                initFragment(0);
             }
         });
         navigation.getHeaderView(0).findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
@@ -138,7 +154,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onClick(View v) {
                 //注销
                 drawerLayout.closeDrawers();
-//                mContext.startActivity(new Intent(mContext, CancellationActivity.class));
+                mContext.startActivity(new Intent(mContext, CancellationActivity.class));
             }
         });
         navigation.getHeaderView(0).findViewById(R.id.ver).setOnClickListener(new View.OnClickListener() {
@@ -339,5 +355,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (Util.isLogin() && mNetStatus != null) {
             mNetStatus.netStatus(netMobile);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
