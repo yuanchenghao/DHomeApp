@@ -46,6 +46,15 @@
         <activity
             android:name="com.dejia.anju.activity.CancellationActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.dejia.anju.activity.EditUserInfoActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.dejia.anju.activity.EditNickNameActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.dejia.anju.activity.EditSexActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
     <meta-data

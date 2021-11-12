@@ -108,6 +108,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/edit_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="编辑资料"
@@ -140,6 +141,7 @@
                 android:layout_weight="1">
 
                 <TextView
+                    android:id="@+id/tv_content_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -165,6 +167,7 @@
                 android:layout_weight="1">
 
                 <TextView
+                    android:id="@+id/tv_zan_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -190,6 +193,7 @@
                 android:layout_weight="1">
 
                 <TextView
+                    android:id="@+id/tv_fans"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -215,6 +219,7 @@
                 android:layout_weight="1">
 
                 <TextView
+                    android:id="@+id/tv_follow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"

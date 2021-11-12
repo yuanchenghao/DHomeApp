@@ -3,18 +3,36 @@
     <declare-styleable name="vericationCodeInput">
 
         <attr name="box" format="integer" />
-        <attr name="child_h_padding" format="dimension"/>
-        <attr name="child_v_padding" format="dimension"/>
-        <attr name="child_width" format="dimension"/>
-        <attr name="child_height" format="dimension"/>
-        <attr name="padding" format="dimension"/>
-        <attr name="box_bg_focus" format="reference"/>
-        <attr name="box_bg_normal" format="reference"/>
-        <attr name="inputType" format="string"/>
+        <attr name="child_h_padding" format="dimension" />
+        <attr name="child_v_padding" format="dimension" />
+        <attr name="child_width" format="dimension" />
+        <attr name="child_height" format="dimension" />
+        <attr name="padding" format="dimension" />
+        <attr name="box_bg_focus" format="reference" />
+        <attr name="box_bg_normal" format="reference" />
+        <attr name="inputType" format="string" />
     </declare-styleable>
 
     <!--自定义刷新头属性-->
     <declare-styleable name="CustomRefresh1">
         <attr name="ptr_rotate_ani_time" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="VerificationCodeView">
+        <attr name="icv_et_number" format="integer" />
+        <attr name="icv_et_width" format="dimension|reference" />
+        <attr name="icv_et_divider_drawable" format="reference" />
+        <attr name="icv_et_text_color" format="color|reference" />
+        <attr name="icv_et_text_size" format="dimension|reference" />
+        <attr name="icv_et_bg_focus" format="reference" />
+        <attr name="icv_et_bg_normal" format="reference" />
+        <attr name="icv_et_pwd" format="boolean" />
+        <attr name="icv_et_pwd_radius" format="dimension|reference" />
+    </declare-styleable>
+
+    <!-- 自定义ImageView 固定宽高比 -->
+    <declare-styleable name="RatioImageView">
+        <!--比例-->
+        <attr name="ratio" format="float" />
     </declare-styleable>
 </resources>

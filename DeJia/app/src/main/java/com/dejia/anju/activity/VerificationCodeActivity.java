@@ -10,9 +10,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dejia.anju.view.VerificationCodeView;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.dejia.anju.R;
 import com.dejia.anju.api.GetCodeApi;
@@ -26,7 +28,6 @@ import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.SizeUtils;
-import com.dejia.anju.view.VerificationCodeInput;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,9 +50,10 @@ import butterknife.OnClick;
 public class VerificationCodeActivity extends BaseActivity {
     @BindView(R.id.iv_close) ImageView iv_close;
     @BindView(R.id.tv_phone) TextView tv_phone;
-    @BindView(R.id.input) VerificationCodeInput input;
+    @BindView(R.id.input) VerificationCodeView input;
     @BindView(R.id.tv_get_code) TextView tv_get_code;
     @BindView(R.id.tv_bottom) TextView tv_bottom;
+    @BindView(R.id.pb) ProgressBar pb;
     private String mPhone;
     private CountDownTimer countDownTimer;
     private String verificationCode;
@@ -103,13 +105,18 @@ public class VerificationCodeActivity extends BaseActivity {
             }
         };
         countDownTimer.start();
-        input.setOnCompleteListener(new VerificationCodeInput.Listener() {
+        input.setInputCompleteListener(new VerificationCodeView.InputCompleteListener() {
             @Override
-            public void onComplete(String content) {
-                verificationCode = content;
+            public void inputComplete() {
+                verificationCode = input.getInputContent();
                 tv_get_code.setBackgroundResource(R.drawable.shape_24_33a7ff);
             }
+
+            @Override
+            public void deleteContent() {
+            }
         });
+
     }
 
     @Override
@@ -134,15 +141,19 @@ public class VerificationCodeActivity extends BaseActivity {
                 break;
             case R.id.tv_get_code:
                 if(!TextUtils.isEmpty(mPhone) && !TextUtils.isEmpty(verificationCode)){
+                    pb.setVisibility(View.VISIBLE);
+                    tv_get_code.setText("");
                     HashMap<String,Object> maps = new HashMap<>();
                     maps.put("phone",mPhone);
                     maps.put("code",verificationCode);
                     new VerificationCodeLoginApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
                         @Override
                         public void onSuccess(ServerData serverData) {
+                            pb.setVisibility(View.GONE);
+                            tv_get_code.setText("确定");
                             if("1".equals(serverData.code)){
                                 UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data,UserInfo.class);
-                                KVUtils.getInstance().encode(Constants.UID,userInfo.getUser_id());
+                                KVUtils.getInstance().encode(Constants.UID,userInfo.getId());
                                 KVUtils.getInstance().encode("user",userInfo);
                                 Toast.makeText(mContext,"登录成功",Toast.LENGTH_LONG).show();
                                 //发登录广播

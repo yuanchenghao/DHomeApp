@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:src="@mipmap/back_black" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="性别"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="#1C2125"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="62dp"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginRight="@dimen/dp_40"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/fl1"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginRight="@dimen/dp_2"
+            android:layout_height="match_parent">
+
+            <com.dejia.anju.view.RatioImageView
+                android:id="@+id/iv_boy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_8_f5f6f7"
+                app:ratio="1" />
+
+            <TextView
+                android:id="@+id/tv_boy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#1C2125"
+                android:textSize="@dimen/dp_18"
+                android:textStyle="bold"
+                android:text="男" />
+
+            <ImageView
+                android:id="@+id/iv_check_boy"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="2.5dp"
+                android:visibility="gone"
+                android:layout_marginRight="2.5dp"
+                android:src="@mipmap/check_sex_ed" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl2"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/dp_2"
+            android:layout_marginRight="@dimen/dp_2"
+            android:layout_height="match_parent">
+
+            <com.dejia.anju.view.RatioImageView
+                android:id="@+id/iv_girl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_8_f5f6f7"
+                app:ratio="1" />
+
+            <TextView
+                android:id="@+id/tv_girl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#1C2125"
+                android:textSize="@dimen/dp_18"
+                android:textStyle="bold"
+                android:text="女" />
+
+            <ImageView
+                android:id="@+id/iv_check_girl"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="2.5dp"
+                android:layout_marginRight="2.5dp"
+                android:visibility="gone"
+                android:src="@mipmap/check_sex_ed" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl3"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/dp_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.dejia.anju.view.RatioImageView
+                android:id="@+id/iv_secrecy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_8_f5f6f7"
+                app:ratio="1" />
+
+            <TextView
+                android:id="@+id/tv_secrecy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#1C2125"
+                android:textSize="@dimen/dp_18"
+                android:textStyle="bold"
+                android:text="保密" />
+
+            <ImageView
+                android:id="@+id/iv_check_secrecy"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="2.5dp"
+                android:layout_marginRight="2.5dp"
+                android:visibility="gone"
+                android:src="@mipmap/check_sex_ed" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

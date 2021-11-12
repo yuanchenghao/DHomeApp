@@ -42,33 +42,48 @@
         android:layout_marginRight="@dimen/dp_35"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-        <com.dejia.anju.view.VerificationCodeInput
+
+        <com.dejia.anju.view.VerificationCodeView
             android:id="@+id/input"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            app:box="4"
-            app:inputType="number"
-            app:child_width="56dp"
-            app:child_height="56dp"
-            app:box_bg_normal="@drawable/verification_edit_bg_normal"
-            app:box_bg_focus="@drawable/verification_edit_bg_focus"
-            app:child_h_padding="5dp"
-            android:layout_centerInParent="true" />
+            app:icv_et_number="4"
+            app:icv_et_width="56dp"
+            app:icv_et_text_size="30sp"
+            app:icv_et_text_color="#1C2125"
+            app:icv_et_bg_normal="@drawable/verification_edit_bg_normal"
+            app:icv_et_bg_focus="@drawable/verification_edit_bg_focus" />
+
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:layout_marginLeft="@dimen/dp_35"
+        android:layout_marginRight="@dimen/dp_35"
+        android:layout_marginTop="@dimen/dp_20">
 
     <TextView
         android:id="@+id/tv_get_code"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_48"
-        android:layout_marginLeft="@dimen/dp_35"
-        android:layout_marginRight="@dimen/dp_35"
-        android:layout_marginTop="@dimen/dp_20"
         android:text="确定"
         android:gravity="center"
         android:textSize="16sp"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:background="@drawable/shape_24_d5edfe"/>
+
+        <ProgressBar
+            android:id="@+id/pb"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:indeterminateBehavior="repeat"
+            android:visibility="gone"
+            android:indeterminateDrawable="@drawable/one_click_login_loading"
+            android:indeterminateOnly="true" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_bottom"

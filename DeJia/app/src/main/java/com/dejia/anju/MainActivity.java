@@ -232,10 +232,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 initFragment(2);
                 break;
             case R.id.ll_message:
-                initFragment(3);
+                if(Util.isLogin()){
+                    initFragment(3);
+                }else{
+                    OneClickLoginActivity.invoke(mContext,"");
+                }
                 break;
             case R.id.ll_my:
-                initFragment(4);
+                if(Util.isLogin()){
+                    initFragment(4);
+                }else{
+                    OneClickLoginActivity.invoke(mContext,"");
+                }
                 break;
 
         }

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:src="@mipmap/back_black" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="编辑资料"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="#1C2125"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_icon"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="44dp"
+        android:layout_gravity="center">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_person"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000000"
+            app:fadeDuration="100"
+            app:roundAsCircle="true"
+            app:retryImageScaleType="centerCrop" />
+
+        <ImageView
+            android:layout_width="@dimen/dp_27"
+            android:layout_height="@dimen/dp_27"
+            android:layout_gravity="center"
+            android:src="@mipmap/creame" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_icon"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点击更换头像"
+        android:textSize="@dimen/sp_14"
+        android:textColor="#1C2125"
+        android:layout_marginTop="@dimen/dp_12"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/ll_nick"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="20.5dp"
+        android:layout_marginRight="19.5dp"
+        android:layout_marginTop="@dimen/dp_24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="昵称"
+            android:textColor="#1C2125"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="#6F7375"
+            android:textSize="@dimen/sp_14" />
+
+        <ImageView
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
+            android:src="@mipmap/right_gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_sex"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="20.5dp"
+        android:layout_marginRight="19.5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="性别"
+            android:textColor="#1C2125"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tv_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="#6F7375"
+            android:textSize="@dimen/sp_14" />
+
+        <ImageView
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
+            android:src="@mipmap/right_gray" />
+    </LinearLayout>
+
+</LinearLayout>
