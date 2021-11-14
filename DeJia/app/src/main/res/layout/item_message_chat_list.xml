@@ -23,7 +23,6 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical"
-                app:placeholderImage="#000000"
                 app:fadeDuration="100"
                 app:roundAsCircle="true"
                 app:retryImageScaleType="centerCrop" />

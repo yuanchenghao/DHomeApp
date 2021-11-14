@@ -191,5 +191,6 @@
     <dimen name="liveness_layout_timeoutRel_width">30dip</dimen>
     <dimen name="liveness_layout_timeout_garden_size">15sp</dimen>
     <dimen name="delete_action_len">50dp</dimen>
-
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
 </resources>

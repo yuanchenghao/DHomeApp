@@ -43,6 +43,7 @@
         android:id="@+id/ll_notice"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:background="#EBF6FF">
@@ -100,7 +101,7 @@
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_gravity="bottom"
+                android:layout_gravity="bottom|center_horizontal"
                 android:src="@mipmap/first_message" />
 
                 <TextView
@@ -140,7 +141,7 @@
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_gravity="bottom"
+                android:layout_gravity="bottom|center_horizontal"
                 android:src="@mipmap/second_message" />
 
                 <TextView
@@ -181,7 +182,7 @@
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_gravity="bottom"
+                android:layout_gravity="bottom|center_horizontal"
                 android:src="@mipmap/three_message" />
 
                 <TextView
@@ -222,7 +223,7 @@
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_gravity="bottom"
+                android:layout_gravity="bottom|center_horizontal"
                 android:src="@mipmap/four_message" />
 
                 <TextView
@@ -254,21 +255,26 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smartRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_17"
+        android:layout_weight="1"
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableLoadMore="true">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none" />
 
         <com.dejia.anju.base.smart.YMRefreshHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
 
+        <com.dejia.anju.base.smart.YMLoadMore
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

@@ -109,9 +109,12 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     @Override
     protected void initView(View view) {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_title.getLayoutParams();
-        layoutParams.height = statusbarHeight + SizeUtils.dp2px(44);
-        ll_title.setLayoutParams(layoutParams);
-        ll_title.setPadding(0, statusbarHeight, 0, 0);
+        layoutParams.topMargin = statusbarHeight;
+
+//        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_title.getLayoutParams();
+//        layoutParams.height = statusbarHeight + SizeUtils.dp2px(44);
+//        ll_title.setLayoutParams(layoutParams);
+//        ll_title.setPadding(0, statusbarHeight, 0, 0);
         setMultiOnClickListener(ll1, ll2, ll3, ll4, iv_close_notice, tv_open_notice);
     }
 
@@ -146,8 +149,9 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onSuccess(ServerData serverData) {
                 if ("1".equals(serverData.code)) {
-                    if (serverData != null) {
+                    if (serverData.data != null) {
                         messageListData = JSONUtil.jsonToArrayList(serverData.data, MessageListData.class);
+                        smartRefreshLayout.finishRefresh();
                         if (messageListData.size() == 0) {
                             if (smartRefreshLayout == null) {
                                 return;

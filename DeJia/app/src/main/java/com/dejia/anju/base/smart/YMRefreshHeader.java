@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import com.dejia.anju.R;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
@@ -81,7 +80,6 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
     @Override
     public void onStartAnimator(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
         animationDrawable.start();
-        Log.e(TAG, "onStartAnimator.....");
     }
 
     /**
@@ -93,11 +91,8 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
      */
     @Override
     public int onFinish(@NonNull RefreshLayout refreshLayout, boolean success) {
-        Log.e(TAG, "onFinish..... === " + success);
-
         animationDrawable.stop();
         clearAnimation();
-
         return mRotateAniTime;
     }
 
@@ -163,7 +158,6 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
      */
     @Override
     public void onReleased(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
-//        Log.e(TAG, "onReleased..... === ");
     }
 
     /**
