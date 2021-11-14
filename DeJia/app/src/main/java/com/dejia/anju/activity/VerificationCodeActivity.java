@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.VerificationCodeView;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.dejia.anju.R;
@@ -162,6 +163,7 @@ public class VerificationCodeActivity extends BaseActivity {
                                 UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data,UserInfo.class);
                                 KVUtils.getInstance().encode(Constants.UID,userInfo.getId());
                                 KVUtils.getInstance().encode("user",userInfo);
+//                                Util.setYuemeiInfo();
                                 Toast.makeText(mContext,"登录成功",Toast.LENGTH_LONG).show();
                                 //发登录广播
                                 EventBus.getDefault().post(new Event<>(1));

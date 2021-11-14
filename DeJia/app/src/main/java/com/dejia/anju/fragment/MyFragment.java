@@ -86,7 +86,7 @@ public class MyFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_title.getLayoutParams();
-        layoutParams.height = statusbarHeight + SizeUtils.dp2px(44);
+        layoutParams.height = statusbarHeight + SizeUtils.dp2px(50);
         ll_title.setLayoutParams(layoutParams);
         ll_title.setPadding(0, statusbarHeight, 0, 0);
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);

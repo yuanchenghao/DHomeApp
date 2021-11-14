@@ -5,13 +5,15 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.dejia.anju.base.Constants;
-import com.dejia.anju.event.Event;
 import com.dejia.anju.model.SessionidData;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cookie.store.CookieStore;
+import java.util.List;
 
-import org.greenrobot.eventbus.EventBus;
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
 
 public final class Util {
     /**
@@ -113,16 +115,12 @@ public final class Util {
 //        Cfg.saveStr(MyApplication.getContext(), FinalConstant.DACU_FLOAT_CLOAS, "");
 //        Cfg.saveStr(MyApplication.getContext(), FinalConstant.NEWUSER_CLOSE, "");
 //        Cfg.clear(MyApplication.getContext());
-//        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
-//        HttpUrl httpUrl = new HttpUrl.Builder().scheme("https").host("chat.yuemei.com").build();
-//
-//        List<Cookie> cookies = cookieStore.loadCookie(httpUrl);
-//        cookieStore.removeCookie(httpUrl);
-//        Cookie yuemeiinfo = new Cookie.Builder().name("yuemeiinfo").value("").domain("chat.yuemei.com").expiresAt(1544493729973L).path("/").build();
-//        cookieStore.saveCookie(httpUrl, yuemeiinfo);
-//        if (MainTableActivity.mainBottomBar != null) {
-//            MainTableActivity.mainBottomBar.setMessageNum(0);
-//        }
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        HttpUrl httpUrl = new HttpUrl.Builder().scheme("https").host("chat.yuemei.com").build();
+        List<Cookie> cookies = cookieStore.loadCookie(httpUrl);
+        cookieStore.removeCookie(httpUrl);
+        Cookie yuemeiinfo = new Cookie.Builder().name("yuemeiinfo").value("").domain("chat.yuemei.com").expiresAt(1544493729973L).path("/").build();
+        cookieStore.saveCookie(httpUrl, yuemeiinfo);
         KVUtils.getInstance().encode(Constants.UID,"0");
         KVUtils.getInstance().encode("user","");
     }

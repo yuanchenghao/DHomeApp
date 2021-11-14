@@ -60,7 +60,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         rl_title.setLayoutParams(layoutParams);
 
         ViewGroup.MarginLayoutParams l = (ViewGroup.MarginLayoutParams) content_lv.getLayoutParams();
-        l.topMargin = statusbarHeight + SizeUtils.dp2px(44);
+        l.topMargin = statusbarHeight + SizeUtils.dp2px(50);
         content_lv.setLayoutParams(l);
 
         ll_input.setOnTouchListener(new View.OnTouchListener() {

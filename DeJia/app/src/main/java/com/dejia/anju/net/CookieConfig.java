@@ -1,5 +1,12 @@
 package com.dejia.anju.net;
 
+import com.dejia.anju.utils.Util;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cookie.store.CookieStore;
+
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
+
 public class CookieConfig {
     public static final String TAG = "CookieConfig";
     public static CookieConfig instance;
@@ -19,19 +26,19 @@ public class CookieConfig {
     }
 
     public void setCookie(String scheme, String host) {
-//        String mYuemeiinfo = Utils.getYuemeiInfo();
-//        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
-//        HttpUrl httpUrl = new HttpUrl.Builder().scheme(scheme).host(host).build();
-//        Cookie yuemeiinfo = new Cookie.Builder()
-//                .name("yuemeiinfo")
-//                .value(mYuemeiinfo)
-//                .build();
-//        cookieStore.saveCookie(httpUrl, yuemeiinfo);
+        String mYuemeiinfo = Util.getYuemeiInfo();
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        HttpUrl httpUrl = new HttpUrl.Builder().scheme(scheme).host(host).build();
+        Cookie yuemeiinfo = new Cookie.Builder()
+                .name("yuemeiinfo")
+                .value(mYuemeiinfo)
+                .build();
+        cookieStore.saveCookie(httpUrl, yuemeiinfo);
     }
 
 
     public void setCookie(String scheme, String host, String domain) {
-//        String mYuemeiinfo = Utils.getYuemeiInfo();
+//        String mYuemeiinfo = Util.getYuemeiInfo();
 //        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
 //        HttpUrl httpUrl = new HttpUrl.Builder().scheme(scheme).host(host).build();
 //        Cookie yuemeiinfo = new Cookie.Builder()

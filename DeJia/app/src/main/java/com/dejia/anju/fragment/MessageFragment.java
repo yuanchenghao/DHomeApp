@@ -22,7 +22,6 @@ import com.dejia.anju.api.GetMessageListApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
 import com.dejia.anju.net.ServerData;
-import com.dejia.anju.utils.SizeUtils;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import java.util.ArrayList;

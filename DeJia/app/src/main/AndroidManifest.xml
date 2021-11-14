@@ -60,8 +60,23 @@
     <meta-data
         android:name="android.max_aspect"
         android:value="2.1" />
-    //网络
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    //手机识别码
     <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- required -->
+<!--    &lt;!&ndash;android 6.0 以后需要添加 READ_PHONE_STATE WRITE_EXTERNAL_STORAGE 动态权限申请&ndash;&gt;-->
+<!--    &lt;!&ndash; Required  &ndash;&gt;-->
+<!--    <uses-permission android:name="android.permission.INTERNET" />-->
+<!--    <uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+<!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
+<!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>-->
+<!--    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
+<!--    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />-->
+<!--    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>-->
+<!--    &lt;!&ndash; Optional &ndash;&gt;-->
+<!--    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> &lt;!&ndash; 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 &ndash;&gt;-->
+<!--    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />-->
+<!--    <uses-permission android:name="android.permission.GET_TASKS" />-->
+<!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />-->
+<!--    <uses-permission android:name="android.permission.VIBRATE" />-->
+<!--    <uses-permission android:name="android.permission.WAKE_LOCK" />-->
 </manifest>

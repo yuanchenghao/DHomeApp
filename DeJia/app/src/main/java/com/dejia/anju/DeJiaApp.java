@@ -23,6 +23,8 @@ import java.lang.reflect.Method;
 
 import androidx.annotation.RequiresApi;
 import androidx.multidex.MultiDex;
+import cn.jiguang.verifysdk.api.JVerificationInterface;
+import cn.jiguang.verifysdk.api.RequestCallback;
 
 import static com.dejia.anju.base.Constants.STATE_NORMAL;
 
@@ -96,7 +98,26 @@ public class DeJiaApp extends Application {
                         frescoConfig();
                     }
                 })
+                .addSubTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        initJVerificationInterface();
+                    }
+                })
                 .execute();
+    }
+
+    /**
+     *极光一键登录
+     */
+    private void initJVerificationInterface() {
+        JVerificationInterface.setDebugMode(true);
+        JVerificationInterface.init(this, 5000, new RequestCallback<String>() {
+            @Override
+            public void onResult(int code, String msg) {
+                AppLog.i("code = " + code + " msg = " + msg);
+            }
+        });
     }
 
     public Activity getCurrentActivity() {

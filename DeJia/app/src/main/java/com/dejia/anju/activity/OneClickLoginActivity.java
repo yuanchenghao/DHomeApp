@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.dejia.anju.base.BaseActivity;
@@ -27,6 +28,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.OnClick;
+import cn.jiguang.verifysdk.api.JVerificationInterface;
+import cn.jiguang.verifysdk.api.PreLoginListener;
+import cn.jiguang.verifysdk.api.VerifyListener;
 
 
 /**
@@ -82,11 +86,34 @@ public class OneClickLoginActivity extends BaseActivity {
         ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) iv_close.getLayoutParams();
         layoutParams.topMargin = statusbarHeight + SizeUtils.dp2px(20);
         layoutParams2.topMargin = statusbarHeight + SizeUtils.dp2px(20);
+
     }
 
     @Override
     protected void initData() {
-
+//        if(!JVerificationInterface.checkVerifyEnable(this)){
+//            AppLog.i("当前网络环境不支持认证");
+////            return;
+//        }
+//        JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
+//            @Override
+//            public void onResult(int i, String s, String s1) {
+//                if (i == 2000){
+//                    AppLog.i("token=" + s + ", operator=" + s1);
+//                } else {
+//                    AppLog.i("code=" + i + ", message=" + s);
+//                }
+//            }
+//        });
+//        JVerificationInterface.preLogin(this, 5000,new PreLoginListener() {
+//            @Override
+//            public void onResult(final int code, final String content) {
+//                AppLog.i("[" + code + "]message=" +  content );
+//                if (code == 7000) {
+//
+//                }
+//            }
+//        });
     }
 
 
