@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,9 +16,9 @@ import com.dejia.anju.R;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.utils.DialogUtils;
+import com.dejia.anju.utils.SizeUtils;
 import com.dejia.anju.utils.Util;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.zhangyue.we.x2c.ano.Xml;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,6 +31,7 @@ import butterknife.BindView;
 public class CancellationActivity extends BaseActivity implements OnClickListener{
     private boolean isSheck;
     @BindView(R.id.root) ConstraintLayout root;
+    @BindView(R.id.rl_title) RelativeLayout rl_title;
     @BindView(R.id.ll_back) LinearLayout ll_back;
     @BindView(R.id.ll_layout1) LinearLayout ll_layout1;
     @BindView(R.id.ll_layout3) LinearLayout ll_layout3;
@@ -67,9 +69,13 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
     protected void initView() {
         QMUIStatusBarHelper.translucent(this);
         QMUIStatusBarHelper.setStatusBarLightMode(this);
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_back.getLayoutParams();
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) rl_title.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
-        ll_back.setLayoutParams(layoutParams);
+        rl_title.setLayoutParams(layoutParams);
+
+        ViewGroup.MarginLayoutParams l = (ViewGroup.MarginLayoutParams) ll_layout1.getLayoutParams();
+        l.topMargin = statusbarHeight + SizeUtils.dp2px(49);
+        ll_layout1.setLayoutParams(l);
 
     }
 

@@ -183,8 +183,6 @@ dependencies {
     //okhttp
     implementation 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    //RecycleView
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
     //Glide
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation files('libs/miit_mdid_1.0.8.aar')
@@ -194,6 +192,9 @@ dependencies {
     implementation 'com.wuxiaolong.pullloadmorerecyclerview:library:1.1.2'
 //    //验证码输入框
 //    implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.5'
+    //BaseRecyclerViewAdapterHelper
+    // https://github.com/CymChad/BaseRecyclerViewAdapterHelper/blob/master/readme/0-BaseRecyclerViewAdapterHelper.md
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 }
 repositories {
     mavenCentral()

@@ -10,6 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dejia.anju.adapter.MessageListAdapter;
+import com.dejia.anju.adapter.PermissionAdapter;
+import com.dejia.anju.model.MessageListData;
+import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.view.YMLinearLayoutManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -21,11 +26,14 @@ import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.SizeUtils;
 import com.zhangyue.we.x2c.ano.Xml;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
@@ -34,17 +42,30 @@ import static android.provider.Settings.EXTRA_APP_PACKAGE;
 
 //私信列表页
 public class MessageFragment extends BaseFragment implements View.OnClickListener {
-    @BindView(R.id.ll_title) LinearLayout ll_title;
-    @BindView(R.id.ll_notice) LinearLayout ll_notice;
-    @BindView(R.id.iv_close_notice) ImageView iv_close_notice;
-    @BindView(R.id.tv_open_notice) TextView tv_open_notice;
-    @BindView(R.id.ll1) LinearLayout ll1;
-    @BindView(R.id.ll2) LinearLayout ll2;
-    @BindView(R.id.ll3) LinearLayout ll3;
-    @BindView(R.id.ll4) LinearLayout ll4;
-    @BindView(R.id.smartRefreshLayout) SmartRefreshLayout smartRefreshLayout;
-    @BindView(R.id.rv) RecyclerView rv;
+    @BindView(R.id.ll_title)
+    LinearLayout ll_title;
+    @BindView(R.id.ll_notice)
+    LinearLayout ll_notice;
+    @BindView(R.id.iv_close_notice)
+    ImageView iv_close_notice;
+    @BindView(R.id.tv_open_notice)
+    TextView tv_open_notice;
+    @BindView(R.id.ll1)
+    LinearLayout ll1;
+    @BindView(R.id.ll2)
+    LinearLayout ll2;
+    @BindView(R.id.ll3)
+    LinearLayout ll3;
+    @BindView(R.id.ll4)
+    LinearLayout ll4;
+    @BindView(R.id.smartRefreshLayout)
+    SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.rv)
+    RecyclerView rv;
     private int page = 1;
+    private MessageListAdapter messageListAdapter;
+    private YMLinearLayoutManager ymLinearLayoutManager;
+    private ArrayList<MessageListData> messageListData;
 
     public static MessageFragment newInstance() {
         Bundle args = new Bundle();
@@ -97,6 +118,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 //加载更多
                 page++;
+                messageListAdapter = null;
                 getMessageList();
             }
 
@@ -116,25 +138,45 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         new GetMessageListApi().getCallBack(mContext, map, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData serverData) {
-                if("1".equals(serverData.code)){
-                    if(serverData != null){
-//                        if (data.getTaoList().size() == 0) {
-//                            if (smartRefreshLayout == null) {
-//                                return;
-//                            }
-//                            smartRefreshLayout.finishLoadMoreWithNoMoreData();
-//                        } else {
-//                            if (smartRefreshLayout == null) {
-//                                return;
-//                            }
-//                            smartRefreshLayout.finishLoadMore();
-//                        }
-                    }else{
+                if ("1".equals(serverData.code)) {
+                    if (serverData != null) {
+                        messageListData = JSONUtil.jsonToArrayList(serverData.data, MessageListData.class);
+                        if (messageListData.size() == 0) {
+                            if (smartRefreshLayout == null) {
+                                return;
+                            }
+                            smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                        } else {
+                            if (smartRefreshLayout == null) {
+                                return;
+                            }
+                            smartRefreshLayout.finishLoadMore();
+                        }
+                        setMessageListAdapter();
+                    } else {
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
                     }
                 }
             }
         });
+    }
+
+    //设置适配器
+    private void setMessageListAdapter() {
+        if (null == messageListAdapter) {
+            ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            RecyclerView.ItemAnimator itemAnimator = rv.getItemAnimator();
+            //取消局部刷新动画效果
+            if (null != itemAnimator) {
+                ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
+            }
+            rv.setLayoutManager(ymLinearLayoutManager);
+            messageListAdapter = new MessageListAdapter(mContext, R.layout.item_message_chat_list, messageListData);
+            rv.setAdapter(messageListAdapter);
+
+        } else {
+            //添加
+        }
     }
 
     @Override

@@ -108,12 +108,19 @@ public class VerificationCodeActivity extends BaseActivity {
         input.setInputCompleteListener(new VerificationCodeView.InputCompleteListener() {
             @Override
             public void inputComplete() {
-                verificationCode = input.getInputContent();
-                tv_get_code.setBackgroundResource(R.drawable.shape_24_33a7ff);
+                if(input.getEtNumber() == 4){
+                    verificationCode = input.getInputContent();
+                    tv_get_code.setBackgroundResource(R.drawable.shape_24_33a7ff);
+                }
             }
 
             @Override
             public void deleteContent() {
+                if(input.getEtNumber() != 4){
+                    tv_get_code.setBackgroundResource(R.drawable.shape_24_d5edfe);
+                }else{
+                    tv_get_code.setBackgroundResource(R.drawable.shape_24_33a7ff);
+                }
             }
         });
 

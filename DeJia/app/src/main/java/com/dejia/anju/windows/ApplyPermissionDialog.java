@@ -28,7 +28,7 @@ public class ApplyPermissionDialog extends Dialog {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        permissionAdapter = new PermissionAdapter(R.layout.permission_list_item, mDataList);
+        permissionAdapter = new PermissionAdapter(context,R.layout.permission_list_item, mDataList);
         recyclerView.setAdapter(permissionAdapter);
     }
 
