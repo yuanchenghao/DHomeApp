@@ -93,11 +93,28 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp">
+
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
+                android:layout_gravity="bottom"
                 android:src="@mipmap/first_message" />
 
+                <TextView
+                    android:id="@+id/item_inform_tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/dot_new_tips"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:padding="@dimen/dp_1"
+                    android:textColor="@color/white"
+                    android:textSize="8sp" />
+            </FrameLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -116,10 +133,28 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp">
+
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
+                android:layout_gravity="bottom"
                 android:src="@mipmap/second_message" />
+
+                <TextView
+                    android:id="@+id/item_inform_tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/dot_new_tips"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:padding="@dimen/dp_1"
+                    android:textColor="@color/white"
+                    android:textSize="8sp" />
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -139,10 +174,29 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp">
+
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
+                android:layout_gravity="bottom"
                 android:src="@mipmap/three_message" />
+
+                <TextView
+                    android:id="@+id/item_inform_tv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/dot_new_tips"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_1"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    android:textSize="8sp" />
+
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -161,10 +215,29 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp">
+
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
+                android:layout_gravity="bottom"
                 android:src="@mipmap/four_message" />
+
+                <TextView
+                    android:id="@+id/item_inform_tv4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/dot_new_tips"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_1"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    android:textSize="8sp" />
+
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -185,15 +258,15 @@
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableLoadMore="true">
 
-        <com.dejia.anju.base.smart.YMRefreshHeader
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none" />
+
+        <com.dejia.anju.base.smart.YMRefreshHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

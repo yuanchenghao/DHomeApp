@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dejia.anju.adapter.MessageListAdapter;
-import com.dejia.anju.adapter.PermissionAdapter;
 import com.dejia.anju.model.MessageListData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.view.YMLinearLayoutManager;
@@ -62,6 +61,14 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.rv)
     RecyclerView rv;
+    @BindView(R.id.item_inform_tv1)
+    TextView item_inform_tv1;
+    @BindView(R.id.item_inform_tv2)
+    TextView item_inform_tv2;
+    @BindView(R.id.item_inform_tv3)
+    TextView item_inform_tv3;
+    @BindView(R.id.item_inform_tv4)
+    TextView item_inform_tv4;
     private int page = 1;
     private MessageListAdapter messageListAdapter;
     private YMLinearLayoutManager ymLinearLayoutManager;
@@ -173,9 +180,9 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             rv.setLayoutManager(ymLinearLayoutManager);
             messageListAdapter = new MessageListAdapter(mContext, R.layout.item_message_chat_list, messageListData);
             rv.setAdapter(messageListAdapter);
-
         } else {
             //添加
+            messageListAdapter.addData(messageListData);
         }
     }
 

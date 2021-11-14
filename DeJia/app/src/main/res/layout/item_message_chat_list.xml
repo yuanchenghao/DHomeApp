@@ -23,14 +23,13 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical"
-                android:background="#000000"
+                app:placeholderImage="#000000"
                 app:fadeDuration="100"
                 app:roundAsCircle="true"
                 app:retryImageScaleType="centerCrop" />
 
-
             <TextView
-                android:id="@+id/item_inform_tv_"
+                android:id="@+id/item_inform_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -74,7 +73,7 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/kefu_time"
+                    android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#919699"

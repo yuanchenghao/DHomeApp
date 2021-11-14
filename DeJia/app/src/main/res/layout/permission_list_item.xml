@@ -2,28 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dp_20"
-    >
-    <ImageView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="@dimen/dp_20">
+
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/permission_img"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        app:fadeDuration="100"
+        app:retryImageScaleType="centerCrop" />
 
-        />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_8"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/permission_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="定位信息"
             android:textColor="#ff333333"
-            android:textSize="14sp"
-            />
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/permission_desc"
             android:layout_width="wrap_content"
@@ -32,7 +34,6 @@
             android:textColor="#ff999999"
             android:textSize="12sp"
             android:layout_marginTop="@dimen/dp_3"
-            android:maxEms="16"
-            />
+            android:maxEms="16" />
     </LinearLayout>
 </LinearLayout>
