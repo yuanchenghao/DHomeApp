@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
@@ -15,7 +16,6 @@ import com.hjq.permissions.XXPermissions;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.base.BaseActivity;
-import com.dejia.anju.utils.SizeUtils;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import java.util.List;

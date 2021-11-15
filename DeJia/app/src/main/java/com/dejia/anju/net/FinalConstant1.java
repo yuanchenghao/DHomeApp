@@ -1,8 +1,8 @@
 package com.dejia.anju.net;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.dejia.anju.DeJiaApp;
 import com.dejia.anju.R;
-import com.dejia.anju.utils.AppUtils;
 
 import static com.dejia.anju.net.EnumInterfaceType.POST;
 import static org.apache.http.HttpVersion.HTTP;
@@ -19,6 +19,7 @@ public class FinalConstant1 {
     public static final String DEVICE = "device";
     public static final String MARKET = "market";
     public static final String IMEI = "android_imei";
+    public static final String ONLYKEY = "only_key";
     public static final String TIME = "time";
     public static final String APPFROM = "appfrom";
     public static final String ISFIRSTACTIVE = "is_first_active";

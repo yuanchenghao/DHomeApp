@@ -30,7 +30,7 @@ public class CookieConfig {
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
         HttpUrl httpUrl = new HttpUrl.Builder().scheme(scheme).host(host).build();
         Cookie yuemeiinfo = new Cookie.Builder()
-                .name("yuemeiinfo")
+                .name("dejiainfo")
                 .value(mYuemeiinfo)
                 .build();
         cookieStore.saveCookie(httpUrl, yuemeiinfo);
@@ -42,7 +42,7 @@ public class CookieConfig {
 //        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
 //        HttpUrl httpUrl = new HttpUrl.Builder().scheme(scheme).host(host).build();
 //        Cookie yuemeiinfo = new Cookie.Builder()
-//                .name("yuemeiinfo")
+//                .name("dejiainfo")
 //                .value(mYuemeiinfo)
 //                .domain(domain)
 //                .build();

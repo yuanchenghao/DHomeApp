@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
@@ -20,7 +21,6 @@ import java.util.HashMap;
 import butterknife.BindView;
 
 import com.dejia.anju.event.Event;
-import com.dejia.anju.utils.SizeUtils;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.greenrobot.eventbus.EventBus;

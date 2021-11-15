@@ -72,6 +72,7 @@ public class BindData {
                 + FinalConstant1.DEVICE + FinalConstant1.SYMBOL2 + FinalConstant1.YUEMEI_DEVICE + FinalConstant1.SYMBOL2
                 + FinalConstant1.MARKET + FinalConstant1.SYMBOL2
 //                + FinalConstant1.YUEMEI_MARKET + FinalConstant1.SYMBOL2
+                + FinalConstant1.ONLYKEY + FinalConstant1.SYMBOL2 + imei + FinalConstant1.SYMBOL2
                 + FinalConstant1.IMEI + FinalConstant1.SYMBOL2 + imei + FinalConstant1.SYMBOL2
                 + FinalConstant1.APPFROM + FinalConstant1.SYMBOL2 + FinalConstant1.APP_FROM + FinalConstant1.SYMBOL2
                 + FinalConstant1.ISFIRSTACTIVE + FinalConstant1.SYMBOL2 + is_first_active + FinalConstant1.SYMBOL2;
@@ -83,6 +84,7 @@ public class BindData {
                 + FinalConstant1.DEVICE + FinalConstant1.SYMBOL4 + FinalConstant1.YUEMEI_DEVICE + FinalConstant1.SYMBOL5
                 + FinalConstant1.MARKET + FinalConstant1.SYMBOL4
 //                + FinalConstant1.YUEMEI_MARKET + FinalConstant1.SYMBOL5
+                + FinalConstant1.ONLYKEY + FinalConstant1.SYMBOL4 + imei + FinalConstant1.SYMBOL5
                 + FinalConstant1.IMEI + FinalConstant1.SYMBOL4 + imei + FinalConstant1.SYMBOL5
                 + FinalConstant1.APPFROM + FinalConstant1.SYMBOL4 + FinalConstant1.APP_FROM + FinalConstant1.SYMBOL4
                 + FinalConstant1.ISFIRSTACTIVE + FinalConstant1.SYMBOL4 + is_first_active + FinalConstant1.SYMBOL4;

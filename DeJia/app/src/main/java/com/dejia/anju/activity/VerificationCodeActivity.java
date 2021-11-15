@@ -14,8 +14,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SizeUtils;
+import com.dejia.anju.AppLog;
+import com.dejia.anju.api.BindJPushApi;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.VerificationCodeView;
+import com.dejia.anju.webSocket.IMManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.dejia.anju.R;
 import com.dejia.anju.api.GetCodeApi;
@@ -28,7 +32,6 @@ import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
-import com.dejia.anju.utils.SizeUtils;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,6 +42,8 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jiguang.verifysdk.api.JVerificationInterface;
+import cn.jpush.android.api.JPushInterface;
 
 
 /**
@@ -163,8 +168,27 @@ public class VerificationCodeActivity extends BaseActivity {
                                 UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data,UserInfo.class);
                                 KVUtils.getInstance().encode(Constants.UID,userInfo.getId());
                                 KVUtils.getInstance().encode("user",userInfo);
-//                                Util.setYuemeiInfo();
+                                Util.setYuemeiInfo(userInfo.getDejia_info());
+                                String registrationID = JPushInterface.getRegistrationID(mContext);
+                                IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
+                                IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(Constants.baseService);
+
+                                HashMap<String, Object> maps = new HashMap<>();
+                                maps.put("reg_id", registrationID);
+                                maps.put("location_city", "北京");
+                                maps.put("brand", android.os.Build.BRAND + "_" + android.os.Build.MODEL);
+                                maps.put("system", android.os.Build.VERSION.RELEASE);
+                                new BindJPushApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                                    @Override
+                                    public void onSuccess(ServerData serverData) {
+                                        if("1".equals(serverData.code)){
+                                            AppLog.i("message===" + serverData.message);
+                                        }
+                                    }
+                                });
                                 Toast.makeText(mContext,"登录成功",Toast.LENGTH_LONG).show();
+                                //清空预取号缓存
+//                                JVerificationInterface.clearPreLoginCache();
                                 //发登录广播
                                 EventBus.getDefault().post(new Event<>(1));
                             }else{

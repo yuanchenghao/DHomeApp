@@ -3,6 +3,8 @@ package com.dejia.anju.utils;
 import android.content.Context;
 import android.os.Parcelable;
 
+import com.blankj.utilcode.util.StringUtils;
+import com.dejia.anju.AppLog;
 import com.tencent.mmkv.MMKV;
 import com.tencent.mmkv.MMKVLogLevel;
 
@@ -32,7 +34,7 @@ public class KVUtils {
     public static void initialize(final Context context) {
         // 初始化 MMKV 并设置日志级别
         String rootDir = MMKV.initialize(context, MMKVLogLevel.LevelNone);
-        com.dejia.anju.utils.LogUtils.i(TAG, "MMKV rootDir: %s", rootDir);
+        AppLog.i("MMKV rootDir: %s"+ rootDir);
 //        // 设置打印日志级别
 //        MMKV.setLogLevel(MMKVLogLevel.LevelNone);
 //        https://github.com/Tencent/MMKV/wiki/android_advance_cn

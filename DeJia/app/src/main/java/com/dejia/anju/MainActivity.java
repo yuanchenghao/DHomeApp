@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.dejia.anju.activity.CancellationActivity;
 import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.activity.OneClickLoginActivity;
@@ -25,9 +27,7 @@ import com.dejia.anju.fragment.MessageFragment;
 import com.dejia.anju.fragment.MyFragment;
 import com.dejia.anju.fragment.ToolFragment;
 import com.dejia.anju.mannger.DataCleanManager;
-import com.dejia.anju.utils.AppUtils;
 import com.dejia.anju.utils.KVUtils;
-import com.dejia.anju.utils.ScreenUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.webSocket.IMManager;
 import com.dejia.anju.webSocket.NetEvent;
@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
                 //退出登录
-                Util.clearUserData();
+                Util.clearUserData(mContext);
                 initFragment(0);
             }
         });

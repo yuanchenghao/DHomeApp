@@ -219,7 +219,8 @@ public class SignUtils {
         keyValues.put(FinalConstant1.VER, FinalConstant1.YUEMEI_VER);
         keyValues.put(FinalConstant1.DEVICE, FinalConstant1.YUEMEI_DEVICE);
         keyValues.put(FinalConstant1.MARKET, "vivo");
-        keyValues.put(FinalConstant1.IMEI, Util.getImei());
+        keyValues.put(FinalConstant1.ONLYKEY, Util.getImei());
+        keyValues.put(FinalConstant1.IMEI, "imei");
         keyValues.put("android_oaid","android_oaid");
         keyValues.put("android_id","android_id");
         keyValues.put(FinalConstant1.APPFROM, "1");

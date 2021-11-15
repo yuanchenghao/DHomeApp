@@ -19,7 +19,6 @@ import com.dejia.anju.model.PermsissionData;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.MD5Utils;
 import com.dejia.anju.windows.PrivacyAgreementDialog;
-import com.dejia.anju.R;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.qiyi.basecore.taskmanager.IdleTask;

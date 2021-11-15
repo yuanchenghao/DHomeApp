@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.EditUserInfoActivity;
@@ -18,7 +19,6 @@ import com.dejia.anju.activity.QRCodeActivity;
 import com.dejia.anju.base.BaseFragment;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.utils.KVUtils;
-import com.dejia.anju.utils.SizeUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhangyue.we.x2c.ano.Xml;

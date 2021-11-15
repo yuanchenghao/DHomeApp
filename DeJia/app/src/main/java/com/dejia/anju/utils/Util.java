@@ -1,17 +1,28 @@
 package com.dejia.anju.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.dejia.anju.AppLog;
+import com.dejia.anju.api.UnBindJPushApi;
+import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.Constants;
 import com.dejia.anju.model.SessionidData;
+import com.dejia.anju.net.ServerData;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 
@@ -93,36 +104,26 @@ public final class Util {
     /**
      * 清空用户信息
      */
-    public static void clearUserData() {
-        //关闭极光推送
-//        String registrationID = JPushInterface.getRegistrationID(MyApplication.getContext());
-//        HashMap<String, Object> maps = new HashMap<>();
-//        maps.put("reg_id", registrationID);
-//        new JPushClosedApi().getCallBack(MyApplication.getContext(), maps, new BaseCallBackListener<ServerData>() {
-//            @Override
-//            public void onSuccess(ServerData serverData) {
-//                Log.e(TAG, "message===" + serverData.message);
-//            }
-//        });
-//
-//        Utils.setUid("0");
-//        Utils.setYuemeiInfo("");
-//        Cfg.saveStr(MyApplication.getContext(), FinalConstant.HOME_PERSON_UID, "0");
-//        Utils.getCartNumber(MyApplication.getContext());
-//        Cfg.saveStr(MyApplication.getContext(), FinalConstant.ULOGINPHONE, "");
-//        Cfg.saveStr(MyApplication.getContext(), FinalConstant.UHEADIMG, "");
-//        Cfg.saveStr(MyApplication.getContext(), FinalConstant.ISSHOW, "1");
-//        Cfg.saveStr(MyApplication.getContext(), FinalConstant.DACU_FLOAT_CLOAS, "");
-//        Cfg.saveStr(MyApplication.getContext(), FinalConstant.NEWUSER_CLOSE, "");
-//        Cfg.clear(MyApplication.getContext());
-        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
-        HttpUrl httpUrl = new HttpUrl.Builder().scheme("https").host("chat.yuemei.com").build();
-        List<Cookie> cookies = cookieStore.loadCookie(httpUrl);
-        cookieStore.removeCookie(httpUrl);
-        Cookie yuemeiinfo = new Cookie.Builder().name("yuemeiinfo").value("").domain("chat.yuemei.com").expiresAt(1544493729973L).path("/").build();
-        cookieStore.saveCookie(httpUrl, yuemeiinfo);
+    public static void clearUserData(Context mContext) {
+//        关闭极光推送
+        String registrationID = JPushInterface.getRegistrationID(mContext);
+        HashMap<String, Object> maps = new HashMap<>();
+        maps.put("reg_id", registrationID);
+        new UnBindJPushApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                AppLog.i("message===" + serverData.message);
+            }
+        });
+//        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+//        HttpUrl httpUrl = new HttpUrl.Builder().scheme("https").host("chat.yuemei.com").build();
+//        List<Cookie> cookies = cookieStore.loadCookie(httpUrl);
+//        cookieStore.removeCookie(httpUrl);
+//        Cookie yuemeiinfo = new Cookie.Builder().name("dejiainfo").value("").domain("chat.yuemei.com").expiresAt(1544493729973L).path("/").build();
+//        cookieStore.saveCookie(httpUrl, yuemeiinfo);
         KVUtils.getInstance().encode(Constants.UID,"0");
         KVUtils.getInstance().encode("user","");
+        Util.setYuemeiInfo("");
     }
 
     /**
@@ -175,5 +176,32 @@ public final class Util {
         InputMethodManager imm = (InputMethodManager) context
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
+     * 获取屏幕的宽高
+     *
+     * @param activity
+     * @return
+     */
+    public static int[] getScreenSize(Activity activity) {
+        int[] ints = new int[2];
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        Class c;
+        try {
+            c = Class.forName("android.view.Display");
+            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
+            method.invoke(display, dm);
+            ints[0] = dm.widthPixels;
+            ints[1] = dm.heightPixels;
+        } catch (Exception e) {
+            e.printStackTrace();
+            DisplayMetrics metric = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+            ints[0] = metric.widthPixels;
+            ints[1] = metric.heightPixels;
+        }
+        return ints;
     }
 }

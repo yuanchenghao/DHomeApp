@@ -13,9 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
 import com.dejia.anju.base.BaseActivity;
-import com.dejia.anju.utils.SizeUtils;
 import com.dejia.anju.utils.SoftKeyBoardListener;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.PullLoadMoreRecyclerView;

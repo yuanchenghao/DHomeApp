@@ -363,7 +363,7 @@ public class NetWork {
                     case "10001":
                         String str = KVUtils.getInstance().decodeString(IS_SHOW_LOGIN, "0");
                         if ("0".equals(str)) {
-                            Util.clearUserData();
+//                            Util.clearUserData();
                             String isJumpLogin = KVUtils.getInstance().decodeString("is_jump_login", "0");
                             if (!"1".equals(isJumpLogin)) {
 //                                Utils.isLoginAndBind(MyApplication.getContext());

@@ -198,9 +198,12 @@ dependencies {
     //BaseRecyclerViewAdapterHelper
     // https://github.com/CymChad/BaseRecyclerViewAdapterHelper/blob/master/readme/0-BaseRecyclerViewAdapterHelper.md
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-    //极光一键登录
+    //极光认证
     implementation 'cn.jiguang.sdk:jverification:2.7.1'
     implementation 'cn.jiguang.sdk:jcore:2.8.2'
+    //极光推送
+    implementation 'cn.jiguang.sdk:jpush:4.4.0'
+    implementation 'com.blankj:utilcodex:1.30.6'
 }
 repositories {
     mavenCentral()

@@ -11,12 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.utils.DialogUtils;
-import com.dejia.anju.utils.SizeUtils;
 import com.dejia.anju.utils.Util;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
@@ -126,7 +126,7 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
                 }
                 break;
             case R.id.button2:
-                Util.clearUserData();
+                Util.clearUserData(mContext);
                 //发登录广播
                 EventBus.getDefault().post(new Event<>(0));
                 mContext.startActivity(new Intent(mContext, MainActivity.class));
