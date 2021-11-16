@@ -1,13 +1,17 @@
 package com.dejia.anju;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.webkit.WebView;
 
+import com.bun.miitmdid.core.JLibrary;
 import com.bytedance.boost_multidex.BoostMultiDex;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
@@ -66,13 +70,40 @@ public class DeJiaApp extends Application {
         }
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
         mInstance = this;
+        webviewSetPath(this);
         registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         startInitThreadPool();
+    }
+
+
+    //Android P 以及之后版本不支持同时从多个进程使用具有相同数据目录的WebView
+    //为其它进程webView设置目录
+    @RequiresApi(api = 28)
+    public void webviewSetPath(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            String processName = getProcessName(context);
+            //判断不等于默认进程名称
+            if (!"com.dejia.anju".equals(processName)) {
+                WebView.setDataDirectorySuffix(processName);
+            }
+        }
+    }
+
+    public String getProcessName(Context context) {
+        if (context == null) return null;
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo processInfo : manager.getRunningAppProcesses()) {
+            if (processInfo.pid == android.os.Process.myPid()) {
+                return processInfo.processName;
+            }
+        }
+        return null;
     }
 
     private void startInitThreadPool() {
@@ -185,6 +216,7 @@ public class DeJiaApp extends Application {
         super.attachBaseContext(base);
         BoostMultiDex.install(base);
         MultiDex.install(this);
+        JLibrary.InitEntry(base);
         fixFinalizerDaemonTimeOutBug();
     }
 

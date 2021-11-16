@@ -1,8 +1,11 @@
 package com.dejia.anju.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -10,18 +13,24 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.dejia.anju.AppLog;
+import com.dejia.anju.BuildConfig;
+import com.dejia.anju.DeJiaApp;
 import com.dejia.anju.api.UnBindJPushApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.Constants;
 import com.dejia.anju.model.SessionidData;
+import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.ServerData;
+import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 
 import java.lang.reflect.Method;
+import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.RequiresApi;
 import cn.jpush.android.api.JPushInterface;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
@@ -99,6 +108,15 @@ public final class Util {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 保存获取Sessionid
+     */
+    public static void setSessionid() {
+        String sessionid = System.currentTimeMillis() + Util.getImei() + Util.getVersionName() + FinalConstant1.MYAPP_MARKET;
+        SessionidData sessionidData = new SessionidData(System.currentTimeMillis(), Util.StringInMd5(sessionid));
+        KVUtils.getInstance().encode(FinalConstant1.SESSIONID, new Gson().toJson(sessionidData));
     }
 
     /**
@@ -204,4 +222,67 @@ public final class Util {
         }
         return ints;
     }
+
+    @SuppressLint("MissingPermission")
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getAppImei() {
+        String imei = null;
+        if(KVUtils.getInstance().decodeInt("privacy_agreement", 0) == 1){
+            try {
+                TelephonyManager tm = (TelephonyManager) DeJiaApp.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
+                imei = tm.getImei();
+            } catch (Exception e) {
+                e.printStackTrace();
+                imei = "";
+            }
+            return imei;
+        }else{
+            return "";
+        }
+    }
+
+
+    /**
+     * 获取版本名称
+     */
+    public static String getVersionName() {
+        return String.valueOf(BuildConfig.VERSION_CODE);
+    }
+
+
+    /**
+     * md5加密
+     *
+     * @param s
+     * @return
+     */
+    public static String StringInMd5(String s) {
+        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+        try {
+            // 按照相应编码格式获取byte[]
+            byte[] btInput = s.getBytes();
+            // 获得MD5摘要算法的 MessageDigest 对象
+            MessageDigest mdInst = MessageDigest.getInstance("MD5");
+            // 使用指定的字节更新摘要
+            mdInst.update(btInput);
+            // 获得密文
+            byte[] md = mdInst.digest();
+            // 把密文转换成十六进制的字符串形式
+
+            int j = md.length;
+            char str[] = new char[j * 2];
+            int k = 0;
+
+            for (int i = 0; i < j; i++) {
+                byte byte0 = md[i];
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                str[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(str);
+        } catch (Exception e) {
+            return "-1";
+        }
+    }
+
 }

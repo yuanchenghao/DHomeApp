@@ -102,6 +102,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void initView() {
         // 初始化并设置当前Fragment
         initFragment(0);
+        //初始化websocket
         IMManager.getInstance(mContext).getIMNetInstance().connWebSocket("wss://chats.yuemei.com/");
         ViewGroup.LayoutParams params = navigation.getLayoutParams();
         params.width = (int) (ScreenUtils.getScreenWidth() * 0.64);

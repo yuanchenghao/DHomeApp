@@ -40,6 +40,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
+import androidx.core.app.NotificationManagerCompat;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
@@ -172,12 +173,12 @@ public class VerificationCodeActivity extends BaseActivity {
                                 String registrationID = JPushInterface.getRegistrationID(mContext);
                                 IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
                                 IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(Constants.baseService);
-
                                 HashMap<String, Object> maps = new HashMap<>();
                                 maps.put("reg_id", registrationID);
                                 maps.put("location_city", "北京");
                                 maps.put("brand", android.os.Build.BRAND + "_" + android.os.Build.MODEL);
                                 maps.put("system", android.os.Build.VERSION.RELEASE);
+                                maps.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled())?"0":"1");
                                 new BindJPushApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
                                     @Override
                                     public void onSuccess(ServerData serverData) {

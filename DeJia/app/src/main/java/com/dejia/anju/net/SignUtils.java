@@ -1,8 +1,12 @@
 package com.dejia.anju.net;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.webkit.CookieManager;
 
+import com.dejia.anju.DeJiaApp;
+import com.dejia.anju.model.SessionidData;
+import com.dejia.anju.utils.KVUtils;
 import com.lzy.okgo.model.HttpHeaders;
 import com.dejia.anju.utils.Util;
 
@@ -17,6 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class SignUtils {
     private static String TAG = "SignUtils";
@@ -212,17 +217,19 @@ public class SignUtils {
      *
      * @return
      */
+    @SuppressLint("NewApi")
     public static Map<String, String> buildHttpParamMap(Map<String, Object> map) {
         Map<String, String> keyValues = new HashMap<>();
         keyValues.put(FinalConstant1.CITY, Util.getCity());
         keyValues.put(FinalConstant1.UID, Util.getUid());
         keyValues.put(FinalConstant1.VER, FinalConstant1.YUEMEI_VER);
         keyValues.put(FinalConstant1.DEVICE, FinalConstant1.YUEMEI_DEVICE);
-        keyValues.put(FinalConstant1.MARKET, "vivo");
+        keyValues.put(FinalConstant1.MARKET, FinalConstant1.MYAPP_MARKET);
         keyValues.put(FinalConstant1.ONLYKEY, Util.getImei());
-        keyValues.put(FinalConstant1.IMEI, "imei");
-        keyValues.put("android_oaid","android_oaid");
-        keyValues.put("android_id","android_id");
+//        String a = Util.getAppImei();
+        keyValues.put(FinalConstant1.IMEI, Util.getImei());
+        keyValues.put(FinalConstant1.ANDROID_OAID, KVUtils.getInstance().decodeString("oaid", ""));
+        keyValues.put(FinalConstant1.ANDROID_ID,Util.getAndroidId(DeJiaApp.getContext()));
         keyValues.put(FinalConstant1.APPFROM, "1");
         for (String key : map.keySet()) {
             Object value = map.get(key);
@@ -261,4 +268,26 @@ public class SignUtils {
         return sb.toString();
     }
 
+    /**
+     * 获取sessionid
+     *
+     * @return
+     */
+    public static String getSessionid() {
+        //判断会话id是否超时
+        SessionidData sessionidData = Util.getSessionid();
+        if (sessionidData != null) {
+            Long interval = (System.currentTimeMillis() - sessionidData.getTime()) / (1000 * 60);
+            if (interval > 30) {
+                Util.setSessionid();
+            }
+        }
+        SessionidData sessionid = Util.getSessionid();
+        if (sessionid != null) {
+            return sessionid.getSessionid();
+        } else {
+            return Util.StringInMd5(System.currentTimeMillis() + Util.getImei() + Util.getVersionName() + FinalConstant1.MYAPP_MARKET);
+        }
+
+    }
 }

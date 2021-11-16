@@ -19,13 +19,16 @@ public class FinalConstant1 {
     public static final String DEVICE = "device";
     public static final String MARKET = "market";
     public static final String IMEI = "android_imei";
+    public static final String ANDROID_OAID = "android_oaid";
+    public static final String ANDROID_ID = "android_id";
     public static final String ONLYKEY = "only_key";
     public static final String TIME = "time";
-    public static final String APPFROM = "appfrom";
+    public static final String APPFROM = "app_from";
     public static final String ISFIRSTACTIVE = "is_first_active";
     //公共参数value
     public static final String YUEMEI_VER = "V" + AppUtils.getAppVersionName();                                       //版本号
     public static final String APP_FROM = "1";
+    public static final String SESSIONID = "sessionid";
     public static final String YUEMEI_DEVICE = "android";                                                  //android还是ios（设备标识）
     public static final String MYAPP_MARKET = DeJiaApp.getContext().getString(R.string.marketv);          //自己写的渠道
     //    private static final String NETWORK_MARKET = Cfg.loadStr(DeJiaApp.getContext(), SplashActivity.NETWORK_MARKET, "");//接口返回的渠道

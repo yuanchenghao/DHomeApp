@@ -15,16 +15,30 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
+import com.dejia.anju.api.ChatIndexApi;
+import com.dejia.anju.api.ChatSendApi;
+import com.dejia.anju.api.GetMessageApi;
+import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
+import com.dejia.anju.model.ChatIndexInfo;
+import com.dejia.anju.model.ChatMessageInfo;
+import com.dejia.anju.model.MessageBean;
+import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.SoftKeyBoardListener;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.PullLoadMoreRecyclerView;
+import com.dejia.anju.webSocket.IMManager;
+import com.dejia.anju.webSocket.MessageCallBack;
 import com.zhangyue.we.x2c.ano.Xml;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 
 //私信页面
-public class ChatActivity extends BaseActivity implements View.OnClickListener {
+public class ChatActivity extends BaseActivity implements View.OnClickListener, MessageCallBack {
     @BindView(R.id.rl_title)
     RelativeLayout rl_title;
     @BindView(R.id.ll_back)
@@ -46,7 +60,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.fl_root)
     FrameLayout fl_root;
     private boolean isFlag = false;
-
+    //页码
+    private int page;
+    //最后一条消息时间
+    private String msgtime;
+    //获取页面信息
+    private ChatIndexApi chatIndexApi;
+    //获取私信消息
+    private GetMessageApi getMessageApi;
+    //发私信
+    private ChatSendApi chatSendApi;
 
     @Override
     protected int getLayoutId() {
@@ -110,7 +133,60 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initData() {
+        IMManager.setMessageCallBack(this);
         setMultiOnClickListener(ll_back);
+        getChatIndexInfo();
+    }
+
+    //获取页面信息
+    private void getChatIndexInfo() {
+        Map<String, Object> maps = new HashMap<String,Object>();
+        maps.put("id","1");
+        chatIndexApi = new ChatIndexApi();
+        chatIndexApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if("1".equals(serverData.code)){
+                    ChatIndexInfo chatIndexInfo = JSONUtil.TransformSingleBean(serverData.data,ChatIndexInfo.class);
+                    tv_name.setText(chatIndexInfo.getTitle());
+                    tv_type.setText(chatIndexInfo.getSubtitle());
+                }
+            }
+        });
+    }
+
+    //获取私信信息
+    private void getMessageInfo(){
+        Map<String, Object> maps = new HashMap<String,Object>();
+        maps.put("id","1");
+        maps.put("page",page);
+        maps.put("msgtime",msgtime);
+        getMessageApi = new GetMessageApi();
+        getMessageApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if("1".equals(serverData.code)){
+                    ChatMessageInfo chatMessageInfo = JSONUtil.TransformSingleBean(serverData.data,ChatMessageInfo.class);
+                }
+            }
+        });
+    }
+
+    //发送私信消息
+    private void sendMessage(){
+        Map<String, Object> maps = new HashMap<String,Object>();
+        maps.put("id","1");
+        maps.put("class_id","1");//类型
+        maps.put("content","发送的内容发送的内容");
+        chatSendApi = new ChatSendApi();
+        chatSendApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if("1".equals(serverData.code)){
+
+                }
+            }
+        });
     }
 
     @Override
@@ -121,5 +197,15 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void receiveMessage(MessageBean.DataBean dataBean, String group_id) {
+
+    }
+
+    @Override
+    public void onFocusCallBack(String txt) {
+
     }
 }

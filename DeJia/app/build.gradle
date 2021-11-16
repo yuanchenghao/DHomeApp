@@ -204,6 +204,10 @@ dependencies {
     //极光推送
     implementation 'cn.jiguang.sdk:jpush:4.4.0'
     implementation 'com.blankj:utilcodex:1.30.6'
+    //高德地图定位功能
+    implementation 'com.amap.api:location:latest.integration'
+    //banner
+    implementation 'io.github.youth5201314:banner:2.2.2'
 }
 repositories {
     mavenCentral()

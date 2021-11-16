@@ -8,6 +8,7 @@
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
+        android:paddingTop="@dimen/dp_10"
         android:layout_height="50dp">
 
         <LinearLayout
@@ -28,7 +29,6 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="谁谁谁"
             android:textStyle="bold"
             android:layout_marginTop="@dimen/dp_5"
             android:textColor="#1C2125"
@@ -38,7 +38,6 @@
             android:id="@+id/tv_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="原创作者"
             android:layout_below="@id/tv_name"
             android:textColor="#919699"
             android:textSize="@dimen/sp_12"

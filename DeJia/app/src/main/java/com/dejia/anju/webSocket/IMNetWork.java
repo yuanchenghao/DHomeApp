@@ -1,9 +1,7 @@
 package com.dejia.anju.webSocket;
 
 import android.content.Context;
-
 import com.dejia.anju.MainActivity;
-
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -13,13 +11,10 @@ import okio.ByteString;
 public class IMNetWork implements NetStatus {
     public static final String TAG = "IMNetWork";
     private static IMNetWork instance;
-    private WebSocket mWebSocket;
     private ReceiveMessageCallBack mMessageCallBack;
     private MessageStatus mMessageStatus;
-    private int reconnectNum;
     private int netStatus;
     private Context mContext;
-    private boolean flag = false;
     private boolean mStatus = false;
     private WsManager wsManager;
 
@@ -55,9 +50,7 @@ public class IMNetWork implements NetStatus {
             wsManager.setWsStatusListener(new WsStatusListener() {
                 @Override
                 public void onOpen(WebSocket webSocket, Response response) {
-                    mWebSocket = webSocket;
                     mMessageStatus.messageStatus(Status.CONNECTED);
-                    reconnectNum = 0;
                 }
 
                 @Override
@@ -122,7 +115,5 @@ public class IMNetWork implements NetStatus {
                 repeatConnectWebSocket();
             }
         }
-
-
     }
 }
