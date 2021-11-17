@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
 import com.dejia.anju.api.ChatIndexApi;
@@ -134,7 +135,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void initData() {
         IMManager.setMessageCallBack(this);
-        setMultiOnClickListener(ll_back);
+        setMultiOnClickListener(ll_back,ll_input);
         getChatIndexInfo();
     }
 
@@ -195,6 +196,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.ll_back:
                 finish();
+                break;
+            case R.id.ll_input:
+                keyboard_content.setVisibility(View.VISIBLE);
+                Util.showKeyBoard(mContext, mess_et);
                 break;
         }
     }

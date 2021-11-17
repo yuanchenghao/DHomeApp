@@ -1,10 +1,12 @@
 package com.dejia.anju.base;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.dejia.anju.DeJiaApp;
 import com.dejia.anju.utils.Util;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.dejia.anju.mannger.ActivityManager;
@@ -26,11 +28,11 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityManager.getInstance().add(mContext);
         X2C.setContentView(this, getLayoutId());
         mContext = BaseActivity.this;
         ButterKnife.bind(mContext);
         //将当前的activity添加到ActivityManager中
-        ActivityManager.getInstance().add(mContext);
         mInflater = LayoutInflater.from(mContext);
         //沉浸式布局
         QMUIStatusBarHelper.translucent(mContext);

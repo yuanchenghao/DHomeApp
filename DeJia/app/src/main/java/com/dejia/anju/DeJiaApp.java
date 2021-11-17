@@ -35,13 +35,6 @@ import static com.dejia.anju.base.Constants.STATE_NORMAL;
 public class DeJiaApp extends Application {
     private static Context mContext;
     private static DeJiaApp mInstance;
-    //当前在栈顶的activity地址值
-    public static String activityAddress;
-    private Activity mAppActivity = null;
-    // 标记程序是否已进入后台(依据onStop回调)
-    private boolean flag;
-    // 标记程序是否已进入后台(依据onTrimMemory回调)
-    private boolean background;
     // APP状态
     private static int sAppState = STATE_NORMAL;
 
@@ -139,7 +132,7 @@ public class DeJiaApp extends Application {
     }
 
     /**
-     *极光一键登录
+     * 极光一键登录
      */
     private void initJVerificationInterface() {
         JVerificationInterface.setDebugMode(true);
@@ -151,9 +144,6 @@ public class DeJiaApp extends Application {
         });
     }
 
-    public Activity getCurrentActivity() {
-        return mAppActivity;
-    }
 
     /**
      * Activity 生命周期监听，用于监控app前后台状态切换
@@ -162,7 +152,6 @@ public class DeJiaApp extends Application {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             Density.setDensity(mInstance, activity);
-//            activityAddress = activity.toString();
         }
 
         @Override
@@ -174,32 +163,15 @@ public class DeJiaApp extends Application {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onActivityResumed(Activity activity) {
-//            mAppActivity = activity;
-//            if (background || flag) {
-//                background = false;
-//                flag = false;
-//                sAppState = STATE_BACK_TO_FRONT;
-//            } else {
-//                sAppState = STATE_NORMAL;
-//            }
+            com.dejia.anju.mannger.ActivityManager.getInstance().setCurrentActivity(activity);
         }
 
         @Override
         public void onActivityPaused(Activity activity) {
-//            mAppActivity = null;
         }
 
         @Override
         public void onActivityStopped(Activity activity) {
-            //判断当前activity是否处于前台
-//            if (!ActivityUtils.isCurAppTop(activity)) {
-//                // 从前台进入后台
-//                sAppState = STATE_FRONT_TO_BACK;
-//                flag = true;
-//            } else {
-//                // 否则是正常状态
-//                sAppState = STATE_NORMAL;
-//            }
         }
 
         @Override
@@ -270,18 +242,6 @@ public class DeJiaApp extends Application {
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        // TRIM_MEMORY_UI_HIDDEN是UI不可见的回调, 通常程序进入后台后都会触发此回调,大部分手机多是回调这个参数
-        // TRIM_MEMORY_BACKGROUND也是程序进入后台的回调, 不同厂商不太一样, 魅族手机就是回调这个参数
-//        if (level == Application.TRIM_MEMORY_UI_HIDDEN || level == TRIM_MEMORY_BACKGROUND) {
-//            background = true;
-//        } else if (level == Application.TRIM_MEMORY_COMPLETE) {
-//            background = !ActivityUtils.isCurAppTop(this);
-//        }
-//        if (background) {
-//            sAppState = STATE_FRONT_TO_BACK;
-//        } else {
-//            sAppState = STATE_NORMAL;
-//        }
         try {
             if (level >= ComponentCallbacks2.TRIM_MEMORY_MODERATE) {
                 ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();

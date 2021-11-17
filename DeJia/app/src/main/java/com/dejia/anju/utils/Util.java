@@ -186,16 +186,6 @@ public final class Util {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0); // 强制隐藏键盘
     }
 
-    public static void showKeyBoard(Context context, View view) {
-        view.setFocusable(true);
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.findFocus();
-        InputMethodManager imm = (InputMethodManager) context
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-
     /**
      * 获取屏幕的宽高
      *
@@ -283,6 +273,16 @@ public final class Util {
         } catch (Exception e) {
             return "-1";
         }
+    }
+
+    public static void showKeyBoard(Context context, View view) {
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.findFocus();
+        InputMethodManager imm = (InputMethodManager) context
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 }

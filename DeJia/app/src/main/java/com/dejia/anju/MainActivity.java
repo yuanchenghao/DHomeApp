@@ -26,6 +26,7 @@ import com.dejia.anju.fragment.HomeFragment;
 import com.dejia.anju.fragment.MessageFragment;
 import com.dejia.anju.fragment.MyFragment;
 import com.dejia.anju.fragment.ToolFragment;
+import com.dejia.anju.mannger.ActivityManager;
 import com.dejia.anju.mannger.DataCleanManager;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.Util;

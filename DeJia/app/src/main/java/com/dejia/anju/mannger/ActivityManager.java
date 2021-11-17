@@ -2,6 +2,7 @@ package com.dejia.anju.mannger;
 
 import android.app.Activity;
 
+import java.lang.ref.WeakReference;
 import java.util.Stack;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Stack;
  * Created by 裴成浩 on 2018/5/28.
  */
 public class ActivityManager {
-
+    private WeakReference<Activity> sCurrentActivityWeakRef;
     private ActivityManager() {
     }
 
@@ -79,4 +80,16 @@ public class ActivityManager {
         return activityStack.size();
     }
 
+
+    public Activity getCurrentActivity() {
+        Activity currentActivity = null;
+        if (sCurrentActivityWeakRef != null) {
+            currentActivity = sCurrentActivityWeakRef.get();
+        }
+        return currentActivity;
+    }
+
+    public void setCurrentActivity(Activity activity) {
+        sCurrentActivityWeakRef = new WeakReference<Activity>(activity);
+    }
 }
