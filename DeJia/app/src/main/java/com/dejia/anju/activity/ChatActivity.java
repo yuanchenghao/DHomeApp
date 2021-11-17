@@ -12,8 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
 import com.dejia.anju.api.ChatIndexApi;
@@ -71,6 +69,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     private GetMessageApi getMessageApi;
     //发私信
     private ChatSendApi chatSendApi;
+    //默认输入框的高度
+    private int INPUT_HEIGHT = 51;
 
     @Override
     protected int getLayoutId() {
@@ -86,7 +86,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         ViewGroup.MarginLayoutParams l = (ViewGroup.MarginLayoutParams) content_lv.getLayoutParams();
         l.topMargin = statusbarHeight + SizeUtils.dp2px(50);
         content_lv.setLayoutParams(l);
-
+        sendMessage();
+        sendMessage();
         ll_input.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -121,12 +122,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         SoftKeyBoardListener.setListener(mContext, new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
-                keyboard_content.setVisibility(View.GONE);
+                setListMargin(false, INPUT_HEIGHT);
+                keyboard_content.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void keyBoardHide(int height) {
-
+                keyboard_content.setVisibility(View.GONE);
             }
         });
 
@@ -135,7 +137,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void initData() {
         IMManager.setMessageCallBack(this);
-        setMultiOnClickListener(ll_back,ll_input);
+        setMultiOnClickListener(ll_back);
         getChatIndexInfo();
     }
 
@@ -197,10 +199,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.ll_back:
                 finish();
                 break;
-            case R.id.ll_input:
-                keyboard_content.setVisibility(View.VISIBLE);
-                Util.showKeyBoard(mContext, mess_et);
-                break;
         }
     }
 
@@ -212,5 +210,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onFocusCallBack(String txt) {
 
+    }
+
+    /**
+     * 设置recyclerview边距
+     */
+    private void setListMargin(boolean isTopOrBottom, int value) {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)content_lv.getLayoutParams();
+        if (isTopOrBottom) {
+            layoutParams.topMargin = SizeUtils.dp2px(value);
+        } else {
+            layoutParams.bottomMargin = SizeUtils.dp2px(value);
+        }
+        content_lv.setLayoutParams(layoutParams);
     }
 }

@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.adapter.MessageListAdapter;
 import com.dejia.anju.model.MessageListData;
 import com.dejia.anju.utils.JSONUtil;
@@ -127,7 +130,6 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 //加载更多
                 page++;
-                messageListAdapter = null;
                 getMessageList();
             }
 
@@ -135,6 +137,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 //刷新
                 page = 1;
+                messageListAdapter = null;
                 getMessageList();
             }
         });
@@ -183,6 +186,13 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             rv.setLayoutManager(ymLinearLayoutManager);
             messageListAdapter = new MessageListAdapter(mContext, R.layout.item_message_chat_list, messageListData);
             rv.setAdapter(messageListAdapter);
+            messageListAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                    String id = messageListAdapter.getData().get(position).getId();
+                    mContext.startActivity(new Intent(mContext, ChatActivity.class));
+                }
+            });
         } else {
             //添加
             messageListAdapter.addData(messageListData);

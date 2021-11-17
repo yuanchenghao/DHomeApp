@@ -167,7 +167,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 //版本号
                 drawerLayout.closeDrawers();
                 Toast.makeText(mContext,"版本",Toast.LENGTH_LONG).show();
-                mContext.startActivity(new Intent(mContext, ChatActivity.class));
             }
         });
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {

@@ -2,6 +2,7 @@ package com.dejia.anju.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.dejia.anju.R;
@@ -23,44 +24,44 @@ public class MessageListAdapter extends BaseQuickAdapter<MessageListData, BaseVi
 
     public MessageListAdapter(Context mContext, int layoutResId, @Nullable List<MessageListData> data) {
         super(layoutResId, data);
-        this.mContext = mContext;
         this.mData = data;
+        this.mContext = mContext;
     }
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, MessageListData messageListData) {
         //头像
-        if(!TextUtils.isEmpty(messageListData.getUserImg())){
-            ((SimpleDraweeView)baseViewHolder.getView(R.id.item_inform_iv)).setController(Fresco.newDraweeControllerBuilder().setUri(messageListData.getUserImg()).setAutoPlayAnimations(true).build());
+        if (!TextUtils.isEmpty(messageListData.getUserImg())) {
+            ((SimpleDraweeView) baseViewHolder.getView(R.id.item_inform_iv)).setController(Fresco.newDraweeControllerBuilder().setUri(messageListData.getUserImg()).setAutoPlayAnimations(true).build());
         }
         //设置未读消息数
         if (!TextUtils.isEmpty(messageListData.getNoread())) {
             if (Integer.parseInt(messageListData.getNoread()) > 0) {
-                baseViewHolder.setText(R.id.item_inform_tv,messageListData.getNoread());
-                baseViewHolder.setVisible(R.id.item_inform_tv,true);
+                baseViewHolder.setText(R.id.item_inform_tv, messageListData.getNoread());
+                baseViewHolder.setVisible(R.id.item_inform_tv, true);
             } else {
-                baseViewHolder.setGone(R.id.item_inform_tv,true);
+                baseViewHolder.setGone(R.id.item_inform_tv, true);
             }
         } else {
-            baseViewHolder.setGone(R.id.item_inform_tv,true);
+            baseViewHolder.setGone(R.id.item_inform_tv, true);
         }
         //昵称
-        if(TextUtils.isEmpty(messageListData.getFromName())){
-            baseViewHolder.setText(R.id.tv_name,"");
-        }else{
-            baseViewHolder.setText(R.id.tv_name,messageListData.getFromName());
+        if (TextUtils.isEmpty(messageListData.getFromName())) {
+            baseViewHolder.setText(R.id.tv_name, "");
+        } else {
+            baseViewHolder.setText(R.id.tv_name, messageListData.getFromName());
         }
         //时间
-        if(TextUtils.isEmpty(messageListData.getTimeSet())){
-            baseViewHolder.setGone(R.id.tv_time,true);
-        }else{
-            baseViewHolder.setText(R.id.tv_time,messageListData.getTimeSet());
+        if (TextUtils.isEmpty(messageListData.getTimeSet())) {
+            baseViewHolder.setGone(R.id.tv_time, true);
+        } else {
+            baseViewHolder.setText(R.id.tv_time, messageListData.getTimeSet());
         }
         //消息
-        if(TextUtils.isEmpty(messageListData.getMessage())){
-            baseViewHolder.setText(R.id.tv_message,messageListData.getMessage());
-        }else{
-            baseViewHolder.setText(R.id.tv_message,"");
+        if (!TextUtils.isEmpty(messageListData.getMessage())) {
+            baseViewHolder.setText(R.id.tv_message, messageListData.getMessage());
+        } else {
+            baseViewHolder.setText(R.id.tv_message, "");
         }
     }
 

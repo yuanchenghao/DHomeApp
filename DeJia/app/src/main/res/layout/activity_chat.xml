@@ -101,7 +101,7 @@
                 android:layout_marginRight="@dimen/dp_10"
                 android:textColor="#ffffff"
                 android:textSize="14sp"
-              />
+                />
         </LinearLayout>
         <!--        输入框-->
 
