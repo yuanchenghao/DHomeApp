@@ -1,5 +1,6 @@
 package com.dejia.anju.model;
 
+import com.dejia.anju.adapter.ChatAdapter;
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -240,52 +241,49 @@ public class MessageBean {
 
         public void handlerMessageViewStatus() {
             String uid = Util.getUid();
-//            if ("0".equals(uid)){
-//                uid = Cfg.loadStr(MyApplication.getContext(), SplashActivity.NO_LOGIN_ID, "0");
-//            }
-//            boolean isSelf = uid.equals(this.getFromUserId());
-//            switch (this.messageType) {
-//                case MessageTypeWithText:
-//                    this.setType(isSelf ? ChatRecyclerAdapter.TO_USER_MSG : ChatRecyclerAdapter.FROM_USER_MSG);
-//                    this.setMessageStatus(0);
-//                    break;
+            boolean isSelf = uid.equals(this.getFromUserId());
+            switch (this.messageType) {
+                case MessageTypeWithText:
+                    this.setType(isSelf ? ChatAdapter.TO_USER_MSG : ChatAdapter.FROM_USER_MSG);
+                    this.setMessageStatus(0);
+                    break;
 //                case MessageTypeWithImage:
-//                    this.setType(isSelf ? ChatRecyclerAdapter.TO_USER_IMG : ChatRecyclerAdapter.FROM_USER_IMG);
+//                    this.setType(isSelf ? ChatAdapter.TO_USER_IMG : ChatAdapter.FROM_USER_IMG);
 //                    this.setMessageStatus(0);
 //                    break;
 //                case MessageTypeWithVoice:
-//                    this.setType(isSelf ? ChatRecyclerAdapter.VOICE_RIGHT : ChatRecyclerAdapter.VOICE_LEFT);
+//                    this.setType(isSelf ? ChatAdapter.VOICE_RIGHT : ChatAdapter.VOICE_LEFT);
 //                    this.setMessageStatus(0);
 //                    break;
 //                case MessageTypeWithLook:
-//                    this.setType(isSelf ? ChatRecyclerAdapter.LOOKING_RIGHT : ChatRecyclerAdapter.LOOKING_LEFT);
+//                    this.setType(isSelf ? ChatAdapter.LOOKING_RIGHT : ChatAdapter.LOOKING_LEFT);
 //                    this.setMessageStatus(0);
 //                    break;
 //                case MessageTypeWithRedPacket:
-//                    this.setType(isSelf ? ChatRecyclerAdapter.COUPONS_RIGHT : ChatRecyclerAdapter.COUPONS_LEFT);
+//                    this.setType(isSelf ? ChatAdapter.COUPONS_RIGHT : ChatAdapter.COUPONS_LEFT);
 //                    this.setMessageStatus(0);
 //                    break;
 //                case MessageTypeWithMoreLook:
-//                    this.setType(isSelf ? ChatRecyclerAdapter.LOOKMORE_RIGHT : ChatRecyclerAdapter.LOOKMORE_LEFT);
+//                    this.setType(isSelf ? ChatAdapter.LOOKMORE_RIGHT : ChatAdapter.LOOKMORE_LEFT);
 //                    this.setMessageStatus(0);
 //                    break;
 //                case MessageTypeWithHosAdress:
-//                    this.setType(isSelf ? ChatRecyclerAdapter.ADRESS_RIGHT : ChatRecyclerAdapter.ADRESS_LEFT);
+//                    this.setType(isSelf ? ChatAdapter.ADRESS_RIGHT : ChatAdapter.ADRESS_LEFT);
 //                    this.setMessageStatus(0);
 //                    break;
 //                case MessageTypeWithKouBei:
-//                    this.setType(isSelf ? ChatRecyclerAdapter.KOUBEI_RIGHT : ChatRecyclerAdapter.KOUBEI_LEFT);
+//                    this.setType(isSelf ? ChatAdapter.KOUBEI_RIGHT : ChatAdapter.KOUBEI_LEFT);
 //                    this.setMessageStatus(0);
 //                    break;
 //                case MessageTypeWithDoctor:
-//                    this.setType(isSelf ? ChatRecyclerAdapter.DOCTOR_RIGHT : ChatRecyclerAdapter.DOCTOR_LEFT);
+//                    this.setType(isSelf ? ChatAdapter.DOCTOR_RIGHT : ChatAdapter.DOCTOR_LEFT);
 //                    this.setMessageStatus(0);
 //                    break;
 //                case MessageTypeWithGift:
-//                    this.setType(isSelf ? ChatRecyclerAdapter.ORDER_HAVE_GIFT_RIGHT : ChatRecyclerAdapter.ORDER_HAVE_GIFT_LEFT);
+//                    this.setType(isSelf ? ChatAdapter.ORDER_HAVE_GIFT_RIGHT : ChatAdapter.ORDER_HAVE_GIFT_LEFT);
 //                    this.setMessageStatus(0);
 //                    break;
-//            }
+            }
         }
 
         public void handlerMessageTypeAndViewStatus() {

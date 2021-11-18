@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fl_root"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--私信列表-->
+    <com.dejia.anju.view.PullLoadMoreRecyclerView
+        android:id="@+id/content_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="51dp"
+        android:listSelector="@android:color/transparent"
+        android:background="#F5F6F7"
+        android:orientation="vertical" />
     <!--标题栏-->
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:paddingTop="@dimen/dp_10"
         android:layout_height="50dp">
 
         <LinearLayout
@@ -43,16 +53,6 @@
             android:textSize="@dimen/sp_12"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
-    <!--私信列表-->
-    <com.dejia.anju.view.PullLoadMoreRecyclerView
-        android:id="@+id/content_lv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="44dp"
-        android:layout_marginBottom="51dp"
-        android:listSelector="@android:color/transparent"
-        android:background="#F5F6F7"
-        android:orientation="vertical" />
 
     <LinearLayout
         android:id="@+id/bottom_container_ll"
@@ -75,7 +75,6 @@
             android:orientation="horizontal"
             android:layout_gravity="center_vertical">
 
-
             <EditText
                 android:id="@+id/mess_et"
                 android:layout_width="match_parent"
@@ -88,52 +87,7 @@
                 android:imeOptions="actionSend"
                 android:inputType="text"
                 android:textColor="#6F7375"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/mess_send"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="7dp"
-                android:text="发送"
-                android:background="@null"
-                android:visibility="gone"
-                android:layout_marginRight="@dimen/dp_10"
-                android:textColor="#ffffff"
-                android:textSize="14sp"
-                />
+                android:textSize="14sp" />
         </LinearLayout>
-        <!--        输入框-->
-
-        <!--输入框不能用的布局-->
-        <LinearLayout
-            android:id="@+id/nochat_container"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
-            android:gravity="center"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/nochat_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#ff666666"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!--装键盘的容器-->
-        <LinearLayout
-            android:id="@+id/keyboard_content"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
     </LinearLayout>
-
-
 </FrameLayout>

@@ -2,7 +2,9 @@ package com.dejia.anju.webSocket;
 
 import android.content.Context;
 
+import com.dejia.anju.model.MessageBean;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
@@ -89,17 +91,17 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
                 webSocket.send(new Gson().toJson(new Pong("pong")));
                 break;
             case "say":
-//                try {
-//                    WebSocketBean webSocketBean = JSONUtil.TransformSingleBean(text, WebSocketBean.class);
-//                    Gson gson = new GsonBuilder()
-//                            .registerTypeAdapter(MessageBean.DataBean.class, new MessageBean.DataBean.MessageDeserializer())
-//                            .create();
-//                    MessageBean.DataBean dataBean = gson.fromJson(text, MessageBean.DataBean.class);
-//                    dataBean.setContent(webSocketBean.getAppcontent());
-//                    dataBean.setUser_avatar(webSocketBean.getFrom_client_img());
-//                    dataBean.setFromUserId(webSocketBean.getFrom_client_id());
-//                    dataBean.setFromName(webSocketBean.getFrom_client_name());
-//                    dataBean.handlerMessageTypeAndViewStatus();
+                try {
+                    WebSocketBean webSocketBean = JSONUtil.TransformSingleBean(text, WebSocketBean.class);
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(MessageBean.DataBean.class, new MessageBean.DataBean.MessageDeserializer())
+                            .create();
+                    MessageBean.DataBean dataBean = gson.fromJson(text, MessageBean.DataBean.class);
+                    dataBean.setContent(webSocketBean.getAppcontent());
+                    dataBean.setUser_avatar(webSocketBean.getFrom_client_img());
+                    dataBean.setFromUserId(webSocketBean.getFrom_client_id());
+                    dataBean.setFromName(webSocketBean.getFrom_client_name());
+                    dataBean.handlerMessageTypeAndViewStatus();
 //                    Intent messageNumChangeIntent = new Intent(MessageNumChangeReceive.ACTION);
 //                    messageNumChangeIntent.putExtra(MessageNumChangeReceive.HOS_ID,webSocketBean.getHos_id()+"");
 //                    context.sendBroadcast(messageNumChangeIntent);
@@ -118,7 +120,6 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
 //                        intent.putExtra("message", webSocketBean.getAppcontent());
 //                        intent.putExtra("groupUserId", webSocketBean.getGroupUserId() +"");
 //                        context.sendBroadcast(intent);
-//
 //                    }else {
 //                        if (!isChatActivityTop()){  //如果在前台其他页面（非聊天页ChatActivity）
 //                            Intent intent = new Intent(FinalConstant.REFRESH_MESSAGE);
@@ -154,15 +155,15 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
 //
 //                        }
 //                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case "say_self":
                 break;
-            case"onfocus":
+            case "onfocus":
                 WebSocketBean webSocketBean = JSONUtil.TransformSingleBean(text, WebSocketBean.class);
-                if (mMessageCallBack != null){
+                if (mMessageCallBack != null) {
                     mMessageCallBack.onFocusCallBack(webSocketBean.getContent());
                 }
                 break;
@@ -170,9 +171,7 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
     }
 
 
-
-
-    private boolean isChatActivityTop(){
+    private boolean isChatActivityTop() {
 //        ActivityManager manager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
 //        String name = manager.getRunningTasks(1).get(0).topActivity.getClassName();
 //        return name.equals(ChatActivity.class.getName());
@@ -185,7 +184,7 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
         maps.put("client_id", client_id);
         HttpHeaders headers = SignUtils.buildHttpHeaders(maps);
         HttpParams httpParams = SignUtils.buildHttpParam5(maps);
-        CookieConfig.getInstance().setCookie("https","chat.yuemei.com","chat.yuemei.com");
+        CookieConfig.getInstance().setCookie("https", "chat.yuemei.com", "chat.yuemei.com");
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme("https")
@@ -218,11 +217,9 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                     }
                 });
     }
-
 }
 
 

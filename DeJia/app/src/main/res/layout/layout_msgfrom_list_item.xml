@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/message_container"
+    android:padding="@dimen/dp_10">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/tb_other_user_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:fadeDuration="100"
+        app:roundAsCircle="true"
+        app:retryImageScaleType="centerCrop"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/dp_4" />
+
+    <LinearLayout
+        android:id="@+id/ll_context"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="60dp"
+        android:layout_toRightOf="@id/tb_other_user_icon"
+        android:orientation="horizontal">
+
+        <com.dejia.anju.view.HttpTextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chat_list_left_shap"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_14"
+            android:paddingRight="@dimen/dp_14"
+            android:paddingTop="@dimen/dp_9"
+            android:paddingBottom="@dimen/dp_9"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/mysend_fail_img"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_gravity="center_vertical"
+            android:background="@mipmap/msg_state_fail_resend_pressed" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/chat_time1"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#919699"
+        android:visibility="gone"
+        android:layout_below="@id/ll_context"
+        android:layout_marginLeft="54dp"
+        android:layout_marginTop="@dimen/dp_7"
+        android:layout_alignParentLeft="true"
+        android:text="11111111111111111111"
+        android:textSize="11sp" />
+
+</RelativeLayout>

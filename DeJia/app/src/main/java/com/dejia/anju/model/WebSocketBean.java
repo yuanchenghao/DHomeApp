@@ -3,8 +3,6 @@ package com.dejia.anju.model;
 import java.util.List;
 
 public class WebSocketBean {
-
-
     /**
      * type : say
      * classid : 1

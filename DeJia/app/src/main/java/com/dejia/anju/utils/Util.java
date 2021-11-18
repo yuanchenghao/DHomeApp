@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -27,6 +28,11 @@ import com.lzy.okgo.cookie.store.CookieStore;
 
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -285,4 +291,65 @@ public final class Util {
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+
+    /**
+     * 将时间戳转换为时间(判断是java时间戳还是php时间戳)
+     * @param s
+     * @return
+     */
+    public static String stampToJavaAndPhpDate(String s) {
+        String result = null;
+        long lt = new Long(s);
+        Date date;
+        if (s.length() == 10) {
+            date = new Date(lt * 1000);
+        } else {
+            date = new Date(lt);
+        }
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        result = sd.format(date);
+        return result;
+    }
+
+    /**
+     * 将时间相减得到年月日时分秒
+     *
+     * @param startDateStr    ：开始时间 类型："yyyy-MM-dd HH:mm:ss"
+     * @param endDateStr：结束事件 类型："yyyy-MM-dd HH:mm:ss"
+     * @return :是一个数组：分别是 天、时、分 、秒
+     * @throws ParseException
+     */
+    public static long[] getTimeSub(String startDateStr, String endDateStr) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long[] longs = new long[4];
+        try {
+            Date d1 = df.parse(endDateStr);
+            Date d2 = df.parse(startDateStr);
+            long diff = d1.getTime() - d2.getTime();//这样得到的差值是微秒级别
+            long days = diff / (1000 * 60 * 60 * 24);
+            long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+            long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
+            long second = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
+            System.out.println("" + days + "天" + hours + "小时" + minutes + "分" + second + "秒");
+            longs[0] = days;
+            longs[1] = hours;
+            longs[2] = minutes;
+            longs[3] = second;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return longs;
+    }
+
+    /**
+     * 获取精确到毫秒的时间戳
+     *
+     * @return
+     */
+    public static long getSecondTimestamp() {
+        long l = System.currentTimeMillis();
+        long timeInMillis = Calendar.getInstance().getTimeInMillis();
+        long time = new Date().getTime();
+        return timeInMillis;
+    }
 }
