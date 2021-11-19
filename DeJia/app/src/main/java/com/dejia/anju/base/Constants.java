@@ -33,6 +33,7 @@ public class Constants {
     public static final String baseSearchUrl = FinalConstant1.HTTPS + FinalConstant1.SYMBOL1 + FinalConstant1.BASE_SEARCH_URL + "/";
     public static final String baseNewsUrl = FinalConstant1.HTTPS + FinalConstant1.SYMBOL1 + FinalConstant1.BASE_NEWS_URL + "/";
     public static final String baseService = FinalConstant1.WSS + FinalConstant1.SYMBOL1 + FinalConstant1.BASE_SERVICE + "/";
+    public static final String baseTestService = FinalConstant1.WS + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_CHAT_SOCKET_BASE_URL + "/";
     //版本控制
     public static final String VER = FinalConstant1.YUEMEI_VER;
     //设备标识
@@ -40,7 +41,7 @@ public class Constants {
     public static final String BIND = "chat/bind/";
     // 隐私声明
     public static final String USERAGREMMENT = baseUrl + VER + "/homenew/yssm/";
-    //悦美用户使用协议
+    //用户使用协议
     public static final String YUEMEIUSERAGREMMENT = baseUrl + VER + "/homenew/secrecypact/";
     // 图形验证码
     public static final String TUXINGCODE = baseUserUrl + "user/getCaptcha/code/9/";
@@ -156,7 +157,7 @@ public class Constants {
     public static final String HOTAPP = baseUrl + VER + "/homenew/link/";
     // 改退规则
     public static final String GAITUI = baseUrl + VER + "/usernew/refundexplain/";
-    // 关于悦美
+    // 关于
     public static final String ABOUTURL = baseUrl + VER + "/homenew/aboutym/";
     //首页弹层
     public static final String HOMENEW_TANCENG = baseUrl + VER + "/homenew/alert/";

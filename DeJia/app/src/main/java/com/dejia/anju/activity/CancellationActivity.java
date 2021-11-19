@@ -17,6 +17,7 @@ import com.dejia.anju.R;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.utils.DialogUtils;
+import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
@@ -122,7 +123,7 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
                     });
                 } else {
                     //没勾选
-                    Toast.makeText(mContext, "需要您先勾选同意告知内容", Toast.LENGTH_SHORT).show();
+                    ToastUtils.toast(mContext, "需要您先勾选同意告知内容").show();
                 }
                 break;
             case R.id.button2:

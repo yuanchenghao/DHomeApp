@@ -28,13 +28,13 @@ import com.dejia.anju.api.GetMessageApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.model.ChatIndexInfo;
-import com.dejia.anju.model.ChatMessageInfo;
 import com.dejia.anju.model.ChatUpdateReadInfo;
 import com.dejia.anju.model.MessageBean;
 import com.dejia.anju.model.WebSocketBean;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.SoftKeyBoardListener;
+import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.PullLoadMoreRecyclerView;
 import com.dejia.anju.webSocket.IMManager;
@@ -56,20 +56,28 @@ import okhttp3.HttpUrl;
 
 //私信页面
 public class ChatActivity extends BaseActivity implements View.OnClickListener, MessageCallBack {
-    @BindView(R.id.rl_title) RelativeLayout rl_title;
-    @BindView(R.id.ll_back) LinearLayout ll_back;
-    @BindView(R.id.tv_name) TextView tv_name;
-    @BindView(R.id.tv_type) TextView tv_type;
-    @BindView(R.id.content_lv) PullLoadMoreRecyclerView content_lv;
-    @BindView(R.id.ll_input) LinearLayout ll_input;
-    @BindView(R.id.mess_et) EditText mess_et;
-    @BindView(R.id.fl_root) FrameLayout fl_root;
+    @BindView(R.id.rl_title)
+    RelativeLayout rl_title;
+    @BindView(R.id.ll_back)
+    LinearLayout ll_back;
+    @BindView(R.id.tv_name)
+    TextView tv_name;
+    @BindView(R.id.tv_type)
+    TextView tv_type;
+    @BindView(R.id.content_lv)
+    PullLoadMoreRecyclerView content_lv;
+    @BindView(R.id.ll_input)
+    LinearLayout ll_input;
+    @BindView(R.id.mess_et)
+    EditText mess_et;
+    @BindView(R.id.fl_root)
+    FrameLayout fl_root;
     private boolean isFlag = false;
     //页码
     private String page = "2";
     //聊天对象id
     private String mId;
-    private String mGroupUserId;
+    private String mGroupId;
     //获取页面信息
     private ChatIndexApi chatIndexApi;
     //获取私信消息
@@ -80,7 +88,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     private ChatUpdateReadApi chatUpdateReadApi;
     //默认输入框的高度
     private int INPUT_HEIGHT = 51;
-    private boolean mHasFocus;
     public List<MessageBean.DataBean> tblist = new ArrayList<>();
     public List<MessageBean.DataBean> pagelist = new ArrayList<>();
     private ArrayList<MessageBean.DataBean> mDataList = new ArrayList<>();
@@ -92,7 +99,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     public static final int RECERIVE_OK = 0x1111;
     public static final int PULL_TO_REFRESH_DOWN = 0x0111;
     public int position; //加载滚动刷新位置
-    private String domain = "chat.yuemei.com";
+    private String domain = "dejiainfo";
     private long expiresAt = 1544493729973L;
     private String name = "";
     private String path = "/";
@@ -112,23 +119,27 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             if (theActivity != null) {
                 switch (msg.what) {
                     case REFRESH:
+                        //刷新
                         if (theActivity.chatAdapter != null) {
                             theActivity.chatAdapter.notifyDataSetChanged();
                             int position = theActivity.chatAdapter.getItemCount() - 1 < 0 ? 0 : theActivity.chatAdapter.getItemCount() - 1;
                         }
                         break;
                     case SEND_OK:
+                        //发送之后
                         if (theActivity.chatAdapter != null) {
                             theActivity.chatAdapter.notifyItemInserted(theActivity.tblist.size() - 1);
                             theActivity.content_lv.smoothScrollToPosition(theActivity.tblist.size() - 1);
                         }
                         break;
                     case RECERIVE_OK:
+                        //收到消息通知
                         if (theActivity.chatAdapter != null) {
                             theActivity.chatAdapter.notifyItemInserted(theActivity.tblist.size() - 1);
                         }
                         break;
                     case PULL_TO_REFRESH_DOWN:
+                        //加载历史消息
                         if (theActivity.chatAdapter != null) {
                             List<MessageBean.DataBean> tblist = (List<MessageBean.DataBean>) msg.obj;
                             theActivity.content_lv.setPullLoadMoreCompleted();
@@ -144,6 +155,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    //    @Xml(layouts = "activity_chat")
     @Override
     protected int getLayoutId() {
         return R.layout.activity_chat;
@@ -153,14 +165,17 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     protected void initView() {
         content_lv.setPushRefreshEnable(false);
         mId = getIntent().getStringExtra("id");
-        mGroupUserId = getIntent().getStringExtra("groupUserId");
+//        mGroupId = getIntent().getStringExtra("groupId");
         if (TextUtils.isEmpty(mId)) {
             finish();
             return;
         }
+        //        setChatCookie();
+
         initListener();
-        //更新未读消息数
-        upDataChatRead();
+        IMManager.setMessageCallBack(this);
+        //获取页面信息
+        getChatIndexInfo();
     }
 
     private void upDataChatRead() {
@@ -191,28 +206,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 return false;
             }
         });
-        mess_et.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                mHasFocus = hasFocus;
-            }
-        });
-//        mess_et.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+
         SoftKeyBoardListener.setListener(mContext, new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
@@ -242,9 +236,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             public void onRefresh() {
                 if (CollectionUtils.isEmpty(mDataList) || mDataList.size() < 9) {
                     content_lv.setPullLoadMoreCompleted();
-                    Toast.makeText(mContext, "已加载全部历史消息", Toast.LENGTH_SHORT).show();
+                    ToastUtils.toast(mContext, "已加载全部历史消息").show();
                 } else {
-
+                    //加载历史消息
+                    downLoad();
                 }
             }
 
@@ -257,9 +252,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void initData() {
-        IMManager.setMessageCallBack(this);
         setMultiOnClickListener(ll_back);
-        getChatIndexInfo();
     }
 
     //获取页面信息
@@ -277,6 +270,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     tv_type.setText(chatIndexInfo.getSubtitle());
                     //获取聊天信息
                     getMessageInfo();
+                    //更新未读消息数
+                    upDataChatRead();
+                } else {
+                    AppLog.i("获取页面信息失败");
+                    ToastUtils.toast(mContext, serverData.message).show();
                 }
             }
         });
@@ -322,7 +320,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                         });
                     }
                 } else {
-                    Toast.makeText(mContext, serverData.message, Toast.LENGTH_SHORT).show();
+                    ToastUtils.toast(mContext, serverData.message).show();
                 }
             }
         });
@@ -364,6 +362,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void receiveMessage(MessageBean.DataBean dataBean, String group_id) {
+        tblist.add(dataBean);
         if (tblist.size() < 2) {
             tblist.add(dataBean);
             runOnUiThread(new Runnable() {
@@ -377,12 +376,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 }
             });
         } else {
-            if (group_id.equals(mGroupUserId)) {
-                if (mId.equals(dataBean.getFromUserId())) {
-                    tblist.add(dataBean);
-                    mHandler.sendEmptyMessage(SEND_OK);
-                }
-            }
+//            if (mId.equals(dataBean.getFromUserId())) {
+                tblist.add(dataBean);
+                mHandler.sendEmptyMessage(SEND_OK);
+//            }
         }
     }
 
@@ -404,10 +401,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         content_lv.setLayoutParams(layoutParams);
     }
 
-    public static void invoke(Context context, String id, String groupUserId) {
+    public static void invoke(Context context, String id) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("id", id);
-        intent.putExtra("groupUserId", groupUserId);
+//        intent.putExtra("groupId", groupId);
         context.startActivity(intent);
     }
 
@@ -432,7 +429,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         if (Integer.parseInt(page) > 1) {
             params.put("msgtime", mDateTime);
         }
-        params.put("group_id", mGroupUserId);
+        params.put("group_id", mGroupId);
         new GetMessageApi().getCallBack(mContext, params, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData data) {
@@ -459,10 +456,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                         }
                     } else {
                         content_lv.setPullLoadMoreCompleted();
-                        Toast.makeText(mContext, "已加载全部历史消息", Toast.LENGTH_SHORT).show();
+                        ToastUtils.toast(mContext, "已加载全部历史消息").show();
                     }
                 } else {
-                    Toast.makeText(mContext, data.message, Toast.LENGTH_SHORT).show();
+                    ToastUtils.toast(mContext, data.message).show();
                 }
             }
         });
@@ -485,9 +482,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
         String mYuemeiinfo = Util.getYuemeiInfo();
         cookieStore.removeCookie(httpUrl);
-        Cookie yuemeiinfo = new Cookie.Builder().name("yuemeiinfo").value(mYuemeiinfo).domain(domain).expiresAt(expiresAt).path(path).build();
+        Cookie yuemeiinfo = new Cookie.Builder().name("dejiainfo").value(mYuemeiinfo).domain(domain).expiresAt(expiresAt).path(path).build();
         cookieStore.saveCookie(httpUrl, yuemeiinfo);
         List<Cookie> cookies222 = cookieStore.loadCookie(httpUrl);
+        AppLog.i("cookies222 = " + cookies222);
     }
 
     @Override

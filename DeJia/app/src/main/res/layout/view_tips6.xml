@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:background="@mipmap/tips_bg">
+
+    <TextView
+        android:layout_margin="@dimen/dp_10"
+        android:id="@+id/tips_msg3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:lineSpacingExtra="3.0dip"
+        android:maxWidth="180dip"
+        android:textColor="#ffffff"
+        android:textSize="12sp" />
+
+</RelativeLayout>

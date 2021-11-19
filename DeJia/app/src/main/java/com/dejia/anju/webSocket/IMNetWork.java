@@ -8,6 +8,8 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okio.ByteString;
 
+import static com.dejia.anju.base.Constants.baseTestService;
+
 public class IMNetWork implements NetStatus {
     public static final String TAG = "IMNetWork";
     private static IMNetWork instance;
@@ -99,7 +101,7 @@ public class IMNetWork implements NetStatus {
         //关闭当前连接
         closeWebSocket();
         if (netStatus != -1) {
-            connWebSocket("wss://chats.yuemei.com/");
+            connWebSocket(baseTestService);
         }
 
     }

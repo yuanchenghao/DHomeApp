@@ -1,8 +1,19 @@
 package com.dejia.anju.webSocket;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
+import com.dejia.anju.AppLog;
+import com.dejia.anju.activity.ChatActivity;
+import com.dejia.anju.base.Constants;
+import com.dejia.anju.brodcast.SendMessageReceiver;
 import com.dejia.anju.model.MessageBean;
+import com.dejia.anju.net.LoggingInterceptor;
+import com.dejia.anju.utils.TopWindowUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
@@ -26,11 +37,6 @@ import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
 import okhttp3.WebSocket;
-
-
-/**
- * Created by Administrator on 2018/1/12.
- */
 
 public class IMManager implements ReceiveMessageCallBack, MessageStatus {
     public static final String TAG = "IMManager";
@@ -63,7 +69,6 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
             synchronized (IMManager.class) {
                 if (instance == null) {
                     instance = new IMManager(context);
-
                 }
             }
         }
@@ -84,77 +89,60 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
         String type = JSONUtil.resolveJson(text, "type");
         switch (type) {
             case "init":
+                AppLog.i("init");
                 String mReplace = Util.getYuemeiInfo();
                 bindWebSocket(text, mReplace);
                 break;
             case "ping":
+                AppLog.i("ping");
                 webSocket.send(new Gson().toJson(new Pong("pong")));
                 break;
             case "say":
+                AppLog.i("say");
                 try {
                     WebSocketBean webSocketBean = JSONUtil.TransformSingleBean(text, WebSocketBean.class);
-                    Gson gson = new GsonBuilder()
-                            .registerTypeAdapter(MessageBean.DataBean.class, new MessageBean.DataBean.MessageDeserializer())
-                            .create();
+                    Gson gson = new GsonBuilder().registerTypeAdapter(MessageBean.DataBean.class, new MessageBean.DataBean.MessageDeserializer()).create();
                     MessageBean.DataBean dataBean = gson.fromJson(text, MessageBean.DataBean.class);
                     dataBean.setContent(webSocketBean.getAppcontent());
                     dataBean.setUser_avatar(webSocketBean.getFrom_client_img());
                     dataBean.setFromUserId(webSocketBean.getFrom_client_id());
                     dataBean.setFromName(webSocketBean.getFrom_client_name());
+                    dataBean.setContent(webSocketBean.getContent());
                     dataBean.handlerMessageTypeAndViewStatus();
-//                    Intent messageNumChangeIntent = new Intent(MessageNumChangeReceive.ACTION);
-//                    messageNumChangeIntent.putExtra(MessageNumChangeReceive.HOS_ID,webSocketBean.getHos_id()+"");
-//                    context.sendBroadcast(messageNumChangeIntent);
-//
 //                    if ("1".equals(Cfg.loadStr(context,FinalConstant.IS_SHENHE,""))){
 //                        return;
 //                    }
-//                    if (mMessageCallBack != null){
-//                        mMessageCallBack.receiveMessage(dataBean,webSocketBean.getGroup_id()+"");
-//                    }
-//                    if (sUnReadMessageCallBack != null){
-//                        sUnReadMessageCallBack.onUnReadMessage();
-//                    }
-//                    if (Utils.isBackground(context)){ //如果在后台发送广播
-//                        Intent intent = new Intent(SendMessageReceiver.ACTION);
-//                        intent.putExtra("message", webSocketBean.getAppcontent());
-//                        intent.putExtra("groupUserId", webSocketBean.getGroupUserId() +"");
-//                        context.sendBroadcast(intent);
-//                    }else {
-//                        if (!isChatActivityTop()){  //如果在前台其他页面（非聊天页ChatActivity）
-//                            Intent intent = new Intent(FinalConstant.REFRESH_MESSAGE);
-//                            intent.putExtra("message", webSocketBean.getAppcontent());
-//                            intent.putExtra("time", webSocketBean.getTime());
-//                            intent.putExtra("groupUserId", webSocketBean.getGroupUserId() + "");
-//                            context.sendBroadcast(intent);
-//                            Activity currentActivity = MyApplication.getInstance().getCurrentActivity();
-//                            if (currentActivity != null && !currentActivity.isFinishing()){
-//                                String content = webSocketBean.getAppcontent();
-//                                int classid = webSocketBean.getClassid();
-//                                String hosName = webSocketBean.getHos_name();
-//                                int hosId = webSocketBean.getHos_id();
-//                                String fromClientImg = webSocketBean.getFrom_client_img();
-//                                String fromClientId = webSocketBean.getFrom_client_id();
-//                                String pos = webSocketBean.getPos();
-//                                WebSocketBean.CouponsBean coupons = webSocketBean.getCoupons();
-//                                if (coupons != null && classid == 8){
-//                                    String money = coupons.getMoney();
-//                                    if (!EmptyUtils.isEmpty(money)&& Utils.isNumber(money)){
-//                                        int moneyInt = Integer.parseInt(money);
-//                                        if (moneyInt > 0){
-//                                            content = money;
-//                                        }
-//                                    }
-//                                }
-//
-//                                TopWindowUtils.show(currentActivity, hosName,content, fromClientImg,fromClientId,hosId+"",pos,classid);
-//                                HashMap<String, String> hashMap = new HashMap<>();
-//                                hashMap.put("hos_id",webSocketBean.getHos_id()+"");
-//                                hashMap.put("event_others",webSocketBean.getPos());
-//                            }
-//
-//                        }
-//                    }
+                    if (mMessageCallBack != null) {
+                        mMessageCallBack.receiveMessage(dataBean, webSocketBean.getGroup_id() + "");
+                    }
+                    if (sUnReadMessageCallBack != null) {
+                        sUnReadMessageCallBack.onUnReadMessage();
+                    }
+                    if (Util.isBackground(context)) { //如果在后台发送广播
+                        Intent intent = new Intent(SendMessageReceiver.ACTION);
+                        intent.putExtra("message", webSocketBean.getAppcontent());
+                        intent.putExtra("groupUserId", webSocketBean.getGroupUserId() + "");
+                        context.sendBroadcast(intent);
+                    } else {
+                        if (!isChatActivityTop()) {  //如果在前台其他页面（非聊天页ChatActivity）
+                            Intent intent = new Intent(Constants.REFRESH_MESSAGE);
+                            intent.putExtra("message", webSocketBean.getAppcontent());
+                            intent.putExtra("time", webSocketBean.getTime());
+                            intent.putExtra("groupUserId", webSocketBean.getGroupUserId() + "");
+                            context.sendBroadcast(intent);
+                            Activity currentActivity = com.dejia.anju.mannger.ActivityManager.getInstance().getCurrentActivity();
+                            if (currentActivity != null && !currentActivity.isFinishing()) {
+                                String content = webSocketBean.getAppcontent();
+                                int classid = webSocketBean.getClassid();
+                                String hosName = webSocketBean.getHos_name();
+                                int hosId = webSocketBean.getHos_id();
+                                String fromClientImg = webSocketBean.getFrom_client_img();
+                                String fromClientId = webSocketBean.getFrom_client_id();
+                                String pos = webSocketBean.getPos();
+                                TopWindowUtils.show(currentActivity, hosName, content, fromClientImg, fromClientId, hosId + "", pos, classid);
+                            }
+                        }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -172,10 +160,9 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
 
 
     private boolean isChatActivityTop() {
-//        ActivityManager manager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-//        String name = manager.getRunningTasks(1).get(0).topActivity.getClassName();
-//        return name.equals(ChatActivity.class.getName());
-        return false;
+        ActivityManager manager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        String name = manager.getRunningTasks(1).get(0).topActivity.getClassName();
+        return name.equals(ChatActivity.class.getName());
     }
 
     private void bindWebSocket(String string, String mReplace) {
@@ -210,13 +197,15 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
 
         cookieStore.saveCookie(httpUrl, yuemeiinfo);
         List<Cookie> cookies1 = cookieStore.loadCookie(httpUrl);
-        OkGo.post("https://chat.yuemei.com/chat/bind/")
+        OkGo.post("http://172.16.10.200:88/chat/bind/")
                 .cacheMode(CacheMode.DEFAULT)
                 .headers(headers)
                 .params(httpParams)
+//                .addInterceptor(new LoggingInterceptor())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        AppLog.i("bind--------" + s);
                     }
                 });
     }

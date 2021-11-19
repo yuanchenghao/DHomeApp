@@ -189,9 +189,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             messageListAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                    ChatActivity.invoke(mContext
-                            ,messageListAdapter.getData().get(position).getId()
-                            ,messageListAdapter.getData().get(position).getGroupUserId());
+                    ChatActivity.invoke(mContext, messageListAdapter.getData().get(position).getId());
                 }
             });
         } else {

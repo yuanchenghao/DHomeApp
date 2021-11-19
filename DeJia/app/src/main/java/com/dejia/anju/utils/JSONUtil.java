@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -91,12 +92,12 @@ public class JSONUtil {
     }
 
     /**
-     *
      * String转map
+     *
      * @param str
      * @return
      */
-    public static Map<String, Object> getStringToMap(String str){
+    public static Map<String, Object> getStringToMap(String str) {
         //根据逗号截取字符串数组
         String[] str1 = str.split(",");
         //创建Map对象
@@ -106,10 +107,10 @@ public class JSONUtil {
             //根据":"截取字符串数组
             String[] str2 = str1[i].split(":");
             //str2[0]为KEY,str2[1]为值
-            map.put(str2[0],str2[1]);
+            map.put(str2[0], str2[1]);
         }
         return map;
-}
+    }
 
 
     /**
@@ -147,8 +148,10 @@ public class JSONUtil {
         ArrayList<JsonObject> jsonObjects = gson.fromJson(json, type);
 
         ArrayList<T> arrayList = new ArrayList<>();
-        for (JsonObject jsonObject : jsonObjects) {
-            arrayList.add(gson.fromJson(jsonObject, clazz));
+        if (jsonObjects != null) {
+            for (JsonObject jsonObject : jsonObjects) {
+                arrayList.add(gson.fromJson(jsonObject, clazz));
+            }
         }
         return arrayList;
     }
@@ -527,19 +530,21 @@ public class JSONUtil {
         buffer = new StringBuffer("" + buffer.substring(0, buffer.length() - 1) + "");
         return buffer;
     }
+
     /**
      * Json 转成 Map<>
+     *
      * @param jsonStr
      * @return
      */
-    public static Map<String, Object> getMapForJson(String jsonStr){
-        JSONObject jsonObject ;
+    public static Map<String, Object> getMapForJson(String jsonStr) {
+        JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(jsonStr);
 
-            Iterator<String> keyIter= jsonObject.keys();
+            Iterator<String> keyIter = jsonObject.keys();
             String key;
-            Object value ;
+            Object value;
             Map<String, Object> valueMap = new HashMap<String, Object>();
             while (keyIter.hasNext()) {
                 key = keyIter.next();

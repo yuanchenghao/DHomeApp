@@ -26,7 +26,7 @@ public class FinalConstant1 {
     public static final String APPFROM = "app_from";
     public static final String ISFIRSTACTIVE = "is_first_active";
     //公共参数value
-    public static final String YUEMEI_VER = "V" + AppUtils.getAppVersionName();                                       //版本号
+    public static final String YUEMEI_VER = AppUtils.getAppVersionName();                                       //版本号
     public static final String APP_FROM = "1";
     public static final String SESSIONID = "sessionid";
     public static final String YUEMEI_DEVICE = "android";                                                  //android还是ios（设备标识）
@@ -36,6 +36,7 @@ public class FinalConstant1 {
     //协议
     public static final String HTTPS = "https";
     public static final String WSS = "wss";
+    public static final String WS = "ws";
     //符号
     public static final String SYMBOL1 = "://";
     public static final String SYMBOL2 = "/";
@@ -45,6 +46,7 @@ public class FinalConstant1 {
     //域名
     public static final String TEST_BASE_URL = "172.16.10.200:8080";
     public static final String TEST_CHAT_BASE_URL = "172.16.10.200:88";
+    public static final String TEST_CHAT_SOCKET_BASE_URL = "172.16.10.200:7272";
     public static final String YUEMEI_DOMAIN_NAME = ".dejiaapp.com";
     public static final String BASE_URL = "api" + YUEMEI_DOMAIN_NAME;
     public static final String BASE_API_M_URL = "m" + YUEMEI_DOMAIN_NAME;

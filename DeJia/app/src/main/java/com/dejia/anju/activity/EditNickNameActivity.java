@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.dejia.anju.R;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.utils.ToastUtils;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -99,7 +100,7 @@ public class EditNickNameActivity extends BaseActivity implements OnClickListene
                 break;
             case R.id.tv_sure:
                 if(TextUtils.isEmpty(ed.getText().toString().trim())){
-                    Toast.makeText(mContext,"请输入",Toast.LENGTH_SHORT).show();
+                    ToastUtils.toast(mContext, "请输入").show();
                     return;
                 }
                 break;

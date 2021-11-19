@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.api.BindJPushApi;
+import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.VerificationCodeView;
 import com.dejia.anju.webSocket.IMManager;
@@ -45,6 +46,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jpush.android.api.JPushInterface;
+
+import static com.dejia.anju.base.Constants.baseTestService;
 
 
 /**
@@ -172,7 +175,7 @@ public class VerificationCodeActivity extends BaseActivity {
                                 Util.setYuemeiInfo(userInfo.getDejia_info());
                                 String registrationID = JPushInterface.getRegistrationID(mContext);
                                 IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
-                                IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(Constants.baseService);
+                                IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(baseTestService);
                                 HashMap<String, Object> maps = new HashMap<>();
                                 maps.put("reg_id", registrationID);
                                 maps.put("location_city", "北京");
@@ -187,13 +190,13 @@ public class VerificationCodeActivity extends BaseActivity {
                                         }
                                     }
                                 });
-                                Toast.makeText(mContext,"登录成功",Toast.LENGTH_LONG).show();
+                                ToastUtils.toast(mContext, "登录成功").show();
                                 //清空预取号缓存
 //                                JVerificationInterface.clearPreLoginCache();
                                 //发登录广播
                                 EventBus.getDefault().post(new Event<>(1));
                             }else{
-                                Toast.makeText(mContext,serverData.message,Toast.LENGTH_LONG).show();
+                                ToastUtils.toast(mContext, serverData.message).show();
                             }
                         }
                     });

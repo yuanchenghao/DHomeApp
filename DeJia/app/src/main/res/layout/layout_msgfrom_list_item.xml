@@ -50,15 +50,12 @@
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:textColor="#919699"
-        android:visibility="gone"
         android:layout_below="@id/ll_context"
         android:layout_marginLeft="54dp"
         android:layout_marginTop="@dimen/dp_7"
         android:layout_alignParentLeft="true"
-        android:text="11111111111111111111"
+        android:visibility="gone"
         android:textSize="11sp" />
 
 </RelativeLayout>

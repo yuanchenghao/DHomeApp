@@ -29,6 +29,7 @@ import com.dejia.anju.fragment.ToolFragment;
 import com.dejia.anju.mannger.ActivityManager;
 import com.dejia.anju.mannger.DataCleanManager;
 import com.dejia.anju.utils.KVUtils;
+import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.webSocket.IMManager;
 import com.dejia.anju.webSocket.NetEvent;
@@ -47,6 +48,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
+
+import static com.dejia.anju.base.Constants.baseTestService;
 
 //主页面
 public class MainActivity extends BaseActivity implements View.OnClickListener, NetEvent {
@@ -104,7 +107,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         // 初始化并设置当前Fragment
         initFragment(0);
         //初始化websocket
-        IMManager.getInstance(mContext).getIMNetInstance().connWebSocket("wss://chats.yuemei.com/");
+        IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(baseTestService);
         ViewGroup.LayoutParams params = navigation.getLayoutParams();
         params.width = (int) (ScreenUtils.getScreenWidth() * 0.64);
         navigation.setLayoutParams(params);
@@ -134,7 +137,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
                 //关于
-                Toast.makeText(mContext,"关于",Toast.LENGTH_LONG).show();
+                ToastUtils.toast(mContext, "关于").show();
             }
         });
         navigation.getHeaderView(0).findViewById(R.id.ll_clean).setOnClickListener(new View.OnClickListener() {
@@ -150,7 +153,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onClick(View v) {
                 //隐私
                 drawerLayout.closeDrawers();
-                Toast.makeText(mContext,"隐私",Toast.LENGTH_LONG).show();
+                ToastUtils.toast(mContext, "隐私").show();
             }
         });
         navigation.getHeaderView(0).findViewById(R.id.ll_kill).setOnClickListener(new View.OnClickListener() {
@@ -166,7 +169,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onClick(View v) {
                 //版本号
                 drawerLayout.closeDrawers();
-                Toast.makeText(mContext,"版本",Toast.LENGTH_LONG).show();
+                ToastUtils.toast(mContext, "版本").show();
             }
         });
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
@@ -378,7 +381,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                Toast.makeText(this, "再按一次退出得家", Toast.LENGTH_SHORT).show();
+                ToastUtils.toast(mContext, "再按一次退出得家").show();
                 mExitTime = System.currentTimeMillis();
             } else {
                 System.exit(0);
