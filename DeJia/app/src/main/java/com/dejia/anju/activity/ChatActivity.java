@@ -2,6 +2,7 @@ package com.dejia.anju.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -27,9 +28,11 @@ import com.dejia.anju.api.ChatUpdateReadApi;
 import com.dejia.anju.api.GetMessageApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.ChatIndexInfo;
 import com.dejia.anju.model.ChatUpdateReadInfo;
 import com.dejia.anju.model.MessageBean;
+import com.dejia.anju.model.NoreadAndChatidInfo;
 import com.dejia.anju.model.WebSocketBean;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
@@ -42,6 +45,10 @@ import com.dejia.anju.webSocket.MessageCallBack;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 import com.zhangyue.we.x2c.ano.Xml;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -155,6 +162,19 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEventMainThread(Event msgEvent) {
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
     //    @Xml(layouts = "activity_chat")
     @Override
     protected int getLayoutId() {
@@ -165,13 +185,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     protected void initView() {
         content_lv.setPushRefreshEnable(false);
         mId = getIntent().getStringExtra("id");
-//        mGroupId = getIntent().getStringExtra("groupId");
+        mGroupId = getIntent().getStringExtra("groupId");
         if (TextUtils.isEmpty(mId)) {
             finish();
             return;
         }
         //        setChatCookie();
-
         initListener();
         IMManager.setMessageCallBack(this);
         //获取页面信息
@@ -187,9 +206,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             public void onSuccess(ServerData serverData) {
                 if ("1".equals(serverData.code)) {
                     ChatUpdateReadInfo chatUpdateReadInfo = JSONUtil.TransformSingleBean(serverData.data, ChatUpdateReadInfo.class);
-                    //获取未读消息数
-                    chatUpdateReadInfo.getNoread();
-                    //需要通知列表页更新未读消息数角标
+                    //通知列表页更新未读消息数角标
+                    NoreadAndChatidInfo noreadAndChatidInfo = new NoreadAndChatidInfo();
+                    noreadAndChatidInfo.setId(mId);
+                    noreadAndChatidInfo.setNoread(chatUpdateReadInfo.getNoread());
+                    EventBus.getDefault().post(new Event<NoreadAndChatidInfo>(2,noreadAndChatidInfo));
                 }
             }
         });
@@ -330,7 +351,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     private void sendMessage(String content) {
         Map<String, Object> maps = new HashMap<String, Object>();
         maps.put("id", mId);
-        maps.put("class_id", "1");//类型 暂时只有文字
+        //类型 暂时只有文字
+        maps.put("class_id", "1");
         maps.put("content", content);
         chatSendApi = new ChatSendApi();
         chatSendApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
@@ -340,7 +362,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     WebSocketBean webSocketBean = JSONUtil.TransformSingleBean(serverData.data, WebSocketBean.class);
                     Calendar cal = Calendar.getInstance();
                     String timeSet = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
-                    final MessageBean.DataBean dataBean = new MessageBean.DataBean("", content, 0, ChatAdapter.TO_USER_MSG, Util.getSecondTimestamp() + "", timeSet);
+                    final MessageBean.DataBean dataBean = new MessageBean.DataBean(webSocketBean.getFrom_client_img(), content, 0, ChatAdapter.TO_USER_MSG, Util.getSecondTimestamp() + "", timeSet);
                     dataBean.setType(ChatAdapter.TO_USER_MSG);
                     dataBean.setContent(content);
                     tblist.add(dataBean);
@@ -362,7 +384,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void receiveMessage(MessageBean.DataBean dataBean, String group_id) {
-        tblist.add(dataBean);
         if (tblist.size() < 2) {
             tblist.add(dataBean);
             runOnUiThread(new Runnable() {
@@ -401,10 +422,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         content_lv.setLayoutParams(layoutParams);
     }
 
-    public static void invoke(Context context, String id) {
+    public static void invoke(Context context, String id,String groupId) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("id", id);
-//        intent.putExtra("groupId", groupId);
+        intent.putExtra("groupId", groupId);
         context.startActivity(intent);
     }
 
@@ -491,6 +512,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mHandler.removeCallbacksAndMessages(null);
     }
 }

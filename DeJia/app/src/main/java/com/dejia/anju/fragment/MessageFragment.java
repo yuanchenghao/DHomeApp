@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,10 +13,14 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.dejia.anju.AppLog;
 import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.adapter.MessageListAdapter;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.MessageListData;
+import com.dejia.anju.model.NoreadAndChatidInfo;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.view.YMLinearLayoutManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -27,8 +32,13 @@ import com.dejia.anju.base.BaseFragment;
 import com.dejia.anju.net.ServerData;
 import com.zhangyue.we.x2c.ano.Xml;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,6 +85,45 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     private MessageListAdapter messageListAdapter;
     private YMLinearLayoutManager ymLinearLayoutManager;
     private ArrayList<MessageListData> messageListData;
+    private int mPos;
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEventMainThread(Event msgEvent) {
+        switch (msgEvent.getCode()) {
+            case 2:
+                String mId = ((NoreadAndChatidInfo) msgEvent.getData()).getId();
+                String mNoread = ((NoreadAndChatidInfo) msgEvent.getData()).getNoread();
+                boolean refreshMessageList = true;
+                if (getActivity() != null) {
+                    if (messageListAdapter == null) return;
+                    List<MessageListData> mData = messageListAdapter.getData();
+                    for (int i = 0; i < mData.size(); i++) {
+                        if (mId.equals(mData.get(i).getId())) {
+                            refreshMessageList = false;
+                            mPos = i;
+                            break;
+                        }
+                    }
+                    AppLog.i("mPos === " + mPos);
+                    if (getActivity() != null) {
+                        if (refreshMessageList) {
+                            this.page = 1;
+                            this.messageListAdapter = null;
+                            //如果改消息不存在刷新消息列表
+                            this.getMessageList();
+                        } else {
+                            //设置医院消息个数
+                            int noread = Integer.parseInt(mNoread);
+                            this.messageListAdapter.setNoread(mPos, (noread + 1) + "");
+                            this.messageListAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
 
     public static MessageFragment newInstance() {
         Bundle args = new Bundle();
@@ -86,10 +135,15 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null) {
-
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -112,11 +166,6 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     protected void initView(View view) {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_title.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
-
-//        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_title.getLayoutParams();
-//        layoutParams.height = statusbarHeight + SizeUtils.dp2px(44);
-//        ll_title.setLayoutParams(layoutParams);
-//        ll_title.setPadding(0, statusbarHeight, 0, 0);
         setMultiOnClickListener(ll1, ll2, ll3, ll4, iv_close_notice, tv_open_notice);
     }
 
@@ -169,6 +218,8 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                     } else {
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
                     }
+                }else{
+                    ToastUtils.toast(mContext,serverData.message).show();
                 }
             }
         });
@@ -189,7 +240,9 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             messageListAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                    ChatActivity.invoke(mContext, messageListAdapter.getData().get(position).getId());
+                    ChatActivity.invoke(mContext
+                            , messageListAdapter.getData().get(position).getId()
+                            , messageListAdapter.getData().get(position).getGroupUserId());
                 }
             });
         } else {

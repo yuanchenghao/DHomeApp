@@ -98,6 +98,8 @@ public class FinalConstant1 {
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "ugc", "save", POST);
         //获取用户信息
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "tour", "getBuilding", POST);
+        //首页接口
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "home", "index", POST);
 
         //私信
         //WebSocket解绑

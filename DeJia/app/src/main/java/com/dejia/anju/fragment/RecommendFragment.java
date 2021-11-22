@@ -1,15 +1,39 @@
 package com.dejia.anju.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.dejia.anju.R;
+import com.dejia.anju.activity.ChatActivity;
+import com.dejia.anju.adapter.BannerAdapter;
+import com.dejia.anju.adapter.HomeAdapter;
+import com.dejia.anju.adapter.MessageListAdapter;
+import com.dejia.anju.api.HomeIndexApi;
+import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
+import com.dejia.anju.model.HomeIndexBean;
+import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.view.YMLinearLayoutManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 import com.zhangyue.we.x2c.ano.Xml;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
@@ -21,6 +45,11 @@ public class RecommendFragment extends BaseFragment {
     Banner banner;
     @BindView(R.id.rv)
     RecyclerView rv;
+    private int page;
+    private HomeIndexApi homeIndexApi;
+    private HomeAdapter homeAdapter;
+    private HomeIndexBean homeIndexBean;
+    private YMLinearLayoutManager ymLinearLayoutManager;
 
     public static RecommendFragment newInstance() {
         Bundle args = new Bundle();
@@ -32,10 +61,10 @@ public class RecommendFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null) {
-
-        }
+//        Bundle args = getArguments();
+//        if (args != null) {
+//
+//        }
     }
 
     @Xml(layouts = "fragment_recommend")
@@ -46,24 +75,124 @@ public class RecommendFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        smartRefreshLayout.autoRefresh(2000);
-        //设置banner
-        setBanner();
+        smartRefreshLayout.autoRefresh();
+        //刷新监听
+        smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                //加载更多
+                page++;
+                getHomeList();
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                //刷新
+                page = 1;
+                homeAdapter = null;
+                getHomeList();
+            }
+        });
     }
 
-    private void setBanner() {
-//        banner.setAdapter(new BannerImageAdapter<MessageBean.DataBean>(MessageBean.DataBean.getTestData3()) {
-//            @Override
-//            public void onBindView(BannerImageHolder holder, MessageBean.DataBean data, int position, int size) {
-//                //图片加载自己实现
-//                Glide.with(holder.itemView)
-//                        .load(data.imageUrl)
-//                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(30)))
-//                        .into(holder.imageView);
-//            }
-//        })
-//                .addBannerLifecycleObserver(this)//添加生命周期观察者
-//                .setIndicator(new CircleIndicator(this));
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //开始轮播
+        banner.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //停止轮播
+        banner.stop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //销毁
+        banner.destroy();
+    }
+
+    //获取首页数据
+    private void getHomeList() {
+        homeIndexApi = new HomeIndexApi();
+        Map<String, Object> maps = new HashMap<String, Object>();
+        maps.put("page", page);
+        homeIndexApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                smartRefreshLayout.finishRefresh();
+                if ("1".equals(serverData.code)) {
+                    homeIndexBean = JSONUtil.TransformSingleBean(serverData.data, HomeIndexBean.class);
+                    if (homeIndexBean != null
+                            && homeIndexBean.getFocus_picture() != null
+                            && homeIndexBean.getFocus_picture().size() > 0) {
+                        //设置轮播
+                        banner.setVisibility(View.VISIBLE);
+                        setBanner(homeIndexBean.getFocus_picture());
+                    } else {
+                        banner.setVisibility(View.GONE);
+                    }
+                    if (homeIndexBean != null && homeIndexBean.getList() != null) {
+                        if (homeIndexBean.getList().size() == 0) {
+                            if (smartRefreshLayout == null) {
+                                return;
+                            }
+                            smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                        } else {
+                            if (smartRefreshLayout == null) {
+                                return;
+                            }
+                            smartRefreshLayout.finishLoadMore();
+                        }
+                        setHomeListAdapter();
+                    } else {
+                        smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                    }
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            }
+        });
+    }
+
+    //设置列表数据
+    private void setHomeListAdapter() {
+        if (null == homeAdapter) {
+            ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            RecyclerView.ItemAnimator itemAnimator = rv.getItemAnimator();
+            //取消局部刷新动画效果
+            if (null != itemAnimator) {
+                ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
+            }
+            rv.setLayoutManager(ymLinearLayoutManager);
+            homeAdapter = new HomeAdapter(mContext, homeIndexBean.getList());
+            rv.setAdapter(homeAdapter);
+        } else {
+            //添加
+            homeAdapter.addData(homeIndexBean.getList());
+        }
+    }
+
+    //设置轮播图
+    private void setBanner(List<HomeIndexBean.FocusPicture> focus_picture) {
+        banner.addBannerLifecycleObserver(this)//添加生命周期观察者
+                .setAdapter(new BannerAdapter(focus_picture));
+        banner.start();
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(Object data, int position) {
+                HomeIndexBean.FocusPicture FocusPicture = (HomeIndexBean.FocusPicture) data;
+                if (data != null && !TextUtils.isEmpty(FocusPicture.getUrl())) {
+                    //web跳转还没做
+                    ToastUtils.toast(mContext, FocusPicture.getUrl()).show();
+                }
+            }
+        });
     }
 
     @Override

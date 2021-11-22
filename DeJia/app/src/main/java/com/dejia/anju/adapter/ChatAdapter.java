@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.dejia.anju.R;
 import com.dejia.anju.model.MessageBean;
 import com.dejia.anju.utils.Expression;
