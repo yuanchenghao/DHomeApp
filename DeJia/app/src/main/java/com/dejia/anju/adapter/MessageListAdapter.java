@@ -33,6 +33,8 @@ public class MessageListAdapter extends BaseQuickAdapter<MessageListData, BaseVi
         //头像
         if (!TextUtils.isEmpty(messageListData.getUserImg())) {
             ((SimpleDraweeView) baseViewHolder.getView(R.id.item_inform_iv)).setController(Fresco.newDraweeControllerBuilder().setUri(messageListData.getUserImg()).setAutoPlayAnimations(true).build());
+        }else{
+            ((SimpleDraweeView) baseViewHolder.getView(R.id.item_inform_iv)).setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
         }
         //设置未读消息数
         if (!TextUtils.isEmpty(messageListData.getNoread())) {

@@ -260,10 +260,13 @@
         android:layout_weight="1"
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableLoadMore="true">
+<!--        <com.dejia.anju.base.smart.YMRefreshHeader-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
 
-        <com.dejia.anju.base.smart.YMRefreshHeader
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"

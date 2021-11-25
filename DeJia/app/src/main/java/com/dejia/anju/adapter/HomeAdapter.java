@@ -141,10 +141,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type1View.tv_context.setText("");
         }
-        //定位 没数据不知道用啥字段
-        type1View.ll_location.setVisibility(View.GONE);
-        type1View.tv_user_type_flag.setVisibility(View.GONE);
-        type1View.user_type.setVisibility(View.GONE);
+        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
+            type1View.tv_location_price.setText(mDatas.get(position).getBuilding());
+            type1View.ll_location.setVisibility(View.VISIBLE);
+        } else {
+            type1View.ll_location.setVisibility(View.GONE);
+        }
+        if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
+            type1View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
+            type1View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
+            type1View.tv_user_type_flag.setVisibility(View.VISIBLE);
+            type1View.user_type.setVisibility(View.VISIBLE);
+        } else {
+            type1View.tv_user_type_flag.setVisibility(View.GONE);
+            type1View.user_type.setVisibility(View.GONE);
+        }
     }
 
     private void setType2View(Type2ViewHolder type2View, List<HomeIndexBean.HomeList> mDatas, int position) {
@@ -179,10 +190,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type2View.tv_context.setText("");
         }
-        //定位 没数据不知道用啥字段
-        type2View.ll_location.setVisibility(View.GONE);
-        type2View.tv_user_type_flag.setVisibility(View.GONE);
-        type2View.user_type.setVisibility(View.GONE);
+        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
+            type2View.tv_location_price.setText(mDatas.get(position).getBuilding());
+            type2View.ll_location.setVisibility(View.VISIBLE);
+        } else {
+            type2View.ll_location.setVisibility(View.GONE);
+        }
+        if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
+            type2View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
+            type2View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
+            type2View.tv_user_type_flag.setVisibility(View.VISIBLE);
+            type2View.user_type.setVisibility(View.VISIBLE);
+        } else {
+            type2View.tv_user_type_flag.setVisibility(View.GONE);
+            type2View.user_type.setVisibility(View.GONE);
+        }
     }
 
     private void setType3View(Type3ViewHolder type3View, List<HomeIndexBean.HomeList> mDatas, int position) {
@@ -218,10 +240,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type3View.tv_context.setText("");
         }
-        //定位 没数据不知道用啥字段
-        type3View.ll_location.setVisibility(View.GONE);
-        type3View.tv_user_type_flag.setVisibility(View.GONE);
-        type3View.user_type.setVisibility(View.GONE);
+        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
+            type3View.tv_location_price.setText(mDatas.get(position).getBuilding());
+            type3View.ll_location.setVisibility(View.VISIBLE);
+        } else {
+            type3View.ll_location.setVisibility(View.GONE);
+        }
+        if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
+            type3View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
+            type3View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
+            type3View.tv_user_type_flag.setVisibility(View.VISIBLE);
+            type3View.user_type.setVisibility(View.VISIBLE);
+        } else {
+            type3View.tv_user_type_flag.setVisibility(View.GONE);
+            type3View.user_type.setVisibility(View.GONE);
+        }
         type3View.rv_img.setVisibility(View.GONE);
     }
 
@@ -260,10 +293,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type4View.tv_context.setText("");
         }
-        //定位 没数据不知道用啥字段
-        type4View.ll_location.setVisibility(View.GONE);
-        type4View.tv_user_type_flag.setVisibility(View.GONE);
-        type4View.user_type.setVisibility(View.GONE);
+        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
+            type4View.tv_location_price.setText(mDatas.get(position).getBuilding());
+            type4View.ll_location.setVisibility(View.VISIBLE);
+        } else {
+            type4View.ll_location.setVisibility(View.GONE);
+        }
+        if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
+            type4View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
+            type4View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
+            type4View.tv_user_type_flag.setVisibility(View.VISIBLE);
+            type4View.user_type.setVisibility(View.VISIBLE);
+        } else {
+            type4View.tv_user_type_flag.setVisibility(View.GONE);
+            type4View.user_type.setVisibility(View.GONE);
+        }
         type4View.rv_img.setVisibility(View.GONE);
     }
 
@@ -289,6 +333,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_context = itemView.findViewById(R.id.tv_context);
             ll_location = itemView.findViewById(R.id.ll_location);
             tv_location_price = itemView.findViewById(R.id.tv_location_price);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+                }
+            });
         }
     }
 
@@ -318,6 +368,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_des = itemView.findViewById(R.id.tv_des);
             ll_location = itemView.findViewById(R.id.ll_location);
             tv_location_price = itemView.findViewById(R.id.tv_location_price);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+                }
+            });
         }
     }
 
@@ -347,6 +403,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_location_price = itemView.findViewById(R.id.tv_location_price);
             rv_img = itemView.findViewById(R.id.rv_img);
             ll_comment_zan = itemView.findViewById(R.id.ll_comment_zan);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+                }
+            });
         }
     }
 
@@ -384,6 +446,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             iv_zan_num = itemView.findViewById(R.id.iv_zan_num);
             tv_zan_num = itemView.findViewById(R.id.tv_zan_num);
             ll_comment_zan = itemView.findViewById(R.id.ll_comment_zan);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+                }
+            });
         }
     }
 
@@ -394,5 +462,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         int size = mDatas.size();
         mDatas.addAll(data);
         notifyItemRangeInserted(size, mDatas.size() - size);
+    }
+
+    private onItemClickListener itemClickListener;
+
+    public interface onItemClickListener {
+        void onItemListener(View v, HomeIndexBean.HomeList data, int pos);
+    }
+
+    public void setOnItemClickListener(onItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 }

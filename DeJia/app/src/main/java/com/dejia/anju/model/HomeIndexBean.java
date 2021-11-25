@@ -99,6 +99,15 @@ public class HomeIndexBean {
         public int reply_num;
         public int agree_num;
         public java.util.List<?> img;
+        public String url;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
 
         public UserData getUser_data() {
             return user_data;

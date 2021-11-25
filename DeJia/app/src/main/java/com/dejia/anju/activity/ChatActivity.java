@@ -34,6 +34,7 @@ import com.dejia.anju.model.ChatUpdateReadInfo;
 import com.dejia.anju.model.MessageBean;
 import com.dejia.anju.model.NoreadAndChatidInfo;
 import com.dejia.anju.model.WebSocketBean;
+import com.dejia.anju.net.NetWork;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.SoftKeyBoardListener;
@@ -58,8 +59,10 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import okhttp3.Call;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
+import okhttp3.Response;
 
 //私信页面
 public class ChatActivity extends BaseActivity implements View.OnClickListener, MessageCallBack {
@@ -106,6 +109,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     public static final int RECERIVE_OK = 0x1111;
     public static final int PULL_TO_REFRESH_DOWN = 0x0111;
     public int position; //加载滚动刷新位置
+    private MessageBean.DataBean dataBean;
     private String domain = "dejiainfo";
     private long expiresAt = 1544493729973L;
     private String name = "";
@@ -362,11 +366,36 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     WebSocketBean webSocketBean = JSONUtil.TransformSingleBean(serverData.data, WebSocketBean.class);
                     Calendar cal = Calendar.getInstance();
                     String timeSet = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
-                    final MessageBean.DataBean dataBean = new MessageBean.DataBean(webSocketBean.getFrom_client_img(), content, 0, ChatAdapter.TO_USER_MSG, Util.getSecondTimestamp() + "", timeSet);
+                    dataBean = new MessageBean.DataBean(webSocketBean.getFrom_client_img(), content, 0, ChatAdapter.TO_USER_MSG, Util.getSecondTimestamp() + "", timeSet);
                     dataBean.setType(ChatAdapter.TO_USER_MSG);
                     dataBean.setContent(content);
                     tblist.add(dataBean);
+                    if(tblist.size() < 2){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                content_lv.setLinearLayout(false);
+                                if(chatAdapter == null){
+                                    chatAdapter = new ChatAdapter(mContext,tblist);
+                                }
+                            }
+                        });
+                    }
                     mHandler.sendEmptyMessage(SEND_OK);
+                }else{
+                    dataBean.setMessageStatus(-1);
+                    if(chatAdapter != null){
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+        NetWork.getInstance().setOnErrorCallBack(new NetWork.OnErrorCallBack() {
+            @Override
+            public void onErrorCallBack(Call call, Response response, Exception e) {
+                dataBean.setMessageStatus(-1);
+                if(chatAdapter != null){
+                    chatAdapter.notifyDataSetChanged();
                 }
             }
         });

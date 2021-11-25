@@ -226,6 +226,11 @@ public class NetWork {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        if(bindData.getUrl().contains("chat/send")){
+                            if(null != mOnErrorCallBack){
+                                mOnErrorCallBack.onErrorCallBack(call,response,e);
+                            }
+                        }
                         handleResponse(bindData, setErrorResult(), cb);
                     }
                 });
