@@ -51,4 +51,9 @@
         <item name="android:windowEnterAnimation">@anim/popup_in</item>
         <item name="android:windowExitAnimation">@anim/popup_out</item>
     </style>
+
+    <style name="AnimTopPop" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/fade_ins</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
 </resources>

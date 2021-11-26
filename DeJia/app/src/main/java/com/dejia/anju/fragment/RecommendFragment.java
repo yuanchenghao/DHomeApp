@@ -4,13 +4,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.dejia.anju.R;
-import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.adapter.BannerAdapter;
 import com.dejia.anju.adapter.HomeAdapter;
-import com.dejia.anju.adapter.MessageListAdapter;
 import com.dejia.anju.api.HomeIndexApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
@@ -51,20 +47,12 @@ public class RecommendFragment extends BaseFragment {
     private HomeIndexBean homeIndexBean;
     private YMLinearLayoutManager ymLinearLayoutManager;
 
+
     public static RecommendFragment newInstance() {
         Bundle args = new Bundle();
         RecommendFragment fragment = new RecommendFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        Bundle args = getArguments();
-//        if (args != null) {
-//
-//        }
     }
 
     @Xml(layouts = "fragment_recommend")
@@ -100,14 +88,18 @@ public class RecommendFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         //开始轮播
-        banner.start();
+        if (banner != null) {
+            banner.start();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
         //停止轮播
-        banner.stop();
+        if (banner != null) {
+            banner.stop();
+        }
     }
 
     @Override
@@ -132,10 +124,12 @@ public class RecommendFragment extends BaseFragment {
                             && homeIndexBean.getFocus_picture() != null
                             && homeIndexBean.getFocus_picture().size() > 0) {
                         //设置轮播
-                        banner.setVisibility(View.VISIBLE);
                         setBanner(homeIndexBean.getFocus_picture());
+                        banner.setVisibility(View.VISIBLE);
                     } else {
-                        banner.setVisibility(View.GONE);
+                        if (page == 1) {
+                            banner.setVisibility(View.GONE);
+                        }
                     }
                     if (homeIndexBean != null && homeIndexBean.getList() != null) {
                         if (homeIndexBean.getList().size() == 0) {
@@ -175,8 +169,8 @@ public class RecommendFragment extends BaseFragment {
             homeAdapter.setOnItemClickListener(new HomeAdapter.onItemClickListener() {
                 @Override
                 public void onItemListener(View v, HomeIndexBean.HomeList data, int pos) {
-                    if(!TextUtils.isEmpty(data.getUrl())){
-                        ToastUtils.toast(mContext,data.getUrl()).show();
+                    if (!TextUtils.isEmpty(data.getUrl())) {
+                        ToastUtils.toast(mContext, data.getUrl()).show();
                     }
                 }
             });

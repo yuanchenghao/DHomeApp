@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="44dp"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/close_city" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="选择城市"
+            android:textColor="#1C2125"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <com.dejia.anju.view.MyGridView
+        android:id="@+id/gv_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_24"
+        android:fadingEdgeLength="0dp"
+        android:horizontalSpacing="@dimen/dp_8"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="4"
+        android:verticalSpacing="@dimen/dp_8"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="更多城市陆续开放中…"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:textColor="#919699"
+        android:textSize="@dimen/sp_12" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_other"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

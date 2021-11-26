@@ -3,6 +3,7 @@ package com.dejia.anju.fragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +14,28 @@ import android.widget.TextView;
 
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.YMTabLayoutAdapter;
+import com.dejia.anju.api.GetCityApi;
+import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
+import com.dejia.anju.model.CityInfo;
+import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.view.BaseCityPopWindow;
 import com.google.android.material.tabs.TabLayout;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements View.OnClickListener {
+    @BindView(R.id.ll_root)
+    View ll_root;
     @BindView(R.id.ll_title)
     RelativeLayout ll_title;
     @BindView(R.id.ll_area)
@@ -45,22 +56,15 @@ public class HomeFragment extends BaseFragment {
     private YMTabLayoutAdapter ymTabLayoutAdapter;
     //当前选中的信息流
     private int mFragmentSelectedPos = 0;
-
+    private CityInfo cityInfo;
+    private GetCityApi getCityApi;
+    private BaseCityPopWindow cityPopWindow;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
         HomeFragment fragment = new HomeFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null) {
-
-        }
     }
 
     @Xml(layouts = "fragment_home")
@@ -73,6 +77,15 @@ public class HomeFragment extends BaseFragment {
     protected void initView(View view) {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_title.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
+        cityPopWindow = new BaseCityPopWindow(mContext, ll_root, cityInfo);
+        cityPopWindow.setOnAllClickListener(new BaseCityPopWindow.OnCityClickListener() {
+            @Override
+            public void onCityClick(String city) {
+                if (!TextUtils.isEmpty(city)) {
+                    ToastUtils.toast(mContext, city).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -85,6 +98,8 @@ public class HomeFragment extends BaseFragment {
         vp.setAdapter(ymTabLayoutAdapter);
         home_tab_layout.setupWithViewPager(vp);
         setTabmStyle();
+        setMultiOnClickListener(ll_area);
+        getCityList();
         home_tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -142,5 +157,38 @@ public class HomeFragment extends BaseFragment {
                 tab.setCustomView(view);//最后添加view到Tab上面
             }
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.ll_area:
+                if (cityInfo != null
+                        && cityInfo.getHot_city() != null
+                        && cityInfo.getHot_city().size() > 0) {
+                    if (cityPopWindow.isShowing()) {
+                        cityPopWindow.dismiss();
+                    } else {
+                        cityPopWindow = new BaseCityPopWindow(mContext, ll_root, cityInfo);
+                        cityPopWindow.showPop();
+                    }
+                } else {
+                    getCityList();
+                }
+                break;
+        }
+    }
+
+    private void getCityList() {
+        getCityApi = new GetCityApi();
+        getCityApi.getCallBack(mContext, new HashMap<>(), new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if ("1".equals(serverData.code)) {
+                    cityInfo = JSONUtil.TransformSingleBean(serverData.data, CityInfo.class);
+                }
+            }
+        });
     }
 }
