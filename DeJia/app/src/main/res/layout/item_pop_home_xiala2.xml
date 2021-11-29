@@ -7,10 +7,11 @@
     <TextView
         android:id="@+id/home_pop_part_name_tv"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:textColor="#333333"
+        android:layout_height="36dp"
+        android:textColor="#1C2125"
+        android:background="@drawable/shape_city"
         android:gravity="center"
         android:maxEms="5"
         android:singleLine="true"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 </LinearLayout>

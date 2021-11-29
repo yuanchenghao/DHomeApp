@@ -1,5 +1,4 @@
 package com.dejia.anju.model;
-
 import java.util.List;
 
 public class CityInfo {
@@ -22,7 +21,6 @@ public class CityInfo {
     public void setCity_list(List<?> city_list) {
         this.city_list = city_list;
     }
-
     public static class HotCity {
         public int id;
         public String name;

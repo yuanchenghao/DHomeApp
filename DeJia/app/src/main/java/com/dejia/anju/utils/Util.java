@@ -136,6 +136,15 @@ public final class Util {
     }
 
     /**
+     * 保存城市信息
+     *
+     * @param city
+     */
+    public static void setCity(String city) {
+        KVUtils.getInstance().encode(Constants.DWCITY, city);
+    }
+
+    /**
      * 获取用户id
      *
      * @return

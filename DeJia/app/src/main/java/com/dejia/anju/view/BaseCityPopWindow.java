@@ -82,8 +82,8 @@ public class BaseCityPopWindow extends PopupWindow {
         gv_city.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-                if (onCityClickListener != null) {
-                    onCityClickListener.onCityClick(mCityInfo.getHot_city().get(pos).getName());
+                if (onAllClickListener != null) {
+                    onAllClickListener.onAllClick(mCityInfo.getHot_city().get(pos).getName());
                 }
             }
         });
@@ -137,18 +137,17 @@ public class BaseCityPopWindow extends PopupWindow {
             }
             showAtLocation(mView, Gravity.NO_GRAVITY, 0, rawY + mView.getHeight());
         }
-
     }
 
     //城市选择回调
-    private OnCityClickListener onCityClickListener;
+    private OnAllClickListener onAllClickListener;
 
-    public interface OnCityClickListener {
-        void onCityClick(String city);
+    public interface OnAllClickListener {
+        void onAllClick(String city);
     }
 
-    public void setOnAllClickListener(OnCityClickListener onCityClickListener) {
-        this.onCityClickListener = onCityClickListener;
+    public void setOnAllClickListener(OnAllClickListener onAllClickListener) {
+        this.onAllClickListener = onAllClickListener;
     }
 
 }

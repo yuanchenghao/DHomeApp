@@ -21,6 +21,7 @@ import com.dejia.anju.model.CityInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.BaseCityPopWindow;
 import com.google.android.material.tabs.TabLayout;
 import com.zhangyue.we.x2c.ano.Xml;
@@ -29,7 +30,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
@@ -78,14 +78,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_title.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
         cityPopWindow = new BaseCityPopWindow(mContext, ll_root, cityInfo);
-        cityPopWindow.setOnAllClickListener(new BaseCityPopWindow.OnCityClickListener() {
-            @Override
-            public void onCityClick(String city) {
-                if (!TextUtils.isEmpty(city)) {
-                    ToastUtils.toast(mContext, city).show();
-                }
-            }
-        });
     }
 
     @Override
@@ -172,6 +164,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     } else {
                         cityPopWindow = new BaseCityPopWindow(mContext, ll_root, cityInfo);
                         cityPopWindow.showPop();
+                        cityPopWindow.setOnAllClickListener(new BaseCityPopWindow.OnAllClickListener() {
+                            @Override
+                            public void onAllClick(String city) {
+                                if (!TextUtils.isEmpty(city)) {
+                                    cityPopWindow.dismiss();
+                                    tv_city.setText(city);
+                                    Util.setCity(city);
+                                    if(fragmentList != null
+                                            && fragmentList.size() > 0
+                                            && fragmentList.get(0) instanceof RecommendFragment){
+                                        //刷新列表
+                                        ((RecommendFragment)fragmentList.get(0)).refresh();
+                                    }
+                                }
+                            }
+                        });
                     }
                 } else {
                     getCityList();

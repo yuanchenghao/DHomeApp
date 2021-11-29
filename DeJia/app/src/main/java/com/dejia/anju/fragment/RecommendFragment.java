@@ -84,6 +84,12 @@ public class RecommendFragment extends BaseFragment {
     }
 
 
+    public void refresh() {
+        if (smartRefreshLayout != null) {
+            smartRefreshLayout.autoRefresh();
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
