@@ -16,6 +16,9 @@ import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.utils.KVUtils;
+import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.view.CopyPopWindow;
+import com.dejia.anju.view.SelectUserAvatarPopWindow;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
@@ -117,10 +120,10 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                 finish();
                 break;
             case R.id.fl_icon:
-
+                showBottomPop();
                 break;
             case R.id.tv_icon:
-
+                showBottomPop();
                 break;
             case R.id.ll_nick:
                 mContext.startActivity(new Intent(mContext,EditNickNameActivity.class));
@@ -129,6 +132,25 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                 mContext.startActivity(new Intent(mContext,EditSexActivity.class));
                 break;
         }
+    }
+
+    //头像选择
+    private void showBottomPop() {
+        SelectUserAvatarPopWindow selectUserAvatarPopWindow = new SelectUserAvatarPopWindow(mContext);
+//        selectUserAvatarPopWindow
+        selectUserAvatarPopWindow.setOnTextClickListener(new SelectUserAvatarPopWindow.OnTextClickListener() {
+            @Override
+            public void onTextClick() {
+                //拍照
+                ToastUtils.toast(mContext,"拍照").show();
+            }
+
+            @Override
+            public void onTextClick2() {
+                //选择头像
+                ToastUtils.toast(mContext,"选择头像").show();
+            }
+        });
     }
 
 }

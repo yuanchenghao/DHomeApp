@@ -104,7 +104,7 @@ public class MyFragment extends BaseFragment {
             if (!TextUtils.isEmpty(userInfo.getSex())) {
                 if ("0".equals(userInfo.getSex())) {
                     //未知
-                    ll_sex.setVisibility(View.INVISIBLE);
+                    ll_sex.setVisibility(View.GONE);
                 } else {
                     if ("1".equals(userInfo.getSex())) {
                         //男
