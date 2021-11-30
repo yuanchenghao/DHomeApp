@@ -102,6 +102,8 @@ public class FinalConstant1 {
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "home", "index", POST);
         //获取城市列表
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "city", "city", POST);
+        //首页关注接口
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "home", "follow", POST);
 
         //私信
         //WebSocket解绑
