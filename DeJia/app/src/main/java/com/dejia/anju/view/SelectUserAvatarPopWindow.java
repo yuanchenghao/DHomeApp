@@ -3,6 +3,7 @@ package com.dejia.anju.view;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -20,16 +21,11 @@ public class SelectUserAvatarPopWindow extends PopupWindow {
     public SelectUserAvatarPopWindow(final Activity context) {
         super(context);
         View layout = View.inflate(context, R.layout.item_select_user_avatar, null);
-        setAnimationStyle(R.style.AnimTopPop);
+        setAnimationStyle(R.style.AnimBottom);
         setClippingEnabled(false);
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        //7.1以下系统高度直接设置，7.1及7.1以上的系统需要动态设置
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
-            setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-        setBackgroundDrawable(new ColorDrawable(Color.parseColor("#66000000")));
-        //多加这一句，问题就解决了！这句的官方文档解释是：让窗口背景后面的任何东西变暗
-        context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+        setBackgroundDrawable(new BitmapDrawable());
         setFocusable(true);
         setTouchable(true);
         setOutsideTouchable(true);
@@ -39,6 +35,13 @@ public class SelectUserAvatarPopWindow extends PopupWindow {
         TextView tv_cancel = layout.findViewById(R.id.tv_cancel);
         TextView tv_take_photo = layout.findViewById(R.id.tv_take_photo);
         TextView tv_select = layout.findViewById(R.id.tv_select);
+        View v = layout.findViewById(R.id.view);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

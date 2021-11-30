@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.dejia.anju.R;
@@ -31,7 +34,7 @@ import butterknife.BindView;
 
 //编辑用户信息
 public class EditUserInfoActivity extends BaseActivity implements OnClickListener{
-
+    @BindView(R.id.ll_root) LinearLayout ll_root;
     @BindView(R.id.rl_title) RelativeLayout rl_title;
     @BindView(R.id.ll_back) LinearLayout ll_back;
     @BindView(R.id.fl_icon) FrameLayout fl_icon;
@@ -137,7 +140,18 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
     //头像选择
     private void showBottomPop() {
         SelectUserAvatarPopWindow selectUserAvatarPopWindow = new SelectUserAvatarPopWindow(mContext);
-//        selectUserAvatarPopWindow
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.7f;
+        getWindow().setAttributes(lp);
+        selectUserAvatarPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 1f;
+                getWindow().setAttributes(lp);
+            }
+        });
+        selectUserAvatarPopWindow.showAtLocation(ll_root, Gravity.BOTTOM, 0, 0);
         selectUserAvatarPopWindow.setOnTextClickListener(new SelectUserAvatarPopWindow.OnTextClickListener() {
             @Override
             public void onTextClick() {
