@@ -3,11 +3,20 @@ package com.dejia.anju.model;
 import java.util.List;
 
 public class HomeFollowBean {
+    public String type;
     public List<BuildsBean> builds;
     public List<FollowCreatorList> follow_creator_list;
     public List<FollowCreatorArticleList> follow_creator_article_list;
     public List<NoFollowCreatorList> no_follow_creator_list;
     public List<NoFollowCreatorArticleList> no_follow_creator_article_list;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public List<BuildsBean> getBuilds() {
         return builds;

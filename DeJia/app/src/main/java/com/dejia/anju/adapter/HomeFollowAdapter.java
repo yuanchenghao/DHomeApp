@@ -25,9 +25,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private LayoutInflater mInflater;
     private Activity mContext;
-    private HomeFollowBean mDatas;
+    private List<HomeFollowBean> mDatas;
 
-    public HomeFollowAdapter(Activity context, HomeFollowBean datas) {
+    public HomeFollowAdapter(Activity context, List<HomeFollowBean> datas) {
         this.mContext = context;
         this.mDatas = datas;
         mInflater = LayoutInflater.from(context);
@@ -42,8 +42,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-
-        return 0;
+        return mDatas.size();
     }
 
 
@@ -87,10 +86,10 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     /**
      * 追加数据
      */
-    public void addData(HomeFollowBean data) {
-//        int size = mDatas.size();
-//        mDatas.addAll(data);
-//        notifyItemRangeInserted(size, mDatas.size() - size);
+    public void addData(List<HomeFollowBean> data) {
+        int size = mDatas.size();
+        mDatas.addAll(data);
+        notifyItemRangeInserted(size, mDatas.size() - size);
     }
 
     private onItemClickListener itemClickListener;
