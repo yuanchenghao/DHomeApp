@@ -1,17 +1,15 @@
 package com.dejia.anju.fragment;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.dejia.anju.R;
-import com.dejia.anju.adapter.HomeAdapter;
 import com.dejia.anju.adapter.HomeFollowAdapter;
 import com.dejia.anju.api.HomeFollowApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
 import com.dejia.anju.model.HomeFollowBean;
-import com.dejia.anju.model.HomeIndexBean;
+import com.dejia.anju.model.HomeFollowListBean;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
@@ -44,7 +42,7 @@ public class FollowFragment extends BaseFragment {
     private HomeFollowAdapter homeFollowAdapter;
     private YMLinearLayoutManager ymLinearLayoutManager;
     private HomeFollowBean homeFollowBean;
-    private List<HomeFollowBean> mDatas = new ArrayList<>();
+    private List<HomeFollowListBean> mDatas;
     /**
      * 是否已被加载过一次，第二次就不再去请求数据了
      */
@@ -161,7 +159,6 @@ public class FollowFragment extends BaseFragment {
         Map<String, Object> maps = new HashMap<String, Object>();
         maps.put("page", page);
         homeFollowApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            //            42153
             @Override
             public void onSuccess(ServerData serverData) {
                 smartRefreshLayout.finishRefresh();
@@ -169,44 +166,40 @@ public class FollowFragment extends BaseFragment {
                     mHasLoadedOnce = true;
                     homeFollowBean = JSONUtil.TransformSingleBean(serverData.data, HomeFollowBean.class);
                     if (homeFollowBean != null) {
-                        if (homeFollowBean.getNo_follow_creator_list() != null
-                                && homeFollowBean.getNo_follow_creator_list().size() > 0) {
-                            HomeFollowBean h = new HomeFollowBean();
-                            h.setType("1");
-                            h.setNo_follow_creator_list(homeFollowBean.getNo_follow_creator_list());
-                            mDatas.add(h);
-                        }
-                        if (homeFollowBean.getFollow_creator_list() != null
-                                && homeFollowBean.getFollow_creator_list().size() > 0) {
-                            HomeFollowBean h = new HomeFollowBean();
-                            h.setType("2");
-                            h.setFollow_creator_list(homeFollowBean.getFollow_creator_list());
-                            mDatas.add(h);
-                        }
-                        if (homeFollowBean.getBuilds() != null
-                                && homeFollowBean.getBuilds().size() > 0) {
-                            HomeFollowBean h = new HomeFollowBean();
-                            h.setType("3");
-                            h.setBuilds(homeFollowBean.getBuilds());
-                            mDatas.add(h);
-                        }
-                        if (homeFollowBean.getNo_follow_creator_article_list() != null
-                                && homeFollowBean.getNo_follow_creator_article_list().size() > 0) {
-                            List<HomeFollowBean.NoFollowCreatorArticleList> l = new ArrayList<>();
-                            for (int i = 0; i < homeFollowBean.getNo_follow_creator_article_list().size(); i++) {
-                                HomeFollowBean.NoFollowCreatorArticleList noFollowCreatorArticleList = new HomeFollowBean.NoFollowCreatorArticleList();
-                                noFollowCreatorArticleList.setList(homeFollowBean.getNo_follow_creator_article_list().get(i).getList());
-                                noFollowCreatorArticleList.setUser_data(homeFollowBean.getNo_follow_creator_article_list().get(i).getUser_data());
-                                l.add(noFollowCreatorArticleList);
+                        mDatas = new ArrayList<>();
+                        if (page == 1) {
+                            if (homeFollowBean.getNo_follow_creator_list() != null
+                                    && homeFollowBean.getNo_follow_creator_list().size() > 0) {
+                                HomeFollowListBean h = new HomeFollowListBean();
+                                h.setNo_follow_creator_list(homeFollowBean.getNo_follow_creator_list());
+                                mDatas.add(h);
                             }
-                            HomeFollowBean h = new HomeFollowBean();
-                            h.setType("4");
-                            h.setNo_follow_creator_article_list(l);
-                            mDatas.add(h);
+                            if (homeFollowBean.getFollow_creator_list() != null
+                                    && homeFollowBean.getFollow_creator_list().size() > 0) {
+                                HomeFollowListBean h = new HomeFollowListBean();
+                                h.setFollow_creator_list(homeFollowBean.getFollow_creator_list());
+                                mDatas.add(h);
+                            }
+                            if (homeFollowBean.getBuilds() != null
+                                    && homeFollowBean.getBuilds().size() > 0) {
+                                HomeFollowListBean h = new HomeFollowListBean();
+                                h.setBuilds(homeFollowBean.getBuilds());
+                                mDatas.add(h);
+                            }
+                            if (homeFollowBean.getNo_follow_creator_article_list() != null
+                                    && homeFollowBean.getNo_follow_creator_article_list().size() > 0) {
+                                for (int i = 0; i < homeFollowBean.getNo_follow_creator_article_list().size(); i++) {
+                                    HomeFollowBean.NoFollowCreatorArticleList noFollowCreatorArticleList = new HomeFollowBean.NoFollowCreatorArticleList();
+                                    noFollowCreatorArticleList.setList(homeFollowBean.getNo_follow_creator_article_list().get(i).getList());
+                                    noFollowCreatorArticleList.setUser_data(homeFollowBean.getNo_follow_creator_article_list().get(i).getUser_data());
+                                    HomeFollowListBean h = new HomeFollowListBean();
+                                    h.setNo_follow_creator_article_list(noFollowCreatorArticleList);
+                                    mDatas.add(h);
+                                }
+                            }
                         }
                         if (homeFollowBean.getFollow_creator_article_list() != null
                                 && homeFollowBean.getFollow_creator_article_list().size() > 0) {
-                            List<HomeFollowBean.FollowCreatorArticleList> l = new ArrayList<>();
                             for (int i = 0; i < homeFollowBean.getFollow_creator_article_list().size(); i++) {
                                 HomeFollowBean.FollowCreatorArticleList followCreatorArticleList = new HomeFollowBean.FollowCreatorArticleList();
                                 followCreatorArticleList.setUser_data(homeFollowBean.getFollow_creator_article_list().get(i).getUser_data());
@@ -217,12 +210,10 @@ public class FollowFragment extends BaseFragment {
                                 followCreatorArticleList.setTime_set(homeFollowBean.getFollow_creator_article_list().get(i).getTime_set());
                                 followCreatorArticleList.setReply_num(homeFollowBean.getFollow_creator_article_list().get(i).getReply_num());
                                 followCreatorArticleList.setAgree_num(homeFollowBean.getFollow_creator_article_list().get(i).getAgree_num());
-                                l.add(followCreatorArticleList);
+                                HomeFollowListBean h = new HomeFollowListBean();
+                                h.setFollow_creator_article_list(followCreatorArticleList);
+                                mDatas.add(h);
                             }
-                            HomeFollowBean h = new HomeFollowBean();
-                            h.setType("5");
-                            h.setFollow_creator_article_list(l);
-                            mDatas.add(h);
                         }
                         if (mDatas != null && mDatas.size() == 0) {
                             if (smartRefreshLayout == null) {
@@ -256,16 +247,17 @@ public class FollowFragment extends BaseFragment {
                 ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
             }
             rv.setLayoutManager(ymLinearLayoutManager);
+            rv.setItemViewCacheSize(20);
             homeFollowAdapter = new HomeFollowAdapter(mContext, mDatas);
             rv.setAdapter(homeFollowAdapter);
-            homeFollowAdapter.setOnItemClickListener(new HomeFollowAdapter.onItemClickListener() {
-                @Override
-                public void onItemListener(View v, HomeIndexBean.HomeList data, int pos) {
-                    if (!TextUtils.isEmpty(data.getUrl())) {
-                        ToastUtils.toast(mContext, data.getUrl()).show();
-                    }
-                }
-            });
+//            homeFollowAdapter.setOnItemClickListener(new HomeFollowAdapter.onItemClickListener() {
+//                @Override
+//                public void onItemListener(View v, HomeIndexBean.HomeList data, int pos) {
+//                    if (!TextUtils.isEmpty(data.getUrl())) {
+//                        ToastUtils.toast(mContext, data.getUrl()).show();
+//                    }
+//                }
+//            });
         } else {
             //添加
             homeFollowAdapter.addData(mDatas);

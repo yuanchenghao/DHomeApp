@@ -3,20 +3,11 @@ package com.dejia.anju.model;
 import java.util.List;
 
 public class HomeFollowBean {
-    public String type;
     public List<BuildsBean> builds;
     public List<FollowCreatorList> follow_creator_list;
     public List<FollowCreatorArticleList> follow_creator_article_list;
     public List<NoFollowCreatorList> no_follow_creator_list;
     public List<NoFollowCreatorArticleList> no_follow_creator_article_list;
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public List<BuildsBean> getBuilds() {
         return builds;
@@ -308,6 +299,206 @@ public class HomeFollowBean {
             public String content_not_tags;
             public String add_time;
             public String status;
+
+            public String getReply_time() {
+                return reply_time;
+            }
+
+            public void setReply_time(String reply_time) {
+                this.reply_time = reply_time;
+            }
+
+            public int getHits_day() {
+                return hits_day;
+            }
+
+            public void setHits_day(int hits_day) {
+                this.hits_day = hits_day;
+            }
+
+            public String getAudit_status() {
+                return audit_status;
+            }
+
+            public void setAudit_status(String audit_status) {
+                this.audit_status = audit_status;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
+            }
+
+            public String getWeixin_id() {
+                return weixin_id;
+            }
+
+            public void setWeixin_id(String weixin_id) {
+                this.weixin_id = weixin_id;
+            }
+
+            public String getUpdate_time() {
+                return update_time;
+            }
+
+            public void setUpdate_time(String update_time) {
+                this.update_time = update_time;
+            }
+
+            public String getFrom() {
+                return from;
+            }
+
+            public void setFrom(String from) {
+                this.from = from;
+            }
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getViews() {
+                return views;
+            }
+
+            public void setViews(String views) {
+                this.views = views;
+            }
+
+            public UserAuthData getUser_auth_data() {
+                return user_auth_data;
+            }
+
+            public void setUser_auth_data(UserAuthData user_auth_data) {
+                this.user_auth_data = user_auth_data;
+            }
+
+            public String getEffectiveness() {
+                return effectiveness;
+            }
+
+            public void setEffectiveness(String effectiveness) {
+                this.effectiveness = effectiveness;
+            }
+
+            public String getAgrees() {
+                return agrees;
+            }
+
+            public void setAgrees(String agrees) {
+                this.agrees = agrees;
+            }
+
+            public String getCreate_time() {
+                return create_time;
+            }
+
+            public void setCreate_time(String create_time) {
+                this.create_time = create_time;
+            }
+
+            public String getAuthor() {
+                return author;
+            }
+
+            public void setAuthor(String author) {
+                this.author = author;
+            }
+
+            public String getFakeid() {
+                return fakeid;
+            }
+
+            public void setFakeid(String fakeid) {
+                this.fakeid = fakeid;
+            }
+
+            public int getHits_month() {
+                return hits_month;
+            }
+
+            public void setHits_month(int hits_month) {
+                this.hits_month = hits_month;
+            }
+
+            public String getCover_type() {
+                return cover_type;
+            }
+
+            public void setCover_type(String cover_type) {
+                this.cover_type = cover_type;
+            }
+
+            public String getReplies() {
+                return replies;
+            }
+
+            public void setReplies(String replies) {
+                this.replies = replies;
+            }
+
+            public String getUser_id() {
+                return user_id;
+            }
+
+            public void setUser_id(String user_id) {
+                this.user_id = user_id;
+            }
+
+            public java.util.List<Buildings> getBuildings() {
+                return buildings;
+            }
+
+            public void setBuildings(java.util.List<Buildings> buildings) {
+                this.buildings = buildings;
+            }
+
+            public int getHits_week() {
+                return hits_week;
+            }
+
+            public void setHits_week(int hits_week) {
+                this.hits_week = hits_week;
+            }
+
+            public String getContent_not_tags() {
+                return content_not_tags;
+            }
+
+            public void setContent_not_tags(String content_not_tags) {
+                this.content_not_tags = content_not_tags;
+            }
+
+            public String getAdd_time() {
+                return add_time;
+            }
+
+            public void setAdd_time(String add_time) {
+                this.add_time = add_time;
+            }
+
+            public String getStatus() {
+                return status;
+            }
+
+            public void setStatus(String status) {
+                this.status = status;
+            }
 
             public static class UserAuthData {
                 public String is_broker;

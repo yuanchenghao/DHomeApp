@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_22"
+        android:layout_marginRight="@dimen/dp_20"
         android:orientation="horizontal">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/iv_person"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
-            app:fadeDuration="100"
             android:layout_gravity="bottom"
-            app:roundAsCircle="true"
             android:background="#000000"
-            app:retryImageScaleType="centerCrop" />
+            app:fadeDuration="100"
+            app:retryImageScaleType="centerCrop"
+            app:roundAsCircle="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="@dimen/dp_8"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
@@ -37,23 +37,23 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="好评与差评"
-                android:textColor="#1C2125"
-                android:textSize="@dimen/sp_14"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="好评与差评"
+                    android:textColor="#1C2125"
+                    android:textSize="@dimen/sp_14"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_user_type_flag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="得家优质创作者LV1"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:textSize="9sp"
-                android:textColor="#33A7FF" />
+                <TextView
+                    android:id="@+id/tv_user_type_flag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="得家优质创作者LV1"
+                    android:textColor="#33A7FF"
+                    android:textSize="9sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -65,8 +65,8 @@
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10天前"
                     android:layout_marginRight="@dimen/dp_8"
+                    android:text="10天前"
                     android:textColor="#919699"
                     android:textSize="@dimen/sp_12" />
 
@@ -98,35 +98,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_9"
-        android:textStyle="bold"
-        android:textSize="18sp"
+        android:layout_marginRight="@dimen/dp_20"
+        android:text="穿越紫禁来看山,玖瀛府开盘盛典暨山居生活美好首映"
         android:textColor="#1C2125"
-        android:text="穿越紫禁来看山,玖瀛府开盘盛典暨山居生活美好首映" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_img"
         android:layout_width="match_parent"
         android:layout_height="82.5dp"
-        android:id="@+id/rv_img"
-        android:scrollbars="none"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dp_9"
         android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20" />
+        android:layout_marginTop="@dimen/dp_9"
+        android:layout_marginRight="@dimen/dp_20"
+        android:orientation="horizontal"
+        android:scrollbars="none" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/dp_7"
-        android:paddingRight="@dimen/dp_12"
-        android:paddingTop="@dimen/dp_6"
-        android:paddingBottom="@dimen/dp_6"
-        android:background="@drawable/shape_14_f5f6f7"
-        android:layout_marginTop="@dimen/dp_12"
         android:layout_marginLeft="@dimen/dp_20"
-        android:orientation="horizontal">
+        android:layout_marginTop="@dimen/dp_12"
+        android:background="@drawable/shape_14_f5f6f7"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_7"
+        android:paddingTop="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_12"
+        android:paddingBottom="@dimen/dp_6">
 
         <ImageView
             android:layout_width="@dimen/dp_16"
@@ -137,10 +137,10 @@
             android:id="@+id/tv_location_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#6F7375"
             android:layout_marginLeft="@dimen/dp_5"
-            android:textSize="@dimen/sp_12"
-            android:text="顺义马坡  恒大 26888元/㎡" />
+            android:text="顺义马坡  恒大 26888元/㎡"
+            android:textColor="#6F7375"
+            android:textSize="@dimen/sp_12" />
 
     </LinearLayout>
 
@@ -148,45 +148,45 @@
         android:id="@+id/ll_comment_zan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
+        android:layout_marginLeft="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_16"
-        android:layout_marginLeft="@dimen/dp_20">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
-    <ImageView
-        android:id="@+id/iv_comment_num"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_20"
-        android:src="@mipmap/comment" />
+        <ImageView
+            android:id="@+id/iv_comment_num"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:src="@mipmap/comment" />
 
-    <TextView
-        android:id="@+id/tv_comment_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="831"
-        android:layout_marginLeft="@dimen/dp_4" />
+        <TextView
+            android:id="@+id/tv_comment_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_4"
+            android:text="831" />
 
 
         <ImageView
             android:id="@+id/iv_zan_num"
             android:layout_width="@dimen/dp_20"
-            android:layout_marginLeft="47dp"
             android:layout_height="@dimen/dp_20"
+            android:layout_marginLeft="47dp"
             android:src="@mipmap/zan" />
 
         <TextView
             android:id="@+id/tv_zan_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="333"
-            android:layout_marginLeft="@dimen/dp_4" />
+            android:layout_marginLeft="@dimen/dp_4"
+            android:text="333" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_20"
         android:background="#E7EDF2" />
 </LinearLayout>
