@@ -46,7 +46,67 @@ public class RecommendFragment extends BaseFragment {
     private HomeAdapter homeAdapter;
     private HomeIndexBean homeIndexBean;
     private YMLinearLayoutManager ymLinearLayoutManager;
+    /**
+     * 是否已被加载过一次，第二次就不再去请求数据了
+     */
+    private boolean mHasLoadedOnce;
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        boolean change = isVisibleToUser != getUserVisibleHint();
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isResumed() && change) {
+            if (getUserVisibleHint()) {
+                onVisible();
+            } else {
+                onInvisible();
+            }
+        }
+    }
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            onInvisible();
+        } else {
+            onVisible();
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getUserVisibleHint() && !isHidden()) {
+            onVisible();
+        }
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (getUserVisibleHint() && !isHidden()) {
+            onInvisible();
+        }
+    }
+
+    private void onVisible() {
+        if (!mHasLoadedOnce) {
+            smartRefreshLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    smartRefreshLayout.autoRefresh();
+                }
+            }, 500);
+        }
+    }
+
+    private void onInvisible() {
+
+    }
 
     public static RecommendFragment newInstance() {
         Bundle args = new Bundle();
@@ -54,6 +114,8 @@ public class RecommendFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+
 
     @Xml(layouts = "fragment_recommend")
     @Override
@@ -63,7 +125,6 @@ public class RecommendFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        smartRefreshLayout.autoRefresh();
         //刷新监听
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -125,6 +186,7 @@ public class RecommendFragment extends BaseFragment {
             public void onSuccess(ServerData serverData) {
                 smartRefreshLayout.finishRefresh();
                 if ("1".equals(serverData.code)) {
+                    mHasLoadedOnce = true;
                     homeIndexBean = JSONUtil.TransformSingleBean(serverData.data, HomeIndexBean.class);
                     if (homeIndexBean != null
                             && homeIndexBean.getFocus_picture() != null
