@@ -17,13 +17,17 @@ import com.dejia.anju.R;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.QRCodeActivity;
 import com.dejia.anju.base.BaseFragment;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.utils.KVUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhangyue.we.x2c.ano.Xml;
 
-import androidx.annotation.Nullable;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -58,23 +62,37 @@ public class MyFragment extends BaseFragment {
     ImageView iv_write_icon;
     @BindView(R.id.tv_introduce)
     TextView tv_introduce;
-
     private UserInfo userInfo;
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEventMainThread(Event msgEvent) {
+        switch (msgEvent.getCode()) {
+            case 3:
+                userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
+                upDataUi();
+                break;
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     public static MyFragment newInstance() {
         Bundle args = new Bundle();
         MyFragment fragment = new MyFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null) {
-
-        }
     }
 
     @Xml(layouts = "fragment_my")
@@ -102,21 +120,21 @@ public class MyFragment extends BaseFragment {
                 tv_name.setText(userInfo.getNickname());
             }
             if (!TextUtils.isEmpty(userInfo.getSex())) {
-                if ("0".equals(userInfo.getSex())) {
-                    //未知
-                    ll_sex.setVisibility(View.GONE);
-                } else {
-                    if ("1".equals(userInfo.getSex())) {
-                        //男
-                        tv_sex.setText("男");
-                        iv_sex.setImageResource(R.mipmap.boy);
-                    } else {
-                        //女
-                        tv_sex.setText("nv");
-                        iv_sex.setImageResource(R.mipmap.girl);
-                    }
+                if ("1".equals(userInfo.getSex())) {
+                    //男
+                    tv_sex.setText("男");
+                    iv_sex.setImageResource(R.mipmap.boy);
                     ll_sex.setVisibility(View.VISIBLE);
+                } else if ("2".equals(userInfo.getSex())) {
+                    //女
+                    tv_sex.setText("女");
+                    iv_sex.setImageResource(R.mipmap.girl);
+                    ll_sex.setVisibility(View.VISIBLE);
+                }else{
+                    ll_sex.setVisibility(View.GONE);
                 }
+            } else {
+                ll_sex.setVisibility(View.GONE);
             }
             if (TextUtils.isEmpty(userInfo.getPersonal_info())) {
                 iv_write_icon.setVisibility(View.VISIBLE);

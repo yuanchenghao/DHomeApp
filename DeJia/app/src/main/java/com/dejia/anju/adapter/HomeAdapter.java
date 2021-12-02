@@ -86,15 +86,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-//    //用于局部刷新
-//    @Override
-//    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position, @NonNull List<Object> payloads) {
-//        if (payloads.isEmpty()) {
-//            onBindViewHolder(viewHolder, position);
-//        } else {
-//
-//        }
-//    }
+    //用于局部刷新
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(viewHolder, position);
+        } else {
+
+        }
+    }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -336,7 +336,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+                    mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
                 }
             });
         }
@@ -371,7 +371,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+                    mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
                 }
             });
         }
@@ -406,7 +406,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+                    mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
                 }
             });
         }
@@ -449,7 +449,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+                    mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
                 }
             });
         }
@@ -464,13 +464,16 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyItemRangeInserted(size, mDatas.size() - size);
     }
 
-    private onItemClickListener itemClickListener;
 
-    public interface onItemClickListener {
-        void onItemListener(View v, HomeIndexBean.HomeList data, int pos);
+    private EventListener mEventListener;
+
+    public void setEventListener(EventListener eventListener) {
+        mEventListener = eventListener;
     }
 
-    public void setOnItemClickListener(onItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
+    public interface EventListener {
+        void onItemFollowListener(View v, HomeIndexBean.HomeList data, int pos);
+
+        void onItemListener(View v, HomeIndexBean.HomeList data, int pos);
     }
 }

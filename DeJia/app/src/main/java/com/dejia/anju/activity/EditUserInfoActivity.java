@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.dejia.anju.R;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
@@ -33,22 +34,37 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 
 //编辑用户信息
-public class EditUserInfoActivity extends BaseActivity implements OnClickListener{
-    @BindView(R.id.ll_root) LinearLayout ll_root;
-    @BindView(R.id.rl_title) RelativeLayout rl_title;
-    @BindView(R.id.ll_back) LinearLayout ll_back;
-    @BindView(R.id.fl_icon) FrameLayout fl_icon;
-    @BindView(R.id.iv_person) SimpleDraweeView iv_person;
-    @BindView(R.id.tv_icon) TextView tv_icon;
-    @BindView(R.id.ll_nick) LinearLayout ll_nick;
-    @BindView(R.id.tv_nickname) TextView tv_nickname;
-    @BindView(R.id.ll_sex) LinearLayout ll_sex;
-    @BindView(R.id.tv_sex) TextView tv_sex;
+public class EditUserInfoActivity extends BaseActivity implements OnClickListener {
+    @BindView(R.id.ll_root)
+    LinearLayout ll_root;
+    @BindView(R.id.rl_title)
+    RelativeLayout rl_title;
+    @BindView(R.id.ll_back)
+    LinearLayout ll_back;
+    @BindView(R.id.fl_icon)
+    FrameLayout fl_icon;
+    @BindView(R.id.iv_person)
+    SimpleDraweeView iv_person;
+    @BindView(R.id.tv_icon)
+    TextView tv_icon;
+    @BindView(R.id.ll_nick)
+    LinearLayout ll_nick;
+    @BindView(R.id.tv_nickname)
+    TextView tv_nickname;
+    @BindView(R.id.ll_sex)
+    LinearLayout ll_sex;
+    @BindView(R.id.tv_sex)
+    TextView tv_sex;
     private UserInfo userInfo;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
-
+        switch (msgEvent.getCode()) {
+            case 3:
+                userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
+                upDataUi();
+                break;
+        }
     }
 
     @Override
@@ -83,36 +99,36 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
     }
 
     private void upDataUi() {
-        if(userInfo != null){
+        if (userInfo != null) {
             if (!TextUtils.isEmpty(userInfo.getImg())) {
                 iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(userInfo.getImg()).setAutoPlayAnimations(true).build());
-            }else{
+            } else {
                 iv_person.setBackgroundColor(Color.parseColor("#000000"));
             }
             if (!TextUtils.isEmpty(userInfo.getNickname())) {
                 tv_nickname.setText(userInfo.getNickname());
             }
             if (!TextUtils.isEmpty(userInfo.getSex())) {
-                if ("0".equals(userInfo.getSex())) {
-                    //未知
-                    tv_sex.setVisibility(View.INVISIBLE);
-                } else {
-                    if ("1".equals(userInfo.getSex())) {
-                        //男
-                        tv_sex.setText("男");
-                    } else {
-                        //女
-                        tv_sex.setText("女");
-                    }
+                if ("1".equals(userInfo.getSex())) {
+                    //男
+                    tv_sex.setText("男");
                     tv_sex.setVisibility(View.VISIBLE);
+                } else if ("2".equals(userInfo.getSex())) {
+                    //女
+                    tv_sex.setText("女");
+                    tv_sex.setVisibility(View.VISIBLE);
+                } else {
+                    tv_sex.setVisibility(View.INVISIBLE);
                 }
+            } else {
+                tv_sex.setVisibility(View.INVISIBLE);
             }
         }
     }
 
     @Override
     protected void initData() {
-        setMultiOnClickListener(ll_back,fl_icon,tv_icon,ll_nick,ll_sex);
+        setMultiOnClickListener(ll_back, fl_icon, tv_icon, ll_nick, ll_sex);
     }
 
     @Override
@@ -129,10 +145,10 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                 showBottomPop();
                 break;
             case R.id.ll_nick:
-                mContext.startActivity(new Intent(mContext,EditNickNameActivity.class));
+                mContext.startActivity(new Intent(mContext, EditNickNameActivity.class));
                 break;
             case R.id.ll_sex:
-                mContext.startActivity(new Intent(mContext,EditSexActivity.class));
+                mContext.startActivity(new Intent(mContext, EditSexActivity.class));
                 break;
         }
     }
@@ -156,13 +172,13 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
             @Override
             public void onTextClick() {
                 //拍照
-                ToastUtils.toast(mContext,"拍照").show();
+                ToastUtils.toast(mContext, "拍照").show();
             }
 
             @Override
             public void onTextClick2() {
                 //选择头像
-                ToastUtils.toast(mContext,"选择头像").show();
+                ToastUtils.toast(mContext, "选择头像").show();
             }
         });
     }

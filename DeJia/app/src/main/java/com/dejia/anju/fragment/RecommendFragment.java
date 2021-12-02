@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -234,7 +233,12 @@ public class RecommendFragment extends BaseFragment {
             rv.setLayoutManager(ymLinearLayoutManager);
             homeAdapter = new HomeAdapter(mContext, homeIndexBean.getList());
             rv.setAdapter(homeAdapter);
-            homeAdapter.setOnItemClickListener(new HomeAdapter.onItemClickListener() {
+            homeAdapter.setEventListener(new HomeAdapter.EventListener() {
+                @Override
+                public void onItemFollowListener(View v, HomeIndexBean.HomeList data, int pos) {
+
+                }
+
                 @Override
                 public void onItemListener(View v, HomeIndexBean.HomeList data, int pos) {
                     if (!TextUtils.isEmpty(data.getUrl())) {
