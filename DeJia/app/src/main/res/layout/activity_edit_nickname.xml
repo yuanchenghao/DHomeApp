@@ -58,6 +58,7 @@
         android:layout_marginLeft="42.5dp"
         android:layout_marginRight="42.5dp"
         android:layout_marginTop="@dimen/dp_28"
+        android:singleLine="true"
         android:background="@drawable/shape_24_f5f6f7" />
 
     <TextView

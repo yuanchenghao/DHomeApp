@@ -33,7 +33,7 @@ public class BaseCityPopWindow extends PopupWindow {
         this.mCityInfo = cityInfo;
         if(mCityInfo != null && mCityInfo.getHot_city() != null && mCityInfo.getHot_city().size() > 0){
             layout = View.inflate(mActivity, R.layout.pop_city, null);
-            setAnimationStyle(R.style.AnimTopPop);
+            setAnimationStyle(R.style.PopupTopAnim);
             gv_city = layout.findViewById(R.id.gv_city);
             iv_close = layout.findViewById(R.id.iv_close);
             view_other = layout.findViewById(R.id.view_other);
