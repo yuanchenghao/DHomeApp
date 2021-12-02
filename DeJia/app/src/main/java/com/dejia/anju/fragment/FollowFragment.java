@@ -113,6 +113,12 @@ public class FollowFragment extends BaseFragment {
         return fragment;
     }
 
+    public void refresh() {
+        if (smartRefreshLayout != null) {
+            smartRefreshLayout.autoRefresh();
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

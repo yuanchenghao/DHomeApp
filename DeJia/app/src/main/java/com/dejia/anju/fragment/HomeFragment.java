@@ -54,7 +54,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private ArrayList<BaseFragment> fragmentList = new ArrayList<>();
     private List<String> titleList = new ArrayList<>();
     private YMTabLayoutAdapter ymTabLayoutAdapter;
-    //当前选中的信息流
+    //当前选中
     private int mFragmentSelectedPos = 0;
     private CityInfo cityInfo;
     private GetCityApi getCityApi;
@@ -163,7 +163,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         cityPopWindow.dismiss();
                     } else {
                         cityPopWindow = new BaseCityPopWindow(mContext, ll_root, cityInfo);
-                        cityPopWindow.showPop();
+                        cityPopWindow.showPop(statusbarHeight);
                         cityPopWindow.setOnAllClickListener(new BaseCityPopWindow.OnAllClickListener() {
                             @Override
                             public void onAllClick(String city) {
@@ -171,11 +171,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                                     cityPopWindow.dismiss();
                                     tv_city.setText(city);
                                     Util.setCity(city);
-                                    if(fragmentList != null
-                                            && fragmentList.size() > 0
-                                            && fragmentList.get(0) instanceof RecommendFragment){
-                                        //刷新列表
-                                        ((RecommendFragment)fragmentList.get(0)).refresh();
+                                    if (ymTabLayoutAdapter.getItem(mFragmentSelectedPos) instanceof RecommendFragment) {
+                                        if (ymTabLayoutAdapter != null && (RecommendFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos) != null) {
+                                            ((RecommendFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos)).refresh();
+                                        }
+                                    } else {
+                                        if (ymTabLayoutAdapter != null && (FollowFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos) != null) {
+                                            ((FollowFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos)).refresh();
+                                        }
                                     }
                                 }
                             }
