@@ -84,7 +84,7 @@ public class SplashActivity extends BaseActivity {
                 }
             });
         } else {
-            new CountDownTimer(3000, 1000) {
+            new CountDownTimer(1000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
 

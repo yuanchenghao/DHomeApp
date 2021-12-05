@@ -2,6 +2,7 @@ package com.dejia.anju.view;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.view.Gravity;
@@ -43,9 +44,9 @@ public class BaseCityPopWindow extends PopupWindow {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
                 setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
             }
-            setBackgroundDrawable(new ColorDrawable(Color.parseColor("#66000000")));
+//            setBackgroundDrawable(new ColorDrawable(Color.parseColor("#9000")));
             //多加这一句，问题就解决了！这句的官方文档解释是：让窗口背景后面的任何东西变暗
-            mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//            mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             setFocusable(true);
             setTouchable(true);
             setOutsideTouchable(true);
