@@ -10,6 +10,7 @@ import com.dejia.anju.adapter.HomeAdapter;
 import com.dejia.anju.api.HomeIndexApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.HomeIndexBean;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
@@ -264,6 +265,7 @@ public class RecommendFragment extends BaseFragment {
                 if (data != null && !TextUtils.isEmpty(FocusPicture.getUrl())) {
                     //web跳转还没做
                     ToastUtils.toast(mContext, FocusPicture.getUrl()).show();
+                    WebUrlJumpManager.getInstance().invoke(FocusPicture.getUrl());
                 }
             }
         });
