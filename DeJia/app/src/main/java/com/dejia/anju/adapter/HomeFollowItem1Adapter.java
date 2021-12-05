@@ -1,72 +1,166 @@
 package com.dejia.anju.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.dejia.anju.R;
+import com.dejia.anju.api.FollowAndCancelApi;
+import com.dejia.anju.api.base.BaseCallBackListener;
+import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.HomeFollowBean;
+import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
 import java.util.List;
-import androidx.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 
-public class HomeFollowItem1Adapter extends BaseQuickAdapter<HomeFollowBean.NoFollowCreatorList, BaseViewHolder> {
+public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    public HomeFollowItem1Adapter(Context mContext, int layoutResId, @Nullable List<HomeFollowBean.NoFollowCreatorList> list) {
-        super(layoutResId, list);
-        this.mContext = mContext;
+    private List<HomeFollowBean.NoFollowCreatorList> mDatas;
+    private LayoutInflater mInflater;
+
+    public HomeFollowItem1Adapter(Activity context, List<HomeFollowBean.NoFollowCreatorList> datas) {
+        this.mContext = context;
+        this.mDatas = datas;
+        mInflater = LayoutInflater.from(context);
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new viewHolder(mInflater.inflate(R.layout.item_no_follow_person, parent, false));
+    }
+
+    //用于局部刷新
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position);
+        } else {
+            for (Object payload : payloads) {
+                switch ((String) payload) {
+                    case "follow":
+                        if (mDatas.get(position).getIs_following() == 0) {
+                            ((viewHolder) holder).tv_follow.setText("关注");
+                        } else if (mDatas.get(position).getIs_following() == 1) {
+                            ((viewHolder) holder).tv_follow.setText("已关注");
+                        } else {
+                            ((viewHolder) holder).tv_follow.setText("互相关注");
+                        }
+                        break;
+                }
+            }
+        }
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder baseViewHolder, HomeFollowBean.NoFollowCreatorList noFollowCreatorList) {
-        if (!TextUtils.isEmpty(noFollowCreatorList.getUser_img())) {
-            ((SimpleDraweeView) baseViewHolder.getView(R.id.iv_pic)).setController(Fresco.newDraweeControllerBuilder().setUri(noFollowCreatorList.getUser_img()).setAutoPlayAnimations(true).build());
-        } else {
-            ((SimpleDraweeView) baseViewHolder.getView(R.id.iv_pic)).setBackgroundColor(Color.parseColor("#000000"));
-        }
-        if (!TextUtils.isEmpty(noFollowCreatorList.getNickname())) {
-            baseViewHolder.setText(R.id.tv_name, noFollowCreatorList.getNickname());
-        } else {
-            baseViewHolder.setText(R.id.tv_name, "");
-        }
-        if (!TextUtils.isEmpty(noFollowCreatorList.getId())) {
-            baseViewHolder.setText(R.id.tv_tag, noFollowCreatorList.getId());
-            baseViewHolder.getView(R.id.tv_tag).setVisibility(View.VISIBLE);
-        } else {
-            baseViewHolder.getView(R.id.tv_tag).setVisibility(View.INVISIBLE);
-        }
-        baseViewHolder.getView(R.id.iv_pic).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.toast(mContext,"个人页").show();
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        HomeFollowBean.NoFollowCreatorList noFollowCreatorList = mDatas.get(position);
+        if (noFollowCreatorList != null) {
+            if (!TextUtils.isEmpty(noFollowCreatorList.getUser_img())) {
+                ((viewHolder) holder).iv_pic.setController(Fresco.newDraweeControllerBuilder().setUri(noFollowCreatorList.getUser_img()).setAutoPlayAnimations(true).build());
+            } else {
+                ((viewHolder) holder).iv_pic.setBackgroundColor(Color.parseColor("#000000"));
             }
-        });
-        baseViewHolder.getView(R.id.tv_follow).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.toast(mContext,"关注").show();
+            if (!TextUtils.isEmpty(noFollowCreatorList.getNickname())) {
+                ((viewHolder) holder).tv_name.setText(noFollowCreatorList.getNickname());
+            } else {
+                ((viewHolder) holder).tv_name.setText("");
             }
-        });
-        switch (noFollowCreatorList.getIs_following()) {
-            case 0:
-                //未关注
-                baseViewHolder.setText(R.id.tv_follow, "关注");
-                break;
-            case 1:
-                //已关注
-                baseViewHolder.setText(R.id.tv_follow, "已关注");
-                break;
-            case 2:
-                //互相关注
-                baseViewHolder.setText(R.id.tv_follow, "互相关注");
-                break;
+            if (!TextUtils.isEmpty(noFollowCreatorList.getId())) {
+                ((viewHolder) holder).tv_tag.setText(noFollowCreatorList.getId());
+                ((viewHolder) holder).tv_tag.setVisibility(View.VISIBLE);
+            } else {
+                ((viewHolder) holder).tv_tag.setVisibility(View.INVISIBLE);
+            }
+            ((viewHolder) holder).iv_pic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtils.toast(mContext, "个人页").show();
+                }
+            });
+            ((viewHolder) holder).tv_follow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtils.toast(mContext, "关注").show();
+                }
+            });
+            switch (noFollowCreatorList.getIs_following()) {
+                case 0:
+                    //未关注
+                    ((viewHolder) holder).tv_follow.setText("关注");
+                    break;
+                case 1:
+                    //已关注
+                    ((viewHolder) holder).tv_follow.setText("已关注");
+                    break;
+                case 2:
+                    //互相关注
+                    ((viewHolder) holder).tv_follow.setText("互相关注");
+                    break;
+            }
+            ((viewHolder) holder).tv_follow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("obj_id", noFollowCreatorList.getId());
+                    hashMap.put("obj_type", "1");
+                    new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
+                        @Override
+                        public void onSuccess(ServerData serverData) {
+                            if ("1".equals(serverData.code)) {
+                                FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                                if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
+                                    noFollowCreatorList.setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                                    notifyItemChanged(position, "follow");
+                                }
+                                ToastUtils.toast(mContext, serverData.message).show();
+                            } else {
+                                ToastUtils.toast(mContext, serverData.message).show();
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mDatas.size();
+    }
+
+    class viewHolder extends RecyclerView.ViewHolder {
+        private SimpleDraweeView iv_pic;
+        private TextView tv_name;
+        private TextView tv_tag;
+        private TextView tv_follow;
+
+        viewHolder(@NonNull View itemView) {
+            super(itemView);
+            iv_pic = itemView.findViewById(R.id.iv_pic);
+            tv_name = itemView.findViewById(R.id.tv_name);
+            tv_tag = itemView.findViewById(R.id.tv_tag);
+            tv_follow = itemView.findViewById(R.id.tv_follow);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtils.toast(mContext, "个人页").show();
+                }
+            });
         }
     }
 }

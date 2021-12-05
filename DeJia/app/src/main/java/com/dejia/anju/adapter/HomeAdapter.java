@@ -11,10 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dejia.anju.R;
+import com.dejia.anju.api.FollowAndCancelApi;
+import com.dejia.anju.api.base.BaseCallBackListener;
+import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.HomeIndexBean;
+import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.ToastUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -86,13 +93,73 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    //用于局部刷新
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position, @NonNull List<Object> payloads) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
         if (payloads.isEmpty()) {
-            onBindViewHolder(viewHolder, position);
+            //为空相当于刷新
+            onBindViewHolder(holder, position);
         } else {
-
+            if(holder instanceof Type1ViewHolder){
+                Type1ViewHolder type1ViewHolder = (Type1ViewHolder) holder;
+                for (Object payload : payloads) {
+                    switch ((String) payload) {
+                        case "follow":
+                            if(mDatas.get(position).getUser_data().getIs_following() == 0){
+                                type1ViewHolder.tv_follow.setText("关注");
+                            }else if(mDatas.get(position).getUser_data().getIs_following() == 1){
+                                type1ViewHolder.tv_follow.setText("已关注");
+                            }else{
+                                type1ViewHolder.tv_follow.setText("互相关注");
+                            }
+                            break;
+                    }
+                }
+            }else if(holder instanceof Type2ViewHolder){
+                Type2ViewHolder type2ViewHolder = (Type2ViewHolder) holder;
+                for (Object payload : payloads) {
+                    switch ((String) payload) {
+                        case "follow":
+                            if(mDatas.get(position).getUser_data().getIs_following() == 0){
+                                type2ViewHolder.tv_follow.setText("关注");
+                            }else if(mDatas.get(position).getUser_data().getIs_following() == 1){
+                                type2ViewHolder.tv_follow.setText("已关注");
+                            }else{
+                                type2ViewHolder.tv_follow.setText("互相关注");
+                            }
+                            break;
+                    }
+                }
+            }else if(holder instanceof Type3ViewHolder){
+                Type3ViewHolder type3ViewHolder = (Type3ViewHolder) holder;
+                for (Object payload : payloads) {
+                    switch ((String) payload) {
+                        case "follow":
+                            if(mDatas.get(position).getUser_data().getIs_following() == 0){
+                                type3ViewHolder.tv_follow.setText("关注");
+                            }else if(mDatas.get(position).getUser_data().getIs_following() == 1){
+                                type3ViewHolder.tv_follow.setText("已关注");
+                            }else{
+                                type3ViewHolder.tv_follow.setText("互相关注");
+                            }
+                            break;
+                    }
+                }
+            }else{
+                Type4ViewHolder type4ViewHolder = (Type4ViewHolder) holder;
+                for (Object payload : payloads) {
+                    switch ((String) payload) {
+                        case "follow":
+                            if("0".equals(mDatas.get(position).getUser_data().getIs_following())){
+                                type4ViewHolder.tv_follow.setText("关注");
+                            }else if("1".equals(mDatas.get(position).getUser_data().getIs_following())){
+                                type4ViewHolder.tv_follow.setText("已关注");
+                            }else{
+                                type4ViewHolder.tv_follow.setText("互相关注");
+                            }
+                            break;
+                    }
+                }
+            }
         }
     }
 
@@ -156,6 +223,29 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type1View.tv_user_type_flag.setVisibility(View.GONE);
             type1View.user_type.setVisibility(View.GONE);
         }
+        type1View.tv_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
+                hashMap.put("obj_type", "1");
+                new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
+                    @Override
+                    public void onSuccess(ServerData serverData) {
+                        if("1".equals(serverData.code)){
+                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
+                            if(followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())){
+                                mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                                notifyItemChanged(position, "follow");
+                            }
+                            ToastUtils.toast(mContext,serverData.message).show();
+                        }else{
+                            ToastUtils.toast(mContext,serverData.message).show();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void setType2View(Type2ViewHolder type2View, List<HomeIndexBean.HomeList> mDatas, int position) {
@@ -205,6 +295,29 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type2View.tv_user_type_flag.setVisibility(View.GONE);
             type2View.user_type.setVisibility(View.GONE);
         }
+        type2View.tv_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
+                hashMap.put("obj_type", "1");
+                new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
+                    @Override
+                    public void onSuccess(ServerData serverData) {
+                        if("1".equals(serverData.code)){
+                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
+                            if(followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())){
+                                mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                                notifyItemChanged(position, "follow");
+                            }
+                            ToastUtils.toast(mContext,serverData.message).show();
+                        }else{
+                            ToastUtils.toast(mContext,serverData.message).show();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void setType3View(Type3ViewHolder type3View, List<HomeIndexBean.HomeList> mDatas, int position) {
@@ -256,6 +369,29 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type3View.user_type.setVisibility(View.GONE);
         }
         type3View.rv_img.setVisibility(View.GONE);
+        type3View.tv_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
+                hashMap.put("obj_type", "1");
+                new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
+                    @Override
+                    public void onSuccess(ServerData serverData) {
+                        if("1".equals(serverData.code)){
+                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
+                            if(followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())){
+                                mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                                notifyItemChanged(position, "follow");
+                            }
+                            ToastUtils.toast(mContext,serverData.message).show();
+                        }else{
+                            ToastUtils.toast(mContext,serverData.message).show();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void setType4View(Type4ViewHolder type4View, List<HomeIndexBean.HomeList> mDatas, int position) {
@@ -309,6 +445,29 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type4View.user_type.setVisibility(View.GONE);
         }
         type4View.rv_img.setVisibility(View.GONE);
+        type4View.tv_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
+                hashMap.put("obj_type", "1");
+                new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
+                    @Override
+                    public void onSuccess(ServerData serverData) {
+                        if("1".equals(serverData.code)){
+                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
+                            if(followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())){
+                                mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                                notifyItemChanged(position, "follow");
+                            }
+                            ToastUtils.toast(mContext,serverData.message).show();
+                        }else{
+                            ToastUtils.toast(mContext,serverData.message).show();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     class Type1ViewHolder extends RecyclerView.ViewHolder {

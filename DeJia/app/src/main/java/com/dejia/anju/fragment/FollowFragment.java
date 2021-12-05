@@ -256,14 +256,6 @@ public class FollowFragment extends BaseFragment {
             rv.setItemViewCacheSize(20);
             homeFollowAdapter = new HomeFollowAdapter(mContext, mDatas);
             rv.setAdapter(homeFollowAdapter);
-//            homeFollowAdapter.setOnItemClickListener(new HomeFollowAdapter.onItemClickListener() {
-//                @Override
-//                public void onItemListener(View v, HomeIndexBean.HomeList data, int pos) {
-//                    if (!TextUtils.isEmpty(data.getUrl())) {
-//                        ToastUtils.toast(mContext, data.getUrl()).show();
-//                    }
-//                }
-//            });
         } else {
             //添加
             homeFollowAdapter.addData(mDatas);

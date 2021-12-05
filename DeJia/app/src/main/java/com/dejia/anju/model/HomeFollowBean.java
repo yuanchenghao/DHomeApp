@@ -91,10 +91,40 @@ public class HomeFollowBean {
         }
     }
 
+    public static class Img{
+        public String img;
+        public String width;
+        public String height;
+
+        public String getImg() {
+            return img;
+        }
+
+        public void setImg(String img) {
+            this.img = img;
+        }
+
+        public String getWidth() {
+            return width;
+        }
+
+        public void setWidth(String width) {
+            this.width = width;
+        }
+
+        public String getHeight() {
+            return height;
+        }
+
+        public void setHeight(String height) {
+            this.height = height;
+        }
+    }
+
     public static class FollowCreatorArticleList{
         public String title;
         public String article_type;
-        public String img;
+        public List<Img> img;
         public String building;
         public String time_set;
         public String reply_num;
@@ -117,11 +147,11 @@ public class HomeFollowBean {
             this.article_type = article_type;
         }
 
-        public String getImg() {
+        public List<Img> getImg() {
             return img;
         }
 
-        public void setImg(String img) {
+        public void setImg(List<Img> img) {
             this.img = img;
         }
 

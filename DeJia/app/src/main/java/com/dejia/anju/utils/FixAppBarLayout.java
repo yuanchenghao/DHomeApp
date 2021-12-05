@@ -2,7 +2,6 @@ package com.dejia.anju.utils;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.OverScroller;
 
@@ -40,7 +39,6 @@ public class FixAppBarLayout extends AppBarLayout.Behavior {
     private Object getSuperSuperField() {
         Object object = null;
         try {
-            Log.e(TAG, "反射拿数据");
             Class<?> appBarBehavior = getClass().getSuperclass();
             if (appBarBehavior != null) {
                 Class<?> BaseBehavior = appBarBehavior.getSuperclass();
@@ -51,18 +49,14 @@ public class FixAppBarLayout extends AppBarLayout.Behavior {
                         fieldScroller.setAccessible(true);
                         object = fieldScroller.get(this);
                     } else {
-                        Log.e(TAG, "没有获取到clzHeaderBehavior");
                     }
                 } else {
-                    Log.e(TAG, "没有获取到BaseBehavior");
                 }
             } else {
-                Log.e(TAG, "没有获取到appBarBehavior");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(TAG, "e === " + e.toString());
         }
         return object;
     }
