@@ -9,6 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.webkit.WebView;
 
 import com.bun.miitmdid.core.JLibrary;
@@ -190,6 +193,27 @@ public class DeJiaApp extends Application {
         MultiDex.install(this);
         JLibrary.InitEntry(base);
         fixFinalizerDaemonTimeOutBug();
+        new Handler(getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        //try-catch主线程的所有异常；Looper.loop()内部是一个死循环，出现异常时才会退出，所以这里使用while(true)。
+                        Looper.loop();
+                    } catch (Throwable e) {
+                        AppLog.i("Looper.loop(): " + e.getMessage());
+                    }
+                }
+            }
+        });
+
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                //try-catch子线程的所有异常。
+                AppLog.i("UncaughtExceptionHandler: " + e.getMessage());
+            }
+        });
     }
 
     public static DeJiaApp getInstance() {
