@@ -286,6 +286,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type2View.ll_location.setVisibility(View.GONE);
         }
+//        if(!TextUtils.isEmpty(mDatas.get(position).getImg().get(0))){
+//
+//        }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
             type2View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
             type2View.user_type.setText(mDatas.get(position).getUser_data().getAuth());

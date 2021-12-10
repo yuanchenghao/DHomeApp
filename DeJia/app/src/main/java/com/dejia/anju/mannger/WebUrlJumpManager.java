@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.model.WebViewData;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,11 +26,11 @@ public class WebUrlJumpManager {
         return webUrlJumpManager;
     }
 
-    public void invoke(String url){
+    public void invoke(String url) throws UnsupportedEncodingException {
         if(TextUtils.isEmpty(url)){
             return;
         }
-        Map paramMap = URLRequest(url);
+        Map paramMap = URLRequest(URLDecoder.decode(url,"utf-8"));
         WebViewData webViewData = new WebViewData.WebDataBuilder()
                 .setWebviewType((String)(paramMap.get("webviewType")))
                 .setNativeWeb((String)(paramMap.get("nativeWeb")))
