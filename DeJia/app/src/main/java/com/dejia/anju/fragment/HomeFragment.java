@@ -1,5 +1,6 @@
 package com.dejia.anju.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dejia.anju.R;
+import com.dejia.anju.activity.SearchActivity;
 import com.dejia.anju.adapter.YMTabLayoutAdapter;
 import com.dejia.anju.api.GetCityApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
@@ -188,7 +190,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_search:
-//                mContext.startActivity(new Intent(mContext, SearchActivity.class));
+                mContext.startActivity(new Intent(mContext, SearchActivity.class));
                 break;
         }
     }

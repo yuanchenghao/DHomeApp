@@ -34,6 +34,7 @@ public class FinalConstant1 {
     public static final String MYAPP_MARKET = DeJiaApp.getContext().getString(R.string.marketv);          //自己写的渠道
     //    private static final String NETWORK_MARKET = Cfg.loadStr(DeJiaApp.getContext(), SplashActivity.NETWORK_MARKET, "");//接口返回的渠道
 //    public static String YUEMEI_MARKET = TextUtils.isEmpty(NETWORK_MARKET) ? (VASDOLLY_MARKET == null ? MYAPP_MARKET : VASDOLLY_MARKET) : NETWORK_MARKET;          //市场渠道
+    public static final String SEARCH_HISTORY = "search_history";
     //协议
     public static final String HTTPS = "https";
     public static final String WSS = "wss";

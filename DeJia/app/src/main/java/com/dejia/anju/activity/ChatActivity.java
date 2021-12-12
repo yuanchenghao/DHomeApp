@@ -535,7 +535,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         Cookie yuemeiinfo = new Cookie.Builder().name("dejiainfo").value(mYuemeiinfo).domain(domain).expiresAt(expiresAt).path(path).build();
         cookieStore.saveCookie(httpUrl, yuemeiinfo);
         List<Cookie> cookies222 = cookieStore.loadCookie(httpUrl);
-        AppLog.i("cookies222 = " + cookies222);
     }
 
     @Override

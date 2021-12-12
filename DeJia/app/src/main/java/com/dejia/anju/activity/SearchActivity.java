@@ -3,18 +3,29 @@ package com.dejia.anju.activity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.dejia.anju.R;
+import com.dejia.anju.adapter.SearchInitFlowLayout;
 import com.dejia.anju.base.BaseActivity;
+import com.dejia.anju.model.HistorySearchWords;
+import com.dejia.anju.net.FinalConstant1;
+import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
+import com.dejia.anju.view.FlowLayout;
 import com.zhangyue.we.x2c.ano.Xml;
-import androidx.recyclerview.widget.RecyclerView;
+
+import org.kymjs.aframe.database.KJDB;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 
 public class SearchActivity extends BaseActivity implements View.OnClickListener {
@@ -26,10 +37,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     ImageView iv_close_et;
     @BindView(R.id.tv_quit)
     TextView tv_quit;
-    @BindView(R.id.search_result)
-    FrameLayout search_result;
-    @BindView(R.id.rv)
-    RecyclerView rv;
+    @BindView(R.id.search_init_record)
+    LinearLayout search_init_record;
+    @BindView(R.id.search_init_record_remove)
+    ImageView search_init_record_remove;
+    @BindView(R.id.search_init_record_recycler)
+    FlowLayout search_init_record_recycler;
+    private KJDB mKjdb;
 
     @Xml(layouts = "activity_search")
     @Override
@@ -41,8 +55,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     protected void initView() {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_top.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
-        setMultiOnClickListener(iv_close_et,tv_quit);
-        Util.showSoftInputFromWindow(mContext,ed);
+        setMultiOnClickListener(iv_close_et, tv_quit);
+        Util.showSoftInputFromWindow(mContext, ed);
+        mKjdb = KJDB.create(mContext, FinalConstant1.SEARCH_HISTORY);
+        setHistoryData(mKjdb.findAll(HistorySearchWords.class));
     }
 
     @Override
@@ -55,9 +71,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(TextUtils.isEmpty(s)){
+                if (TextUtils.isEmpty(s)) {
                     iv_close_et.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                     iv_close_et.setVisibility(View.VISIBLE);
                 }
             }
@@ -67,12 +83,26 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
             }
         });
+        ed.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (!TextUtils.isEmpty(ed.getText().toString().trim())) {
+                        saveRecord(ed.getText().toString().trim());
+                        ToastUtils.toast(mContext, "跳转H5").show();
+                        mContext.finish();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_quit:
                 finish();
                 break;
@@ -81,5 +111,73 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 ed.requestFocusFromTouch();
                 break;
         }
+    }
+
+    /**
+     * 设置历史记录
+     * @param hsdatas
+     */
+    private void setHistoryData(List<HistorySearchWords> hsdatas) {
+        ArrayList<String> hsdatas1 = new ArrayList<>();
+        if (hsdatas.size() > 0) {
+            search_init_record.setVisibility(View.VISIBLE);
+            for (int i = 0; i < (hsdatas.size() > 16 ? 16 : hsdatas.size()); i++) {
+                hsdatas1.add(hsdatas.get((hsdatas.size() - 1) - i).getHwords());
+            }
+            search_init_record_recycler.setMaxLine(2);
+            SearchInitFlowLayout mSearchInitFlowLayout = new SearchInitFlowLayout(mContext, search_init_record_recycler, hsdatas1);
+            //历史记录点击事件
+            mSearchInitFlowLayout.setClickCallBack(new SearchInitFlowLayout.ClickCallBack() {
+                @Override
+                public void onClick(View v, int pos, String key) {
+                    // 先隐藏键盘
+                    Util.hideSoftKeyboard(mContext);
+                    if (onEventClickListener != null) {
+                        onEventClickListener.onHistoryClick(v, key);
+                    }
+                }
+            });
+            //清除历史记录
+            search_init_record_remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    List<HistorySearchWords> hsdatas = mKjdb.findAll(HistorySearchWords.class);
+                    for (int i = 0; i < hsdatas.size(); i++) {
+                        mKjdb.delete(hsdatas.get(i));
+                    }
+                    search_init_record.setVisibility(View.GONE);
+                }
+            });
+        } else {
+            search_init_record.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 保存搜索记录
+     *
+     * @param key
+     */
+    private void saveRecord(String key) {
+        if (!TextUtils.isEmpty(key)) {
+            List<HistorySearchWords> datas = mKjdb.findAllByWhere(HistorySearchWords.class, "hwords='" + key + "'");
+            if (datas != null && datas.size() > 0) {
+                mKjdb.deleteByWhere(HistorySearchWords.class, "hwords='" + key + "'");
+            }
+            HistorySearchWords hs = new HistorySearchWords();
+            hs.setHwords(key);
+            mKjdb.save(hs);
+        }
+    }
+
+    //item点击回调
+    public interface OnEventClickListener {
+        void onHistoryClick(View v, String key);
+    }
+
+    private OnEventClickListener onEventClickListener;
+
+    public void setOnEventClickListener(OnEventClickListener onEventClickListener) {
+        this.onEventClickListener = onEventClickListener;
     }
 }
