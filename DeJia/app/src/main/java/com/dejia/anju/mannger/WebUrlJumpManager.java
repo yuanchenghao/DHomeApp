@@ -26,11 +26,11 @@ public class WebUrlJumpManager {
         return webUrlJumpManager;
     }
 
-    public void invoke(String url) throws UnsupportedEncodingException {
+    public void invoke(String url){
         if(TextUtils.isEmpty(url)){
             return;
         }
-        Map paramMap = URLRequest(URLDecoder.decode(url,"utf-8"));
+        Map paramMap = URLRequest(URLDecoder.decode(url));
         WebViewData webViewData = new WebViewData.WebDataBuilder()
                 .setWebviewType((String)(paramMap.get("webviewType")))
                 .setNativeWeb((String)(paramMap.get("nativeWeb")))

@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.0"
     defaultConfig {
         applicationId "com.dejia.anju"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0.0"
@@ -184,10 +184,9 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-12'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
     //okhttp
-    implementation 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     //Glide
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation files('libs/miit_mdid_1.0.8.aar')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'
@@ -208,6 +207,9 @@ dependencies {
     implementation 'io.github.youth5201314:banner:2.2.2'
     //gson
     implementation 'com.google.code.gson:gson:2.8.9'
+    //pictureSelector
+    //https://github.com/LuckSiege/PictureSelector/blob/master/README_CN.md
+    implementation 'io.github.lucksiege:pictureselector:v2.7.2'
 }
 repositories {
     mavenCentral()

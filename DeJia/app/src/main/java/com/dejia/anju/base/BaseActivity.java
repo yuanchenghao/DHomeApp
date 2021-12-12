@@ -52,18 +52,18 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         initData();
     }
 
-    //保持字体大小不变
-    @Override
-    public Resources getResources() {
-        Resources resources = super.getResources();
-        Configuration config = resources.getConfiguration();
-        if(config.fontScale != 1f) {
-            config.fontScale = 1f;
-            return mContext.createConfigurationContext(config).getResources();
-        } else {
-            return resources;
-        }
-    }
+//    //保持字体大小不变
+//    @Override
+//    public Resources getResources() {
+//        Resources resources = super.getResources();
+//        Configuration config = resources.getConfiguration();
+//        if(config.fontScale != 1f) {
+//            config.fontScale = 1f;
+//            return mContext.createConfigurationContext(config).getResources();
+//        } else {
+//            return resources;
+//        }
+//    }
 
     /**
      * 提供加载的布局的方法

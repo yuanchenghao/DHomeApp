@@ -5,6 +5,7 @@ import com.dejia.anju.DeJiaApp;
 import com.dejia.anju.R;
 
 import static com.dejia.anju.net.EnumInterfaceType.POST;
+import static com.dejia.anju.net.EnumInterfaceType.UPLOAD;
 import static org.apache.http.HttpVersion.HTTP;
 
 public class FinalConstant1 {
@@ -87,7 +88,7 @@ public class FinalConstant1 {
         //我的关注
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "follow", "myFollowing", POST);
         //修改资料上传照片
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "uploadImg", POST);
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "uploadImg", UPLOAD);
         //验证码登录
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "verificationCodeLogin", POST);
         //修改用户资料
