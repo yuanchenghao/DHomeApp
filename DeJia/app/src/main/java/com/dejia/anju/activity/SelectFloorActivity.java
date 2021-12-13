@@ -9,17 +9,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.dejia.anju.R;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
