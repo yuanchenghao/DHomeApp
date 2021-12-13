@@ -10,6 +10,7 @@
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage = "true"
         android:theme="@style/AppTheme">
         <!--启动页-->
         <activity

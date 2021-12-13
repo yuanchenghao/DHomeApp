@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 
+import com.dejia.anju.DeJiaApp;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,7 +49,7 @@ public class ExternalStorage {
      */
     public static String getSDCardBaseDir() {
         if (isSDCardMounted()) {
-            return Environment.getExternalStorageDirectory().getAbsolutePath();
+            return DeJiaApp.getContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
         }
         return null;
     }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -220,6 +221,7 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                 PictureSelector.create(mContext)
                         .openCamera(PictureMimeType.ofImage())
                         .circleDimmedLayer(true)
+                        .isAndroidQTransform(true)
                         .isEnableCrop(true)
                         .isCompress(true)// 是否压缩
                         .compressQuality(60)// 图片压缩后输出质量 0~ 100
@@ -241,6 +243,7 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                 PictureSelector.create(mContext)
                         .openGallery(PictureMimeType.ofImage())
                         .isCamera(false)
+                        .isAndroidQTransform(true)
                         .theme(R.style.picture_WeChat_style)
                         .isWeChatStyle(true)
                         .selectionMode(PictureConfig.SINGLE)
@@ -292,13 +295,13 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
 //                        Log.i(TAG, "Android Q 特有Path:" + media.getAndroidQToPath());
 //                    }
                     if (chooseResult != null && chooseResult.size() > 0) {
-                        sendUserIcon(chooseResult.get(0).getAndroidQToPath());
+                        sendUserIcon(chooseResult.get(0).getCutPath());
                     }
                     break;
                 case PictureConfig.REQUEST_CAMERA:
                     List<LocalMedia> cameraResult = PictureSelector.obtainMultipleResult(data);
                     if (cameraResult != null && cameraResult.size() > 0) {
-                        sendUserIcon(cameraResult.get(0).getAndroidQToPath());
+                        sendUserIcon(cameraResult.get(0).getCutPath());
                     }
                     break;
                 default:
@@ -339,6 +342,8 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                     PictureCacheManager.deleteCacheDirFile(mContext, PictureMimeType.ofImage());
                 }
             });
+        }else{
+            ToastUtils.toast(mContext, "图片路径错误请重试").show();
         }
     }
 }
