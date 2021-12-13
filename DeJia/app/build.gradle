@@ -211,6 +211,10 @@ dependencies {
     //pictureSelector
     //https://github.com/LuckSiege/PictureSelector/blob/master/README_CN.md
     implementation 'io.github.lucksiege:pictureselector:v2.7.2'
+    // 权限请求框架：https://github.com/getActivity/XXPermissions
+    implementation 'com.github.getActivity:XXPermissions:13.2'
+    // Gson 解析容错：https://github.com/getActivity/GsonFactory
+    implementation 'com.github.getActivity:GsonFactory:5.2'
 }
 repositories {
     mavenCentral()

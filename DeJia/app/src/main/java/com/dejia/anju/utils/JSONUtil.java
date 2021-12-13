@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.hjq.gson.factory.GsonFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,15 +81,16 @@ public class JSONUtil {
      * @return
      */
     public static <T> T TransformSingleBean(String jsonStr, Class<T> clazz) {
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .disableHtmlEscaping()
-                .create();
+        Gson gson = GsonFactory.getSingletonGson();
+//                new GsonBuilder()
+//                .setPrettyPrinting()
+//                .disableHtmlEscaping()
+//                .create();
         return gson.fromJson(jsonStr, clazz);
     }
 
     public static <T> T TransformSingleBean(JsonReader jsonStr, Class<T> clazz) {
-        return new Gson().fromJson(jsonStr, clazz);
+        return GsonFactory.getSingletonGson().fromJson(jsonStr, clazz);
     }
 
     /**
@@ -124,11 +126,11 @@ public class JSONUtil {
     public static <T> ArrayList<T> jsonToArrayList(JsonReader jsonStr, Class<T> clazz) {
         Type type = new TypeToken<ArrayList<JsonObject>>() {
         }.getType();
-        ArrayList<JsonObject> jsonObjects = new Gson().fromJson(jsonStr, type);
+        ArrayList<JsonObject> jsonObjects = GsonFactory.getSingletonGson().fromJson(jsonStr, type);
 
         ArrayList<T> arrayList = new ArrayList<>();
         for (JsonObject jsonObject : jsonObjects) {
-            arrayList.add(new Gson().fromJson(jsonObject, clazz));
+            arrayList.add(GsonFactory.getSingletonGson().fromJson(jsonObject, clazz));
         }
         return arrayList;
     }
@@ -144,7 +146,7 @@ public class JSONUtil {
     public static <T> ArrayList<T> jsonToArrayList(String json, Class<T> clazz) {
         Type type = new TypeToken<ArrayList<JsonObject>>() {
         }.getType();
-        Gson gson = new Gson();
+        Gson gson = GsonFactory.getSingletonGson();
         ArrayList<JsonObject> jsonObjects = gson.fromJson(json, type);
 
         ArrayList<T> arrayList = new ArrayList<>();

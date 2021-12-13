@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_20"
+                android:textSize="@dimen/sp_16"
+                android:textColor="#1C2125"
+                android:text="取消" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提及楼盘小区"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:textColor="#1C2125"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_sure"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="发表"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/dp_20"
+            android:layout_alignParentRight="true"
+            android:textColor="#33A7FF"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@drawable/shape_f5f6f7_button_22"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/dp_16"
+            android:layout_height="@dimen/dp_16"
+            android:layout_marginLeft="@dimen/dp_18"
+            android:src="@mipmap/search" />
+
+        <EditText
+            android:id="@+id/ed"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_28"
+            android:layout_marginLeft="@dimen/dp_9"
+            android:layout_marginRight="@dimen/dp_9"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="提到的小区、楼盘名称…"
+            android:textColorHint="#919699"
+            android:textSize="@dimen/sp_14"
+            android:imeOptions="actionSend"
+            android:singleLine="true" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_des"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="@dimen/sp_12"
+        android:textColor="#1C2125"
+        android:layout_marginTop="@dimen/dp_17"
+        android:text="请输入楼盘或小区的名称，方便更多的人看到这条内容" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_17" />
+</LinearLayout>

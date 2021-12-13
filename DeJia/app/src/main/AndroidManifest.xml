@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.dejia.anju">
 
     <application
@@ -58,6 +59,12 @@
         <activity
             android:name="com.dejia.anju.activity.SearchActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.dejia.anju.activity.ToolOfProductionActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.dejia.anju.activity.SelectFloorActivity"
+            android:screenOrientation="portrait"></activity>
         //极光推送相关
         <!-- Since JCore2.0.0 Required SDK核心功能-->
         <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
@@ -93,7 +100,9 @@
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
-
+        <meta-data
+            android:name="ScopedStorage"
+            android:value="true" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.FileProvider"
@@ -132,4 +141,6 @@
     <!--如果您的应用需要后台定位权限，且有可能运行在Android Q设备上,并且设置了target>28，必须增加这个权限声明-->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="replace" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="replace" />
 </manifest>
