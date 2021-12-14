@@ -13,10 +13,12 @@ import android.widget.TextView;
 
 import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
+import com.dejia.anju.adapter.ToolSelectImgAdapter;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.utils.KVUtils;
+import com.dejia.anju.view.YMGridLayoutManager;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
@@ -25,9 +27,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
@@ -51,6 +55,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
     TextView tv_name;
     private UserInfo userInfo;
     private List<LocalMedia> chooseResult;
+    private ToolSelectImgAdapter toolSelectImgAdapter;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -77,7 +82,6 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         return R.layout.activity_tool_production;
     }
 
-    @Override
     protected void initView() {
         QMUIStatusBarHelper.translucent(this);
         QMUIStatusBarHelper.setStatusBarLightMode(this);
@@ -85,7 +89,36 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         layoutParams.topMargin = statusbarHeight;
         rl_title.setLayoutParams(layoutParams);
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
-        chooseResult = getIntent().getParcelableArrayListExtra("imgList");
+        if(chooseResult != null){
+            chooseResult = getIntent().getParcelableArrayListExtra("imgList");
+        }else{
+            chooseResult = new ArrayList<>();
+        }
+        setRecycleView();
+    }
+
+    //设置图片列表
+    private void setRecycleView() {
+        YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
+        toolSelectImgAdapter = new ToolSelectImgAdapter(mContext, chooseResult, 9, windowsWight);
+        rv.setLayoutManager(gridLayoutManager);
+        rv.setAdapter(toolSelectImgAdapter);
+        toolSelectImgAdapter.setListener(new ToolSelectImgAdapter.CallbackListener() {
+            @Override
+            public void add() {
+
+            }
+
+            @Override
+            public void delete(int position) {
+
+            }
+
+            @Override
+            public void item(int position, List<LocalMedia> mList) {
+
+            }
+        });
     }
 
 
