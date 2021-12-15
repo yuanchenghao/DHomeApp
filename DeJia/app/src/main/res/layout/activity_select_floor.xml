@@ -40,7 +40,7 @@
             android:id="@+id/tv_sure"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="发表"
+            android:text="完成"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/dp_20"
             android:layout_alignParentRight="true"

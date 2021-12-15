@@ -65,7 +65,7 @@ public class ToolSelectImgAdapter extends RecyclerView.Adapter<ToolSelectImgAdap
             holder.delete.setVisibility(View.GONE);
         } else {
             //显示本地或网络图片，并显示删除按钮
-            holder.gallery.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getPath()).setAutoPlayAnimations(true).build());
+            holder.gallery.setController(Fresco.newDraweeControllerBuilder().setUri("file://" +mDatas.get(position).getPath()).setAutoPlayAnimations(true).build());
             holder.delete.setVisibility(View.VISIBLE);
         }
         //按钮删除事件
@@ -82,6 +82,15 @@ public class ToolSelectImgAdapter extends RecyclerView.Adapter<ToolSelectImgAdap
                 listener.item(position, mDatas);
             }
         });
+    }
+
+    public void setImageList(List<LocalMedia> mList) {
+        this.mDatas = mList;
+        notifyDataSetChanged();
+    }
+
+    public List<LocalMedia> getData(){
+        return mDatas;
     }
 
 

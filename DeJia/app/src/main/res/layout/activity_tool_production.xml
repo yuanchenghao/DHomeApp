@@ -47,8 +47,6 @@
         android:textColor="#1C2125"
         android:textSize="@dimen/sp_16"
         android:textStyle="bold"
-        android:paddingLeft="@dimen/dp_24"
-        android:paddingRight="@dimen/dp_24"
         android:layout_marginLeft="@dimen/dp_20"
         android:layout_marginRight="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_5"

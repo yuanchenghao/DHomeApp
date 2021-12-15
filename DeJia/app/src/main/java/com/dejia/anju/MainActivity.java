@@ -409,7 +409,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     //发帖
     private void invokeToolActivity() {
         MessageShowInfo messageShowInfo = KVUtils.getInstance().decodeParcelable("message_show", MessageShowInfo.class);
-        if (messageShowInfo != null && "1".equals(messageShowInfo.getPost_content_entry_style())) {
+        if (messageShowInfo != null && !"1".equals(messageShowInfo.getPost_content_entry_style())) {
             //常规样式
             Intent i = new Intent(mContext, ToolOfProductionActivity.class);
             mContext.startActivity(i);

@@ -11,15 +11,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.ToolSelectImgAdapter;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.model.SearchBuildingInfo;
 import com.dejia.anju.model.UserInfo;
+import com.dejia.anju.utils.GlideEngine;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.view.YMGridLayoutManager;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.style.PictureWindowAnimationStyle;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
 
@@ -56,6 +61,8 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
     private UserInfo userInfo;
     private List<LocalMedia> chooseResult;
     private ToolSelectImgAdapter toolSelectImgAdapter;
+    private PictureWindowAnimationStyle mWindowAnimationStyle;
+    private SearchBuildingInfo searchBuildingInfo;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -88,10 +95,11 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) rl_title.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
         rl_title.setLayoutParams(layoutParams);
+        mWindowAnimationStyle = new PictureWindowAnimationStyle();
+        mWindowAnimationStyle.ofAllAnimation(R.anim.picture_anim_up_in, R.anim.picture_anim_down_out);
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
-        if(chooseResult != null){
-            chooseResult = getIntent().getParcelableArrayListExtra("imgList");
-        }else{
+        chooseResult = getIntent().getParcelableArrayListExtra("imgList");
+        if (chooseResult == null) {
             chooseResult = new ArrayList<>();
         }
         setRecycleView();
@@ -106,19 +114,45 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         toolSelectImgAdapter.setListener(new ToolSelectImgAdapter.CallbackListener() {
             @Override
             public void add() {
-
+                selectImg();
             }
 
             @Override
             public void delete(int position) {
-
+                toolSelectImgAdapter.getData().remove(position);
+                toolSelectImgAdapter.setImageList(toolSelectImgAdapter.getData());
             }
 
             @Override
             public void item(int position, List<LocalMedia> mList) {
-
+                PictureSelector.create(mContext)
+                        .themeStyle(R.style.picture_default_style)
+                        .isNotPreviewDownload(true)//是否显示保存弹框
+                        .imageEngine(GlideEngine.createGlideEngine())
+                        .openExternalPreview(position, chooseResult);
             }
         });
+    }
+
+    private void selectImg() {
+        PictureSelector.create(mContext)
+                .openGallery(PictureMimeType.ofImage())
+                .isCamera(false)
+                .selectionData(toolSelectImgAdapter.getData())
+                .isAndroidQTransform(true)
+                .theme(R.style.picture_WeChat_style)
+                .isWeChatStyle(true)
+                .selectionMode(PictureConfig.MULTIPLE)
+                .setPictureWindowAnimationStyle(mWindowAnimationStyle)
+                .maxSelectNum(9)
+                .isCompress(true)// 是否压缩
+                .compressQuality(60)// 图片压缩后输出质量 0~ 100
+                .circleDimmedLayer(true)
+                .isZoomAnim(true)
+                .withAspectRatio(1, 1)
+                .minimumCompressSize(100)// 小于100kb的图片不压缩
+                .imageEngine(GlideEngine.createGlideEngine())
+                .forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
 
@@ -150,15 +184,26 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         switch (resultCode) {
             case 101:
                 if (requestCode == SELECT_REQUEST_CODE) {
-                    String name = data.getStringExtra("name");
-                    if (!TextUtils.isEmpty(name)) {
-                        tv_name.setText(name);
+                    searchBuildingInfo = data.getParcelableExtra("name");
+                    if (searchBuildingInfo != null && !TextUtils.isEmpty(searchBuildingInfo.getName())) {
+                        tv_name.setText(searchBuildingInfo.getName());
                     }
                 }
                 break;
             case 102:
 
                 break;
+            case RESULT_OK:
+                List<LocalMedia> picResult = PictureSelector.obtainMultipleResult(data);
+                if (picResult != null && picResult.size() > 0) {
+                    toolSelectImgAdapter.setImageList(picResult);
+                }
+                break;
         }
+    }
+
+    //上传图片
+    private void postImg() {
+
     }
 }

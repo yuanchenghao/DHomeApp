@@ -22,6 +22,7 @@ import com.dejia.anju.base.Constants;
 import com.dejia.anju.mannger.Density;
 import com.dejia.anju.mannger.ImagePipelineConfigUtils;
 import com.dejia.anju.utils.KVUtils;
+import com.squareup.leakcanary.LeakCanary;
 
 import org.qiyi.basecore.taskmanager.ParallelTask;
 
@@ -75,6 +76,11 @@ public class DeJiaApp extends Application {
         webviewSetPath(this);
         registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         startInitThreadPool();
+        // LeakCanary是在另外一个进程中启动
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
     }
 
 
