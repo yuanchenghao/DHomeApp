@@ -13,18 +13,26 @@ import android.widget.TextView;
 
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.ToolSelectImgAdapter;
+import com.dejia.anju.api.UgcSaveApi;
+import com.dejia.anju.api.UpLoadUgcImageApi;
+import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.model.SearchBuildingInfo;
+import com.dejia.anju.model.UgcUploadImageInfo;
 import com.dejia.anju.model.UserInfo;
+import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.GlideEngine;
+import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
+import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.view.YMGridLayoutManager;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.style.PictureWindowAnimationStyle;
+import com.lzy.okgo.model.HttpParams;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
 
@@ -32,7 +40,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -63,6 +73,8 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
     private ToolSelectImgAdapter toolSelectImgAdapter;
     private PictureWindowAnimationStyle mWindowAnimationStyle;
     private SearchBuildingInfo searchBuildingInfo;
+    private UpLoadUgcImageApi upLoadUgcImageApi;
+    private UgcSaveApi ugcSaveApi;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -169,7 +181,12 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                 finish();
                 break;
             case R.id.tv_sure:
-
+                if (TextUtils.isEmpty(ed.getText().toString().trim())) {
+                    ToastUtils.toast(mContext, "请输入内容").show();
+                    return;
+                }
+                //先传图片
+                postImg();
                 break;
             case R.id.ll_house:
                 Intent i = new Intent(mContext, SelectFloorActivity.class);
@@ -204,6 +221,48 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
 
     //上传图片
     private void postImg() {
+        upLoadUgcImageApi = new UpLoadUgcImageApi();
+        HashMap<String, Object> map = new HashMap<>();
+        HttpParams httpParams = new HttpParams();
+        for (int i = 0; i < toolSelectImgAdapter.getData().size(); i++) {
+            httpParams.put(toolSelectImgAdapter.getData().get(i) + "",
+                    new File(toolSelectImgAdapter.getData().get(i).getPath()));
+        }
+        upLoadUgcImageApi.getCallBack(mContext, map, httpParams, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if ("1".equals(serverData.code)) {
+                    List<UgcUploadImageInfo> list = JSONUtil.jsonToArrayList(serverData.data, UgcUploadImageInfo.class);
+                    postUgc(list);
+                } else {
+                    ToastUtils.toast(mContext, "图片上传失败请重试").show();
+                }
+            }
+        });
+    }
 
+    //上传文章
+    private void postUgc(List<UgcUploadImageInfo> list) {
+        if (list != null && list.size() > 0) {
+            ugcSaveApi = new UgcSaveApi();
+            HashMap<String, Object> maps = new HashMap<>();
+            maps.put("content", ed.getText().toString().trim());
+            maps.put("image", list.toString());
+            maps.put("rel_loupan", searchBuildingInfo.toString());
+            //            maps.put("rel_house_type","");
+            ugcSaveApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                @Override
+                public void onSuccess(ServerData serverData) {
+                    if ("1".equals(serverData.code)) {
+                        ToastUtils.toast(mContext, "上传文章成功").show();
+                        finish();
+                    } else {
+                        ToastUtils.toast(mContext, serverData.message).show();
+                    }
+                }
+            });
+        } else {
+            ToastUtils.toast(mContext, "图片数组为空请重试").show();
+        }
     }
 }

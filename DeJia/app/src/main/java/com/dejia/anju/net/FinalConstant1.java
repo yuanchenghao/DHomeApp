@@ -95,7 +95,7 @@ public class FinalConstant1 {
         //修改用户资料
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "setUser", POST);
         //图片上传
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "ugc", "uploadImage", POST);
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "ugc", "uploadImage", UPLOAD);
         //文章提交
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "ugc", "save", POST);
         //获取用户信息
