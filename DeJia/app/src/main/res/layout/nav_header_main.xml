@@ -158,6 +158,6 @@
         android:paddingBottom="@dimen/dp_11"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/ll_kill"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="150dp"
         android:background="@drawable/shape_f5f6f7_button_22" />
 </RelativeLayout>

@@ -21,7 +21,6 @@
             app:fadeDuration="100"
             android:layout_gravity="bottom"
             app:roundAsCircle="true"
-            android:background="#000000"
             app:retryImageScaleType="centerCrop" />
 
         <LinearLayout

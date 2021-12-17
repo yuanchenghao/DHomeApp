@@ -98,7 +98,7 @@ public class HomeIndexBean {
         public String time_set;
         public int reply_num;
         public int agree_num;
-        public java.util.List<?> img;
+        public java.util.List<ImgInfo> img;
         public String url;
 
         public String getUrl() {
@@ -165,11 +165,11 @@ public class HomeIndexBean {
             this.agree_num = agree_num;
         }
 
-        public List<?> getImg() {
+        public List<ImgInfo> getImg() {
             return img;
         }
 
-        public void setImg(List<?> img) {
+        public void setImg(List<ImgInfo> img) {
             this.img = img;
         }
 

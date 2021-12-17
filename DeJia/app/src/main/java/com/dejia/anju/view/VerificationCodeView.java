@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -19,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
 
 public class VerificationCodeView extends RelativeLayout {
@@ -31,7 +34,8 @@ public class VerificationCodeView extends RelativeLayout {
     // 输入框的宽度
     private int mEtWidth;
     //输入框分割线
-    private Drawable mEtDividerDrawable;
+//    private Drawable mEtDividerDrawable;
+    private GradientDrawable drawable;
     //输入框文字颜色
     private int mEtTextColor;
     //输入框文字大小
@@ -73,7 +77,7 @@ public class VerificationCodeView extends RelativeLayout {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerificationCodeView, defStyleAttr, 0);
         mEtNumber = typedArray.getInteger(R.styleable.VerificationCodeView_icv_et_number, 1);
         mEtWidth = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_width, 42);
-        mEtDividerDrawable = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_divider_drawable);
+//        mEtDividerDrawable = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_divider_drawable);
         mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_text_size, (int) sp2px(16, context));
         mEtTextColor = typedArray.getColor(R.styleable.VerificationCodeView_icv_et_text_color, Color.BLACK);
         mEtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_focus);
@@ -85,9 +89,9 @@ public class VerificationCodeView extends RelativeLayout {
 
 
         // 当xml中未配置时 这里进行初始配置默认图片
-        if (mEtDividerDrawable == null) {
-            mEtDividerDrawable = context.getResources().getDrawable(R.drawable.shape_divider_identifying);
-        }
+//        if (mEtDividerDrawable == null) {
+//            mEtDividerDrawable = context.getResources().getDrawable(R.drawable.shape_divider_identifying);
+//        }
 
         if (mEtBackgroundDrawableFocus == null) {
             mEtBackgroundDrawableFocus = context.getResources().getDrawable(R.drawable.shape_icv_et_bg_focus);
@@ -102,7 +106,7 @@ public class VerificationCodeView extends RelativeLayout {
 
     // 初始UI
     private void initUI() {
-        initTextViews(getContext(), mEtNumber, mEtWidth, mEtDividerDrawable, mEtTextSize, mEtTextColor);
+        initTextViews(getContext(), mEtNumber, mEtWidth, mEtTextSize, mEtTextColor);
         initEtContainer(mPwdTextViews);
         setListener();
     }
@@ -123,14 +127,15 @@ public class VerificationCodeView extends RelativeLayout {
 
 
     //初始化TextView
-    private void initTextViews(Context context, int etNumber, int etWidth, Drawable etDividerDrawable, float etTextSize, int etTextColor) {
+    private void initTextViews(Context context, int etNumber, int etWidth, float etTextSize, int etTextColor) {
         // 设置 editText 的输入长度
         et.setCursorVisible(false);//将光标隐藏
         et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(etNumber)}); //最大输入长度
         // 设置分割线的宽度
-        if (etDividerDrawable != null) {
-            etDividerDrawable.setBounds(0, 0, etDividerDrawable.getMinimumWidth(), etDividerDrawable.getMinimumHeight());
-            containerEt.setDividerDrawable(etDividerDrawable);
+        if (drawable == null) {
+            drawable = new GradientDrawable();
+            drawable.setSize((int) ((ScreenUtils.getScreenWidth()-SizeUtils.dp2px(304))/3), SizeUtils.dp2px(56));
+            containerEt.setDividerDrawable(drawable);
         }
         mPwdTextViews = new PwdTextView[etNumber];
 
@@ -339,11 +344,8 @@ public class VerificationCodeView extends RelativeLayout {
         public void afterTextChanged(Editable editable) {
             String inputStr = editable.toString();
             if (!TextUtils.isEmpty(inputStr)) {
-
                 String[] strArray = inputStr.split("");
-
                 for (int i = 0; i < strArray.length; i++) {
-
                     // 不能大于输入框个数
                     if (i > mEtNumber) {
                         break;
@@ -354,6 +356,4 @@ public class VerificationCodeView extends RelativeLayout {
             }
         }
     }
-
-
 }

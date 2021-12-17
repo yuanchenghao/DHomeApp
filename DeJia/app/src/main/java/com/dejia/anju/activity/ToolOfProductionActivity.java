@@ -248,7 +248,9 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
             HashMap<String, Object> maps = new HashMap<>();
             maps.put("content", ed.getText().toString().trim());
             maps.put("image", list.toString());
-            maps.put("rel_loupan", searchBuildingInfo.toString());
+            if(searchBuildingInfo != null){
+                maps.put("rel_loupan", searchBuildingInfo.toString());
+            }
             //            maps.put("rel_house_type","");
             ugcSaveApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
                 @Override

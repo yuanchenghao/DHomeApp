@@ -198,7 +198,7 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     //极光认证
     implementation 'cn.jiguang.sdk:jverification:2.7.1'
-    implementation 'cn.jiguang.sdk:jcore:2.8.2'
+    implementation 'cn.jiguang.sdk:jcore:3.1.0'
     //极光推送
     implementation 'cn.jiguang.sdk:jpush:4.4.0'
     implementation 'com.blankj:utilcodex:1.30.6'

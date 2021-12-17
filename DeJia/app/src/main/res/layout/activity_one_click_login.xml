@@ -39,7 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp_32"
-        android:text="18511579333"
         android:textColor="#333333"
         android:textSize="27sp"
         android:textStyle="bold" />

@@ -10,21 +10,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.dejia.anju.R;
 import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.HomeIndexBean;
+import com.dejia.anju.model.ImgInfo;
 import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.GlideEngine;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.view.YMGridLayoutManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.luck.picture.lib.PictureSelector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -45,22 +52,22 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
         //区分类型
-        if (mDatas.get(position).getArticle_type() == 1) {
-            //长图文
-            if (mDatas.get(position).getImg() == null || mDatas.get(position).getImg().size() == 0) {
-                //无图类型
-                return ITEM_TYPE_ONE;
-            } else if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() == 1) {
-                //一张图类型
-                return ITEM_TYPE_TOW;
-            } else {
+//        if (mDatas.get(position).getArticle_type() == 1) {
+//            //长图文
+//            if (mDatas.get(position).getImg() == null || mDatas.get(position).getImg().size() == 0) {
+//                //无图类型
+//                return ITEM_TYPE_ONE;
+//            } else if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() == 1) {
+//                //一张图类型
+//                return ITEM_TYPE_TOW;
+//            } else {
                 //多图类型
                 return ITEM_TYPE_THTEE;
-            }
-        } else {
-            //短图文类型
-            return ITEM_TYPE_FOUR;
-        }
+//            }
+//        } else {
+//            //短图文类型
+//            return ITEM_TYPE_FOUR;
+//        }
     }
 
 
@@ -180,7 +187,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getUser_img())) {
             type1View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getUser_data().getUser_img()).setAutoPlayAnimations(true).build());
         } else {
-            type1View.iv_person.setBackgroundColor(Color.parseColor("#000000"));
+            type1View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getNickname())) {
             type1View.tv_name.setText(mDatas.get(position).getUser_data().getNickname());
@@ -252,7 +259,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getUser_img())) {
             type2View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getUser_data().getUser_img()).setAutoPlayAnimations(true).build());
         } else {
-            type2View.iv_person.setBackgroundColor(Color.parseColor("#000000"));
+            type2View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getNickname())) {
             type2View.tv_name.setText(mDatas.get(position).getUser_data().getNickname());
@@ -289,6 +296,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //        if(!TextUtils.isEmpty(mDatas.get(position).getImg().get(0))){
 //
 //        }
+
+        type2View.iv_img.setController(Fresco.newDraweeControllerBuilder().setUri("https://www.vcg.com/creative/814475973").setAutoPlayAnimations(true).build());
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
             type2View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
             type2View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
@@ -328,7 +337,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getUser_img())) {
             type3View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getUser_data().getUser_img()).setAutoPlayAnimations(true).build());
         } else {
-            type3View.iv_person.setBackgroundColor(Color.parseColor("#000000"));
+            type3View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getNickname())) {
             type3View.tv_name.setText(mDatas.get(position).getUser_data().getNickname());
@@ -371,7 +380,29 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type3View.tv_user_type_flag.setVisibility(View.GONE);
             type3View.user_type.setVisibility(View.GONE);
         }
-        type3View.rv_img.setVisibility(View.GONE);
+
+        //自己弄得假数据
+        List<ImgInfo> list = new ArrayList<>();
+        for(int i = 0;i<3;i++){
+            ImgInfo imgInfo = new ImgInfo();
+            imgInfo.setUrl("https://p24.yuemei.com/tao/2019/0709/200_200/jt190709094750_632c65.jpg");
+            list.add(imgInfo);
+        }
+//        if(mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0){
+            YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
+            HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, list, ScreenUtils.getScreenWidth());
+            type3View.rv_img.setLayoutManager(gridLayoutManager);
+            type3View.rv_img.setAdapter(homeItemImgAdapter);
+            type3View.rv_img.setVisibility(View.VISIBLE);
+        homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
+            @Override
+            public void item(int position, List<ImgInfo> mList) {
+
+            }
+        });
+//        }else{
+//            type3View.rv_img.setVisibility(View.GONE);
+//        }
         type3View.tv_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -404,7 +435,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getUser_img())) {
             type4View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getUser_data().getUser_img()).setAutoPlayAnimations(true).build());
         } else {
-            type4View.iv_person.setBackgroundColor(Color.parseColor("#000000"));
+            type4View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
+
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getNickname())) {
             type4View.tv_name.setText(mDatas.get(position).getUser_data().getNickname());

@@ -4,6 +4,7 @@ package com.dejia.anju.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.dejia.anju.base.BaseActivity;
 
 import java.util.HashMap;
 
+import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 
 import com.dejia.anju.event.Event;
@@ -29,6 +31,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.OnClick;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
+import cn.jiguang.verifysdk.api.JVerifyUIConfig;
 import cn.jiguang.verifysdk.api.PreLoginListener;
 import cn.jiguang.verifysdk.api.VerifyListener;
 
@@ -56,12 +59,13 @@ public class OneClickLoginActivity extends BaseActivity {
     public void onEventMainThread(Event msgEvent) {
         switch (msgEvent.getCode()) {
             case 1:
-                if (mContext != null && !mContext.isFinishing()) {
+                if (OneClickLoginActivity.this != null && !OneClickLoginActivity.this.isFinishing()) {
                     finished();
                 }
                 break;
         }
     }
+
 
     @Xml(layouts = "activity_one_click_login")
     @Override
@@ -69,8 +73,7 @@ public class OneClickLoginActivity extends BaseActivity {
         return R.layout.activity_one_click_login;
     }
 
-    @Override
-    protected void initView() {
+    public void initView() {
         type = getIntent().getStringExtra("type");
         if ("0".equals(type)) {
             tv_close.setVisibility(View.VISIBLE);
@@ -81,16 +84,14 @@ public class OneClickLoginActivity extends BaseActivity {
         }
         QMUIStatusBarHelper.translucent(this);
         QMUIStatusBarHelper.setStatusBarLightMode(this);
-        statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(mContext);
+        int statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(OneClickLoginActivity.this);
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) tv_close.getLayoutParams();
         ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) iv_close.getLayoutParams();
         layoutParams.topMargin = statusbarHeight + SizeUtils.dp2px(20);
         layoutParams2.topMargin = statusbarHeight + SizeUtils.dp2px(20);
-
     }
 
-    @Override
-    protected void initData() {
+    public void initData() {
 //        if(!JVerificationInterface.checkVerifyEnable(this)){
 //            AppLog.i("当前网络环境不支持认证");
 ////            return;
@@ -114,6 +115,47 @@ public class OneClickLoginActivity extends BaseActivity {
 //                }
 //            }
 //        });
+//                JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
+//                .setAuthBGImgPath("main_bg")
+//                .setNavColor(Color.parseColor("#FFFFFF"))
+//                .setNavText("登录")
+//                .setNavTextColor(Color.parseColor("#333333"))
+//                .setNavReturnImgPath("back_black")
+//                .setLogoWidth(75)
+//                .setLogoHeight(75)
+//                .setLogoHidden(false)
+//                .setNumberColor(Color.parseColor("#333333"))
+//                .setNumFieldOffsetY(160)
+//                .setLogBtnText("本机号码一键登录")
+//                .setLogBtnTextColor(0xffffffff)
+//                .setLogBtnImgPath("auto_login_btn")
+//                .setLogBtnHeight(47)
+//                .setLogBtnTextSize(15)
+//                .setAppPrivacyOne("悦美整形隐私政策", "https://docs.jiguang.cn//jverification/client/android_api/#sdkui")
+//                .setAppPrivacyColor(0xff666666, 0xff0085d0)
+//                .setUncheckedImgPath("umcsdk_uncheck_image")
+//                .setCheckedImgPath("umcsdk_check_image")
+//                .setSloganTextColor(0xff999999)
+//                .setLogoOffsetY(60)
+//                .setLogoImgPath("ic_launcher")
+//                .setSloganOffsetY(180)
+//                .setLogBtnOffsetY(224)
+//                .setPrivacyState(true)
+////                .addCustomView(otherLogin, false, new JVerifyUIClickCallback() {
+////                    @Override
+////                    public void onClicked(Context context, View view) {
+////
+////                    }
+////                })
+////                .addCustomView(mPhoneBtn, true, new JVerifyUIClickCallback() {
+////                    @Override
+////                    public void onClicked(Context context, View view) {
+////                        JVerificationInterface.dismissLoginAuthActivity();
+////                        jumpLogin((Activity) activity);
+////                    }
+////                })
+//                .setPrivacyOffsetY(35).build();
+//        JVerificationInterface.setCustomUIWithConfig(uiConfig);
     }
 
 
@@ -123,7 +165,8 @@ public class OneClickLoginActivity extends BaseActivity {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-
+//        initView();
+//        initData();
     }
 
     @OnClick({R.id.iv_close, R.id.tv_close, R.id.tv_login_bt, R.id.tv_phone_login})
@@ -139,7 +182,7 @@ public class OneClickLoginActivity extends BaseActivity {
 
                 break;
             case R.id.tv_phone_login:
-                SendVerificationCodeActivity.invoke(mContext);
+                SendVerificationCodeActivity.invoke(OneClickLoginActivity.this);
                 break;
         }
     }

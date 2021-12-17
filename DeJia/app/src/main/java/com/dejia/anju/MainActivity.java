@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     LinearLayout ll_main;
     private Fragment homeFragment;
     private Fragment circleFragment;
-    private Fragment toolFragment;
+//    private Fragment toolFragment;
     private Fragment messageFragment;
     private Fragment myFragment;
     private FragmentManager manager;
@@ -312,7 +312,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                             });
                     return;
                 }
-                initFragment(2);
+                invokeToolActivity();
                 break;
             case R.id.ll_message:
                 if (Util.isLogin()) {
@@ -370,11 +370,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //                } else {
 //                    transaction.show(toolFragment);
 //                }
-                invokeToolActivity();
-                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
-                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
-                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
-                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
+//                invokeToolActivity();
+//                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
+//                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
+//                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
+//                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 break;
             case 3:
                 if (messageFragment == null) {
@@ -474,9 +474,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (circleFragment != null) {
             transaction.hide(circleFragment);
         }
-        if (toolFragment != null) {
-            transaction.hide(toolFragment);
-        }
+//        if (toolFragment != null) {
+//            transaction.hide(toolFragment);
+//        }
         if (messageFragment != null) {
             transaction.hide(messageFragment);
         }

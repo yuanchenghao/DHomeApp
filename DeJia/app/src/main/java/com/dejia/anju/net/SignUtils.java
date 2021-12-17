@@ -69,19 +69,19 @@ public class SignUtils {
         String tyUrl="";
 //        cookieManager.setCookie(url, "yuemeiinfo=" + Utils.getYuemeiInfo());
 //        cookieManager.getCookie(url);
-        if (url.startsWith("https://user.yuemei.com") || url.startsWith("https://sjapp.yuemei.com") ||url.startsWith("https://chat.yuemei.com")){
+//        if (url.startsWith("https://user.yuemei.com") || url.startsWith("https://sjapp.yuemei.com") ||url.startsWith("https://chat.yuemei.com")){
             String params = SignUtils.buildHttpParam3(paramMap);
             tyUrl = url + params;
-        }else {
-            StringBuilder builder = new StringBuilder();
-            for (Map.Entry<String, Object> entry : paramMap.entrySet()){
-                builder.append(entry.getKey());
-                builder.append("/");
-                builder.append(entry.getValue());
-                builder.append("/");
-            }
-            tyUrl = url + builder.toString();
-        }
+//        }else {
+//            StringBuilder builder = new StringBuilder();
+//            for (Map.Entry<String, Object> entry : paramMap.entrySet()){
+//                builder.append(entry.getKey());
+//                builder.append("/");
+//                builder.append(entry.getValue());
+//                builder.append("/");
+//            }
+//            tyUrl = url + builder.toString();
+//        }
         String sign = SignUtils.getSign(headMap);
         Map<String, String> singStr = new HashMap<>();
         if (!TextUtils.isEmpty(sign)) {

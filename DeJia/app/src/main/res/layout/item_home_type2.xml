@@ -21,7 +21,6 @@
             app:fadeDuration="100"
             android:layout_gravity="bottom"
             app:roundAsCircle="true"
-            android:background="#000000"
             app:retryImageScaleType="centerCrop" />
 
         <LinearLayout
@@ -137,7 +136,6 @@
             android:layout_height="82.5dp"
             android:layout_weight="0"
             app:fadeDuration="100"
-            android:background="#000000"
             app:retryImageScaleType="centerCrop" />
 
 
