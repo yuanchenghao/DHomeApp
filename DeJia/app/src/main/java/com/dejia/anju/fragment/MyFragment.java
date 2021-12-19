@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.JsonUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
@@ -19,6 +20,7 @@ import com.dejia.anju.activity.QRCodeActivity;
 import com.dejia.anju.adapter.HomeAdapter;
 import com.dejia.anju.adapter.MyArticleAdapter;
 import com.dejia.anju.api.GetMyArticleApi;
+import com.dejia.anju.api.GetUserInfoApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
 import com.dejia.anju.event.Event;
@@ -81,6 +83,8 @@ public class MyFragment extends BaseFragment {
     TextView tv_my_article;
     @BindView(R.id.rv)
     RecyclerView rv;
+    @BindView(R.id.rv_renzheng)
+    RecyclerView rv_renzheng;
     private UserInfo userInfo;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -128,7 +132,27 @@ public class MyFragment extends BaseFragment {
         ll_title.setPadding(0, statusbarHeight, 0, 0);
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
         upDataUi();
+        getUserInfo();
         getMyArticle();
+    }
+
+    //获取用户信息 主要是为了拿到认证信息
+    private void getUserInfo() {
+        HashMap<String, Object> maps = new HashMap<>();
+        maps.put("id", userInfo.getId());
+        new GetUserInfoApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if ("1".equals(serverData.code)) {
+                    UserInfo user = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                    KVUtils.getInstance().encode("user", user);
+                    userInfo = user;
+                    upDataUi();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            }
+        });
     }
 
     //获取我的文章列表
@@ -140,11 +164,11 @@ public class MyFragment extends BaseFragment {
             public void onSuccess(ServerData serverData) {
                 if ("1".equals(serverData.code)) {
                     List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
-                    if(list != null && list.size() > 0){
+                    if (list != null && list.size() > 0) {
                         tv_my_article.setVisibility(View.GONE);
                         rv.setVisibility(View.VISIBLE);
                         setMyArticleList(list);
-                    }else{
+                    } else {
                         tv_my_article.setVisibility(View.VISIBLE);
                         rv.setVisibility(View.GONE);
                     }
@@ -221,6 +245,12 @@ public class MyFragment extends BaseFragment {
                 tv_follow.setText("0");
             } else {
                 tv_follow.setText(userInfo.getFollowing_num());
+            }
+            if(userInfo.getAuth() != null && userInfo.getAuth().size() > 0){
+
+                rv_renzheng.setVisibility(View.VISIBLE);
+            }else{
+                rv_renzheng.setVisibility(View.GONE);
             }
         }
     }

@@ -265,7 +265,7 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         type4View.tv_user_type_flag.setVisibility(View.GONE);
         type4View.user_type.setVisibility(View.GONE);
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
-            YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 1, LinearLayoutManager.VERTICAL, false);
+            YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
             HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(),"4");
             type4View.rv_img.setLayoutManager(gridLayoutManager);
             type4View.rv_img.setAdapter(homeItemImgAdapter);

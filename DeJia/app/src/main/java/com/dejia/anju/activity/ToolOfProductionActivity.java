@@ -227,7 +227,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         HttpParams httpParams = new HttpParams();
         for (int i = 0; i < toolSelectImgAdapter.getData().size(); i++) {
             httpParams.put(toolSelectImgAdapter.getData().get(i) + "",
-                    new File(toolSelectImgAdapter.getData().get(i).getPath()));
+                    new File(toolSelectImgAdapter.getData().get(i).getCompressPath()));
         }
         upLoadUgcImageApi.getCallBack(mContext, map, httpParams, new BaseCallBackListener<ServerData>() {
             @Override
