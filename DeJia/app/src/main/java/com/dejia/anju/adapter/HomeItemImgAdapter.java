@@ -25,10 +25,15 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.
     private Activity mContext;
     private List<ImgInfo> mDatas;
     private int mWindowsWight;
+    private String mType;
 
-    public HomeItemImgAdapter(Activity context, List<ImgInfo> datas, int windowsWight) {
+    public HomeItemImgAdapter(Activity context, List<ImgInfo> datas, int windowsWight,String type) {
         this.mContext = context;
         this.mDatas = datas;
+        this.mType = type;
+        if(mDatas.size() >= 3){
+            this.mDatas = this.mDatas.subList(0,2);
+        }
         mInflater = LayoutInflater.from(context);
         this.mWindowsWight = windowsWight;
     }
@@ -51,10 +56,17 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.gallery.getLayoutParams();
-        linearParams.width = (mWindowsWight - SizeUtils.dp2px(48)) / 3;
-        linearParams.height = linearParams.width;
-        holder.gallery.setLayoutParams(linearParams);
+        if("4".equals(mType)){
+            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.gallery.getLayoutParams();
+            linearParams.width = SizeUtils.dp2px(220);
+            linearParams.height = SizeUtils.dp2px(165);
+            holder.gallery.setLayoutParams(linearParams);
+        }else{
+            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.gallery.getLayoutParams();
+            linearParams.width = (mWindowsWight - SizeUtils.dp2px(48)) / 3;
+            linearParams.height = linearParams.width;
+            holder.gallery.setLayoutParams(linearParams);
+        }
         holder.gallery.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getUrl()).setAutoPlayAnimations(true).build());
         holder.delete.setVisibility(View.GONE);
         holder.gallery.setOnClickListener(v -> {

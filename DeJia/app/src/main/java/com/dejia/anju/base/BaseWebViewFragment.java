@@ -19,13 +19,16 @@ import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.view.ScrollWebView;
 
+import org.apache.http.util.EncodingUtils;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
-
+@SuppressLint("Registered")
 public abstract class BaseWebViewFragment extends BaseFragment {
 
-    protected ScrollWebView mWebView;
+    protected WebView mWebView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public abstract class BaseWebViewFragment extends BaseFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
-        mWebView = new ScrollWebView(mContext);
+        mWebView = new WebView(mContext);
         // android 5.0以上默认不支持Mixed Content
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
@@ -95,6 +98,8 @@ public abstract class BaseWebViewFragment extends BaseFragment {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
+        /********************************************************/
+
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onLoadResource(WebView view, String url) {
@@ -103,6 +108,9 @@ public abstract class BaseWebViewFragment extends BaseFragment {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith("data:text/plain")){
+                    return true;
+                }
                 return ymShouldOverrideUrlLoading(view, url);
             }
 
@@ -123,6 +131,12 @@ public abstract class BaseWebViewFragment extends BaseFragment {
         });
 
         mWebView.setWebChromeClient(new WebChromeClient() {
+
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                onYmReceivedTitle(view, title);
+            }
+
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 return onYmJsAlert(view, url, message, result);
@@ -197,6 +211,15 @@ public abstract class BaseWebViewFragment extends BaseFragment {
     }
 
     /**
+     * 获取title
+     *
+     * @param view
+     * @param title
+     */
+    protected void onYmReceivedTitle(WebView view, String title) {
+    }
+
+    /**
      * 加载webView
      *
      * @param url
@@ -217,5 +240,12 @@ public abstract class BaseWebViewFragment extends BaseFragment {
         WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
         mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
     }
+
+    protected void postUrl(String url) {
+        WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
+        HashMap<String, Object> addressAndHeadMap = new HashMap<>();
+        mWebView.postUrl(addressAndHead.getUrl(), EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
+    }
+
 
 }

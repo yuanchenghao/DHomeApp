@@ -16,10 +16,19 @@ import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.QRCodeActivity;
+import com.dejia.anju.adapter.HomeAdapter;
+import com.dejia.anju.adapter.MyArticleAdapter;
+import com.dejia.anju.api.GetMyArticleApi;
+import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.model.MyArticleInfo;
 import com.dejia.anju.model.UserInfo;
+import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
+import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.view.YMLinearLayoutManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhangyue.we.x2c.ano.Xml;
@@ -28,6 +37,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.HashMap;
+import java.util.List;
+
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -62,6 +77,10 @@ public class MyFragment extends BaseFragment {
     ImageView iv_write_icon;
     @BindView(R.id.tv_introduce)
     TextView tv_introduce;
+    @BindView(R.id.tv_my_article)
+    TextView tv_my_article;
+    @BindView(R.id.rv)
+    RecyclerView rv;
     private UserInfo userInfo;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -109,12 +128,52 @@ public class MyFragment extends BaseFragment {
         ll_title.setPadding(0, statusbarHeight, 0, 0);
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
         upDataUi();
+        getMyArticle();
+    }
+
+    //获取我的文章列表
+    private void getMyArticle() {
+        HashMap<String, Object> maps = new HashMap<>();
+        maps.put("id", userInfo.getId());
+        new GetMyArticleApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if ("1".equals(serverData.code)) {
+                    List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
+                    if(list != null && list.size() > 0){
+                        tv_my_article.setVisibility(View.GONE);
+                        rv.setVisibility(View.VISIBLE);
+                        setMyArticleList(list);
+                    }else{
+                        tv_my_article.setVisibility(View.VISIBLE);
+                        rv.setVisibility(View.GONE);
+                    }
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            }
+        });
+    }
+
+    //设置我的内容列表
+    private void setMyArticleList(List<MyArticleInfo> list) {
+        YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.ItemAnimator itemAnimator = rv.getItemAnimator();
+        //取消局部刷新动画效果
+        if (null != itemAnimator) {
+            ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
+        }
+        rv.setLayoutManager(ymLinearLayoutManager);
+        MyArticleAdapter myArticleAdapter = new MyArticleAdapter(mContext, list);
+        rv.setAdapter(myArticleAdapter);
     }
 
     private void upDataUi() {
         if (userInfo != null) {
             if (!TextUtils.isEmpty(userInfo.getImg())) {
                 iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(userInfo.getImg()).setAutoPlayAnimations(true).build());
+            } else {
+                iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
             }
             if (!TextUtils.isEmpty(userInfo.getNickname())) {
                 tv_name.setText(userInfo.getNickname());
@@ -130,7 +189,7 @@ public class MyFragment extends BaseFragment {
                     tv_sex.setText("女");
                     iv_sex.setImageResource(R.mipmap.girl);
                     ll_sex.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     ll_sex.setVisibility(View.GONE);
                 }
             } else {

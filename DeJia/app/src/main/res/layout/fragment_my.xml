@@ -332,12 +332,21 @@
                 android:src="@mipmap/right_person" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_my_article"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="你还没有发表过任务内容"
+            android:layout_marginTop="60dp"
+            android:textSize="@dimen/sp_14"
+            android:textColor="#919699"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/rv"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:layout_marginRight="@dimen/dp_20"
             android:scrollbars="none" />
 
     </LinearLayout>

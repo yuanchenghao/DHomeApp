@@ -19,6 +19,7 @@ import com.dejia.anju.activity.CancellationActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.OneClickLoginActivity;
 import com.dejia.anju.activity.ToolOfProductionActivity;
+import com.dejia.anju.api.MessageCountApi;
 import com.dejia.anju.api.MessageShowApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
@@ -28,6 +29,7 @@ import com.dejia.anju.fragment.HomeFragment;
 import com.dejia.anju.fragment.MessageFragment;
 import com.dejia.anju.fragment.MyFragment;
 import com.dejia.anju.mannger.DataCleanManager;
+import com.dejia.anju.model.MessageCountInfo;
 import com.dejia.anju.model.MessageShowInfo;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.net.ServerData;
@@ -148,6 +150,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mWindowAnimationStyle.ofAllAnimation(R.anim.picture_anim_up_in, R.anim.picture_anim_down_out);
         //请求公用模块控制
         getMessageShow();
+        //获取消息提醒数
+        getMessageNum();
         //将侧边栏顶部延伸至status bar
         drawerLayout.setFitsSystemWindows(true);
         //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
@@ -233,6 +237,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onDrawerClosed(View drawerView) {
             }
 
+        });
+    }
+
+    private void getMessageNum() {
+        HashMap<String,Object> maps = new HashMap<>();
+        new MessageCountApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if("1".equals(serverData.code)){
+                    MessageCountInfo messageCountInfo = JSONUtil.TransformSingleBean(serverData.data,MessageCountInfo.class);
+                    KVUtils.getInstance().encode("message_count",messageCountInfo);
+                    if(messageCountInfo != null && messageCountInfo.getSum_num() > 0){
+                        iv_dots.setVisibility(View.VISIBLE);
+                    }else{
+                        iv_dots.setVisibility(View.GONE);
+                    }
+                }
+            }
         });
     }
 
@@ -409,7 +431,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     //发帖
     private void invokeToolActivity() {
         MessageShowInfo messageShowInfo = KVUtils.getInstance().decodeParcelable("message_show", MessageShowInfo.class);
-        if (messageShowInfo != null && !"1".equals(messageShowInfo.getPost_content_entry_style())) {
+        if (messageShowInfo != null && "1".equals(messageShowInfo.getPost_content_entry_style())) {
             //常规样式
             Intent i = new Intent(mContext, ToolOfProductionActivity.class);
             mContext.startActivity(i);

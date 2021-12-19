@@ -95,31 +95,31 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position);
         } else {
-            if(holder instanceof Type4ViewHolder){
+            if (holder instanceof Type4ViewHolder) {
                 Type4ViewHolder type4ViewHolder = (Type4ViewHolder) holder;
                 for (Object payload : payloads) {
                     switch ((String) payload) {
                         case "follow":
-                            if(mDatas.get(position).getFollow_creator_article_list().getUser_data().getIs_following() == 0){
+                            if (mDatas.get(position).getFollow_creator_article_list().getUser_data().getIs_following() == 0) {
                                 type4ViewHolder.tv_follow.setText("关注");
-                            }else if(mDatas.get(position).getFollow_creator_article_list().getUser_data().getIs_following() == 1){
+                            } else if (mDatas.get(position).getFollow_creator_article_list().getUser_data().getIs_following() == 1) {
                                 type4ViewHolder.tv_follow.setText("已关注");
-                            }else{
+                            } else {
                                 type4ViewHolder.tv_follow.setText("互相关注");
                             }
                             break;
                     }
                 }
-            }else if(holder instanceof Type5ViewHolder){
+            } else if (holder instanceof Type5ViewHolder) {
                 Type5ViewHolder type5ViewHolder = (Type5ViewHolder) holder;
                 for (Object payload : payloads) {
                     switch ((String) payload) {
                         case "follow":
-                            if(mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getIs_following() == 0){
+                            if (mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getIs_following() == 0) {
                                 type5ViewHolder.tv_follow.setText("关注");
-                            }else if(mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getIs_following() == 1){
+                            } else if (mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getIs_following() == 1) {
                                 type5ViewHolder.tv_follow.setText("已关注");
-                            }else{
+                            } else {
                                 type5ViewHolder.tv_follow.setText("互相关注");
                             }
                             break;
@@ -192,7 +192,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUser_data().getUser_img())) {
             type4View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getFollow_creator_article_list().getUser_data().getUser_img()).setAutoPlayAnimations(true).build());
         } else {
-            type4View.iv_person.setBackgroundColor(Color.parseColor("#000000"));
+            type4View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUser_data().getNickname())) {
             type4View.tv_name.setText(mDatas.get(position).getFollow_creator_article_list().getUser_data().getNickname());
@@ -240,15 +240,15 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
                     @Override
                     public void onSuccess(ServerData serverData) {
-                        if("1".equals(serverData.code)){
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
-                            if(followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())){
+                        if ("1".equals(serverData.code)) {
+                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
                                 mDatas.get(position).getFollow_creator_article_list().getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                                 notifyItemChanged(position, "follow");
                             }
-                            ToastUtils.toast(mContext,serverData.message).show();
-                        }else{
-                            ToastUtils.toast(mContext,serverData.message).show();
+                            ToastUtils.toast(mContext, serverData.message).show();
+                        } else {
+                            ToastUtils.toast(mContext, serverData.message).show();
                         }
                     }
                 });
@@ -260,7 +260,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (!TextUtils.isEmpty(mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getUser_img())) {
             type5View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getUser_img()).setAutoPlayAnimations(true).build());
         } else {
-            type5View.iv_person.setBackgroundColor(Color.parseColor("#000000"));
+            type5View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getNickname())) {
             type5View.tv_name.setText(mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getNickname());
@@ -297,15 +297,15 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
                     @Override
                     public void onSuccess(ServerData serverData) {
-                        if("1".equals(serverData.code)){
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
-                            if(followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())){
+                        if ("1".equals(serverData.code)) {
+                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
                                 mDatas.get(position).getNo_follow_creator_article_list().getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                                 notifyItemChanged(position, "follow");
                             }
-                            ToastUtils.toast(mContext,serverData.message).show();
-                        }else{
-                            ToastUtils.toast(mContext,serverData.message).show();
+                            ToastUtils.toast(mContext, serverData.message).show();
+                        } else {
+                            ToastUtils.toast(mContext, serverData.message).show();
                         }
                     }
                 });

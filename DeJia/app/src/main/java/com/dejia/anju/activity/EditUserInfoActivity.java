@@ -149,7 +149,7 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
             if (!TextUtils.isEmpty(userInfo.getImg())) {
                 iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(userInfo.getImg()).setAutoPlayAnimations(true).build());
             } else {
-                iv_person.setBackgroundColor(Color.parseColor("#000000"));
+                iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
             }
             if (!TextUtils.isEmpty(userInfo.getNickname())) {
                 tv_nickname.setText(userInfo.getNickname());

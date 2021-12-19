@@ -67,8 +67,8 @@ public class SignUtils {
 
     public static WebSignData getAddressAndHead(String url, Map<String, Object> paramMap, Map<String, Object> headMap) {
         String tyUrl="";
-//        cookieManager.setCookie(url, "yuemeiinfo=" + Utils.getYuemeiInfo());
-//        cookieManager.getCookie(url);
+        cookieManager.setCookie(url, "yuemeiinfo=" + Util.getYuemeiInfo());
+        cookieManager.getCookie(url);
 //        if (url.startsWith("https://user.yuemei.com") || url.startsWith("https://sjapp.yuemei.com") ||url.startsWith("https://chat.yuemei.com")){
             String params = SignUtils.buildHttpParam3(paramMap);
             tyUrl = url + params;
@@ -211,6 +211,21 @@ public class SignUtils {
         return builder1.toString();
     }
 
+    public static String buildHttpParam4(Map<String, Object> keyValues) {
+        StringBuilder builder1 = new StringBuilder();
+        Map<String, String> map = buildHttpParamMap(keyValues);
+        List<String> keys = new ArrayList<>(map.keySet());
+        for (int i = 0; i < keys.size() - 1; i++) {
+            String key = keys.get(i);
+            String value = map.get(key);
+            builder1.append(key + "=").append(value).append("&");
+        }
+        String tailKey = keys.get(keys.size() - 1);
+        String tailValue = map.get(tailKey);
+        builder1.append(tailKey + "=").append(tailValue).append("&");
+        return builder1.toString();
+    }
+
 
     /**
      * 构造http请求参数列表（设置公共参数）
@@ -220,7 +235,7 @@ public class SignUtils {
     @SuppressLint("NewApi")
     public static Map<String, String> buildHttpParamMap(Map<String, Object> map) {
         Map<String, String> keyValues = new HashMap<>();
-        keyValues.put(FinalConstant1.CITY, Util.getCity());
+        keyValues.put(FinalConstant1.CITY, URLEncoder.encode(Util.getCity()));
         keyValues.put(FinalConstant1.UID, Util.getUid());
         keyValues.put(FinalConstant1.VER, FinalConstant1.YUEMEI_VER);
         keyValues.put(FinalConstant1.DEVICE, FinalConstant1.YUEMEI_DEVICE);

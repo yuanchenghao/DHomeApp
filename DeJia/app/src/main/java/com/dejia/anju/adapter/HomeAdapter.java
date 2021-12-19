@@ -52,22 +52,22 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
         //区分类型
-//        if (mDatas.get(position).getArticle_type() == 1) {
-//            //长图文
-//            if (mDatas.get(position).getImg() == null || mDatas.get(position).getImg().size() == 0) {
-//                //无图类型
-//                return ITEM_TYPE_ONE;
-//            } else if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() == 1) {
-//                //一张图类型
-//                return ITEM_TYPE_TOW;
-//            } else {
+        if (mDatas.get(position).getArticle_type() == 1) {
+            //长图文
+            if (mDatas.get(position).getImg() == null || mDatas.get(position).getImg().size() == 0) {
+                //无图类型
+                return ITEM_TYPE_ONE;
+            } else if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() == 1) {
+                //一张图类型
+                return ITEM_TYPE_TOW;
+            } else {
                 //多图类型
                 return ITEM_TYPE_THTEE;
-//            }
-//        } else {
-//            //短图文类型
-//            return ITEM_TYPE_FOUR;
-//        }
+            }
+        } else {
+            //短图文类型
+            return ITEM_TYPE_FOUR;
+        }
     }
 
 
@@ -106,61 +106,61 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             //为空相当于刷新
             onBindViewHolder(holder, position);
         } else {
-            if(holder instanceof Type1ViewHolder){
+            if (holder instanceof Type1ViewHolder) {
                 Type1ViewHolder type1ViewHolder = (Type1ViewHolder) holder;
                 for (Object payload : payloads) {
                     switch ((String) payload) {
                         case "follow":
-                            if(mDatas.get(position).getUser_data().getIs_following() == 0){
+                            if (mDatas.get(position).getUser_data().getIs_following() == 0) {
                                 type1ViewHolder.tv_follow.setText("关注");
-                            }else if(mDatas.get(position).getUser_data().getIs_following() == 1){
+                            } else if (mDatas.get(position).getUser_data().getIs_following() == 1) {
                                 type1ViewHolder.tv_follow.setText("已关注");
-                            }else{
+                            } else {
                                 type1ViewHolder.tv_follow.setText("互相关注");
                             }
                             break;
                     }
                 }
-            }else if(holder instanceof Type2ViewHolder){
+            } else if (holder instanceof Type2ViewHolder) {
                 Type2ViewHolder type2ViewHolder = (Type2ViewHolder) holder;
                 for (Object payload : payloads) {
                     switch ((String) payload) {
                         case "follow":
-                            if(mDatas.get(position).getUser_data().getIs_following() == 0){
+                            if (mDatas.get(position).getUser_data().getIs_following() == 0) {
                                 type2ViewHolder.tv_follow.setText("关注");
-                            }else if(mDatas.get(position).getUser_data().getIs_following() == 1){
+                            } else if (mDatas.get(position).getUser_data().getIs_following() == 1) {
                                 type2ViewHolder.tv_follow.setText("已关注");
-                            }else{
+                            } else {
                                 type2ViewHolder.tv_follow.setText("互相关注");
                             }
                             break;
                     }
                 }
-            }else if(holder instanceof Type3ViewHolder){
+            } else if (holder instanceof Type3ViewHolder) {
                 Type3ViewHolder type3ViewHolder = (Type3ViewHolder) holder;
                 for (Object payload : payloads) {
                     switch ((String) payload) {
                         case "follow":
-                            if(mDatas.get(position).getUser_data().getIs_following() == 0){
+                            if (mDatas.get(position).getUser_data().getIs_following() == 0) {
                                 type3ViewHolder.tv_follow.setText("关注");
-                            }else if(mDatas.get(position).getUser_data().getIs_following() == 1){
+                            } else if (mDatas.get(position).getUser_data().getIs_following() == 1) {
                                 type3ViewHolder.tv_follow.setText("已关注");
-                            }else{
+                            } else {
                                 type3ViewHolder.tv_follow.setText("互相关注");
                             }
                             break;
                     }
                 }
-            }else{
+            } else {
                 Type4ViewHolder type4ViewHolder = (Type4ViewHolder) holder;
                 for (Object payload : payloads) {
                     switch ((String) payload) {
                         case "follow":
-                            if("0".equals(mDatas.get(position).getUser_data().getIs_following())){
+                            if ("0".equals(mDatas.get(position).getUser_data().getIs_following())) {
                                 type4ViewHolder.tv_follow.setText("关注");
-                            }else if("1".equals(mDatas.get(position).getUser_data().getIs_following())){
+                            } else if ("1".equals(mDatas.get(position).getUser_data().getIs_following())) {
                                 type4ViewHolder.tv_follow.setText("已关注");
-                            }else{
+                            } else {
                                 type4ViewHolder.tv_follow.setText("互相关注");
                             }
                             break;
@@ -239,15 +239,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
                     @Override
                     public void onSuccess(ServerData serverData) {
-                        if("1".equals(serverData.code)){
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
-                            if(followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())){
+                        if ("1".equals(serverData.code)) {
+                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
                                 mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                                 notifyItemChanged(position, "follow");
                             }
-                            ToastUtils.toast(mContext,serverData.message).show();
-                        }else{
-                            ToastUtils.toast(mContext,serverData.message).show();
+                            ToastUtils.toast(mContext, serverData.message).show();
+                        } else {
+                            ToastUtils.toast(mContext, serverData.message).show();
                         }
                     }
                 });
@@ -297,7 +297,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //
 //        }
 
-        type2View.iv_img.setController(Fresco.newDraweeControllerBuilder().setUri("https://www.vcg.com/creative/814475973").setAutoPlayAnimations(true).build());
+//        type2View.iv_img.setController(Fresco.newDraweeControllerBuilder().setUri("https://www.vcg.com/creative/814475973").setAutoPlayAnimations(true).build());
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
             type2View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
             type2View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
@@ -316,15 +316,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
                     @Override
                     public void onSuccess(ServerData serverData) {
-                        if("1".equals(serverData.code)){
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
-                            if(followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())){
+                        if ("1".equals(serverData.code)) {
+                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
                                 mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                                 notifyItemChanged(position, "follow");
                             }
-                            ToastUtils.toast(mContext,serverData.message).show();
-                        }else{
-                            ToastUtils.toast(mContext,serverData.message).show();
+                            ToastUtils.toast(mContext, serverData.message).show();
+                        } else {
+                            ToastUtils.toast(mContext, serverData.message).show();
                         }
                     }
                 });
@@ -380,29 +380,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type3View.tv_user_type_flag.setVisibility(View.GONE);
             type3View.user_type.setVisibility(View.GONE);
         }
-
-        //自己弄得假数据
-        List<ImgInfo> list = new ArrayList<>();
-        for(int i = 0;i<3;i++){
-            ImgInfo imgInfo = new ImgInfo();
-            imgInfo.setUrl("https://p24.yuemei.com/tao/2019/0709/200_200/jt190709094750_632c65.jpg");
-            list.add(imgInfo);
-        }
-//        if(mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0){
-            YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
-            HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, list, ScreenUtils.getScreenWidth());
+        if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
+            YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 1, LinearLayoutManager.VERTICAL, false);
+            HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "3");
             type3View.rv_img.setLayoutManager(gridLayoutManager);
             type3View.rv_img.setAdapter(homeItemImgAdapter);
             type3View.rv_img.setVisibility(View.VISIBLE);
-        homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
-            @Override
-            public void item(int position, List<ImgInfo> mList) {
+            homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
+                @Override
+                public void item(int position, List<ImgInfo> mList) {
 
-            }
-        });
-//        }else{
-//            type3View.rv_img.setVisibility(View.GONE);
-//        }
+                }
+            });
+        } else {
+            type3View.rv_img.setVisibility(View.GONE);
+        }
         type3View.tv_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -412,15 +404,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
                     @Override
                     public void onSuccess(ServerData serverData) {
-                        if("1".equals(serverData.code)){
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
-                            if(followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())){
+                        if ("1".equals(serverData.code)) {
+                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
                                 mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                                 notifyItemChanged(position, "follow");
                             }
-                            ToastUtils.toast(mContext,serverData.message).show();
-                        }else{
-                            ToastUtils.toast(mContext,serverData.message).show();
+                            ToastUtils.toast(mContext, serverData.message).show();
+                        } else {
+                            ToastUtils.toast(mContext, serverData.message).show();
                         }
                     }
                 });
@@ -479,7 +471,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type4View.tv_user_type_flag.setVisibility(View.GONE);
             type4View.user_type.setVisibility(View.GONE);
         }
-        type4View.rv_img.setVisibility(View.GONE);
+        if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
+            type4View.rv_img.setVisibility(View.VISIBLE);
+        }else{
+            type4View.rv_img.setVisibility(View.GONE);
+        }
         type4View.tv_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -489,15 +485,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
                     @Override
                     public void onSuccess(ServerData serverData) {
-                        if("1".equals(serverData.code)){
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
-                            if(followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())){
+                        if ("1".equals(serverData.code)) {
+                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
                                 mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                                 notifyItemChanged(position, "follow");
                             }
-                            ToastUtils.toast(mContext,serverData.message).show();
-                        }else{
-                            ToastUtils.toast(mContext,serverData.message).show();
+                            ToastUtils.toast(mContext, serverData.message).show();
+                        } else {
+                            ToastUtils.toast(mContext, serverData.message).show();
                         }
                     }
                 });

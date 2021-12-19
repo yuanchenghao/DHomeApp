@@ -58,7 +58,7 @@ public class FinalConstant1 {
     public static final String BASE_NEWS_URL = "chat" + YUEMEI_DOMAIN_NAME;
     public static final String BASE_SERVICE = "chats" + YUEMEI_DOMAIN_NAME;
     public static final String BASE_EMPTY = "empty" + YUEMEI_DOMAIN_NAME;
-    public static final String HTML_CIRCLE = TEST_BASE_URL +  "/vue/circleIndex/";
+    public static final String HTML_CIRCLE = "http://"+TEST_BASE_URL +  "/vue/circleIndex/";
     //服务端地址
     public static final String API = "api";
 
@@ -106,6 +106,8 @@ public class FinalConstant1 {
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "city", "city", POST);
         //首页关注接口
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "home", "follow", POST);
+        //我的文章
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "myArticle", POST);
 
         //私信
         //WebSocket解绑

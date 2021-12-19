@@ -73,7 +73,8 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
             if (!TextUtils.isEmpty(noFollowCreatorList.getUser_img())) {
                 ((viewHolder) holder).iv_pic.setController(Fresco.newDraweeControllerBuilder().setUri(noFollowCreatorList.getUser_img()).setAutoPlayAnimations(true).build());
             } else {
-                ((viewHolder) holder).iv_pic.setBackgroundColor(Color.parseColor("#000000"));
+                ((viewHolder) holder).iv_pic.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
+
             }
             if (!TextUtils.isEmpty(noFollowCreatorList.getNickname())) {
                 ((viewHolder) holder).tv_name.setText(noFollowCreatorList.getNickname());

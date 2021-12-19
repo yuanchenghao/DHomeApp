@@ -5,30 +5,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/ll_title"
+    <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="1dp">
+        android:orientation="vertical"
+        android:layout_height="@dimen/dp_1" />
 
-    </RelativeLayout>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/community_web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnableLoadMore="false"
+        app:srlEnableRefresh="false">
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/smartRefreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srlDisableContentWhenRefresh="true"
-            app:srlEnableLoadMore="true">
+    <com.scwang.smartrefresh.layout.header.ClassicsHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-            <com.scwang.smartrefresh.layout.header.ClassicsHeader
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/ll_web"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_web"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-            </LinearLayout>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

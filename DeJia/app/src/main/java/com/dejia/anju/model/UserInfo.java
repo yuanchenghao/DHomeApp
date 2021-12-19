@@ -30,6 +30,7 @@ public class UserInfo implements Parcelable {
     public String following_me_num;
     public String following_num;
     public String dejia_info;
+    public String is_perfect;  	//是否完善信息 1已完善
 
     protected UserInfo(Parcel in) {
         id = in.readString();
@@ -43,6 +44,7 @@ public class UserInfo implements Parcelable {
         following_me_num = in.readString();
         following_num = in.readString();
         dejia_info = in.readString();
+        is_perfect = in.readString();
     }
 
     public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
@@ -56,6 +58,14 @@ public class UserInfo implements Parcelable {
             return new UserInfo[size];
         }
     };
+
+    public String getIs_perfect() {
+        return is_perfect;
+    }
+
+    public void setIs_perfect(String is_perfect) {
+        this.is_perfect = is_perfect;
+    }
 
     public List<Auth> getAuth() {
         return auth;
@@ -163,5 +173,6 @@ public class UserInfo implements Parcelable {
         dest.writeString(following_me_num);
         dest.writeString(following_num);
         dest.writeString(dejia_info);
+        dest.writeString(is_perfect);
     }
 }

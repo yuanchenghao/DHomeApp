@@ -27,15 +27,11 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     protected View mView;                              //布局
     private Unbinder mUnbinder;                        //解除绑定使用
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.mContext = (Activity)context;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getActivity();
         mInflater = LayoutInflater.from(mContext);
         //状态栏高度
         statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(mContext);

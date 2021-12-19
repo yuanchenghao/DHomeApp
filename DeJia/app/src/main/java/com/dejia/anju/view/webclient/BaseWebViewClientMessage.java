@@ -81,6 +81,7 @@ public class BaseWebViewClientMessage extends WebViewClient {
      */
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        Log.e(TAG, "shouldOverrideUrlLoading......");
         WebView.HitTestResult hitTestResult = view.getHitTestResult();
         int hitType = hitTestResult.getType();
 //        if (isTypeOutside) {
@@ -112,6 +113,7 @@ public class BaseWebViewClientMessage extends WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
+        Log.e(TAG, "onPageStarted......");
     }
 
     /**
@@ -122,7 +124,8 @@ public class BaseWebViewClientMessage extends WebViewClient {
      */
     @Override
     public void onPageFinished(WebView view, String url) {
-        view.loadUrl("javascript:window.getShareData.OnGetShareData(" + "document.querySelector('meta[name=\"reply_info\"]').getAttribute('content')" + ");");
+        Log.e(TAG, "onPageFinished......");
+//        view.loadUrl("javascript:window.getShareData.OnGetShareData(" + "document.querySelector('meta[name=\"reply_info\"]').getAttribute('content')" + ");");
         super.onPageFinished(view, url);
     }
 
@@ -135,6 +138,7 @@ public class BaseWebViewClientMessage extends WebViewClient {
      */
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+        Log.e(TAG, "onReceivedSslError......");
         handler.proceed();
     }
 
@@ -147,6 +151,8 @@ public class BaseWebViewClientMessage extends WebViewClient {
      */
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        Log.e(TAG, "onReceivedError111......" + request.toString());
+        Log.e(TAG, "onReceivedError222......" + error.toString());
         super.onReceivedError(view, request, error);
     }
 
@@ -157,7 +163,7 @@ public class BaseWebViewClientMessage extends WebViewClient {
      * @param urlStr
      */
     public void showWebDetail(String urlStr) {
-
+        Log.e(TAG, "onReceivedError111......" + urlStr.toString());
     }
 
 

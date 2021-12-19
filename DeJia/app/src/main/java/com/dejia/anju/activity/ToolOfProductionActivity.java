@@ -27,6 +27,7 @@ import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.view.YMGridLayoutManager;
+import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -244,12 +245,20 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
     //上传文章
     private void postUgc(List<UgcUploadImageInfo> list) {
         if (list != null && list.size() > 0) {
+            List imgList = new ArrayList();
+            for(int i = 0;i<list.size();i++){
+                HashMap map = new HashMap();
+                map.put("img", list.get(i).getPost_img_url());
+                imgList.add(map);
+            }
             ugcSaveApi = new UgcSaveApi();
             HashMap<String, Object> maps = new HashMap<>();
             maps.put("content", ed.getText().toString().trim());
-            maps.put("image", list.toString());
+            maps.put("image", new Gson().toJson(imgList).toString());
             if(searchBuildingInfo != null){
-                maps.put("rel_loupan", searchBuildingInfo.toString());
+                List list1 = new ArrayList();
+                list1.add(searchBuildingInfo);
+                maps.put("rel_loupan", new Gson().toJson(list1).toString());
             }
             //            maps.put("rel_house_type","");
             ugcSaveApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
