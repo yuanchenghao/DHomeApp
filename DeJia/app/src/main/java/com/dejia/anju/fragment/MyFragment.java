@@ -13,12 +13,16 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.JsonUtils;
 import com.blankj.utilcode.util.SizeUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.QRCodeActivity;
 import com.dejia.anju.adapter.HomeAdapter;
 import com.dejia.anju.adapter.MyArticleAdapter;
+import com.dejia.anju.adapter.RenZhengListAdapter;
+import com.dejia.anju.adapter.SearchBuildingListAdapter;
 import com.dejia.anju.api.GetMyArticleApi;
 import com.dejia.anju.api.GetUserInfoApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
@@ -42,6 +46,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -247,7 +252,15 @@ public class MyFragment extends BaseFragment {
                 tv_follow.setText(userInfo.getFollowing_num());
             }
             if(userInfo.getAuth() != null && userInfo.getAuth().size() > 0){
-
+                YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                RecyclerView.ItemAnimator itemAnimator = rv_renzheng.getItemAnimator();
+                //取消局部刷新动画效果
+                if (null != itemAnimator) {
+                    ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
+                }
+                rv_renzheng.setLayoutManager(ymLinearLayoutManager);
+                RenZhengListAdapter renZhengListAdapter = new RenZhengListAdapter(mContext, R.layout.item_renzhen, userInfo.getAuth());
+                rv_renzheng.setAdapter(renZhengListAdapter);
                 rv_renzheng.setVisibility(View.VISIBLE);
             }else{
                 rv_renzheng.setVisibility(View.GONE);

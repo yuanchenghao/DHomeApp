@@ -1,9 +1,15 @@
 package com.dejia.anju.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.dejia.anju.R;
 import com.dejia.anju.model.Auth;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +30,13 @@ public class RenZhengListAdapter extends BaseQuickAdapter<Auth, BaseViewHolder> 
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, Auth auth) {
-//        baseViewHolder.setText(R.id.tv_name, TextUtils.isEmpty(searchBuildingInfo.getName())?"":searchBuildingInfo.getName());
+        baseViewHolder.setText(R.id.tv, TextUtils.isEmpty(auth.getTitle())?"":auth.getTitle());
+        if(!TextUtils.isEmpty(auth.getIcon_img())){
+            ((SimpleDraweeView) baseViewHolder.getView(R.id.iv)).setController(Fresco.newDraweeControllerBuilder().setUri(auth.getIcon_img()).setAutoPlayAnimations(true).build());
+            baseViewHolder.setVisible(R.id.iv,true);
+        }else{
+            baseViewHolder.setGone(R.id.iv,true);
+        }
     }
 
     /**
