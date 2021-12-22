@@ -1,10 +1,13 @@
 package com.dejia.anju.model;
 
-public class WebViewData {
-    //是否是原生功能操作 0:不是 1是
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class WebViewData implements Parcelable {
+    //当webviewType==(api/webview)时,link的值为后端提供，当webviewType==native时,link的值为原生提供
     private String webviewType;
     //是否需要原生拼接url 0:不需要 1:需要
-    private String nativeWeb;
+    private String link_is_joint;
     //是否隐藏原生头部 0:不隐藏 1:隐藏（默认 1）
     private String isHide;
     //是否可以下拉刷新 0:不可以 1:可以（默认 1）
@@ -28,12 +31,40 @@ public class WebViewData {
     //链接
     private String link;
 
+    protected WebViewData(Parcel in) {
+        webviewType = in.readString();
+        link_is_joint = in.readString();
+        isHide = in.readString();
+        isRefresh = in.readString();
+        enableSafeArea = in.readString();
+        bounces = in.readString();
+        isRemoveUpper = in.readString();
+        enableBottomSafeArea = in.readString();
+        bgColor = in.readString();
+        is_back = in.readString();
+        is_share = in.readString();
+        share_data = in.readString();
+        link = in.readString();
+    }
+
+    public static final Creator<WebViewData> CREATOR = new Creator<WebViewData>() {
+        @Override
+        public WebViewData createFromParcel(Parcel in) {
+            return new WebViewData(in);
+        }
+
+        @Override
+        public WebViewData[] newArray(int size) {
+            return new WebViewData[size];
+        }
+    };
+
     public String getWebviewType() {
         return webviewType;
     }
 
-    public String getNativeWeb() {
-        return nativeWeb;
+    public String getLinkisJoint() {
+        return link_is_joint;
     }
 
     public String getIsHide() {
@@ -80,9 +111,31 @@ public class WebViewData {
         return link;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(webviewType);
+        dest.writeString(link_is_joint);
+        dest.writeString(isHide);
+        dest.writeString(isRefresh);
+        dest.writeString(enableSafeArea);
+        dest.writeString(bounces);
+        dest.writeString(isRemoveUpper);
+        dest.writeString(enableBottomSafeArea);
+        dest.writeString(bgColor);
+        dest.writeString(is_back);
+        dest.writeString(is_share);
+        dest.writeString(share_data);
+        dest.writeString(link);
+    }
+
     public static class WebDataBuilder {
         private String webviewType;
-        private String nativeWeb;
+        private String link_is_joint;
         private String isHide;
         private String isRefresh;
         private String enableSafeArea;
@@ -100,8 +153,8 @@ public class WebViewData {
             return this;
         }
 
-        public WebDataBuilder setNativeWeb(String nativeWeb) {
-            this.nativeWeb = nativeWeb;
+        public WebDataBuilder setLinkisJoint(String link_is_joint) {
+            this.link_is_joint = link_is_joint;
             return this;
         }
 
@@ -167,7 +220,7 @@ public class WebViewData {
 
     private WebViewData(WebDataBuilder builder) {
         this.webviewType = builder.webviewType;
-        this.nativeWeb = builder.nativeWeb;
+        this.link_is_joint = builder.link_is_joint;
         this.isHide = builder.isHide;
         this.isRefresh = builder.isRefresh;
         this.enableSafeArea = builder.enableSafeArea;

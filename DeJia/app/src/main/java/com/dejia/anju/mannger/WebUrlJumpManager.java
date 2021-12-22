@@ -1,11 +1,13 @@
 package com.dejia.anju.mannger;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 
-import com.dejia.anju.AppLog;
+import com.dejia.anju.activity.WebViewActivity;
 import com.dejia.anju.model.WebViewData;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,8 @@ import java.util.Map;
 public class WebUrlJumpManager {
     private static volatile WebUrlJumpManager webUrlJumpManager;
 
-    private WebUrlJumpManager() { }
+    private WebUrlJumpManager() {
+    }
 
     public static WebUrlJumpManager getInstance() {
         if (webUrlJumpManager == null) {
@@ -26,31 +29,48 @@ public class WebUrlJumpManager {
         return webUrlJumpManager;
     }
 
-    public void invoke(String url){
-        if(TextUtils.isEmpty(url)){
+    public void invoke(Context mContext, String url) {
+        if (TextUtils.isEmpty(url)) {
             return;
         }
         Map paramMap = URLRequest(URLDecoder.decode(url));
         WebViewData webViewData = new WebViewData.WebDataBuilder()
-                .setWebviewType((String)(paramMap.get("webviewType")))
-                .setNativeWeb((String)(paramMap.get("nativeWeb")))
-                .setIsHide((String)(paramMap.get("isHide")))
-                .setIsRefresh((String)(paramMap.get("isRefresh")))
-                .setEnableSafeArea((String)(paramMap.get("enableSafeArea")))
-                .setBounces((String)(paramMap.get("bounces")))
-                .setIsRemoveUpper((String)(paramMap.get("isRemoveUpper")))
-                .setEnableBottomSafeArea((String)(paramMap.get("enableBottomSafeArea")))
-                .setBgColor((String)(paramMap.get("bgColor")))
-                .setIs_back((String)(paramMap.get("is_back")))
-                .setIs_share((String)(paramMap.get("is_share")))
-                .setShare_data((String)(paramMap.get("share_data")))
-                .setLink((String)(paramMap.get("link")))
+                .setWebviewType((String) (paramMap.get("webviewType")))
+                .setLinkisJoint((String) (paramMap.get("link_is_joint")))
+                .setIsHide((String) (paramMap.get("isHide")))
+                .setIsRefresh((String) (paramMap.get("isRefresh")))
+                .setEnableSafeArea((String) (paramMap.get("enableSafeArea")))
+                .setBounces((String) (paramMap.get("bounces")))
+                .setIsRemoveUpper((String) (paramMap.get("isRemoveUpper")))
+                .setEnableBottomSafeArea((String) (paramMap.get("enableBottomSafeArea")))
+                .setBgColor((String) (paramMap.get("bgColor")))
+                .setIs_back((String) (paramMap.get("is_back")))
+                .setIs_share((String) (paramMap.get("is_share")))
+                .setShare_data((String) (paramMap.get("share_data")))
+                .setLink((String) (paramMap.get("link")))
                 .build();
+
+        if (webViewData != null) {
+            if (!TextUtils.isEmpty(webViewData.getWebviewType()) && "api".equals(webViewData.getWebviewType())) {
+                //请求接口
+            } else if (!TextUtils.isEmpty(webViewData.getWebviewType()) && "native".equals(webViewData.getWebviewType())) {
+                //原生跳转
+            } else {
+                //跳转web
+                startWebActivity(mContext, webViewData);
+                if (!TextUtils.isEmpty(webViewData.getIsRemoveUpper())
+                        && "1".equals(webViewData.getIsRemoveUpper())
+                        && mContext != null) {
+                    ((Activity) mContext).finish();
+                }
+            }
+        }
     }
 
     /**
      * 解析出url参数中的键值对（android 获取url中的参数）
      * 如 "index.jsp?Action=del&id=123"，解析出Action:del,id:123存入map中
+     *
      * @param URL url地址
      * @return url请求参数部分
      */
@@ -100,5 +120,15 @@ public class WebUrlJumpManager {
         }
         return strAllParam;
     }
+
+    /**
+     * 打开公共WebActivity
+     */
+    public void startWebActivity(Context context, WebViewData data) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.WEB_DATA, data);
+        context.startActivity(intent);
+    }
+
 
 }

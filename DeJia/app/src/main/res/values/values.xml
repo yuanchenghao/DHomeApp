@@ -41,4 +41,59 @@
         <attr name="horizontalSpacing" format="dimension" />
         <attr name="verticalSpacing" format="dimension" />
     </declare-styleable>
+
+
+    <!--自定义通用顶部操作栏-->
+    <declare-styleable name="DdleTopBar">
+        <attr name="layout_height" format="dimension" />
+        <attr name="left_img_src" format="reference" />
+        <attr name="right_img_src" format="reference" />
+        <attr name="right_img_src2" format="reference" />
+        <attr name="left_img_background" format="reference" />
+        <attr name="right_img_backgroud" format="reference" />
+        <attr name="right_img_backgroud2" format="reference" />
+        <attr name="left_img_visibility" format="enum">
+            <enum name="GONE" value="0x00000008" />
+            <enum name="INVISIBLE" value="0x00000004" />
+            <enum name="VISIBLE" value="0x00000000" />
+        </attr>
+        <attr name="right_img_visibility" format="enum">
+            <enum name="GONE" value="0x00000008" />
+            <enum name="INVISIBLE" value="0x00000004" />
+            <enum name="VISIBLE" value="0x00000000" />
+        </attr>
+        <attr name="right_img_visibility2" format="enum">
+            <enum name="GONE" value="0x00000008" />
+            <enum name="INVISIBLE" value="0x00000004" />
+            <enum name="VISIBLE" value="0x00000000" />
+        </attr>
+        <attr name="left_text" format="string|reference" />
+        <attr name="right_text" format="string|reference" />
+        <attr name="center_text" format="string|reference" />
+        <attr name="left_text_visibility" format="enum">
+            <enum name="GONE" value="0x00000008" />
+            <enum name="INVISIBLE" value="0x00000004" />
+            <enum name="VISIBLE" value="0x00000000" />
+        </attr>
+        <attr name="right_text_visibility" format="enum">
+            <enum name="GONE" value="0x00000008" />
+            <enum name="INVISIBLE" value="0x00000004" />
+            <enum name="VISIBLE" value="0x00000000" />
+        </attr>
+        <attr name="center_text_visibility" format="enum">
+            <enum name="GONE" value="0x00000008" />
+            <enum name="INVISIBLE" value="0x00000004" />
+            <enum name="VISIBLE" value="0x00000000" />
+        </attr>
+        <attr name="bottom_line_visibility" format="enum">
+            <enum name="GONE" value="0x00000008" />
+            <enum name="INVISIBLE" value="0x00000004" />
+            <enum name="VISIBLE" value="0x00000000" />
+        </attr>
+        <attr name="background_color" format="reference|color" />
+        <attr name="center_text_color" format="reference|color" />
+        <attr name="left_text_color" format="reference|color" />
+        <attr name="right_text_color" format="reference|color" />
+
+    </declare-styleable>
 </resources>
