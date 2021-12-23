@@ -472,6 +472,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type4View.user_type.setVisibility(View.GONE);
         }
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
+            if(mDatas.get(position).getImg().size() == 1){
+                //一张图
+            }else{
+                //多张图
+            }
             type4View.rv_img.setVisibility(View.VISIBLE);
         }else{
             type4View.rv_img.setVisibility(View.GONE);
