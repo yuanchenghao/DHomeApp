@@ -31,6 +31,8 @@ public abstract class BaseWebViewActivity extends AppCompatActivity implements V
         ButterKnife.bind(mContext);
         //将当前的activity添加到ActivityManager中
         mInflater = LayoutInflater.from(mContext);
+        //状态栏字体颜色
+        QMUIStatusBarHelper.setStatusBarLightMode(mContext);
         //状态栏高度
         statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(mContext);
         //获取屏幕高宽

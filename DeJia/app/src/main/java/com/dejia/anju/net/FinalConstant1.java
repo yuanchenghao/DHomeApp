@@ -37,6 +37,7 @@ public class FinalConstant1 {
     public static final String SEARCH_HISTORY = "search_history";
     //协议
     public static final String HTTPS = "https";
+    public static final String HTTP = "http";
     public static final String WSS = "wss";
     public static final String WS = "ws";
     //符号

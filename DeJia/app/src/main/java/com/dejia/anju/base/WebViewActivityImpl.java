@@ -19,7 +19,7 @@ import com.dejia.anju.net.WebSignData;
 
 import java.util.Map;
 
-public abstract class WebViewActivityImpl extends BaseWebViewActivity{
+public abstract class WebViewActivityImpl extends BaseWebViewActivity {
     protected WebView mWebView;
 
     @Override
@@ -88,7 +88,7 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity{
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.startsWith("data:text/plain")){
+                if (url.startsWith("data:text/plain")) {
                     return true;
                 }
                 return ymShouldOverrideUrlLoading(view, url);
@@ -200,26 +200,5 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity{
      */
     protected void onYmProgressChanged(WebView view, int newProgress) {
     }
-
-    /**
-     * 加载webView
-     *
-     * @param url
-     * @param paramMap
-     * @param headMap
-     */
-    protected void loadUrl(String url, Map<String, Object> paramMap, Map<String, Object> headMap) {
-        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap, headMap);
-        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
-    }
-
-    protected void loadUrl(String url, Map<String, Object> paramMap) {
-        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap);
-        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
-    }
-
-    protected void loadUrl(String url) {
-        WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
-        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
-    }
 }
+
