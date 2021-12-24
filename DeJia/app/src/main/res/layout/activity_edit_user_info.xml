@@ -134,4 +134,35 @@
             android:src="@mipmap/right_gray" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_introduce"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="20.5dp"
+        android:layout_marginRight="19.5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="简介"
+            android:textColor="#1C2125"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tv_introduce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="#6F7375"
+            android:textSize="@dimen/sp_14" />
+
+        <ImageView
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
+            android:src="@mipmap/right_gray" />
+    </LinearLayout>
+
 </LinearLayout>

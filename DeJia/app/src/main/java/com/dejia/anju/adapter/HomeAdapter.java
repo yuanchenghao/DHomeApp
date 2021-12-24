@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.dejia.anju.R;
+import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.model.FollowAndCancelInfo;
@@ -472,13 +473,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type4View.user_type.setVisibility(View.GONE);
         }
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
-            if(mDatas.get(position).getImg().size() == 1){
+            if (mDatas.get(position).getImg().size() == 1) {
                 //一张图
-            }else{
+            } else {
                 //多张图
             }
             type4View.rv_img.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             type4View.rv_img.setVisibility(View.GONE);
         }
         type4View.tv_follow.setOnClickListener(new View.OnClickListener() {
@@ -534,6 +535,18 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
                 }
             });
+            iv_person.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
+                }
+            });
+            tv_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
+                }
+            });
         }
     }
 
@@ -569,6 +582,18 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
                 }
             });
+            iv_person.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
+                }
+            });
+            tv_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
+                }
+            });
         }
     }
 
@@ -602,6 +627,18 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+                }
+            });
+            iv_person.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
+                }
+            });
+            tv_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
                 }
             });
         }
@@ -645,6 +682,18 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+                }
+            });
+            iv_person.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
+                }
+            });
+            tv_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
                 }
             });
         }

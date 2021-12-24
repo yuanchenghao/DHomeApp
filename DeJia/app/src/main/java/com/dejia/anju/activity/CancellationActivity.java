@@ -14,8 +14,11 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
+import com.dejia.anju.api.base.BaseCallBackListener;
+import com.dejia.anju.api.base.UserLogoutApi;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
@@ -24,6 +27,8 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashMap;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
@@ -40,6 +45,7 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
     @BindView(R.id.iv_check) ImageView iv_check;
     @BindView(R.id.button) TextView button;
     @BindView(R.id.button2) TextView button2;
+    private UserLogoutApi userLogoutApi;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -135,15 +141,23 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
         }
     }
 
+    //user/logout/
     //确认注销
     public void postIslogout() {
-//            if ("1".equals(it.code)) {
-        DialogUtils.closeDialog();
-        //注销成功
-        ll_layout1.setVisibility(View.GONE);
-        ll_layout3.setVisibility(View.VISIBLE);
+//        userLogoutApi = new UserLogoutApi();
+//        HashMap<String,Object> maps = new HashMap<>();
+//        userLogoutApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+//            @Override
+//            public void onSuccess(ServerData serverData) {
+                //            if ("1".equals(it.code)) {
+                DialogUtils.closeDialog();
+                //注销成功
+                ll_layout1.setVisibility(View.GONE);
+                ll_layout3.setVisibility(View.VISIBLE);
 //            } else {
 //                Toast.makeText(mContext, it.message, Toast.LENGTH_SHORT).show()
 //            }
+//            }
+//        });
     }
 }

@@ -21,6 +21,7 @@ import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.view.YMGridLayoutManager;
+import com.dejia.anju.view.YMLinearLayoutManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -265,17 +266,31 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         type4View.tv_user_type_flag.setVisibility(View.GONE);
         type4View.user_type.setVisibility(View.GONE);
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
-            YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
-            HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(),"4");
-            type4View.rv_img.setLayoutManager(gridLayoutManager);
-            type4View.rv_img.setAdapter(homeItemImgAdapter);
-            type4View.rv_img.setVisibility(View.VISIBLE);
-            homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
-                @Override
-                public void item(int position, List<ImgInfo> mList) {
+            if(mDatas.get(position).getImg().size() == 1){
+                YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(),"4");
+                type4View.rv_img.setLayoutManager(ymLinearLayoutManager);
+                type4View.rv_img.setAdapter(homeItemImgAdapter);
+                type4View.rv_img.setVisibility(View.VISIBLE);
+                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
+                    @Override
+                    public void item(int position, List<ImgInfo> mList) {
 
-                }
-            });
+                    }
+                });
+            }else{
+                YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
+                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(),"4");
+                type4View.rv_img.setLayoutManager(gridLayoutManager);
+                type4View.rv_img.setAdapter(homeItemImgAdapter);
+                type4View.rv_img.setVisibility(View.VISIBLE);
+                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
+                    @Override
+                    public void item(int position, List<ImgInfo> mList) {
+
+                    }
+                });
+            }
         }else{
             type4View.rv_img.setVisibility(View.GONE);
         }
@@ -442,7 +457,7 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public interface EventListener {
-        void onItemFollowListener(View v, MyArticleInfo data, int pos);
+//        void onItemFollowListener(View v, MyArticleInfo data, int pos);
 
         void onItemListener(View v, MyArticleInfo data, int pos);
     }

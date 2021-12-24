@@ -1,40 +1,30 @@
-package com.dejia.anju.fragment;
+package com.dejia.anju.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.JsonUtils;
 import com.blankj.utilcode.util.SizeUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
-import com.dejia.anju.activity.EditIntroduceActivity;
-import com.dejia.anju.activity.EditUserInfoActivity;
-import com.dejia.anju.activity.QRCodeActivity;
-import com.dejia.anju.adapter.HomeAdapter;
 import com.dejia.anju.adapter.MyArticleAdapter;
 import com.dejia.anju.adapter.RenZhengListAdapter;
-import com.dejia.anju.adapter.SearchBuildingListAdapter;
 import com.dejia.anju.api.GetMyArticleApi;
 import com.dejia.anju.api.GetUserInfoApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
-import com.dejia.anju.base.BaseFragment;
-import com.dejia.anju.event.Event;
+import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.model.MyArticleInfo;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
-import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.YMLinearLayoutManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -42,10 +32,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhangyue.we.x2c.ano.Xml;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,11 +43,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MyFragment extends BaseFragment {
+public class PersonActivity extends BaseActivity {
     @BindView(R.id.iv_scan_code)
     ImageView iv_scan_code;
-    @BindView(R.id.iv_drawer)
-    ImageView iv_drawer;
+    //    @BindView(R.id.iv_drawer)
+//    ImageView iv_drawer;
+    @BindView(R.id.iv_share)
+    ImageView iv_share;
     @BindView(R.id.ll_title)
     LinearLayout ll_title;
     @BindView(R.id.iv_person)
@@ -96,85 +84,52 @@ public class MyFragment extends BaseFragment {
     RecyclerView rv;
     @BindView(R.id.rv_renzheng)
     RecyclerView rv_renzheng;
-    @BindView(R.id.refresh_layout)
-    SmartRefreshLayout refresh_layout;
+//    @BindView(R.id.refresh_layout)
+//    SmartRefreshLayout refresh_layout;
+    @BindView(R.id.tv_renzheng_title)
+    TextView tv_renzheng_title;
+    @BindView(R.id.tv_content_title)
+    TextView tv_content_title;
+    @BindView(R.id.iv_close)
+    ImageView iv_close;
     private UserInfo userInfo;
+    private String userId;
 
-    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
-    public void onEventMainThread(Event msgEvent) {
-        switch (msgEvent.getCode()) {
-            case 3:
-                userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
-                upDataUi();
-                break;
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    public static MyFragment newInstance() {
-        Bundle args = new Bundle();
-        MyFragment fragment = new MyFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Xml(layouts = "fragment_my")
+    @Xml(layouts = "activity_person")
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_my;
+        return R.layout.activity_person;
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
+        userId = getIntent().getStringExtra("userId");
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_title.getLayoutParams();
         layoutParams.height = statusbarHeight + SizeUtils.dp2px(50);
         ll_title.setLayoutParams(layoutParams);
         ll_title.setPadding(0, statusbarHeight, 0, 0);
-        userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
+//        userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
         rv.setNestedScrollingEnabled(false);
         rv_renzheng.setNestedScrollingEnabled(false);
-        upDataUi();
         getUserInfo();
         getMyArticle();
     }
 
-    //获取用户信息 主要是为了拿到认证信息
-    private void getUserInfo() {
-        HashMap<String, Object> maps = new HashMap<>();
-        maps.put("id", userInfo.getId());
-        new GetUserInfoApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                refresh_layout.finishRefresh();
-                if ("1".equals(serverData.code)) {
-                    UserInfo user = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
-                    KVUtils.getInstance().encode("user", user);
-                    userInfo = user;
-                    upDataUi();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
-                }
-            }
-        });
+    @Override
+    protected void initData() {
+//        refresh_layout.setOnRefreshListener(new OnRefreshListener() {
+//            @Override
+//            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+//                getUserInfo();
+//                getMyArticle();
+//            }
+//        });
     }
 
     //获取我的文章列表
     private void getMyArticle() {
         HashMap<String, Object> maps = new HashMap<>();
-        maps.put("id", userInfo.getId());
+        maps.put("id", userId);
         new GetMyArticleApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData serverData) {
@@ -214,8 +169,42 @@ public class MyFragment extends BaseFragment {
         });
     }
 
+    //获取用户信息 主要是为了拿到认证信息
+    private void getUserInfo() {
+        HashMap<String, Object> maps = new HashMap<>();
+        maps.put("id", userId);
+        new GetUserInfoApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+//                refresh_layout.finishRefresh();
+                if ("1".equals(serverData.code)) {
+                    UserInfo user = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                    userInfo = user;
+                    upDataUi();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            }
+        });
+    }
+
     private void upDataUi() {
         if (userInfo != null) {
+            if (!TextUtils.isEmpty(userId) && userId.equals(Util.getUid())) {
+                //自己
+                iv_share.setVisibility(View.GONE);
+                iv_scan_code.setVisibility(View.VISIBLE);
+                edit_info.setVisibility(View.VISIBLE);
+                tv_renzheng_title.setText("我的认证");
+                tv_content_title.setText("我的内容");
+            } else {
+                //他人
+                iv_share.setVisibility(View.VISIBLE);
+                iv_scan_code.setVisibility(View.GONE);
+                edit_info.setVisibility(View.GONE);
+                tv_renzheng_title.setText("TA的认证");
+                tv_content_title.setText("TA的内容");
+            }
             if (!TextUtils.isEmpty(userInfo.getImg())) {
                 iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(userInfo.getImg()).setAutoPlayAnimations(true).build());
             } else {
@@ -268,7 +257,7 @@ public class MyFragment extends BaseFragment {
             } else {
                 tv_follow.setText(userInfo.getFollowing_num());
             }
-            if(userInfo.getAuth() != null && userInfo.getAuth().size() > 0){
+            if (userInfo.getAuth() != null && userInfo.getAuth().size() > 0) {
                 YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 RecyclerView.ItemAnimator itemAnimator = rv_renzheng.getItemAnimator();
                 //取消局部刷新动画效果
@@ -279,43 +268,45 @@ public class MyFragment extends BaseFragment {
                 RenZhengListAdapter renZhengListAdapter = new RenZhengListAdapter(mContext, R.layout.item_renzhen, userInfo.getAuth());
                 rv_renzheng.setAdapter(renZhengListAdapter);
                 rv_renzheng.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 rv_renzheng.setVisibility(View.GONE);
             }
         }
     }
 
-    @Override
-    protected void initData(View view) {
-        refresh_layout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                getUserInfo();
-                getMyArticle();
-            }
-        });
-    }
-
     @SuppressLint("WrongConstant")
-    @OnClick({R.id.iv_scan_code, R.id.iv_drawer, R.id.edit_info,R.id.ll_introduce})
+    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan_code:
                 QRCodeActivity.invoke(mContext);
-                break;
-            case R.id.iv_drawer:
-                if ((MainActivity) getActivity() != null && ((MainActivity) getActivity()).drawerLayout != null) {
-                    ((MainActivity) getActivity()).drawerLayout.openDrawer(Gravity.END);
-                }
                 break;
             case R.id.edit_info:
                 //编辑资料
                 mContext.startActivity(new Intent(mContext, EditUserInfoActivity.class));
                 break;
             case R.id.ll_introduce:
-                mContext.startActivity(new Intent(mContext, EditIntroduceActivity.class));
+                if (!TextUtils.isEmpty(userId) && userId.equals(Util.getUid())) {
+                    mContext.startActivity(new Intent(mContext, EditIntroduceActivity.class));
+                }
+                break;
+            case R.id.iv_share:
+                ToastUtils.toast(mContext, "分享").show();
+                break;
+            case R.id.iv_close:
+                finish();
                 break;
         }
     }
 
+    /**
+     * 跳转
+     *
+     * @param context
+     */
+    public static void invoke(Context context, String userId) {
+        Intent intent = new Intent(context, PersonActivity.class);
+        intent.putExtra("userId", userId);
+        context.startActivity(intent);
+    }
 }

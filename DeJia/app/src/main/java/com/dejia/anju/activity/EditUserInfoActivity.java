@@ -78,6 +78,10 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
     LinearLayout ll_sex;
     @BindView(R.id.tv_sex)
     TextView tv_sex;
+    @BindView(R.id.ll_introduce)
+    LinearLayout ll_introduce;
+    @BindView(R.id.tv_introduce)
+    TextView tv_introduce;
     private UserInfo userInfo;
     private PictureWindowAnimationStyle mWindowAnimationStyle;
     private UpLoadImgApi upLoadImgApi;
@@ -174,7 +178,7 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
 
     @Override
     protected void initData() {
-        setMultiOnClickListener(ll_back, fl_icon, tv_icon, ll_nick, ll_sex);
+        setMultiOnClickListener(ll_back, fl_icon, tv_icon, ll_nick, ll_sex, ll_introduce);
     }
 
     @Override
@@ -195,6 +199,9 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                 break;
             case R.id.ll_sex:
                 mContext.startActivity(new Intent(mContext, EditSexActivity.class));
+                break;
+            case R.id.ll_introduce:
+                mContext.startActivity(new Intent(mContext, EditIntroduceActivity.class));
                 break;
         }
     }
@@ -342,7 +349,7 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                     PictureCacheManager.deleteCacheDirFile(mContext, PictureMimeType.ofImage());
                 }
             });
-        }else{
+        } else {
             ToastUtils.toast(mContext, "图片路径错误请重试").show();
         }
     }

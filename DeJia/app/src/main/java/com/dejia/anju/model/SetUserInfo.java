@@ -11,7 +11,16 @@ public class SetUserInfo {
     public String front_side_of_id_card;
     public String reverse_side_of_id_card;
     public String business_card;
+    public String personal_info;
     public int is_post_broker_info;
+
+    public String getPersonal_info() {
+        return personal_info;
+    }
+
+    public void setPersonal_info(String personal_info) {
+        this.personal_info = personal_info;
+    }
 
     public String getUser_id() {
         return user_id;
