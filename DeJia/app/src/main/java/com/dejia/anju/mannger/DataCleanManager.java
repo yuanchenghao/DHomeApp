@@ -153,7 +153,6 @@ public class DataCleanManager {
      * @return
      */
     public static void deleteFolderFile(String filePath, boolean deleteThisPath) {
-        Log.e(TAG, "filePath == " + filePath);
         if (!TextUtils.isEmpty(filePath)) {
             try {
                 File file = new File(filePath);

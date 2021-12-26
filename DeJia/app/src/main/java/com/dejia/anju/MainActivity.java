@@ -185,7 +185,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         navigation.getHeaderView(0).findViewById(R.id.ll_clean).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataCleanManager.deleteFolderFile(mContext.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/Android/data/com.dejia.anju",
+                DataCleanManager.deleteFolderFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.dejia.anju",
                         false);
                 ((TextView) navigation.getHeaderView(0).findViewById(R.id.tv_clean)).setText(getCacheSize());
             }
@@ -284,7 +284,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private String getCacheSize() {
         String sm2;
         try {
-            sm2 = DataCleanManager.getCacheSize(new File(mContext.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/Android/data/com.yuemei.dejia"));
+            sm2 = DataCleanManager.getCacheSize(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.dejia.anju"));
             if ("0.0Byte".equals(sm2)) {
                 sm2 = "0.0M";
             }
