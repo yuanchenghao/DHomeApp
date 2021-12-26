@@ -34,17 +34,26 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 
 //注销页面
-public class CancellationActivity extends BaseActivity implements OnClickListener{
+public class CancellationActivity extends BaseActivity implements OnClickListener {
     private boolean isSheck;
-    @BindView(R.id.root) ConstraintLayout root;
-    @BindView(R.id.rl_title) RelativeLayout rl_title;
-    @BindView(R.id.ll_back) LinearLayout ll_back;
-    @BindView(R.id.ll_layout1) LinearLayout ll_layout1;
-    @BindView(R.id.ll_layout3) LinearLayout ll_layout3;
-    @BindView(R.id.ll_check) LinearLayout ll_check;
-    @BindView(R.id.iv_check) ImageView iv_check;
-    @BindView(R.id.button) TextView button;
-    @BindView(R.id.button2) TextView button2;
+    @BindView(R.id.root)
+    ConstraintLayout root;
+    @BindView(R.id.rl_title)
+    RelativeLayout rl_title;
+    @BindView(R.id.ll_back)
+    LinearLayout ll_back;
+    @BindView(R.id.ll_layout1)
+    LinearLayout ll_layout1;
+    @BindView(R.id.ll_layout3)
+    LinearLayout ll_layout3;
+    @BindView(R.id.ll_check)
+    LinearLayout ll_check;
+    @BindView(R.id.iv_check)
+    ImageView iv_check;
+    @BindView(R.id.button)
+    TextView button;
+    @BindView(R.id.button2)
+    TextView button2;
     private UserLogoutApi userLogoutApi;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -66,7 +75,7 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
         EventBus.getDefault().unregister(this);
     }
 
-//    @Xml(layouts = "activity_cancellation")
+    //    @Xml(layouts = "activity_cancellation")
     @Override
     protected int getLayoutId() {
         return R.layout.activity_cancellation;
@@ -88,13 +97,13 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
 
     @Override
     protected void initData() {
-        setMultiOnClickListener(ll_back,ll_check,button,button2);
+        setMultiOnClickListener(ll_back, ll_check, button, button2);
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_back:
                 finish();
                 break;
@@ -126,7 +135,7 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
                                 public void onNoClick() {
                                     DialogUtils.closeDialog();
                                 }
-                    });
+                            });
                 } else {
                     //没勾选
                     ToastUtils.toast(mContext, "需要您先勾选同意告知内容").show();
@@ -144,20 +153,20 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
     //user/logout/
     //确认注销
     public void postIslogout() {
-//        userLogoutApi = new UserLogoutApi();
-//        HashMap<String,Object> maps = new HashMap<>();
-//        userLogoutApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-//            @Override
-//            public void onSuccess(ServerData serverData) {
-                //            if ("1".equals(it.code)) {
-                DialogUtils.closeDialog();
-                //注销成功
-                ll_layout1.setVisibility(View.GONE);
-                ll_layout3.setVisibility(View.VISIBLE);
-//            } else {
-//                Toast.makeText(mContext, it.message, Toast.LENGTH_SHORT).show()
-//            }
-//            }
-//        });
+        userLogoutApi = new UserLogoutApi();
+        HashMap<String, Object> maps = new HashMap<>();
+        userLogoutApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if ("1".equals(serverData.code)) {
+                    DialogUtils.closeDialog();
+                    //注销成功
+                    ll_layout1.setVisibility(View.GONE);
+                    ll_layout3.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(mContext, serverData.message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
