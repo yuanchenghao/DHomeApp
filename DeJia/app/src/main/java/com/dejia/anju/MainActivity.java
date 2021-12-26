@@ -69,6 +69,7 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 
 import static com.dejia.anju.base.Constants.baseTestService;
+import static com.dejia.anju.utils.Util.isLogin;
 
 //主页面
 public class MainActivity extends BaseActivity implements View.OnClickListener, NetEvent {
@@ -310,7 +311,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 initFragment(1);
                 break;
             case R.id.ll_tool:
-                if (!Util.isLogin()) {
+                if (!isLogin()) {
                     OneClickLoginActivity.invoke(mContext, "");
                     return;
                 }
@@ -337,14 +338,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 invokeToolActivity();
                 break;
             case R.id.ll_message:
-                if (Util.isLogin()) {
+                if (isLogin()) {
                     initFragment(3);
                 } else {
                     OneClickLoginActivity.invoke(mContext, "");
                 }
                 break;
             case R.id.ll_my:
-                if (Util.isLogin()) {
+                if (isLogin()) {
                     initFragment(4);
                 } else {
                     OneClickLoginActivity.invoke(mContext, "");
@@ -519,14 +520,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void initOneClickLogin() {
         //没登录 首次登录
-        if (!Util.isLogin() && (KVUtils.getInstance().decodeInt("is_first_active") == 1)) {
+        if (!isLogin() && (KVUtils.getInstance().decodeInt("is_first_active") == 1)) {
             OneClickLoginActivity.invoke(mContext, "0");
         }
     }
 
     @Override
     public void onNetChange(int netMobile) {
-        if (Util.isLogin() && mNetStatus != null) {
+        if (isLogin() && mNetStatus != null) {
             mNetStatus.netStatus(netMobile);
         }
     }

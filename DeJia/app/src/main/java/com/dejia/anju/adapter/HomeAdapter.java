@@ -22,7 +22,9 @@ import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.GlideEngine;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.YMGridLayoutManager;
+import com.dejia.anju.view.YMLinearLayoutManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.luck.picture.lib.PictureSelector;
@@ -191,12 +193,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type1View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getNickname())) {
-            type1View.tv_name.setText(mDatas.get(position).getUser_data().getNickname());
+            type1View.tv_name.setText(Util.toDBC(mDatas.get(position).getUser_data().getNickname()));
         } else {
             type1View.tv_name.setText("");
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTime_set())) {
-            type1View.tv_time.setText(mDatas.get(position).getTime_set());
+            type1View.tv_time.setText(Util.toDBC(mDatas.get(position).getTime_set()));
         } else {
             type1View.tv_time.setText("");
         }
@@ -212,12 +214,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
-            type1View.tv_context.setText(mDatas.get(position).getTitle());
+            type1View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
         } else {
             type1View.tv_context.setText("");
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
-            type1View.tv_location_price.setText(mDatas.get(position).getBuilding());
+            type1View.tv_location_price.setText(Util.toDBC(mDatas.get(position).getBuilding()));
             type1View.ll_location.setVisibility(View.VISIBLE);
         } else {
             type1View.ll_location.setVisibility(View.GONE);
@@ -263,12 +265,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type2View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getNickname())) {
-            type2View.tv_name.setText(mDatas.get(position).getUser_data().getNickname());
+            type2View.tv_name.setText(Util.toDBC(mDatas.get(position).getUser_data().getNickname()));
         } else {
             type2View.tv_name.setText("");
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTime_set())) {
-            type2View.tv_time.setText(mDatas.get(position).getTime_set());
+            type2View.tv_time.setText(Util.toDBC(mDatas.get(position).getTime_set()));
         } else {
             type2View.tv_time.setText("");
         }
@@ -284,21 +286,19 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
-            type2View.tv_context.setText(mDatas.get(position).getTitle());
+            type2View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
         } else {
             type2View.tv_context.setText("");
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
-            type2View.tv_location_price.setText(mDatas.get(position).getBuilding());
+            type2View.tv_location_price.setText(Util.toDBC(mDatas.get(position).getBuilding()));
             type2View.ll_location.setVisibility(View.VISIBLE);
         } else {
             type2View.ll_location.setVisibility(View.GONE);
         }
-//        if(!TextUtils.isEmpty(mDatas.get(position).getImg().get(0))){
-//
-//        }
-
-//        type2View.iv_img.setController(Fresco.newDraweeControllerBuilder().setUri("https://www.vcg.com/creative/814475973").setAutoPlayAnimations(true).build());
+        if (!TextUtils.isEmpty(mDatas.get(position).getImg().get(0).getImg())) {
+            type2View.iv_img.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getImg().get(0).getImg()).setAutoPlayAnimations(true).build());
+        }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
             type2View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
             type2View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
@@ -341,12 +341,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type3View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getNickname())) {
-            type3View.tv_name.setText(mDatas.get(position).getUser_data().getNickname());
+            type3View.tv_name.setText(Util.toDBC(mDatas.get(position).getUser_data().getNickname()));
         } else {
             type3View.tv_name.setText("");
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTime_set())) {
-            type3View.tv_time.setText(mDatas.get(position).getTime_set());
+            type3View.tv_time.setText(Util.toDBC(mDatas.get(position).getTime_set()));
         } else {
             type3View.tv_time.setText("");
         }
@@ -362,12 +362,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
-            type3View.tv_context.setText(mDatas.get(position).getTitle());
+            type3View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
         } else {
             type3View.tv_context.setText("");
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
-            type3View.tv_location_price.setText(mDatas.get(position).getBuilding());
+            type3View.tv_location_price.setText(Util.toDBC(mDatas.get(position).getBuilding()));
             type3View.ll_location.setVisibility(View.VISIBLE);
         } else {
             type3View.ll_location.setVisibility(View.GONE);
@@ -382,11 +382,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type3View.user_type.setVisibility(View.GONE);
         }
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
-            YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 1, LinearLayoutManager.VERTICAL, false);
+            type3View.rv_img.setVisibility(View.VISIBLE);
+            YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.HORIZONTAL, false);
             HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "3");
             type3View.rv_img.setLayoutManager(gridLayoutManager);
             type3View.rv_img.setAdapter(homeItemImgAdapter);
-            type3View.rv_img.setVisibility(View.VISIBLE);
             homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
                 @Override
                 public void item(int position, List<ImgInfo> mList) {
@@ -432,12 +432,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getNickname())) {
-            type4View.tv_name.setText(mDatas.get(position).getUser_data().getNickname());
+            type4View.tv_name.setText(Util.toDBC(mDatas.get(position).getUser_data().getNickname()));
         } else {
             type4View.tv_name.setText("");
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTime_set())) {
-            type4View.tv_time.setText(mDatas.get(position).getTime_set());
+            type4View.tv_time.setText(Util.toDBC(mDatas.get(position).getTime_set()));
         } else {
             type4View.tv_time.setText("");
         }
@@ -453,12 +453,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
-            type4View.tv_context.setText(mDatas.get(position).getTitle());
+            type4View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
         } else {
             type4View.tv_context.setText("");
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
-            type4View.tv_location_price.setText(mDatas.get(position).getBuilding());
+            type4View.tv_location_price.setText(Util.toDBC(mDatas.get(position).getBuilding()));
             type4View.ll_location.setVisibility(View.VISIBLE);
         } else {
             type4View.ll_location.setVisibility(View.GONE);
@@ -474,9 +474,27 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
             if (mDatas.get(position).getImg().size() == 1) {
-                //一张图
+                YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "4");
+                type4View.rv_img.setLayoutManager(ymLinearLayoutManager);
+                type4View.rv_img.setAdapter(homeItemImgAdapter);
+                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
+                    @Override
+                    public void item(int position, List<ImgInfo> mList) {
+
+                    }
+                });
             } else {
-                //多张图
+                YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
+                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "4");
+                type4View.rv_img.setLayoutManager(gridLayoutManager);
+                type4View.rv_img.setAdapter(homeItemImgAdapter);
+                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
+                    @Override
+                    public void item(int position, List<ImgInfo> mList) {
+
+                    }
+                });
             }
             type4View.rv_img.setVisibility(View.VISIBLE);
         } else {

@@ -12,7 +12,6 @@ import com.dejia.anju.R;
 import com.dejia.anju.model.ImgInfo;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.List;
 
@@ -27,12 +26,12 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.
     private int mWindowsWight;
     private String mType;
 
-    public HomeItemImgAdapter(Activity context, List<ImgInfo> datas, int windowsWight,String type) {
+    public HomeItemImgAdapter(Activity context, List<ImgInfo> datas, int windowsWight, String type) {
         this.mContext = context;
         this.mDatas = datas;
         this.mType = type;
-        if(mDatas.size() >= 3){
-            this.mDatas = this.mDatas.subList(0,2);
+        if (mDatas.size() >= 3) {
+            this.mDatas = this.mDatas.subList(0, 2);
         }
         mInflater = LayoutInflater.from(context);
         this.mWindowsWight = windowsWight;
@@ -56,18 +55,18 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if("4".equals(mType)){
+        if ("4".equals(mType) && mDatas.size() == 1) {
             RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.gallery.getLayoutParams();
             linearParams.width = SizeUtils.dp2px(220);
             linearParams.height = SizeUtils.dp2px(165);
             holder.gallery.setLayoutParams(linearParams);
-        }else{
+        } else {
             RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.gallery.getLayoutParams();
             linearParams.width = (mWindowsWight - SizeUtils.dp2px(48)) / 3;
             linearParams.height = linearParams.width;
             holder.gallery.setLayoutParams(linearParams);
         }
-        holder.gallery.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getUrl()).setAutoPlayAnimations(true).build());
+        holder.gallery.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getImg()).setAutoPlayAnimations(true).build());
         holder.delete.setVisibility(View.GONE);
         holder.gallery.setOnClickListener(v -> {
             listener.item(position, mDatas);

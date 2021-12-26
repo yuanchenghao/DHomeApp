@@ -5,6 +5,15 @@ public class ImgInfo {
     private Integer width;
     private Integer height;
     private String images;
+    private String img;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public Integer getWidth() {
         return width;

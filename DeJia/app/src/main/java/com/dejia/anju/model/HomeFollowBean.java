@@ -124,7 +124,7 @@ public class HomeFollowBean {
     public static class FollowCreatorArticleList{
         public String title;
         public String article_type;
-        public List<Img> img;
+        public List<ImgInfo> img;
         public String building;
         public String time_set;
         public String reply_num;
@@ -147,11 +147,11 @@ public class HomeFollowBean {
             this.article_type = article_type;
         }
 
-        public List<Img> getImg() {
+        public List<ImgInfo> getImg() {
             return img;
         }
 
-        public void setImg(List<Img> img) {
+        public void setImg(List<ImgInfo> img) {
             this.img = img;
         }
 

@@ -7,10 +7,13 @@ public class MyArticleInfo {
 
     public UserData user_data;
     public String time_set;
-    public int type;
-    public String content;
+    public int article_type;
+    public String title;
     public List<ImgInfo> img;
     public List<SearchBuildingInfo> building;
+    public String reply_num;
+    public String agree_num;
+    public String url;
 
     public UserData getUser_data() {
         return user_data;
@@ -28,20 +31,20 @@ public class MyArticleInfo {
         this.time_set = time_set;
     }
 
-    public int getType() {
-        return type;
+    public int getArticle_type() {
+        return article_type;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setArticle_type(int article_type) {
+        this.article_type = article_type;
     }
 
-    public String getContent() {
-        return content;
+    public String getTitle() {
+        return title;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public List<ImgInfo> getImg() {
@@ -60,16 +63,52 @@ public class MyArticleInfo {
         this.building = building;
     }
 
-    public static class UserData {
-        public String user_name;
-        public String user_img;
+    public String getReply_num() {
+        return reply_num;
+    }
 
-        public String getUser_name() {
-            return user_name;
+    public void setReply_num(String reply_num) {
+        this.reply_num = reply_num;
+    }
+
+    public String getAgree_num() {
+        return agree_num;
+    }
+
+    public void setAgree_num(String agree_num) {
+        this.agree_num = agree_num;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public static class UserData {
+        public String user_id;
+        public String url;
+        public String user_img;
+        public String nickname;
+        public String is_following;
+        public String auth;
+
+        public String getUser_id() {
+            return user_id;
         }
 
-        public void setUser_name(String user_name) {
-            this.user_name = user_name;
+        public void setUser_id(String user_id) {
+            this.user_id = user_id;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
         }
 
         public String getUser_img() {
@@ -78,6 +117,30 @@ public class MyArticleInfo {
 
         public void setUser_img(String user_img) {
             this.user_img = user_img;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public String getIs_following() {
+            return is_following;
+        }
+
+        public void setIs_following(String is_following) {
+            this.is_following = is_following;
+        }
+
+        public String getAuth() {
+            return auth;
+        }
+
+        public void setAuth(String auth) {
+            this.auth = auth;
         }
     }
 

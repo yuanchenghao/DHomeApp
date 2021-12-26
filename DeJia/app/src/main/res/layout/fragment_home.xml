@@ -53,8 +53,6 @@
         app:tabBackground="@android:color/transparent"
         app:tabIndicator="@drawable/indicator"
         app:tabIndicatorColor="#5BB9FF"
-        app:tabMaxWidth="200dp"
-        app:tabMinWidth="55dp"
         app:tabMode="fixed"
         app:tabRippleColor="@color/transparent"
         app:tabTextColor="#171922" />
