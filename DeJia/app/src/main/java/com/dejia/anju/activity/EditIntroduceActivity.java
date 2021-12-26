@@ -79,9 +79,9 @@ public class EditIntroduceActivity extends BaseActivity implements OnClickListen
         layoutParams.topMargin = statusbarHeight;
         rl_title.setLayoutParams(layoutParams);
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
-//        if (!TextUtils.isEmpty(userInfo.getNickname())) {
-//            ed.setHint(userInfo.getNickname());
-//        }
+        if (!TextUtils.isEmpty(userInfo.getPersonal_info())) {
+            ed.setHint(userInfo.getPersonal_info());
+        }
         ed.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -135,7 +135,7 @@ public class EditIntroduceActivity extends BaseActivity implements OnClickListen
     private void setUserInfo() {
         setUserApi = new SetUserApi();
         HashMap<String, Object> maps = new HashMap<>();
-        maps.put("nickname", ed.getText().toString().trim());
+        maps.put("personal_info", ed.getText().toString().trim());
         setUserApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData serverData) {

@@ -232,9 +232,9 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void setType4View(Type4ViewHolder type4View, List<MyArticleInfo> mDatas, int position) {
-//        type4View.tv_comment_num.setText(mDatas.get(position).getReply_num() + "");
-//        type4View.tv_zan_num.setText(mDatas.get(position).getAgree_num() + "");
-        type4View.ll_comment_zan.setVisibility(View.GONE);
+        type4View.tv_comment_num.setText(mDatas.get(position).getReply_num() + "");
+        type4View.tv_zan_num.setText(mDatas.get(position).getAgree_num() + "");
+        type4View.ll_comment_zan.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getUser_img())) {
             type4View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getUser_data().getUser_img()).setAutoPlayAnimations(true).build());
         } else {
@@ -459,7 +459,6 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public interface EventListener {
 //        void onItemFollowListener(View v, MyArticleInfo data, int pos);
-
         void onItemListener(View v, MyArticleInfo data, int pos);
     }
 }

@@ -257,15 +257,19 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.ll1:
                 //回复我的
+                ToastUtils.toast(mContext,"回复我的").show();
                 break;
             case R.id.ll2:
                 //@我的
+                ToastUtils.toast(mContext,"@我的").show();
                 break;
             case R.id.ll3:
                 //收到的赞
+                ToastUtils.toast(mContext,"收到的赞").show();
                 break;
             case R.id.ll4:
                 //公告通知
+                ToastUtils.toast(mContext,"公告通知").show();
                 break;
             case R.id.iv_close_notice:
                 ll_notice.setVisibility(View.GONE);

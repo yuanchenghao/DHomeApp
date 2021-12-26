@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.JsonUtils;
 import com.blankj.utilcode.util.SizeUtils;
@@ -98,6 +99,14 @@ public class MyFragment extends BaseFragment {
     RecyclerView rv_renzheng;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refresh_layout;
+    @BindView(R.id.ll_context)
+    LinearLayout ll_context;
+    @BindView(R.id.ll_zan)
+    LinearLayout ll_zan;
+    @BindView(R.id.ll_fans)
+    LinearLayout ll_fans;
+    @BindView(R.id.ll_follow)
+    LinearLayout ll_follow;
     private UserInfo userInfo;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -297,7 +306,7 @@ public class MyFragment extends BaseFragment {
     }
 
     @SuppressLint("WrongConstant")
-    @OnClick({R.id.iv_scan_code, R.id.iv_drawer, R.id.edit_info,R.id.ll_introduce})
+    @OnClick({R.id.iv_scan_code, R.id.iv_drawer, R.id.edit_info,R.id.ll_introduce,R.id.ll_context,R.id.ll_zan,R.id.ll_fans,R.id.ll_follow})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan_code:
@@ -314,6 +323,18 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.ll_introduce:
                 mContext.startActivity(new Intent(mContext, EditIntroduceActivity.class));
+                break;
+            case R.id.ll_context:
+                ToastUtils.toast(mContext,"内容").show();
+                break;
+            case R.id.ll_zan:
+                ToastUtils.toast(mContext,"获赞").show();
+                break;
+            case R.id.ll_fans:
+                ToastUtils.toast(mContext,"粉丝").show();
+                break;
+            case R.id.ll_follow:
+                ToastUtils.toast(mContext,"关注").show();
                 break;
         }
     }

@@ -168,6 +168,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/ll_context"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -194,6 +195,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ll_zan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -220,6 +222,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ll_fans"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -246,6 +249,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ll_follow"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
