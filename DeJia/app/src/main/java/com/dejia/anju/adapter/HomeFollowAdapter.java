@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.dejia.anju.R;
+import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.model.FollowAndCancelInfo;
@@ -171,12 +172,6 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         type2View.rv.setLayoutManager(layoutManager);
         HomeFollowItem2Adapter homeFollowItem2Adapter = new HomeFollowItem2Adapter(mContext, R.layout.item_follow_person, mDatas.get(position).getFollow_creator_list());
         type2View.rv.setAdapter(homeFollowItem2Adapter);
-        homeFollowItem2Adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                ToastUtils.toast(mContext, "个人页").show();
-            }
-        });
     }
 
     private void setType3View(Type3ViewHolder type3View, List<HomeFollowListBean> mDatas, int position) {
@@ -243,24 +238,12 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 type4View.rv_img.setLayoutManager(ymLinearLayoutManager);
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
                 type4View.rv_img.setVisibility(View.VISIBLE);
-                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
-                    @Override
-                    public void item(int position, List<ImgInfo> mList) {
-
-                    }
-                });
             }else{
                 YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
                 HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getFollow_creator_article_list().getImg(), ScreenUtils.getScreenWidth(),"4");
                 type4View.rv_img.setLayoutManager(gridLayoutManager);
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
                 type4View.rv_img.setVisibility(View.VISIBLE);
-                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
-                    @Override
-                    public void item(int position, List<ImgInfo> mList) {
-
-                    }
-                });
             }
         }else{
             type4View.rv_img.setVisibility(View.GONE);
@@ -322,6 +305,12 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         type5View.rv.setLayoutManager(layoutManager);
         HomeFollowItem5Adapter homeFollowItem5Adapter = new HomeFollowItem5Adapter(R.layout.item_no_follow_text, mDatas.get(position).getNo_follow_creator_article_list().getList());
         type5View.rv.setAdapter(homeFollowItem5Adapter);
+        homeFollowItem5Adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                ToastUtils.toast(mContext,"不知道跳哪").show();
+            }
+        });
         type5View.tv_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

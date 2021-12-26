@@ -1,7 +1,6 @@
 package com.dejia.anju.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -19,6 +18,7 @@ import com.dejia.anju.api.GetMyArticleApi;
 import com.dejia.anju.api.GetUserInfoApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.MyArticleInfo;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.net.ServerData;
@@ -30,7 +30,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import java.util.HashMap;
@@ -84,8 +84,8 @@ public class PersonActivity extends BaseActivity {
     RecyclerView rv;
     @BindView(R.id.rv_renzheng)
     RecyclerView rv_renzheng;
-//    @BindView(R.id.refresh_layout)
-//    SmartRefreshLayout refresh_layout;
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refresh_layout;
     @BindView(R.id.tv_renzheng_title)
     TextView tv_renzheng_title;
     @BindView(R.id.tv_content_title)
@@ -102,6 +102,8 @@ public class PersonActivity extends BaseActivity {
     LinearLayout ll_follow;
     private UserInfo userInfo;
     private String userId;
+    private int page = 1;
+    private MyArticleAdapter myArticleAdapter;
 
     @Xml(layouts = "activity_person")
     @Override
@@ -125,31 +127,56 @@ public class PersonActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        refresh_layout.setOnRefreshListener(new OnRefreshListener() {
-//            @Override
-//            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//                getUserInfo();
-//                getMyArticle();
-//            }
-//        });
+        refresh_layout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                //加载更多
+                page++;
+                getMyArticle();
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                myArticleAdapter = null;
+                getUserInfo();
+                getMyArticle();
+            }
+        });
     }
 
     //获取我的文章列表
     private void getMyArticle() {
         HashMap<String, Object> maps = new HashMap<>();
         maps.put("id", userId);
+        maps.put("page", page);
         new GetMyArticleApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData serverData) {
                 if ("1".equals(serverData.code)) {
-                    List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
-                    if (list != null && list.size() > 0) {
-                        tv_my_article.setVisibility(View.GONE);
-                        rv.setVisibility(View.VISIBLE);
-                        setMyArticleList(list);
-                    } else {
-                        tv_my_article.setVisibility(View.VISIBLE);
-                        rv.setVisibility(View.GONE);
+                    if(serverData.data != null){
+                        List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
+                        if (list != null) {
+                            if (list.size() == 0) {
+                                if (refresh_layout == null) {
+                                    refresh_layout.finishLoadMoreWithNoMoreData();
+                                }
+                            } else {
+                                if (refresh_layout == null) {
+                                    refresh_layout.finishLoadMore();
+                                }
+                            }
+                            setMyArticleList(list);
+                        } else {
+                            refresh_layout.finishLoadMoreWithNoMoreData();
+                        }
+                        if (list != null && list.size() > 0 && page == 1) {
+                            tv_my_article.setVisibility(View.GONE);
+                            rv.setVisibility(View.VISIBLE);
+                        }
+                    }else{
+                        refresh_layout.finishLoadMoreWithNoMoreData();
+                        ToastUtils.toast(mContext, serverData.message).show();
                     }
                 } else {
                     ToastUtils.toast(mContext, serverData.message).show();
@@ -160,21 +187,25 @@ public class PersonActivity extends BaseActivity {
 
     //设置我的内容列表
     private void setMyArticleList(List<MyArticleInfo> list) {
-        YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        RecyclerView.ItemAnimator itemAnimator = rv.getItemAnimator();
-        //取消局部刷新动画效果
-        if (null != itemAnimator) {
-            ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
-        }
-        rv.setLayoutManager(ymLinearLayoutManager);
-        MyArticleAdapter myArticleAdapter = new MyArticleAdapter(mContext, list);
-        rv.setAdapter(myArticleAdapter);
-        myArticleAdapter.setEventListener(new MyArticleAdapter.EventListener() {
-            @Override
-            public void onItemListener(View v, MyArticleInfo data, int pos) {
-
+        if (null == myArticleAdapter) {
+            YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            RecyclerView.ItemAnimator itemAnimator = rv.getItemAnimator();
+            //取消局部刷新动画效果
+            if (null != itemAnimator) {
+                ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
             }
-        });
+            rv.setLayoutManager(ymLinearLayoutManager);
+            myArticleAdapter = new MyArticleAdapter(mContext, list);
+            rv.setAdapter(myArticleAdapter);
+            myArticleAdapter.setEventListener(new MyArticleAdapter.EventListener() {
+                @Override
+                public void onItemListener(View v, MyArticleInfo data, int pos) {
+                    WebUrlJumpManager.getInstance().invoke(mContext, list.get(pos).getUrl(), null);
+                }
+            });
+        } else {
+            myArticleAdapter.addData(list);
+        }
     }
 
     //获取用户信息 主要是为了拿到认证信息
@@ -184,7 +215,6 @@ public class PersonActivity extends BaseActivity {
         new GetUserInfoApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData serverData) {
-//                refresh_layout.finishRefresh();
                 if ("1".equals(serverData.code)) {
                     UserInfo user = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
                     userInfo = user;
@@ -283,7 +313,7 @@ public class PersonActivity extends BaseActivity {
     }
 
     @SuppressLint("WrongConstant")
-    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close,R.id.ll_context,R.id.ll_zan,R.id.ll_fans,R.id.ll_follow})
+    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan_code:
@@ -305,16 +335,16 @@ public class PersonActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_context:
-                ToastUtils.toast(mContext,"内容").show();
+                ToastUtils.toast(mContext, "内容").show();
                 break;
             case R.id.ll_zan:
-                ToastUtils.toast(mContext,"获赞").show();
+                ToastUtils.toast(mContext, "获赞").show();
                 break;
             case R.id.ll_fans:
-                ToastUtils.toast(mContext,"粉丝").show();
+                ToastUtils.toast(mContext, "粉丝").show();
                 break;
             case R.id.ll_follow:
-                ToastUtils.toast(mContext,"关注").show();
+                ToastUtils.toast(mContext, "关注").show();
                 break;
 
         }

@@ -29,9 +29,11 @@ import com.dejia.anju.fragment.HomeFragment;
 import com.dejia.anju.fragment.MessageFragment;
 import com.dejia.anju.fragment.MyFragment;
 import com.dejia.anju.mannger.DataCleanManager;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.MessageCountInfo;
 import com.dejia.anju.model.MessageShowInfo;
 import com.dejia.anju.model.UserInfo;
+import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.GlideEngine;
@@ -195,7 +197,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onClick(View v) {
                 //隐私
                 drawerLayout.closeDrawers();
-                ToastUtils.toast(mContext, "隐私").show();
+                WebViewData webViewData = new WebViewData.WebDataBuilder()
+                        .setWebviewType("webview")
+                        .setLinkisJoint("1")
+                        .setIsHide("0")
+                        .setIsRefresh("0")
+                        .setEnableSafeArea("0")
+                        .setBounces("1")
+                        .setIsRemoveUpper("0")
+                        .setEnableBottomSafeArea("0")
+                        .setBgColor("#F6F6F6")
+                        .setIs_back("1")
+                        .setIs_share("0")
+                        .setShare_data("0")
+                        .setLink("/vue/privacyAgreement/")
+                        .setRequest_param("")
+                        .build();
+                WebUrlJumpManager.getInstance().invoke(mContext,"",webViewData);
             }
         });
         navigation.getHeaderView(0).findViewById(R.id.ll_kill).setOnClickListener(new View.OnClickListener() {
@@ -312,6 +330,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.ll_tool:
                 if (!isLogin()) {
+                    //这里判断支不支持极光登录
                     OneClickLoginActivity.invoke(mContext, "");
                     return;
                 }

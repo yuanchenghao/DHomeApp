@@ -4,17 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    <com.scwang.smartrefresh.layout.SmartRefreshLayout-->
-<!--        android:id="@+id/refresh_layout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:srlDisableContentWhenRefresh="true"-->
-<!--        app:srlEnableLoadMore="false"-->
-<!--        app:srlEnableRefresh="true">-->
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlDisableContentWhenRefresh="true"
+        app:srlEnableLoadMore="true"
+        app:srlEnableRefresh="true">
 
-<!--        <com.scwang.smartrefresh.layout.header.ClassicsHeader-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -403,5 +403,9 @@
 
         </LinearLayout>
 
-<!--    </com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
+        <com.dejia.anju.base.smart.YMLoadMore
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

@@ -18,6 +18,7 @@ import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
+import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.view.CommonTopBar;
 import com.dejia.anju.view.MyPullRefresh;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
@@ -29,9 +30,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import androidx.annotation.RequiresApi;
 import butterknife.BindView;
 
+import static com.dejia.anju.net.FinalConstant1.SYMBOL5;
 import static com.qmuiteam.qmui.util.QMUIDisplayHelper.getStatusBarHeight;
 
 public class WebViewActivity extends WebViewActivityImpl {
@@ -138,23 +144,51 @@ public class WebViewActivity extends WebViewActivityImpl {
             } else {
                 mTopTitle.setRightImgVisibility(View.GONE);
             }
-            int statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(mContext);
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) activityWebView.getLayoutParams();
-            if (layoutParams != null) {
-                layoutParams.topMargin = statusbarHeight;
-                activityWebView.setLayoutParams(layoutParams);
-            }
+//            int statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(mContext);
+//            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) activityWebView.getLayoutParams();
+//            if (layoutParams != null) {
+//                layoutParams.topMargin = statusbarHeight;
+//                activityWebView.setLayoutParams(layoutParams);
+//            }
             activityWebView.addView(mTopTitle, 0);
         }
         if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLinkisJoint()) && "1".equals(mWebViewData.getLinkisJoint())) {
             //拼接
             if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLink())) {
-                linkUrl = FinalConstant1.HTTP + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_BASE_URL + mWebViewData.getLink();
+                if(mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())){
+                    Map<String, Object> map = JSONUtil.getMapForJson(mWebViewData.getRequest_param());
+                    StringBuilder builder = new StringBuilder();
+                    List<String> keys = new ArrayList<>(map.keySet());
+                    for (int i = 0; i < keys.size(); i++) {
+                        String key = keys.get(i);
+                        String value = map.get(key) + "";
+                        builder.append(key).append("/").append(value).append("/");
+                    }
+                    linkUrl = FinalConstant1.HTTP + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_BASE_URL
+                            + mWebViewData.getLink() + builder;
+                }else{
+                    linkUrl = FinalConstant1.HTTP + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_BASE_URL
+                            + mWebViewData.getLink();
+                }
             }
         } else {
             //不需要拼接
-            if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLink())) {
-                linkUrl = mWebViewData.getLink();
+            if(mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())){
+                Map<String, Object> map = JSONUtil.getMapForJson(mWebViewData.getRequest_param());
+                StringBuilder builder = new StringBuilder();
+                List<String> keys = new ArrayList<>(map.keySet());
+                for (int i = 0; i < keys.size(); i++) {
+                    String key = keys.get(i);
+                    String value = (String) map.get(key);
+                    builder.append(key).append("/").append(value).append("/");
+                }
+                if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLink())) {
+                    linkUrl = mWebViewData.getLink() + builder;
+                }
+            }else{
+                if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLink())) {
+                    linkUrl = mWebViewData.getLink();
+                }
             }
         }
     }

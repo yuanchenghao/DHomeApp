@@ -243,8 +243,8 @@ public class RecommendFragment extends BaseFragment {
                 @Override
                 public void onItemListener(View v, HomeIndexBean.HomeList data, int pos) {
                     if (!TextUtils.isEmpty(data.getUrl())) {
-                        ToastUtils.toast(mContext, data.getUrl()).show();
-                        WebUrlJumpManager.getInstance().invoke(mContext,data.getUrl());
+//                        ToastUtils.toast(mContext, data.getUrl()).show();
+                        WebUrlJumpManager.getInstance().invoke(mContext,data.getUrl(),null);
                     }
                 }
             });
@@ -266,7 +266,7 @@ public class RecommendFragment extends BaseFragment {
                 if (data != null && !TextUtils.isEmpty(FocusPicture.getUrl())) {
                     //web跳转还没做
                     ToastUtils.toast(mContext, FocusPicture.getUrl()).show();
-                    WebUrlJumpManager.getInstance().invoke(mContext,FocusPicture.getUrl());
+                    WebUrlJumpManager.getInstance().invoke(mContext,FocusPicture.getUrl(),null);
                 }
             }
         });

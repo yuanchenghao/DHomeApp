@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dejia.anju.R;
+import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.model.FollowAndCancelInfo;
@@ -159,7 +160,7 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastUtils.toast(mContext, "个人页").show();
+                    PersonActivity.invoke(mContext,mDatas.get(getLayoutPosition()).getId());
                 }
             });
         }

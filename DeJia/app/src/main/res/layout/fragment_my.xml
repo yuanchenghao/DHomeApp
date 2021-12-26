@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlDisableContentWhenRefresh="true"
-        app:srlEnableLoadMore="false"
+        app:srlEnableLoadMore="true"
         app:srlEnableRefresh="true">
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -391,5 +391,8 @@
 
         </LinearLayout>
 
+        <com.dejia.anju.base.smart.YMLoadMore
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

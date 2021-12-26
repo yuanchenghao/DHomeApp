@@ -2,9 +2,12 @@ package com.dejia.anju.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.dejia.anju.R;
+import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.model.HomeFollowBean;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
@@ -29,5 +32,11 @@ public class HomeFollowItem2Adapter extends BaseQuickAdapter<HomeFollowBean.Foll
         } else {
             baseViewHolder.setText(R.id.tv_name, "");
         }
+        baseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PersonActivity.invoke(mContext,followCreatorList.getUser_id());
+            }
+        });
     }
 }

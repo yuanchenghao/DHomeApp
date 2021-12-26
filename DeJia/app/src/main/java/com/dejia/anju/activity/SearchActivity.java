@@ -14,8 +14,12 @@ import android.widget.TextView;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.SearchInitFlowLayout;
 import com.dejia.anju.base.BaseActivity;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.HistorySearchWords;
+import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
+import com.dejia.anju.net.SignUtils;
+import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.FlowLayout;
@@ -24,6 +28,7 @@ import com.zhangyue.we.x2c.ano.Xml;
 import org.kymjs.aframe.database.KJDB;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -89,14 +94,35 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (!TextUtils.isEmpty(ed.getText().toString().trim())) {
                         saveRecord(ed.getText().toString().trim());
-                        ToastUtils.toast(mContext, "跳转H5").show();
-                        mContext.finish();
+                        invokeWebSearchActivity(ed.getText().toString().trim());
                     }
                     return true;
                 }
                 return false;
             }
         });
+    }
+
+    private void invokeWebSearchActivity(String key) {
+        HashMap<String,String> map = new HashMap<>();
+        map.put("key",key);
+        WebViewData webViewData = new WebViewData.WebDataBuilder()
+                .setWebviewType("webview")
+                .setLinkisJoint("1")
+                .setIsHide("1")
+                .setIsRefresh("0")
+                .setEnableSafeArea("0")
+                .setBounces("1")
+                .setIsRemoveUpper("0")
+                .setEnableBottomSafeArea("0")
+                .setBgColor("#F6F6F6")
+                .setIs_back("0")
+                .setIs_share("0")
+                .setShare_data("0")
+                .setLink("/vue/searchIndex/")
+                .setRequest_param(map.toString())
+                .build();
+        WebUrlJumpManager.getInstance().invoke(mContext,"",webViewData);
     }
 
     @Override
@@ -132,9 +158,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 public void onClick(View v, int pos, String key) {
                     // 先隐藏键盘
                     Util.hideSoftKeyboard(mContext);
-                    if (onEventClickListener != null) {
-                        onEventClickListener.onHistoryClick(v, key);
-                    }
+                    ed.setText(key);
+                    ed.setSelection(key.length());
+                    invokeWebSearchActivity(key);
                 }
             });
             //清除历史记录
@@ -168,16 +194,5 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             hs.setHwords(key);
             mKjdb.save(hs);
         }
-    }
-
-    //item点击回调
-    public interface OnEventClickListener {
-        void onHistoryClick(View v, String key);
-    }
-
-    private OnEventClickListener onEventClickListener;
-
-    public void setOnEventClickListener(OnEventClickListener onEventClickListener) {
-        this.onEventClickListener = onEventClickListener;
     }
 }

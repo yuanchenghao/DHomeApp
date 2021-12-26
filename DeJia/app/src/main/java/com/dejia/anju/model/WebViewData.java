@@ -7,29 +7,31 @@ public class WebViewData implements Parcelable {
     //当webviewType==(api/webview)时,link的值为后端提供，当webviewType==native时,link的值为原生提供
     private String webviewType;
     //是否需要原生拼接url 0:不需要 1:需要
-    private String link_is_joint;
+    private String link_is_joint = "0";
     //是否隐藏原生头部 0:不隐藏 1:隐藏（默认 1）
-    private String isHide;
+    private String isHide = "1";
     //是否可以下拉刷新 0:不可以 1:可以（默认 1）
-    private String isRefresh;
+    private String isRefresh = "1";
     //是否开启顶部安全区域 0:关闭 1:开启（默认 0）
-    private String enableSafeArea;
+    private String enableSafeArea = "0";
     //H5页面是否可以上下拖动 0:不可以 1:可以（ 默认 1）
-    private String bounces;
+    private String bounces = "1";
     //是否删除上一页面 0:不删除 1:删除（默认 0）
-    private String isRemoveUpper;
+    private String isRemoveUpper = "0";
     //是否开启底部安全区域 0: 关闭 1: 开启 （可选，默认 0）
-    private String enableBottomSafeArea;
+    private String enableBottomSafeArea = "0";
     //设置背景色 (HEX 格式) （可选，默认 #F6F6F6 ）
-    private String bgColor;
+    private String bgColor = "#F6F6F6";
     //是否需要返回按钮（0不需要 1需要）
-    private String is_back;
+    private String is_back = "0";
     //是否需要分享按钮（0不需要 1需要）
-    private String is_share;
+    private String is_share = "0";
     //分享的信息 当is_share==1时需要
     private String share_data;
     //链接
     private String link;
+    //其他参数
+    private String request_param;
 
     protected WebViewData(Parcel in) {
         webviewType = in.readString();
@@ -45,6 +47,7 @@ public class WebViewData implements Parcelable {
         is_share = in.readString();
         share_data = in.readString();
         link = in.readString();
+        request_param = in.readString();
     }
 
     public static final Creator<WebViewData> CREATOR = new Creator<WebViewData>() {
@@ -111,6 +114,10 @@ public class WebViewData implements Parcelable {
         return link;
     }
 
+    public String getRequest_param() {
+        return request_param;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -131,6 +138,7 @@ public class WebViewData implements Parcelable {
         dest.writeString(is_share);
         dest.writeString(share_data);
         dest.writeString(link);
+        dest.writeString(request_param);
     }
 
     public static class WebDataBuilder {
@@ -147,6 +155,7 @@ public class WebViewData implements Parcelable {
         private String is_share;
         private String share_data;
         private String link;
+        private String request_param;
 
         public WebDataBuilder setWebviewType(String webviewType) {
             this.webviewType = webviewType;
@@ -213,6 +222,11 @@ public class WebViewData implements Parcelable {
             return this;
         }
 
+        public WebDataBuilder setRequest_param(String request_param) {
+            this.request_param = request_param;
+            return this;
+        }
+
         public WebViewData build() {
             return new WebViewData(this);
         }
@@ -232,5 +246,6 @@ public class WebViewData implements Parcelable {
         this.is_share = builder.is_share;
         this.share_data = builder.share_data;
         this.link = builder.link;
+        this.request_param = builder.request_param;
     }
 }

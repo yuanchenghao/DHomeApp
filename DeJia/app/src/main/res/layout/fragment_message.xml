@@ -5,274 +5,278 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:orientation="vertical">
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/ll_back"-->
-<!--            android:layout_width="44dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:layout_height="match_parent">-->
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/ll_back"-->
+        <!--            android:layout_width="44dp"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:layout_height="match_parent">-->
 
-<!--        <ImageView-->
-<!--            android:layout_width="@dimen/dp_24"-->
-<!--            android:layout_height="@dimen/dp_24"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:src="@mipmap/back_black"-->
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:layout_marginLeft="@dimen/dp_16" />-->
+        <!--        <ImageView-->
+        <!--            android:layout_width="@dimen/dp_24"-->
+        <!--            android:layout_height="@dimen/dp_24"-->
+        <!--            android:layout_centerVertical="true"-->
+        <!--            android:src="@mipmap/back_black"-->
+        <!--            android:layout_gravity="center_vertical"-->
+        <!--            android:layout_marginLeft="@dimen/dp_16" />-->
 
-<!--        </LinearLayout>-->
+        <!--        </LinearLayout>-->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="消息"
+            android:textColor="#1C2125"
             android:textSize="18sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="#1C2125"
-            android:layout_gravity="center" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_notice"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:visibility="gone"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="#EBF6FF">
-
-        <ImageView
-            android:id="@+id/iv_close_notice"
-            android:layout_width="@dimen/dp_12"
-            android:layout_height="@dimen/dp_12"
-            android:src="@mipmap/close_notice"
-            android:layout_marginLeft="@dimen/dp_12"
-            android:layout_marginRight="@dimen/dp_8" />
-
-        <TextView
-            android:textColor="#1C2125"
-            android:textSize="14sp"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="开启系统通知，不错过任何消息" />
-
-        <TextView
-            android:id="@+id/tv_open_notice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dp_11"
-            android:paddingRight="@dimen/dp_11"
-            android:paddingTop="@dimen/dp_3"
-            android:paddingBottom="@dimen/dp_3"
-            android:text="立即开启"
-            android:textSize="11sp"
-            android:layout_marginRight="@dimen/dp_16"
-            android:textColor="#33A7FF"
-            android:background="@drawable/shape_11_33a7ff" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_28"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/ll1"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="50dp"
-                android:layout_height="50dp">
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:src="@mipmap/first_message" />
-
-                <TextView
-                    android:id="@+id/item_inform_tv1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/dot_new_tips"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:padding="@dimen/dp_1"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />
-            </FrameLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="回复我的"
-                android:layout_marginTop="@dimen/dp_7"
-                android:textSize="13sp"
-                android:textColor="#1C2125" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll2"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="50dp"
-                android:layout_height="50dp">
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:src="@mipmap/second_message" />
-
-                <TextView
-                    android:id="@+id/item_inform_tv2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/dot_new_tips"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:padding="@dimen/dp_1"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@我的"
-                android:layout_marginTop="@dimen/dp_7"
-                android:textSize="13sp"
-                android:textColor="#1C2125" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll3"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="50dp"
-                android:layout_height="50dp">
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:src="@mipmap/three_message" />
-
-                <TextView
-                    android:id="@+id/item_inform_tv3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/dot_new_tips"
-                    android:gravity="center"
-                    android:padding="@dimen/dp_1"
-                    android:visibility="gone"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />
-
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="收到的赞"
-                android:layout_marginTop="@dimen/dp_7"
-                android:textSize="13sp"
-                android:textColor="#1C2125" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll4"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="50dp"
-                android:layout_height="50dp">
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:src="@mipmap/four_message" />
-
-                <TextView
-                    android:id="@+id/item_inform_tv4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/dot_new_tips"
-                    android:gravity="center"
-                    android:padding="@dimen/dp_1"
-                    android:visibility="gone"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />
-
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="公告通知"
-                android:layout_marginTop="@dimen/dp_7"
-                android:textSize="13sp"
-                android:textColor="#1C2125" />
-
-        </LinearLayout>
-
+            android:textStyle="bold" />
     </LinearLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smartRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_17"
         android:layout_weight="1"
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableLoadMore="true">
-<!--        <com.dejia.anju.base.smart.YMRefreshHeader-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_notice"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#EBF6FF"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_close_notice"
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_12"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginRight="@dimen/dp_8"
+                android:src="@mipmap/close_notice" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="开启系统通知，不错过任何消息"
+                android:textColor="#1C2125"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_open_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="@drawable/shape_11_33a7ff"
+                android:paddingLeft="@dimen/dp_11"
+                android:paddingTop="@dimen/dp_3"
+                android:paddingRight="@dimen/dp_11"
+                android:paddingBottom="@dimen/dp_3"
+                android:text="立即开启"
+                android:textColor="#33A7FF"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_28"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="50dp"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:src="@mipmap/first_message" />
+
+                    <TextView
+                        android:id="@+id/item_inform_tv1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="@drawable/dot_new_tips"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_1"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:text="回复我的"
+                    android:textColor="#1C2125"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="50dp"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:src="@mipmap/second_message" />
+
+                    <TextView
+                        android:id="@+id/item_inform_tv2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="@drawable/dot_new_tips"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_1"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:text="@我的"
+                    android:textColor="#1C2125"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="50dp"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:src="@mipmap/three_message" />
+
+                    <TextView
+                        android:id="@+id/item_inform_tv3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="@drawable/dot_new_tips"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_1"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:text="收到的赞"
+                    android:textColor="#1C2125"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="50dp"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:src="@mipmap/four_message" />
+
+                    <TextView
+                        android:id="@+id/item_inform_tv4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="@drawable/dot_new_tips"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_1"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:text="公告通知"
+                    android:textColor="#1C2125"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"
+            android:layout_marginTop="@dimen/dp_17"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none" />
+
+        </LinearLayout>
 
         <com.dejia.anju.base.smart.YMLoadMore
             android:layout_width="match_parent"

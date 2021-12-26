@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
-import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
+import com.dejia.anju.utils.ToastUtils;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -34,9 +36,13 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
  * 修改备注：二维码识别
  */
 
-public class QRCodeActivity extends BaseActivity  implements QRCodeView.Delegate{
-    @BindView(R.id.iv_close) ImageView iv_close;
-    @BindView(R.id.zxingview) ZXingView mZXingView;
+public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate {
+    @BindView(R.id.iv_close)
+    ImageView iv_close;
+    @BindView(R.id.zxingview)
+    ZXingView mZXingView;
+    @BindView(R.id.rl)
+    RelativeLayout rl;
 
     @Xml(layouts = "activity_qr_code")
     @Override
@@ -74,28 +80,22 @@ public class QRCodeActivity extends BaseActivity  implements QRCodeView.Delegate
 
     @Override
     protected void initView() {
+        QMUIStatusBarHelper.translucent(this);
+        QMUIStatusBarHelper.setStatusBarLightMode(this);
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) rl.getLayoutParams();
+        layoutParams.topMargin = statusbarHeight;
+        rl.setLayoutParams(layoutParams);
         XXPermissions.with(this)
-                // 申请安装包权限
-                //.permission(Permission.REQUEST_INSTALL_PACKAGES)
-                // 申请悬浮窗权限
-                //.permission(Permission.SYSTEM_ALERT_WINDOW)
-                // 申请通知栏权限
-                //.permission(Permission.NOTIFICATION_SERVICE)
-                // 申请系统设置权限
-                //.permission(Permission.WRITE_SETTINGS)
                 // 申请单个权限
                 .permission(Permission.CAMERA)
-                // 申请多个权限
-//                .permission(Permission.Group.CALENDAR)
                 .request(new OnPermissionCallback() {
 
                     @Override
                     public void onGranted(List<String> permissions, boolean all) {
-//                        if (all) {
-//                            toast("获取录音和日历权限成功");
-//                        } else {
-//                            toast("获取部分权限成功，但部分权限未正常授予");
-//                        }
+                        if (all) {
+//                            mZXingView.startCamera(); // 打开后置摄像头开始预览，但是并未开始识别
+//                            mZXingView.startSpotAndShowRect(); // 显示扫描框，并开始识别
+                        }
                     }
 
                     @Override
@@ -110,11 +110,6 @@ public class QRCodeActivity extends BaseActivity  implements QRCodeView.Delegate
                     }
                 });
         mZXingView.setDelegate(this);
-        QMUIStatusBarHelper.translucent(this);
-        QMUIStatusBarHelper.setStatusBarLightMode(this);
-        statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(mContext);
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) iv_close.getLayoutParams();
-        layoutParams.topMargin = statusbarHeight + SizeUtils.dp2px(20);
     }
 
     @Override
@@ -138,9 +133,12 @@ public class QRCodeActivity extends BaseActivity  implements QRCodeView.Delegate
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        setTitle("扫描结果为：" + result);
-        vibrate();
-        mZXingView.startSpot(); // 开始识别
+        if (!TextUtils.isEmpty(result)) {
+            setTitle("扫描结果为：" + result);
+            vibrate();
+            mZXingView.startSpot(); // 开始识别
+            ToastUtils.toast(mContext,result);
+        }
     }
 
     @Override
@@ -155,7 +153,8 @@ public class QRCodeActivity extends BaseActivity  implements QRCodeView.Delegate
 
     public static void invoke(Context context) {
         Intent intent = new Intent(context, QRCodeActivity.class);
-        context.startActivity(intent); }
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -10,26 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.blankj.utilcode.util.JsonUtils;
 import com.blankj.utilcode.util.SizeUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.EditIntroduceActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.QRCodeActivity;
-import com.dejia.anju.adapter.HomeAdapter;
 import com.dejia.anju.adapter.MyArticleAdapter;
 import com.dejia.anju.adapter.RenZhengListAdapter;
-import com.dejia.anju.adapter.SearchBuildingListAdapter;
 import com.dejia.anju.api.GetMyArticleApi;
 import com.dejia.anju.api.GetUserInfoApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.MyArticleInfo;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.net.ServerData;
@@ -41,7 +35,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.greenrobot.eventbus.EventBus;
@@ -108,6 +102,8 @@ public class MyFragment extends BaseFragment {
     @BindView(R.id.ll_follow)
     LinearLayout ll_follow;
     private UserInfo userInfo;
+    private int page = 1;
+    private MyArticleAdapter myArticleAdapter;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -167,7 +163,6 @@ public class MyFragment extends BaseFragment {
         new GetUserInfoApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData serverData) {
-                refresh_layout.finishRefresh();
                 if ("1".equals(serverData.code)) {
                     UserInfo user = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
                     KVUtils.getInstance().encode("user", user);
@@ -184,18 +179,34 @@ public class MyFragment extends BaseFragment {
     private void getMyArticle() {
         HashMap<String, Object> maps = new HashMap<>();
         maps.put("id", userInfo.getId());
+        maps.put("page", page);
         new GetMyArticleApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData serverData) {
                 if ("1".equals(serverData.code)) {
-                    List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
-                    if (list != null && list.size() > 0) {
-                        tv_my_article.setVisibility(View.GONE);
-                        rv.setVisibility(View.VISIBLE);
-                        setMyArticleList(list);
-                    } else {
-                        tv_my_article.setVisibility(View.VISIBLE);
-                        rv.setVisibility(View.GONE);
+                    if(serverData.data != null){
+                        List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
+                        if (list != null) {
+                            if (list.size() == 0) {
+                                if (refresh_layout == null) {
+                                    refresh_layout.finishLoadMoreWithNoMoreData();
+                                }
+                            } else {
+                                if (refresh_layout == null) {
+                                    refresh_layout.finishLoadMore();
+                                }
+                            }
+                            setMyArticleList(list);
+                        } else {
+                            refresh_layout.finishLoadMoreWithNoMoreData();
+                        }
+                        if (list != null && list.size() > 0 && page == 1) {
+                            tv_my_article.setVisibility(View.GONE);
+                            rv.setVisibility(View.VISIBLE);
+                        }
+                    }else{
+                        refresh_layout.finishLoadMoreWithNoMoreData();
+                        ToastUtils.toast(mContext, serverData.message).show();
                     }
                 } else {
                     ToastUtils.toast(mContext, serverData.message).show();
@@ -206,21 +217,25 @@ public class MyFragment extends BaseFragment {
 
     //设置我的内容列表
     private void setMyArticleList(List<MyArticleInfo> list) {
-        YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        RecyclerView.ItemAnimator itemAnimator = rv.getItemAnimator();
-        //取消局部刷新动画效果
-        if (null != itemAnimator) {
-            ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
-        }
-        rv.setLayoutManager(ymLinearLayoutManager);
-        MyArticleAdapter myArticleAdapter = new MyArticleAdapter(mContext, list);
-        rv.setAdapter(myArticleAdapter);
-        myArticleAdapter.setEventListener(new MyArticleAdapter.EventListener() {
-            @Override
-            public void onItemListener(View v, MyArticleInfo data, int pos) {
-
+        if (null == myArticleAdapter) {
+            YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            RecyclerView.ItemAnimator itemAnimator = rv.getItemAnimator();
+            //取消局部刷新动画效果
+            if (null != itemAnimator) {
+                ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
             }
-        });
+            rv.setLayoutManager(ymLinearLayoutManager);
+            myArticleAdapter = new MyArticleAdapter(mContext, list);
+            rv.setAdapter(myArticleAdapter);
+            myArticleAdapter.setEventListener(new MyArticleAdapter.EventListener() {
+                @Override
+                public void onItemListener(View v, MyArticleInfo data, int pos) {
+                    WebUrlJumpManager.getInstance().invoke(mContext, list.get(pos).getUrl(), null);
+                }
+            });
+        }else{
+            myArticleAdapter.addData(list);
+        }
     }
 
     private void upDataUi() {
@@ -296,9 +311,18 @@ public class MyFragment extends BaseFragment {
 
     @Override
     protected void initData(View view) {
-        refresh_layout.setOnRefreshListener(new OnRefreshListener() {
+        refresh_layout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                //加载更多
+                page++;
+                getMyArticle();
+            }
+
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                myArticleAdapter = null;
                 getUserInfo();
                 getMyArticle();
             }

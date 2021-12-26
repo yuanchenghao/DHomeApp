@@ -23,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SizeUtils;
+import com.dejia.anju.mannger.WebUrlJumpManager;
+import com.dejia.anju.model.WebViewData;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.dejia.anju.R;
 import com.dejia.anju.api.GetCodeApi;
@@ -190,10 +192,23 @@ public class SendVerificationCodeActivity extends BaseActivity {
         spannableString.setSpan(new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-//                Intent it = new Intent();
-//                it.putExtra(UserAgreementWebActivity.mIsYueMeiAgremment, 1);
-//                it.setClass(mContext, UserAgreementWebActivity.class);
-//                mContext.startActivity(it);
+                WebViewData webViewData = new WebViewData.WebDataBuilder()
+                        .setWebviewType("webview")
+                        .setLinkisJoint("1")
+                        .setIsHide("0")
+                        .setIsRefresh("0")
+                        .setEnableSafeArea("0")
+                        .setBounces("1")
+                        .setIsRemoveUpper("0")
+                        .setEnableBottomSafeArea("0")
+                        .setBgColor("#F6F6F6")
+                        .setIs_back("1")
+                        .setIs_share("0")
+                        .setShare_data("0")
+                        .setLink("/vue/userProtocol/")
+                        .setRequest_param("")
+                        .build();
+                WebUrlJumpManager.getInstance().invoke(mContext,"",webViewData);
             }
 
             @Override
@@ -207,10 +222,23 @@ public class SendVerificationCodeActivity extends BaseActivity {
         spannableString.setSpan(new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-//                Intent it = new Intent();
-//                it.putExtra(UserAgreementWebActivity.mIsYueMeiAgremment, 0);
-//                it.setClass(mContext, UserAgreementWebActivity.class);
-//                mContext.startActivity(it);
+                WebViewData webViewData = new WebViewData.WebDataBuilder()
+                        .setWebviewType("webview")
+                        .setLinkisJoint("1")
+                        .setIsHide("0")
+                        .setIsRefresh("0")
+                        .setEnableSafeArea("0")
+                        .setBounces("1")
+                        .setIsRemoveUpper("0")
+                        .setEnableBottomSafeArea("0")
+                        .setBgColor("#F6F6F6")
+                        .setIs_back("1")
+                        .setIs_share("0")
+                        .setShare_data("0")
+                        .setLink("/vue/privacyAgreement/")
+                        .setRequest_param("")
+                        .build();
+                WebUrlJumpManager.getInstance().invoke(mContext,"",webViewData);
             }
 
             @Override

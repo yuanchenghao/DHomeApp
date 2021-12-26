@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WebUrlJumpManager {
+    private WebViewData webViewData;
     private static volatile WebUrlJumpManager webUrlJumpManager;
 
     private WebUrlJumpManager() {
@@ -29,27 +30,31 @@ public class WebUrlJumpManager {
         return webUrlJumpManager;
     }
 
-    public void invoke(Context mContext, String url) {
-        if (TextUtils.isEmpty(url)) {
-            return;
+    public void invoke(Context mContext, String url,WebViewData webViewData) {
+        if(webViewData == null){
+            if (TextUtils.isEmpty(url)) {
+                return;
+            }
+            Map paramMap = URLRequest(URLDecoder.decode(url));
+            webViewData = new WebViewData.WebDataBuilder()
+                    .setWebviewType((String) (paramMap.get("webviewType")))
+                    .setLinkisJoint((String) (paramMap.get("link_is_joint")))
+                    .setIsHide((String) (paramMap.get("isHide")))
+                    .setIsRefresh((String) (paramMap.get("isRefresh")))
+                    .setEnableSafeArea((String) (paramMap.get("enableSafeArea")))
+                    .setBounces((String) (paramMap.get("bounces")))
+                    .setIsRemoveUpper((String) (paramMap.get("isRemoveUpper")))
+                    .setEnableBottomSafeArea((String) (paramMap.get("enableBottomSafeArea")))
+                    .setBgColor((String) (paramMap.get("bgColor")))
+                    .setIs_back((String) (paramMap.get("is_back")))
+                    .setIs_share((String) (paramMap.get("is_share")))
+                    .setShare_data((String) (paramMap.get("share_data")))
+                    .setLink((String) (paramMap.get("link")))
+                    .setRequest_param((String) (paramMap.get("request_param")))
+                    .build();
+        }else{
+            webViewData = webViewData;
         }
-        Map paramMap = URLRequest(URLDecoder.decode(url));
-        WebViewData webViewData = new WebViewData.WebDataBuilder()
-                .setWebviewType((String) (paramMap.get("webviewType")))
-                .setLinkisJoint((String) (paramMap.get("link_is_joint")))
-                .setIsHide((String) (paramMap.get("isHide")))
-                .setIsRefresh((String) (paramMap.get("isRefresh")))
-                .setEnableSafeArea((String) (paramMap.get("enableSafeArea")))
-                .setBounces((String) (paramMap.get("bounces")))
-                .setIsRemoveUpper((String) (paramMap.get("isRemoveUpper")))
-                .setEnableBottomSafeArea((String) (paramMap.get("enableBottomSafeArea")))
-                .setBgColor((String) (paramMap.get("bgColor")))
-                .setIs_back((String) (paramMap.get("is_back")))
-                .setIs_share((String) (paramMap.get("is_share")))
-                .setShare_data((String) (paramMap.get("share_data")))
-                .setLink((String) (paramMap.get("link")))
-                .build();
-
         if (webViewData != null) {
             if (!TextUtils.isEmpty(webViewData.getWebviewType()) && "api".equals(webViewData.getWebviewType())) {
                 //请求接口
