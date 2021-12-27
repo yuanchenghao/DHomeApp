@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.dejia.anju.R;
 import com.dejia.anju.base.WebViewActivityImpl;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
@@ -60,12 +61,6 @@ public class WebViewActivity extends WebViewActivityImpl {
     protected int getLayoutId() {
         // 获取上个页面传递过来的数据
         mWebViewData = getIntent().getParcelableExtra(WEB_DATA);
-        //主题设置
-        if (mWebViewData != null
-                && !TextUtils.isEmpty(mWebViewData.getEnableSafeArea())
-                && "1".equals(mWebViewData.getEnableSafeArea())) {
-            setTheme(R.style.AppThemeprice);
-        }
         return R.layout.activity_web_view;
     }
 
@@ -83,10 +78,6 @@ public class WebViewActivity extends WebViewActivityImpl {
     protected void initData() {
         if (mWebViewContainer.getChildCount() > 0) {
             mWebViewContainer.removeAllViews();
-        }
-        //是否需要刘海
-        if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getEnableSafeArea()) && "1".equals(mWebViewData.getEnableSafeArea())) {
-            setStatusBarView(WebViewActivity.this);
         }
         //背景颜色
         if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getBgColor())) {
@@ -118,10 +109,22 @@ public class WebViewActivity extends WebViewActivityImpl {
 
     @SuppressLint({"JavascriptInterface", "AddJavascriptInterface"})
     private void initWebView() {
-        clientManager = new BaseWebViewClientMessage(mContext);
         mWebView.addJavascriptInterface(new JsCallAndroid(mContext), JS_NAME);
+        clientManager = new BaseWebViewClientMessage(mContext);
         mWebView.setWebViewClient(clientManager);
         mWebViewContainer.addView(mWebView);
+        //主题设置
+        if (mWebViewData != null
+                && !TextUtils.isEmpty(mWebViewData.getEnableSafeArea())
+                && "1".equals(mWebViewData.getEnableSafeArea())) {
+            //状态栏黑色
+            QMUIStatusBarHelper.setStatusBarLightMode(mContext);
+        }else{
+            //沉浸式布局
+            QMUIStatusBarHelper.translucent(mContext);
+            //状态栏白色
+            QMUIStatusBarHelper.setStatusBarDarkMode(mContext);
+        }
         //是否需要标题
         if (mWebViewData != null
                 && !TextUtils.isEmpty(mWebViewData.getIsHide())
@@ -144,12 +147,12 @@ public class WebViewActivity extends WebViewActivityImpl {
             } else {
                 mTopTitle.setRightImgVisibility(View.GONE);
             }
-//            int statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(mContext);
-//            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) activityWebView.getLayoutParams();
-//            if (layoutParams != null) {
-//                layoutParams.topMargin = statusbarHeight;
-//                activityWebView.setLayoutParams(layoutParams);
-//            }
+            int statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(mContext);
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) activityWebView.getLayoutParams();
+            if (layoutParams != null) {
+                layoutParams.topMargin = statusbarHeight;
+                activityWebView.setLayoutParams(layoutParams);
+            }
             activityWebView.addView(mTopTitle, 0);
         }
         if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLinkisJoint()) && "1".equals(mWebViewData.getLinkisJoint())) {
@@ -226,6 +229,13 @@ public class WebViewActivity extends WebViewActivityImpl {
     protected void onYmPageFinished(WebView view, String url) {
     }
 
+//    @Override
+//    protected boolean ymShouldOverrideUrlLoading(WebView view, String request) {
+//        if(!TextUtils.isEmpty(request)){
+//            WebUrlJumpManager.getInstance().invoke(mContext,request,null);
+//        }
+//        return super.ymShouldOverrideUrlLoading(view, request);
+//    }
 
     @Override
     public void onPause() {
@@ -283,8 +293,10 @@ public class WebViewActivity extends WebViewActivityImpl {
     private void loadUrl() {
         if (mWebView != null && mWebViewData != null) {
             // 跳转并进行页面加载
-            WebSignData addressAndHead = SignUtils.getAddressAndHead(linkUrl);
-            mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+            if(!TextUtils.isEmpty(linkUrl)){
+                WebSignData addressAndHead = SignUtils.getAddressAndHead(linkUrl);
+                mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+            }
         }
     }
 

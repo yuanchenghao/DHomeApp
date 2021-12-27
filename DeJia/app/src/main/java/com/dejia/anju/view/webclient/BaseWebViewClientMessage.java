@@ -12,10 +12,13 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.dejia.anju.AppLog;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
 
 import org.json.JSONObject;
+
 import java.util.HashMap;
 
 public class BaseWebViewClientMessage extends WebViewClient {
@@ -81,9 +84,29 @@ public class BaseWebViewClientMessage extends WebViewClient {
      */
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        Log.e(TAG, "shouldOverrideUrlLoading......");
+        AppLog.i("shouldOverrideUrlLoading......");
         WebView.HitTestResult hitTestResult = view.getHitTestResult();
-        int hitType = hitTestResult.getType();
+        if (null == hitTestResult)
+            return false;
+        int type = hitTestResult.getType();
+        switch (type) {
+            case WebView.HitTestResult.EDIT_TEXT_TYPE: // 选中的文字类型
+                break;
+            case WebView.HitTestResult.PHONE_TYPE: // 处理拨号
+                break;
+            case WebView.HitTestResult.EMAIL_TYPE: // 处理Email
+                break;
+            case WebView.HitTestResult.GEO_TYPE: // 　地图类型
+                break;
+            case WebView.HitTestResult.SRC_ANCHOR_TYPE: // 超链接
+                WebUrlJumpManager.getInstance().invoke(mActivity, url, null);
+                break;
+            case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
+            case WebView.HitTestResult.IMAGE_TYPE: // 处理长按图片的菜单项 }
+                return true;
+            case WebView.HitTestResult.UNKNOWN_TYPE: //未知
+                break;
+        }
 //        if (isTypeOutside) {
 //            if (webViewTypeOutside != null) {
 //                webViewTypeOutside.typeOutside(view, url);

@@ -54,7 +54,7 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity {
         settings.setBuiltInZoomControls(true);// 设置支持缩放
         settings.setSupportZoom(false);// 不支持缩放
         settings.setUseWideViewPort(false);// 将图片调整到适合webview大小 设置webview推荐使用的窗口，使html界面自适应屏幕
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);//支持缓存
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);//支持缓存
         //缓存模式如下：
         //LOAD_CACHE_ONLY: 不使用网络，只读取本地缓存数据
         //LOAD_DEFAULT: （默认）根据cache-control决定是否从网络上取数据。

@@ -5,11 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.activity.WebViewActivity;
 import com.dejia.anju.model.WebViewData;
+import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.ToastUtils;
 
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WebUrlJumpManager {
@@ -58,8 +63,28 @@ public class WebUrlJumpManager {
         if (webViewData != null) {
             if (!TextUtils.isEmpty(webViewData.getWebviewType()) && "api".equals(webViewData.getWebviewType())) {
                 //请求接口
+                ToastUtils.toast(mContext,"需要请求接口").show();
             } else if (!TextUtils.isEmpty(webViewData.getWebviewType()) && "native".equals(webViewData.getWebviewType())) {
                 //原生跳转
+                if(webViewData != null && !TextUtils.isEmpty(webViewData.getLink())){
+                    switch (webViewData.getLink()){
+                        case "userHome":
+                            if(!TextUtils.isEmpty(webViewData.getRequest_param())){
+                                Map<String, Object> map = JSONUtil.getMapForJson(webViewData.getRequest_param());
+                                String user_id = map.get("id")+"";
+                                if(!TextUtils.isEmpty(user_id)){
+                                    PersonActivity.invoke(mContext,user_id);
+                                }
+//                                List<String> keys = new ArrayList<>(map.keySet());
+//                                for (int i = 0; i < keys.size(); i++) {
+//                                    String key = keys.get(i);
+//                                    String value = (String) map.get(key);
+//                                }
+                            }
+                            break;
+                    }
+                }
+                ToastUtils.toast(mContext,"需要调回原生页面").show();
             } else {
                 //跳转web
                 startWebActivity(mContext, webViewData);

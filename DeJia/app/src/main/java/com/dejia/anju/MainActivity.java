@@ -18,6 +18,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.dejia.anju.activity.CancellationActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.OneClickLoginActivity;
+import com.dejia.anju.activity.OneClickLoginActivity2;
 import com.dejia.anju.activity.ToolOfProductionActivity;
 import com.dejia.anju.api.MessageCountApi;
 import com.dejia.anju.api.MessageShowApi;
@@ -331,11 +332,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.ll_tool:
                 if (!isLogin()) {
                     //这里判断支不支持极光登录
-                    OneClickLoginActivity.invoke(mContext, "");
+                    OneClickLoginActivity2.invoke(mContext, "");
                     return;
                 }
                 UserInfo userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
-                if (TextUtils.isEmpty(userInfo.getImg()) || TextUtils.isEmpty(userInfo.getNickname())) {
+                if (!TextUtils.isEmpty(userInfo.getIs_perfect()) && !"1".equals(userInfo.getIs_perfect())) {
                     DialogUtils.showCancellationDialog(mContext,
                             "发表内容前请先完善「头像」和「昵称」",
                             "去完善",
@@ -360,14 +361,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 if (isLogin()) {
                     initFragment(3);
                 } else {
-                    OneClickLoginActivity.invoke(mContext, "");
+                    OneClickLoginActivity2.invoke(mContext, "");
                 }
                 break;
             case R.id.ll_my:
                 if (isLogin()) {
                     initFragment(4);
                 } else {
-                    OneClickLoginActivity.invoke(mContext, "");
+                    OneClickLoginActivity2.invoke(mContext, "");
                 }
                 break;
 
@@ -540,7 +541,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void initOneClickLogin() {
         //没登录 首次登录
         if (!isLogin() && (KVUtils.getInstance().decodeInt("is_first_active") == 1)) {
-            OneClickLoginActivity.invoke(mContext, "0");
+            OneClickLoginActivity2.invoke(mContext, "0");
         }
     }
 

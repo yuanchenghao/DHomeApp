@@ -81,6 +81,7 @@
     <style name="AppThemeImmersion" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowBackground">@color/transparent</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
@@ -94,4 +95,12 @@
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="myTransparent" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item> <!-- 无标题 -->
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 </resources>

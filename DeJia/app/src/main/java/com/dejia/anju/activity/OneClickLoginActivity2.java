@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,9 +18,10 @@ import com.dejia.anju.R;
 import com.dejia.anju.api.BindJPushApi;
 import com.dejia.anju.api.OneClickLoginApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
+import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.base.Constants;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.UserInfo;
-import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
@@ -27,21 +29,17 @@ import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.webSocket.IMManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.dejia.anju.base.BaseActivity;
-
-import java.util.HashMap;
-
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import butterknife.BindView;
-
-import com.dejia.anju.event.Event;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.HashMap;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
@@ -58,53 +56,73 @@ import static com.dejia.anju.base.Constants.baseTestService;
  * 创 建 人: 原成昊
  * 邮   箱: 188897876@qq.com
  * 修改备注：一键登录
+ * 一键登录
+ *
+ * 1、调用极光 SDK 初始化 API（Android/iOS）。
+ *
+ * 2、初始化完成后，调用 checkVerifyEnable API（Android/iOS） 判断网络环境是否支持。
+ *
+ * 3、在手机网络环境支持的前提下，调用一键登录预取号接口 preLogin（Android/iOS）(可以不用预取号)。
+ *
+ * 4、在预取号成功的前提下，请求授权一键登录 loginAuth（Android）/getAuthorizationWithController（iOS）。
+ *
+ * 5、将请求授权后获取到的 loginToken 上传到服务端。
+ *
+ * 6、服务端调用一键登录 loginTokenVerify API 获取加密后的手机号码。
+ *
+ * 7、使用配置在极光控制台的公钥对应的私钥对加密后的手机号码进行解密。
+ * 号码认证
+ *
+ * 1、调用极光 SDK 初始化 API（Android/iOS）。
+ *
+ * 2、初始化成功后，调用 checkVerifyEnable API（Android/iOS） 判断网络环境是否支持。
+ *
+ * 3、在手机网络环境支持的前提下，调用 getToken API（Android/iOS）获取号码认证 Token。
+ *
+ * 4、将获取到的号码认证 Token 传递给服务端，服务端调用 Verify API 验证本机号码与待验证的手机号码是否一致。
  */
 
-public class OneClickLoginActivity extends BaseActivity {
-    @BindView(R.id.tv_close) TextView tv_close;
-    @BindView(R.id.iv_close) ImageView iv_close;
-    @BindView(R.id.tv_phone) TextView tv_phone;
-    @BindView(R.id.tv_login_bt) TextView tv_login_bt;
-    @BindView(R.id.tv_phone_login) TextView tv_phone_login;
-    @BindView(R.id.tv_agreement) TextView tv_agreement;
-    private boolean isChecked;
+public class OneClickLoginActivity2 extends Activity {
     //区分来源
     private String type;
-
+    private Activity mContext;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
         switch (msgEvent.getCode()) {
             case 1:
-                if (OneClickLoginActivity.this != null && !OneClickLoginActivity.this.isFinishing()) {
+                if (OneClickLoginActivity2.this != null && !OneClickLoginActivity2.this.isFinishing()) {
                     finished();
                 }
                 break;
         }
     }
 
-
-    @Xml(layouts = "activity_one_click_login")
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_one_click_login;
+    public void initView() {
+        boolean verifyEnable = JVerificationInterface.checkVerifyEnable(mContext);
+        if (verifyEnable) {
+            OneClickLogin();
+        } else {
+            SendVerificationCodeActivity.invoke(OneClickLoginActivity2.this);
+            finished();
+        }
     }
 
-    public void initView() {
+    private void OneClickLogin() {
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
                 .setAuthBGImgPath("main_bg")
-                .setNavColor(Color.parseColor("#FFFFFF"))
+                .setNavColor(0xffffffff)
                 .setNavText("登录")
-                .setNavTextColor(Color.parseColor("#333333"))
-                .setNavReturnImgPath("back_black")
+                .setNavTextColor(0xff333333)
+                .setNavReturnImgPath("umcsdk_return_bg")
                 .setLogoWidth(75)
                 .setLogoHeight(75)
                 .setLogoHidden(false)
-                .setNumberColor(Color.parseColor("#333333"))
+                .setNumberColor(0xff333333)
                 .setNumFieldOffsetY(160)
                 .setLogBtnText("本机号码一键登录")
                 .setLogBtnTextColor(0xffffffff)
-                .setLogBtnImgPath("auto_login_btn")
+                .setLogBtnImgPath("umcsdk_login_btn_bg")
                 .setLogBtnHeight(47)
                 .setLogBtnTextSize(15)
                 .setAppPrivacyOne("悦美整形隐私政策", "https://docs.jiguang.cn//jverification/client/android_api/#sdkui")
@@ -132,28 +150,7 @@ public class OneClickLoginActivity extends BaseActivity {
 //                })
                 .setPrivacyOffsetY(35).build();
         JVerificationInterface.setCustomUIWithConfig(uiConfig);
-        type = getIntent().getStringExtra("type");
-        if ("0".equals(type)) {
-            tv_close.setVisibility(View.VISIBLE);
-            iv_close.setVisibility(View.GONE);
-        } else {
-            tv_close.setVisibility(View.GONE);
-            iv_close.setVisibility(View.VISIBLE);
-        }
-        QMUIStatusBarHelper.translucent(this);
-        QMUIStatusBarHelper.setStatusBarLightMode(this);
-        int statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(OneClickLoginActivity.this);
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) tv_close.getLayoutParams();
-        ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) iv_close.getLayoutParams();
-        layoutParams.topMargin = statusbarHeight + SizeUtils.dp2px(20);
-        layoutParams2.topMargin = statusbarHeight + SizeUtils.dp2px(20);
-    }
 
-    public void initData() {
-        if(!JVerificationInterface.checkVerifyEnable(this)){
-            AppLog.i("当前网络环境不支持认证");
-            return;
-        }
 //        JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
 //            @Override
 //            public void onResult(int i, String s, String s1) {
@@ -172,38 +169,42 @@ public class OneClickLoginActivity extends BaseActivity {
             public void onResult(final int code, final String content) {
                 AppLog.i("[" + code + "]message=" +  content );
                 if (code == 7000) {
-                    autoAuthLogin(OneClickLoginActivity.this);
+                    autoAuthLogin(OneClickLoginActivity2.this);
                 }
             }
         });
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = OneClickLoginActivity2.this;
+        type = getIntent().getStringExtra("type");
+        QMUIStatusBarHelper.translucent(this);
+        QMUIStatusBarHelper.setStatusBarLightMode(this);
+        //不接受触摸屏事件
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-//        initView();
-//        initData();
+        initView();
     }
 
-    @OnClick({R.id.iv_close, R.id.tv_close, R.id.tv_login_bt, R.id.tv_phone_login})
+    @OnClick({})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_close:
-                finished();
-                break;
-            case R.id.tv_close:
-                finished();
-                break;
-            case R.id.tv_login_bt:
-
-                break;
-            case R.id.tv_phone_login:
-                SendVerificationCodeActivity.invoke(OneClickLoginActivity.this);
-                break;
+//            case R.id.iv_close:
+//                finished();
+//                break;
+//            case R.id.tv_close:
+//                finished();
+//                break;
+//            case R.id.tv_login_bt:
+//
+//                break;
+//            case R.id.tv_phone_login:
+//                SendVerificationCodeActivity.invoke(OneClickLoginActivity2.this);
+//                break;
         }
     }
 
@@ -230,7 +231,8 @@ public class OneClickLoginActivity extends BaseActivity {
                 }else{
                     AppLog.i( "code=" + code + ", message=" + content);
                     ToastUtils.toast(mContext,code+"").show();
-                    SendVerificationCodeActivity.invoke(OneClickLoginActivity.this);
+                    SendVerificationCodeActivity.invoke(OneClickLoginActivity2.this);
+                    finished();
                 }
             }
         });
@@ -283,15 +285,15 @@ public class OneClickLoginActivity extends BaseActivity {
      * @param context
      */
     public static void invoke(Context context, String type) {
-        Intent intent = new Intent(context, OneClickLoginActivity.class);
+        Intent intent = new Intent(context, OneClickLoginActivity2.class);
         intent.putExtra("type", type);
         context.startActivity(intent);
-        ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, 0);
+//        ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, 0);
     }
 
     public void finished() {
         finish();
-        overridePendingTransition(0, R.anim.push_bottom_out);
+//        overridePendingTransition(0, R.anim.push_bottom_out);
     }
 
 

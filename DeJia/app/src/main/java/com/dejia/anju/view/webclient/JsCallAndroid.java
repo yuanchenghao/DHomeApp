@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+
+import com.dejia.anju.AppLog;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 public class JsCallAndroid {
 
@@ -31,6 +33,23 @@ public class JsCallAndroid {
      */
     @JavascriptInterface
     public void refreshWebView() {
+
     }
 
+    /**
+     * 分享
+     */
+    @JavascriptInterface
+    public void appToShare() {
+
+    }
+
+    /**
+     * 返回
+     */
+    @JavascriptInterface
+    public void appGoBack() {
+        AppLog.i("js调用成功");
+        ((Activity)mContext).finish();
+    }
 }

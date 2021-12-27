@@ -192,7 +192,7 @@ public class VerificationCodeActivity extends BaseActivity {
                                 });
                                 ToastUtils.toast(mContext, "登录成功").show();
                                 //清空预取号缓存
-//                                JVerificationInterface.clearPreLoginCache();
+                                JVerificationInterface.clearPreLoginCache();
                                 //发登录广播
                                 EventBus.getDefault().post(new Event<>(1));
                             }else{

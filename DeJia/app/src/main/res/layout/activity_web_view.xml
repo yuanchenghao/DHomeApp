@@ -3,28 +3,20 @@
     android:id="@+id/activity_web_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F6F6F6"
     android:orientation="vertical">
 
-    <FrameLayout
+    <com.dejia.anju.view.MyPullRefresh
+        android:id="@+id/web_view_refresh_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-        <com.dejia.anju.view.MyPullRefresh
-            android:id="@+id/web_view_refresh_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" >
+    </com.dejia.anju.view.MyPullRefresh>
 
-        </com.dejia.anju.view.MyPullRefresh>
-
-        <FrameLayout
-            android:id="@+id/web_view_container"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/web_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </LinearLayout>

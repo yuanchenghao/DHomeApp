@@ -13,4 +13,19 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
+    <!--沉浸式预留出状态栏高度的主题-->
+    <style name="AppThemeImmersion" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <!--沉浸式透明不预留状态栏高度主题-->
+    <style name="AppThemeTransparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>
