@@ -8,10 +8,13 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.base.WebViewActivityImpl;
 import com.dejia.anju.mannger.WebUrlJumpManager;
@@ -53,7 +56,6 @@ public class WebViewActivity extends WebViewActivityImpl {
     public static final String WEB_DATA = "WebData";
     private static final String JS_NAME = "android";
     private CommonTopBar mTopTitle;
-    private BaseWebViewClientMessage clientManager;
     private String linkUrl;
 
     @Xml(layouts = "activity_web_view")
@@ -91,7 +93,7 @@ public class WebViewActivity extends WebViewActivityImpl {
             mRefreshWebViewContainer.setRefreshListener(new MyPullRefresh.RefreshListener() {
                 @Override
                 public void onRefresh() {
-                    loadUrl();
+                    loadLink();
                 }
             });
         } else {
@@ -99,7 +101,7 @@ public class WebViewActivity extends WebViewActivityImpl {
             mWebViewContainer.setVisibility(View.VISIBLE);
             mWebViewContainer.addView(mWebView);
         }
-        loadUrl();
+        loadLink();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -109,17 +111,16 @@ public class WebViewActivity extends WebViewActivityImpl {
 
     @SuppressLint({"JavascriptInterface", "AddJavascriptInterface"})
     private void initWebView() {
-        mWebView.addJavascriptInterface(new JsCallAndroid(mContext), JS_NAME);
-        clientManager = new BaseWebViewClientMessage(mContext);
+        BaseWebViewClientMessage clientManager = new BaseWebViewClientMessage(this);
         mWebView.setWebViewClient(clientManager);
-        mWebViewContainer.addView(mWebView);
+        mWebView.addJavascriptInterface(new JsCallAndroid(mContext), JS_NAME);
         //主题设置
         if (mWebViewData != null
                 && !TextUtils.isEmpty(mWebViewData.getEnableSafeArea())
                 && "1".equals(mWebViewData.getEnableSafeArea())) {
             //状态栏黑色
             QMUIStatusBarHelper.setStatusBarLightMode(mContext);
-        }else{
+        } else {
             //沉浸式布局
             QMUIStatusBarHelper.translucent(mContext);
             //状态栏白色
@@ -158,7 +159,7 @@ public class WebViewActivity extends WebViewActivityImpl {
         if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLinkisJoint()) && "1".equals(mWebViewData.getLinkisJoint())) {
             //拼接
             if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLink())) {
-                if(mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())){
+                if (mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())) {
                     Map<String, Object> map = JSONUtil.getMapForJson(mWebViewData.getRequest_param());
                     StringBuilder builder = new StringBuilder();
                     List<String> keys = new ArrayList<>(map.keySet());
@@ -169,14 +170,14 @@ public class WebViewActivity extends WebViewActivityImpl {
                     }
                     linkUrl = FinalConstant1.HTTP + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_BASE_URL
                             + mWebViewData.getLink() + builder;
-                }else{
+                } else {
                     linkUrl = FinalConstant1.HTTP + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_BASE_URL
                             + mWebViewData.getLink();
                 }
             }
         } else {
             //不需要拼接
-            if(mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())){
+            if (mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())) {
                 Map<String, Object> map = JSONUtil.getMapForJson(mWebViewData.getRequest_param());
                 StringBuilder builder = new StringBuilder();
                 List<String> keys = new ArrayList<>(map.keySet());
@@ -188,7 +189,7 @@ public class WebViewActivity extends WebViewActivityImpl {
                 if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLink())) {
                     linkUrl = mWebViewData.getLink() + builder;
                 }
-            }else{
+            } else {
                 if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLink())) {
                     linkUrl = mWebViewData.getLink();
                 }
@@ -256,15 +257,34 @@ public class WebViewActivity extends WebViewActivityImpl {
 
     @Override
     public void onDestroy() {
-        if (mWebViewContainer != null && mWebView != null) {
-            mWebView.removeAllViews();
-            mWebView.destroy();
-            mWebView = null;
-        }
+        DestroyWebView();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
         super.onDestroy();
+    }
+
+    private void DestroyWebView() {
+        if (mWebView != null) {
+            ViewParent parent = mWebView.getParent();
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(mWebView);
+            }
+            loadUrl("about:blank");
+            mWebView.stopLoading();
+            mWebView.clearFormData();
+            mWebView.clearMatches();
+            mWebView.clearSslPreferences();
+            mWebView.clearDisappearingChildren();
+            mWebView.clearHistory();
+            mWebView.clearCache(true);
+            mWebView.getSettings().setJavaScriptEnabled(false);
+            mWebView.freeMemory();
+            mWebView.clearAnimation();
+            mWebView.removeAllViews();
+            mWebView.destroy();
+            mWebView = null;
+        }
     }
 
 //    @Override
@@ -290,12 +310,11 @@ public class WebViewActivity extends WebViewActivityImpl {
     /**
      * 加载URL
      */
-    private void loadUrl() {
+    private void loadLink() {
         if (mWebView != null && mWebViewData != null) {
             // 跳转并进行页面加载
-            if(!TextUtils.isEmpty(linkUrl)){
-                WebSignData addressAndHead = SignUtils.getAddressAndHead(linkUrl);
-                mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+            if (!TextUtils.isEmpty(linkUrl)) {
+                loadUrl(linkUrl);
             }
         }
     }
@@ -324,6 +343,23 @@ public class WebViewActivity extends WebViewActivityImpl {
         view.setLayoutParams(params);
         view.setBackgroundColor(Color.TRANSPARENT);
         return view;
+    }
+
+    /**
+     * 分享
+     */
+    @JavascriptInterface
+    public void appToShare() {
+
+    }
+
+    /**
+     * 返回
+     */
+    @JavascriptInterface
+    public void appGoBack() {
+        AppLog.i("js调用成功");
+        ((Activity) mContext).finish();
     }
 
 }

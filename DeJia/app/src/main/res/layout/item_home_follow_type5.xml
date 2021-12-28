@@ -19,7 +19,6 @@
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
             android:layout_gravity="bottom"
-            android:background="#000000"
             app:fadeDuration="100"
             app:retryImageScaleType="centerCrop"
             app:roundAsCircle="true" />

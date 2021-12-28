@@ -39,7 +39,6 @@ public class CircleFragment extends BaseWebViewFragment {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
         clientManager = new BaseWebViewClientMessage(mContext);
-        mWebView.addJavascriptInterface(new JsCallAndroid(getActivity()), "android");
         mWebView.setWebViewClient(clientManager);
         ll_web.addView(mWebView);
         //下拉刷新

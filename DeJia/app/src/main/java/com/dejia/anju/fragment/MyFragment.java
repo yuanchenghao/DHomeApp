@@ -191,12 +191,12 @@ public class MyFragment extends BaseFragment {
                         List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
                         if (list != null) {
                             if (list.size() == 0) {
-                                if (refresh_layout == null) {
+                                if (refresh_layout != null) {
                                     refresh_layout.finishLoadMoreWithNoMoreData();
                                 }
                             } else {
-                                if (refresh_layout == null) {
-                                    refresh_layout.finishLoadMore();
+                                if (refresh_layout !=  null) {
+                                    refresh_layout.finishRefresh();
                                 }
                             }
                             setMyArticleList(list);

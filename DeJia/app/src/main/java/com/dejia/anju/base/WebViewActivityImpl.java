@@ -5,6 +5,8 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
+import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -14,11 +16,14 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.dejia.anju.AppLog;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
+import com.dejia.anju.view.webclient.JsCallAndroid;
 
 import java.util.Map;
 
+@SuppressLint("Registered")
 public abstract class WebViewActivityImpl extends BaseWebViewActivity {
     protected WebView mWebView;
 
@@ -43,7 +48,6 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity {
         mWebView.setDrawingCacheEnabled(true);
         mWebView.setLayerType(View.LAYER_TYPE_NONE, null);
         mWebView.requestFocus();
-
         WebSettings settings = mWebView.getSettings();
         //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
         settings.setJavaScriptEnabled(true);
@@ -75,11 +79,6 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity {
         settings.setLoadsImagesAutomatically(true);  //支持自动加载图片
         // 开启 DOM storage API 功能
         settings.setPluginState(WebSettings.PluginState.ON);
-        // android 5.0以上默认不支持Mixed Content
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
-
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onLoadResource(WebView view, String url) {
@@ -130,6 +129,11 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 onYmProgressChanged(view, newProgress);
+            }
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                return super.onConsoleMessage(consoleMessage);
             }
         });
 
@@ -199,6 +203,28 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity {
      * @param newProgress
      */
     protected void onYmProgressChanged(WebView view, int newProgress) {
+    }
+
+    /**
+     * 加载webView
+     *
+     * @param url
+     * @param paramMap
+     * @param headMap
+     */
+    protected void loadUrl(String url, Map<String, Object> paramMap, Map<String, Object> headMap) {
+        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap, headMap);
+        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+    }
+
+    protected void loadUrl(String url, Map<String, Object> paramMap) {
+        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap);
+        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+    }
+
+    protected void loadUrl(String url) {
+        WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
+        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
     }
 }
 

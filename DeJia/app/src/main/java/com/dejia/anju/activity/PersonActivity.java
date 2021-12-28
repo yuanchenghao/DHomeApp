@@ -21,6 +21,7 @@ import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.MyArticleInfo;
 import com.dejia.anju.model.UserInfo;
+import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
@@ -100,6 +101,8 @@ public class PersonActivity extends BaseActivity {
     LinearLayout ll_fans;
     @BindView(R.id.ll_follow)
     LinearLayout ll_follow;
+    @BindView(R.id.ll_renzheng)
+    LinearLayout ll_renzheng;
     private UserInfo userInfo;
     private String userId;
     private int page = 1;
@@ -158,12 +161,12 @@ public class PersonActivity extends BaseActivity {
                         List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
                         if (list != null) {
                             if (list.size() == 0) {
-                                if (refresh_layout == null) {
+                                if (refresh_layout != null) {
                                     refresh_layout.finishLoadMoreWithNoMoreData();
                                 }
                             } else {
-                                if (refresh_layout == null) {
-                                    refresh_layout.finishLoadMore();
+                                if (refresh_layout != null) {
+                                    refresh_layout.finishRefresh();
                                 }
                             }
                             setMyArticleList(list);
@@ -313,7 +316,7 @@ public class PersonActivity extends BaseActivity {
     }
 
     @SuppressLint("WrongConstant")
-    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow})
+    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow,R.id.ll_renzheng})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan_code:
@@ -345,6 +348,26 @@ public class PersonActivity extends BaseActivity {
                 break;
             case R.id.ll_follow:
                 ToastUtils.toast(mContext, "关注").show();
+                break;
+            case R.id.ll_renzheng:
+                if (!TextUtils.isEmpty(userId) && userId.equals(Util.getUid())) {
+                    WebViewData webViewData = new WebViewData.WebDataBuilder()
+                            .setWebviewType("webview")
+                            .setLinkisJoint("1")
+                            .setIsHide("1")
+                            .setIsRefresh("1")
+                            .setEnableSafeArea("1")
+                            .setBounces("1")
+                            .setIsRemoveUpper("0")
+                            .setEnableBottomSafeArea("0")
+                            .setBgColor("#F6F6F6")
+                            .setIs_back("0")
+                            .setIs_share("0")
+                            .setShare_data("0")
+                            .setLink("/vue/auth/")
+                            .build();
+                    WebUrlJumpManager.getInstance().invoke(mContext, "", webViewData);
+                }
                 break;
 
         }

@@ -438,6 +438,12 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
                 }
             });
+            tv_zan_num.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
     }
 

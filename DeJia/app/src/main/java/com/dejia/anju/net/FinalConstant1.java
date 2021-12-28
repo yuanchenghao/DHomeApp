@@ -115,6 +115,8 @@ public class FinalConstant1 {
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "logout", POST);
         //一键登录
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "phoneLogin", POST);
+        //赞 取消赞
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "insertAgree", POST);
 
         //私信
         //WebSocket解绑

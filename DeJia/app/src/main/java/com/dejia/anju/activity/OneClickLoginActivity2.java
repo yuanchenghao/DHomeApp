@@ -111,45 +111,88 @@ public class OneClickLoginActivity2 extends Activity {
     private void OneClickLogin() {
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
                 .setAuthBGImgPath("main_bg")
-                .setNavColor(0xffffffff)
+                .setNavColor(0xff0086d0)
                 .setNavText("登录")
-                .setNavTextColor(0xff333333)
+                .setNavTextColor(0xffffffff)
                 .setNavReturnImgPath("umcsdk_return_bg")
-                .setLogoWidth(75)
-                .setLogoHeight(75)
+                .setLogoWidth(70)
+                .setLogoHeight(70)
                 .setLogoHidden(false)
                 .setNumberColor(0xff333333)
-                .setNumFieldOffsetY(160)
                 .setLogBtnText("本机号码一键登录")
                 .setLogBtnTextColor(0xffffffff)
                 .setLogBtnImgPath("umcsdk_login_btn_bg")
-                .setLogBtnHeight(47)
-                .setLogBtnTextSize(15)
-                .setAppPrivacyOne("悦美整形隐私政策", "https://docs.jiguang.cn//jverification/client/android_api/#sdkui")
-                .setAppPrivacyColor(0xff666666, 0xff0085d0)
                 .setUncheckedImgPath("umcsdk_uncheck_image")
                 .setCheckedImgPath("umcsdk_check_image")
                 .setSloganTextColor(0xff999999)
-                .setLogoOffsetY(60)
-                .setLogoImgPath("ic_launcher")
-                .setSloganOffsetY(180)
-                .setLogBtnOffsetY(224)
-                .setPrivacyState(true)
-//                .addCustomView(otherLogin, false, new JVerifyUIClickCallback() {
+                .setLogoOffsetY(50)
+                .setLogoImgPath("logo")
+                .setNumFieldOffsetY(170)
+                .setSloganOffsetY(230)
+                .setLogBtnOffsetY(254)
+                .setNumberSize(18)
+                .setPrivacyState(false)
+                .setNavTransparent(false)
+                .build();
+//                .addCustomView(mBtn, true, new JVerifyUIClickCallback() {
 //                    @Override
 //                    public void onClicked(Context context, View view) {
-//
+//                        Toast.makeText(context,"动态注册的其他按钮",Toast.LENGTH_SHORT).show();
 //                    }
-//                })
-//                .addCustomView(mPhoneBtn, true, new JVerifyUIClickCallback() {
+//                }).addCustomView(mBtn2, false, new JVerifyUIClickCallback() {
 //                    @Override
 //                    public void onClicked(Context context, View view) {
-//                        JVerificationInterface.dismissLoginAuthActivity();
-//                        jumpLogin((Activity) activity);
+//                        Toast.makeText(context,"动态注册的其他按钮222",Toast.LENGTH_SHORT).show();
 //                    }
-//                })
-                .setPrivacyOffsetY(35).build();
+//                }).addNavControlView(navBtn, new JVerifyUIClickCallback() {
+//                    @Override
+//                    public void onClicked(Context context, View view) {
+//                        Toast.makeText(context,"导航栏按钮点击",Toast.LENGTH_SHORT).show();
+//                    }
+//                }).setPrivacyOffsetY(30).build();
         JVerificationInterface.setCustomUIWithConfig(uiConfig);
+
+//        JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
+//                .setAuthBGImgPath("main_bg")
+//                .setNavColor(0xffffffff)
+//                .setNavText("登录")
+//                .setNavTextColor(0xff333333)
+//                .setNavReturnImgPath("umcsdk_return_bg")
+//                .setLogoWidth(75)
+//                .setLogoHeight(75)
+//                .setLogoHidden(false)
+//                .setNumberColor(0xff333333)
+//                .setNumFieldOffsetY(160)
+//                .setLogBtnText("本机号码一键登录")
+//                .setLogBtnTextColor(0xffffffff)
+//                .setLogBtnImgPath("umcsdk_login_btn_bg")
+//                .setLogBtnHeight(47)
+//                .setLogBtnTextSize(15)
+//                .setAppPrivacyOne("悦美整形隐私政策", "https://docs.jiguang.cn//jverification/client/android_api/#sdkui")
+//                .setAppPrivacyColor(0xff666666, 0xff0085d0)
+//                .setUncheckedImgPath("umcsdk_uncheck_image")
+//                .setCheckedImgPath("umcsdk_check_image")
+//                .setSloganTextColor(0xff999999)
+//                .setLogoOffsetY(60)
+//                .setLogoImgPath("ic_launcher")
+//                .setSloganOffsetY(180)
+//                .setLogBtnOffsetY(224)
+//                .setPrivacyState(true)
+////                .addCustomView(otherLogin, false, new JVerifyUIClickCallback() {
+////                    @Override
+////                    public void onClicked(Context context, View view) {
+////
+////                    }
+////                })
+////                .addCustomView(mPhoneBtn, true, new JVerifyUIClickCallback() {
+////                    @Override
+////                    public void onClicked(Context context, View view) {
+////                        JVerificationInterface.dismissLoginAuthActivity();
+////                        jumpLogin((Activity) activity);
+////                    }
+////                })
+//                .setPrivacyOffsetY(35).build();
+//        JVerificationInterface.setCustomUIWithConfig(uiConfig);
 
 //        JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
 //            @Override
@@ -212,12 +255,12 @@ public class OneClickLoginActivity2 extends Activity {
      * 授权一键登录
      */
     private void autoAuthLogin(final Activity context) {
-        LoginSettings settings = new LoginSettings();
-        //设置登录完成后是否自动关闭授权页
-        settings.setAutoFinish(true);
-        //设置超时时间，单位毫秒。 合法范围（0，30000],范围以外默认设置为10000
-        settings.setTimeout(15 * 1000);
-        JVerificationInterface.loginAuth(this, settings, new VerifyListener() {
+//        LoginSettings settings = new LoginSettings();
+//        //设置登录完成后是否自动关闭授权页
+//        settings.setAutoFinish(true);
+//        //设置超时时间，单位毫秒。 合法范围（0，30000],范围以外默认设置为10000
+//        settings.setTimeout(15 * 1000);
+        JVerificationInterface.loginAuth(this, new VerifyListener() {
             @Override
             public void onResult(int code, String content, String operator) {
 //                code: 返回码，6000代表loginToken获取成功，6001代表loginToken获取失败，其他返回码详见描述
