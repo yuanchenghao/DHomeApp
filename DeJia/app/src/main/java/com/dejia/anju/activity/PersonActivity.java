@@ -156,6 +156,9 @@ public class PersonActivity extends BaseActivity {
         new GetMyArticleApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData serverData) {
+                if (refresh_layout !=  null) {
+                    refresh_layout.finishRefresh();
+                }
                 if ("1".equals(serverData.code)) {
                     if(serverData.data != null){
                         List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
@@ -166,7 +169,7 @@ public class PersonActivity extends BaseActivity {
                                 }
                             } else {
                                 if (refresh_layout != null) {
-                                    refresh_layout.finishRefresh();
+                                    refresh_layout.finishLoadMore();
                                 }
                             }
                             setMyArticleList(list);

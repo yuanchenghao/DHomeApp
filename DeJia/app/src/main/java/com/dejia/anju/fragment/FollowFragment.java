@@ -167,7 +167,9 @@ public class FollowFragment extends BaseFragment {
         homeFollowApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData serverData) {
-                smartRefreshLayout.finishRefresh();
+                if(smartRefreshLayout != null){
+                    smartRefreshLayout.finishRefresh();
+                }
                 if ("1".equals(serverData.code)) {
                     mHasLoadedOnce = true;
                     homeFollowBean = JSONUtil.TransformSingleBean(serverData.data, HomeFollowBean.class);
