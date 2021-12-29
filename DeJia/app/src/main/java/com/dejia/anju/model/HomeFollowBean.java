@@ -52,6 +52,8 @@ public class HomeFollowBean {
     public static class BuildsBean{
         public String id;
         public String name;
+        public String url;
+        public String desc;
 
         public String getId() {
             return id;
@@ -68,11 +70,63 @@ public class HomeFollowBean {
         public void setName(String name) {
             this.name = name;
         }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
     }
 
     public static class FollowCreatorList{
         public String user_id;
         public String author;
+        public String nickname;
+        public String url;
+        public String user_img;
+        public String is_following;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getUser_img() {
+            return user_img;
+        }
+
+        public void setUser_img(String user_img) {
+            this.user_img = user_img;
+        }
+
+        public String getIs_following() {
+            return is_following;
+        }
+
+        public void setIs_following(String is_following) {
+            this.is_following = is_following;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
 
         public String getUser_id() {
             return user_id;
@@ -125,11 +179,20 @@ public class HomeFollowBean {
         public String title;
         public String article_type;
         public List<ImgInfo> img;
-        public String building;
+        public List<BuildsBean> building;
         public String time_set;
         public String reply_num;
         public String agree_num;
         public NoFollowCreatorArticleList.UserData user_data;
+        public String url;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
 
         public String getTitle() {
             return title;
@@ -155,11 +218,11 @@ public class HomeFollowBean {
             this.img = img;
         }
 
-        public String getBuilding() {
+        public List<BuildsBean> getBuilding() {
             return building;
         }
 
-        public void setBuilding(String building) {
+        public void setBuilding(List<BuildsBean> building) {
             this.building = building;
         }
 
@@ -261,6 +324,15 @@ public class HomeFollowBean {
             public String nickname;
             public int is_following;
             public String auth;
+            public String url;
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
 
             public int getUser_id() {
                 return user_id;
@@ -329,6 +401,15 @@ public class HomeFollowBean {
             public String content_not_tags;
             public String add_time;
             public String status;
+            public String url;
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
 
             public String getReply_time() {
                 return reply_time;

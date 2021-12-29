@@ -16,6 +16,7 @@ import com.dejia.anju.R;
 import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.HomeFollowListBean;
 import com.dejia.anju.model.ImgInfo;
@@ -182,7 +183,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         homeFollowItem3Adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                ToastUtils.toast(mContext, "关联楼盘").show();
+                if(!TextUtils.isEmpty(mDatas.get(position).getBuilds().get(position).getUrl())){
+                    WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getBuilds().get(position).getUrl(),null);
+                }
             }
         });
     }
@@ -215,8 +218,11 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             type4View.tv_context.setText("");
         }
-        if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getBuilding())) {
-            type4View.tv_location_price.setText(mDatas.get(position).getFollow_creator_article_list().getBuilding());
+        if (mDatas.get(position).getFollow_creator_article_list().getBuilding() != null && mDatas.get(position).getFollow_creator_article_list().getBuilding().size() > 0) {
+            YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+            type4View.rv_build.setLayoutManager(layoutManager);
+            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getFollow_creator_article_list().getBuilding());
+            type4View.rv_build.setAdapter(buildAdapter);
             type4View.ll_location.setVisibility(View.VISIBLE);
         } else {
             type4View.ll_location.setVisibility(View.GONE);
@@ -237,14 +243,29 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getFollow_creator_article_list().getImg(), ScreenUtils.getScreenWidth(),"4");
                 type4View.rv_img.setLayoutManager(ymLinearLayoutManager);
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
-                type4View.rv_img.setVisibility(View.VISIBLE);
+                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
+                    @Override
+                    public void item(List<ImgInfo> mList) {
+                        if(!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUrl())){
+                            WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getFollow_creator_article_list().getUrl(),null);
+                        }
+                    }
+                });
             }else{
                 YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
                 HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getFollow_creator_article_list().getImg(), ScreenUtils.getScreenWidth(),"4");
                 type4View.rv_img.setLayoutManager(gridLayoutManager);
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
-                type4View.rv_img.setVisibility(View.VISIBLE);
+                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
+                    @Override
+                    public void item(List<ImgInfo> mList) {
+                        if(!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUrl())){
+                            WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getFollow_creator_article_list().getUrl(),null);
+                        }
+                    }
+                });
             }
+            type4View.rv_img.setVisibility(View.VISIBLE);
         }else{
             type4View.rv_img.setVisibility(View.GONE);
         }
@@ -308,7 +329,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         homeFollowItem5Adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                ToastUtils.toast(mContext,"不知道跳哪").show();
+                if(!TextUtils.isEmpty(mDatas.get(position).getNo_follow_creator_article_list().getList().get(position).getUrl())){
+                    WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getNo_follow_creator_article_list().getList().get(position).getUrl(),null);
+                }
             }
         });
         type5View.tv_follow.setOnClickListener(new View.OnClickListener() {
@@ -373,7 +396,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private TextView tv_follow;
         private TextView tv_context;
         private LinearLayout ll_location;
-        private TextView tv_location_price;
+        private RecyclerView rv_build;
         private RecyclerView rv_img;
         private LinearLayout ll_comment_zan;
 
@@ -387,9 +410,41 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tv_follow = itemView.findViewById(R.id.tv_follow);
             tv_context = itemView.findViewById(R.id.tv_context);
             ll_location = itemView.findViewById(R.id.ll_location);
-            tv_location_price = itemView.findViewById(R.id.tv_location_price);
+            rv_build = itemView.findViewById(R.id.rv_build);
             rv_img = itemView.findViewById(R.id.rv_img);
             ll_comment_zan = itemView.findViewById(R.id.ll_comment_zan);
+            iv_person.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl())){
+                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl(),null);
+                    }
+                }
+            });
+            tv_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl())){
+                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl(),null);
+                    }
+                }
+            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl())){
+                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl(),null);
+                    }
+                }
+            });
+            rv_img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl())){
+                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl(),null);
+                    }
+                }
+            });
         }
     }
 
@@ -409,6 +464,22 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             user_type = itemView.findViewById(R.id.user_type);
             tv_follow = itemView.findViewById(R.id.tv_follow);
             rv = itemView.findViewById(R.id.rv);
+            iv_person.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl())){
+                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl(),null);
+                    }
+                }
+            });
+            tv_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl())){
+                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl(),null);
+                    }
+                }
+            });
         }
     }
 

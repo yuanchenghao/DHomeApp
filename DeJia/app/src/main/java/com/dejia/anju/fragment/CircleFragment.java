@@ -1,6 +1,5 @@
 package com.dejia.anju.fragment;
 
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -10,7 +9,6 @@ import com.dejia.anju.base.BaseWebViewFragment;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.view.webclient.BaseWebViewClientCallback;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
-import com.dejia.anju.view.webclient.JsCallAndroid;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;

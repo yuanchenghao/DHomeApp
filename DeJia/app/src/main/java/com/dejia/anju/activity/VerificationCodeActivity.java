@@ -178,7 +178,7 @@ public class VerificationCodeActivity extends BaseActivity {
                                 IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(baseTestService);
                                 HashMap<String, Object> maps = new HashMap<>();
                                 maps.put("reg_id", registrationID);
-                                maps.put("location_city", "北京");
+                                maps.put("location_city", Util.getCity());
                                 maps.put("brand", android.os.Build.BRAND + "_" + android.os.Build.MODEL);
                                 maps.put("system", android.os.Build.VERSION.RELEASE);
                                 maps.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled())?"0":"1");

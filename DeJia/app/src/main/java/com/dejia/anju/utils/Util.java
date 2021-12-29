@@ -130,9 +130,9 @@ public final class Util {
      * @return
      */
     public static String getCity() {
-        String mCity = KVUtils.getInstance().decodeString(Constants.DWCITY, "全国");
+        String mCity = KVUtils.getInstance().decodeString(Constants.DWCITY, "北京");
         if ("失败".equals(mCity) || TextUtils.isEmpty(mCity)) {
-            mCity = "全国";
+            mCity = "北京";
         }
         return mCity;
     }

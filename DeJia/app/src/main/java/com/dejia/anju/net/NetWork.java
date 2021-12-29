@@ -1,5 +1,8 @@
 package com.dejia.anju.net;
 
+import com.dejia.anju.DeJiaApp;
+import com.dejia.anju.MainActivity;
+import com.dejia.anju.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
@@ -226,9 +229,9 @@ public class NetWork {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        if(bindData.getUrl().contains("chat/send")){
-                            if(null != mOnErrorCallBack){
-                                mOnErrorCallBack.onErrorCallBack(call,response,e);
+                        if (bindData.getUrl().contains("chat/send")) {
+                            if (null != mOnErrorCallBack) {
+                                mOnErrorCallBack.onErrorCallBack(call, response, e);
                             }
                         }
                         handleResponse(bindData, setErrorResult(), cb);
@@ -363,19 +366,12 @@ public class NetWork {
                             serverData.message = message;
                             cb.onServerCallback(serverData);
                         }
-//                        Toast.makeText(MyApplication.getContext(), "没有内容", Toast.LENGTH_SHORT).show();
+                        ToastUtils.toast(DeJiaApp.getContext(), "没有内容").show();
                         break;
                     case "10001":
-                        String str = KVUtils.getInstance().decodeString(IS_SHOW_LOGIN, "0");
-                        if ("0".equals(str)) {
-//                            Util.clearUserData();
-                            String isJumpLogin = KVUtils.getInstance().decodeString("is_jump_login", "0");
-                            if (!"1".equals(isJumpLogin)) {
-//                                Utils.isLoginAndBind(MyApplication.getContext());
-//                                Cfg.saveStr(MyApplication.getContext(), IS_SHOW_LOGIN, "1");
-//                                Cfg.saveStr(MyApplication.getContext(), IS_SHOW_LOGIN_CHAT, "1");
-                            }
-                        }
+                        //用户账户异常 强制下线处理
+                        ToastUtils.toast(DeJiaApp.getContext(), message).show();
+                        Util.clearUserData(DeJiaApp.getContext());
                         serverData.code = code;
                         serverData.message = message;
                         cb.onServerCallback(serverData);
@@ -421,14 +417,6 @@ public class NetWork {
                             cb.onServerCallback(serverData);
                         }
                         break;
-                }
-            } else {
-                //魔镜特殊处理
-                if (bindData.getEntry().equals("magicmirror")) {
-                    serverData.bindData = null;
-                    serverData.code = "1";
-                    serverData.message = result;
-                    cb.onServerCallback(serverData);
                 }
             }
         } catch (JSONException e) {

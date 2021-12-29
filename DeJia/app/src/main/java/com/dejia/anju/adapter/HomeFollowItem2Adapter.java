@@ -8,7 +8,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.PersonActivity;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.HomeFollowBean;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import androidx.annotation.Nullable;
@@ -22,20 +26,22 @@ public class HomeFollowItem2Adapter extends BaseQuickAdapter<HomeFollowBean.Foll
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, HomeFollowBean.FollowCreatorList followCreatorList) {
-//        if (!TextUtils.isEmpty(followCreatorList.get())) {
-//            ((SimpleDraweeView) baseViewHolder.getView(R.id.iv_pic)).setController(Fresco.newDraweeControllerBuilder().setUri(noFollowCreatorList.getUser_img()).setAutoPlayAnimations(true).build());
-//        } else {
-//            ((SimpleDraweeView) baseViewHolder.getView(R.id.iv_pic)).setBackgroundColor(Color.parseColor("#000000"));
-//        }
-        if (!TextUtils.isEmpty(followCreatorList.getAuthor())) {
-            baseViewHolder.setText(R.id.tv_name, followCreatorList.getAuthor());
+        if (!TextUtils.isEmpty(followCreatorList.getUser_img())) {
+            ((SimpleDraweeView) baseViewHolder.getView(R.id.iv_pic)).setController(Fresco.newDraweeControllerBuilder().setUri(followCreatorList.getUser_img()).setAutoPlayAnimations(true).build());
+        } else {
+            ((SimpleDraweeView) baseViewHolder.getView(R.id.iv_pic)).setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
+        }
+        if (!TextUtils.isEmpty(followCreatorList.getNickname())) {
+            baseViewHolder.setText(R.id.tv_name, followCreatorList.getNickname());
         } else {
             baseViewHolder.setText(R.id.tv_name, "");
         }
         baseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PersonActivity.invoke(mContext,followCreatorList.getUser_id());
+                if(!TextUtils.isEmpty(followCreatorList.getUrl())){
+                    WebUrlJumpManager.getInstance().invoke(mContext,followCreatorList.getUrl(),null);
+                }
             }
         });
     }

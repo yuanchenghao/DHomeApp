@@ -6,10 +6,14 @@ import android.os.Parcelable;
 public class SearchBuildingInfo implements Parcelable {
     public String id;
     public String name;
+    public String url;
+    public String desc;
 
     protected SearchBuildingInfo(Parcel in) {
         id = in.readString();
         name = in.readString();
+        url = in.readString();
+        desc = in.readString();
     }
 
     public static final Creator<SearchBuildingInfo> CREATOR = new Creator<SearchBuildingInfo>() {
@@ -40,6 +44,22 @@ public class SearchBuildingInfo implements Parcelable {
         this.name = name;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -49,5 +69,7 @@ public class SearchBuildingInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
+        dest.writeString(url);
+        dest.writeString(desc);
     }
 }

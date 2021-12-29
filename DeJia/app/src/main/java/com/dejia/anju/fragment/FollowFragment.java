@@ -218,6 +218,7 @@ public class FollowFragment extends BaseFragment {
                                 followCreatorArticleList.setTime_set(homeFollowBean.getFollow_creator_article_list().get(i).getTime_set());
                                 followCreatorArticleList.setReply_num(homeFollowBean.getFollow_creator_article_list().get(i).getReply_num());
                                 followCreatorArticleList.setAgree_num(homeFollowBean.getFollow_creator_article_list().get(i).getAgree_num());
+                                followCreatorArticleList.setUrl(homeFollowBean.getFollow_creator_article_list().get(i).getUrl());
                                 HomeFollowListBean h = new HomeFollowListBean();
                                 h.setFollow_creator_article_list(followCreatorArticleList);
                                 mDatas.add(h);

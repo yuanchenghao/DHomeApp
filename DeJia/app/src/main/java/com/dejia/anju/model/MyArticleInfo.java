@@ -10,7 +10,7 @@ public class MyArticleInfo {
     public int article_type;
     public String title;
     public List<ImgInfo> img;
-    public List<SearchBuildingInfo> building;
+    public List<HomeFollowBean.BuildsBean> building;
     public String reply_num;
     public String agree_num;
     public String url;
@@ -55,11 +55,11 @@ public class MyArticleInfo {
         this.img = img;
     }
 
-    public List<SearchBuildingInfo> getBuilding() {
+    public List<HomeFollowBean.BuildsBean> getBuilding() {
         return building;
     }
 
-    public void setBuilding(List<SearchBuildingInfo> building) {
+    public void setBuilding(List<HomeFollowBean.BuildsBean> building) {
         this.building = building;
     }
 

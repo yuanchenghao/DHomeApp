@@ -23,6 +23,7 @@ import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.view.CommonTopBar;
 import com.dejia.anju.view.MyPullRefresh;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
@@ -310,6 +311,7 @@ public class WebViewActivity extends WebViewActivityImpl {
     /**
      * 加载URL
      */
+//    mWebView.loadUrl("http://172.16.10.200:8888/front/yxxtest/test-android.html");
     private void loadLink() {
         if (mWebView != null && mWebViewData != null) {
             // 跳转并进行页面加载
@@ -343,23 +345,6 @@ public class WebViewActivity extends WebViewActivityImpl {
         view.setLayoutParams(params);
         view.setBackgroundColor(Color.TRANSPARENT);
         return view;
-    }
-
-    /**
-     * 分享
-     */
-    @JavascriptInterface
-    public void appToShare() {
-
-    }
-
-    /**
-     * 返回
-     */
-    @JavascriptInterface
-    public void appGoBack() {
-        AppLog.i("js调用成功");
-        ((Activity) mContext).finish();
     }
 
 }

@@ -340,7 +340,8 @@ public class MyFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan_code:
-                QRCodeActivity.invoke(mContext);
+                ToastUtils.toast(mContext,"正在开发中").show();
+//                QRCodeActivity.invoke(mContext);
                 break;
             case R.id.iv_drawer:
                 if ((MainActivity) getActivity() != null && ((MainActivity) getActivity()).drawerLayout != null) {

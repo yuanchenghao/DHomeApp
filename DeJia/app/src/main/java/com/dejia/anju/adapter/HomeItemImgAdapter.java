@@ -1,6 +1,7 @@
 package com.dejia.anju.adapter;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.ImgInfo;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -69,7 +71,7 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.
         holder.gallery.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getImg()).setAutoPlayAnimations(true).build());
         holder.delete.setVisibility(View.GONE);
         holder.gallery.setOnClickListener(v -> {
-            listener.item(position, mDatas);
+            listener.item(mDatas);
         });
     }
 
@@ -102,7 +104,7 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.
 
     public interface CallbackListener {
         //图片点击
-        void item(int position, List<ImgInfo> mList);
+        void item(List<ImgInfo> mList);
     }
 
 }

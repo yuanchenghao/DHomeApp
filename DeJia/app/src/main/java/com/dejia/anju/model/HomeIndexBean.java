@@ -94,7 +94,7 @@ public class HomeIndexBean {
         public UserData user_data;
         public String title;
         public int article_type;
-        public String building;
+        public List<HomeFollowBean.BuildsBean> building;
         public String time_set;
         public int reply_num;
         public int agree_num;
@@ -133,11 +133,11 @@ public class HomeIndexBean {
             this.article_type = article_type;
         }
 
-        public String getBuilding() {
+        public List<HomeFollowBean.BuildsBean> getBuilding() {
             return building;
         }
 
-        public void setBuilding(String building) {
+        public void setBuilding(List<HomeFollowBean.BuildsBean> building) {
             this.building = building;
         }
 

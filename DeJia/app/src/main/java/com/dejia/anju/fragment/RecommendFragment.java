@@ -236,14 +236,8 @@ public class RecommendFragment extends BaseFragment {
             rv.setAdapter(homeAdapter);
             homeAdapter.setEventListener(new HomeAdapter.EventListener() {
                 @Override
-                public void onItemFollowListener(View v, HomeIndexBean.HomeList data, int pos) {
-
-                }
-
-                @Override
                 public void onItemListener(View v, HomeIndexBean.HomeList data, int pos) {
                     if (!TextUtils.isEmpty(data.getUrl())) {
-//                        ToastUtils.toast(mContext, data.getUrl()).show();
                         WebUrlJumpManager.getInstance().invoke(mContext,data.getUrl(),null);
                     }
                 }
@@ -264,8 +258,6 @@ public class RecommendFragment extends BaseFragment {
             public void OnBannerClick(Object data, int position) {
                 HomeIndexBean.FocusPicture FocusPicture = (HomeIndexBean.FocusPicture) data;
                 if (data != null && !TextUtils.isEmpty(FocusPicture.getUrl())) {
-                    //web跳转还没做
-                    ToastUtils.toast(mContext, FocusPicture.getUrl()).show();
                     WebUrlJumpManager.getInstance().invoke(mContext,FocusPicture.getUrl(),null);
                 }
             }

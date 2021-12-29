@@ -116,32 +116,19 @@
 
     <LinearLayout
         android:id="@+id/ll_location"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_12"
-        android:background="@drawable/shape_14_f5f6f7"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dp_7"
-        android:paddingTop="@dimen/dp_6"
-        android:paddingRight="@dimen/dp_12"
-        android:paddingBottom="@dimen/dp_6">
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="@dimen/dp_16"
-            android:layout_height="@dimen/dp_16"
-            android:src="@mipmap/location_black" />
-
-        <TextView
-            android:id="@+id/tv_location_price"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_build"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="顺义马坡  恒大 26888元/㎡"
-            android:textColor="#6F7375"
-            android:textSize="@dimen/sp_12" />
-
+            android:scrollbars="none" />
     </LinearLayout>
 
     <LinearLayout

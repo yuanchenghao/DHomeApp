@@ -20,6 +20,7 @@ import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.OneClickLoginActivity;
 import com.dejia.anju.activity.OneClickLoginActivity2;
 import com.dejia.anju.activity.ToolOfProductionActivity;
+import com.dejia.anju.api.GetVersionApi;
 import com.dejia.anju.api.MessageCountApi;
 import com.dejia.anju.api.MessageShowApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
@@ -34,6 +35,7 @@ import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.MessageCountInfo;
 import com.dejia.anju.model.MessageShowInfo;
 import com.dejia.anju.model.UserInfo;
+import com.dejia.anju.model.VersionInfo;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.DialogUtils;
@@ -230,7 +232,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onClick(View v) {
                 //版本号
                 drawerLayout.closeDrawers();
-                ToastUtils.toast(mContext, "版本").show();
+                getVersion();
             }
         });
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
@@ -257,6 +259,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void onDrawerClosed(View drawerView) {
             }
 
+        });
+    }
+
+    //查看版本
+    private void getVersion() {
+        HashMap<String,Object> maps = new HashMap<>();
+        new GetVersionApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if("1".equals(serverData.code)){
+                    VersionInfo versionInfo = JSONUtil.TransformSingleBean(serverData.data, VersionInfo.class);
+                    if(versionInfo != null && !TextUtils.isEmpty(versionInfo.getVer())){
+                        if(AppUtils.getAppVersionCode() == Integer.parseInt(versionInfo.getVer())){
+                            ToastUtils.toast(mContext,"当前版本是最新版本").show();
+                        }else{
+
+                        }
+                    }else{
+                        ToastUtils.toast(mContext,"未获取到最新版本信息").show();
+                    }
+                }
+            }
         });
     }
 

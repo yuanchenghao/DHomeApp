@@ -11,10 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.HomeIndexBean;
 import com.dejia.anju.model.ImgInfo;
@@ -218,8 +221,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type1View.tv_context.setText("");
         }
-        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
-            type1View.tv_location_price.setText(Util.toDBC(mDatas.get(position).getBuilding()));
+        if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
+            YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+            type1View.rv_build.setLayoutManager(layoutManager);
+            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            type1View.rv_build.setAdapter(buildAdapter);
             type1View.ll_location.setVisibility(View.VISIBLE);
         } else {
             type1View.ll_location.setVisibility(View.GONE);
@@ -290,8 +296,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type2View.tv_context.setText("");
         }
-        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
-            type2View.tv_location_price.setText(Util.toDBC(mDatas.get(position).getBuilding()));
+        if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
+            YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+            type2View.rv_build.setLayoutManager(layoutManager);
+            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            type2View.rv_build.setAdapter(buildAdapter);
             type2View.ll_location.setVisibility(View.VISIBLE);
         } else {
             type2View.ll_location.setVisibility(View.GONE);
@@ -366,8 +375,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type3View.tv_context.setText("");
         }
-        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
-            type3View.tv_location_price.setText(Util.toDBC(mDatas.get(position).getBuilding()));
+        if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
+            YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+            type3View.rv_build.setLayoutManager(layoutManager);
+            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            type3View.rv_build.setAdapter(buildAdapter);
             type3View.ll_location.setVisibility(View.VISIBLE);
         } else {
             type3View.ll_location.setVisibility(View.GONE);
@@ -389,8 +401,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type3View.rv_img.setAdapter(homeItemImgAdapter);
             homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
                 @Override
-                public void item(int position, List<ImgInfo> mList) {
-
+                public void item(List<ImgInfo> mList) {
+                    if(!TextUtils.isEmpty(mDatas.get(position).getUrl())){
+                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getUrl(),null);
+                    }
                 }
             });
         } else {
@@ -457,8 +471,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type4View.tv_context.setText("");
         }
-        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding())) {
-            type4View.tv_location_price.setText(Util.toDBC(mDatas.get(position).getBuilding()));
+        if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
+            YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+            type4View.rv_build.setLayoutManager(layoutManager);
+            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            type4View.rv_build.setAdapter(buildAdapter);
             type4View.ll_location.setVisibility(View.VISIBLE);
         } else {
             type4View.ll_location.setVisibility(View.GONE);
@@ -480,8 +497,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
                 homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
                     @Override
-                    public void item(int position, List<ImgInfo> mList) {
-
+                    public void item(List<ImgInfo> mList) {
+                        if(!TextUtils.isEmpty(mDatas.get(position).getUrl())){
+                            WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getUrl(),null);
+                        }
                     }
                 });
             } else {
@@ -491,8 +510,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
                 homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
                     @Override
-                    public void item(int position, List<ImgInfo> mList) {
-
+                    public void item(List<ImgInfo> mList) {
+                        if(!TextUtils.isEmpty(mDatas.get(position).getUrl())){
+                            WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getUrl(),null);
+                        }
                     }
                 });
             }
@@ -534,7 +555,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView tv_follow;
         TextView tv_context;
         LinearLayout ll_location;
-        TextView tv_location_price;
+        RecyclerView rv_build;
 
         Type1ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -546,7 +567,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_follow = itemView.findViewById(R.id.tv_follow);
             tv_context = itemView.findViewById(R.id.tv_context);
             ll_location = itemView.findViewById(R.id.ll_location);
-            tv_location_price = itemView.findViewById(R.id.tv_location_price);
+            rv_build = itemView.findViewById(R.id.rv_build);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -579,7 +600,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView tv_context;
         TextView tv_des;
         LinearLayout ll_location;
-        TextView tv_location_price;
+        RecyclerView rv_build;
 
         Type2ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -593,7 +614,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_context = itemView.findViewById(R.id.tv_context);
             tv_des = itemView.findViewById(R.id.tv_des);
             ll_location = itemView.findViewById(R.id.ll_location);
-            tv_location_price = itemView.findViewById(R.id.tv_location_price);
+            rv_build = itemView.findViewById(R.id.rv_build);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -624,7 +645,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView tv_follow;
         TextView tv_context;
         LinearLayout ll_location;
-        TextView tv_location_price;
+        RecyclerView rv_build;
         RecyclerView rv_img;
         LinearLayout ll_comment_zan;
 
@@ -638,7 +659,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_follow = itemView.findViewById(R.id.tv_follow);
             tv_context = itemView.findViewById(R.id.tv_context);
             ll_location = itemView.findViewById(R.id.ll_location);
-            tv_location_price = itemView.findViewById(R.id.tv_location_price);
+            rv_build = itemView.findViewById(R.id.rv_build);
             rv_img = itemView.findViewById(R.id.rv_img);
             ll_comment_zan = itemView.findViewById(R.id.ll_comment_zan);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -671,7 +692,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView tv_follow;
         TextView tv_context;
         LinearLayout ll_location;
-        TextView tv_location_price;
+        RecyclerView rv_build;
         RecyclerView rv_img;
         ImageView iv_comment_num;
         TextView tv_comment_num;
@@ -689,7 +710,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_follow = itemView.findViewById(R.id.tv_follow);
             tv_context = itemView.findViewById(R.id.tv_context);
             ll_location = itemView.findViewById(R.id.ll_location);
-            tv_location_price = itemView.findViewById(R.id.tv_location_price);
+            rv_build = itemView.findViewById(R.id.rv_build);
             rv_img = itemView.findViewById(R.id.rv_img);
             iv_comment_num = itemView.findViewById(R.id.iv_comment_num);
             tv_comment_num = itemView.findViewById(R.id.tv_comment_num);
@@ -734,8 +755,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public interface EventListener {
-        void onItemFollowListener(View v, HomeIndexBean.HomeList data, int pos);
-
         void onItemListener(View v, HomeIndexBean.HomeList data, int pos);
     }
 }
