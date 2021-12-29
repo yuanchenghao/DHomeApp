@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SizeUtils;
@@ -35,16 +37,20 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
+import cn.jiguang.verifysdk.api.JVerifyUIClickCallback;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
 import cn.jiguang.verifysdk.api.LoginSettings;
 import cn.jiguang.verifysdk.api.PreLoginListener;
+import cn.jiguang.verifysdk.api.PrivacyBean;
 import cn.jiguang.verifysdk.api.VerifyListener;
 import cn.jpush.android.api.JPushInterface;
 
@@ -57,28 +63,28 @@ import static com.dejia.anju.base.Constants.baseTestService;
  * 邮   箱: 188897876@qq.com
  * 修改备注：一键登录
  * 一键登录
- *
+ * <p>
  * 1、调用极光 SDK 初始化 API（Android/iOS）。
- *
+ * <p>
  * 2、初始化完成后，调用 checkVerifyEnable API（Android/iOS） 判断网络环境是否支持。
- *
+ * <p>
  * 3、在手机网络环境支持的前提下，调用一键登录预取号接口 preLogin（Android/iOS）(可以不用预取号)。
- *
+ * <p>
  * 4、在预取号成功的前提下，请求授权一键登录 loginAuth（Android）/getAuthorizationWithController（iOS）。
- *
+ * <p>
  * 5、将请求授权后获取到的 loginToken 上传到服务端。
- *
+ * <p>
  * 6、服务端调用一键登录 loginTokenVerify API 获取加密后的手机号码。
- *
+ * <p>
  * 7、使用配置在极光控制台的公钥对应的私钥对加密后的手机号码进行解密。
  * 号码认证
- *
+ * <p>
  * 1、调用极光 SDK 初始化 API（Android/iOS）。
- *
+ * <p>
  * 2、初始化成功后，调用 checkVerifyEnable API（Android/iOS） 判断网络环境是否支持。
- *
+ * <p>
  * 3、在手机网络环境支持的前提下，调用 getToken API（Android/iOS）获取号码认证 Token。
- *
+ * <p>
  * 4、将获取到的号码认证 Token 传递给服务端，服务端调用 Verify API 验证本机号码与待验证的手机号码是否一致。
  */
 
@@ -109,108 +115,74 @@ public class OneClickLoginActivity2 extends Activity {
     }
 
     private void OneClickLogin() {
+        TextView otherLogin = new TextView(mContext);
+        otherLogin.setText("短信验证码登录");
+        otherLogin.setTextColor(Color.parseColor("#0095FF"));
+        otherLogin.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        layoutParams.setMargins(0, SizeUtils.dp2px(257 + 28) + QMUIStatusBarHelper.getStatusbarHeight(mContext), 0, 0);
+        otherLogin.setLayoutParams(layoutParams);
+
+        List<PrivacyBean> beanArrayList = new ArrayList<>();
+        beanArrayList.add(new PrivacyBean("《得家使用协议》", "http://172.16.10.200:8080/vue/userProtocol/", ""));
+        beanArrayList.add(new PrivacyBean("《得家用户隐私协议》", "http://172.16.10.200:8080/vue/privacyAgreement/", ""));
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
                 .setAuthBGImgPath("main_bg")
-                .setNavColor(0xff0086d0)
+                .setNavColor(Color.parseColor("#FFFFFF"))
                 .setNavText("登录")
-                .setNavTextColor(0xffffffff)
-                .setNavReturnImgPath("umcsdk_return_bg")
-                .setLogoWidth(70)
-                .setLogoHeight(70)
+                .setNavTextColor(Color.parseColor("#FFFFFF"))
+                .setStatusBarTransparent(true)
+                .setStatusBarDarkMode(true)
+                .setNavReturnImgPath("one_click_login_close")
+                .setNavReturnBtnRightOffsetX(16)
+                .setNavReturnBtnHeight(44)
+                .setLogoWidth(105)
+                .setLogoHeight(51)
                 .setLogoHidden(false)
+                .setNumberSize(27)
+                .setNumberTextBold(true)
+                .setLogoOffsetY(120)
                 .setNumberColor(0xff333333)
-                .setLogBtnText("本机号码一键登录")
-                .setLogBtnTextColor(0xffffffff)
+                .setNumFieldOffsetY(200)
+                .setLogBtnText("同意协议并登录")
                 .setLogBtnImgPath("umcsdk_login_btn_bg")
+                .setLogBtnTextSize(16)
+                .setLogBtnHeight(48)
+                .setLogBtnTextBold(true)
+                .setLogBtnHeight(47)
+                .setLogBtnTextSize(15)
+                .setPrivacyNameAndUrlBeanList(beanArrayList)
+                .setAppPrivacyColor(Color.parseColor("#999999"), Color.parseColor("#33A7FF"))
+                .setPrivacyCheckboxHidden(true)
+                .setPrivacyOffsetX(35)
                 .setUncheckedImgPath("umcsdk_uncheck_image")
                 .setCheckedImgPath("umcsdk_check_image")
                 .setSloganTextColor(0xff999999)
-                .setLogoOffsetY(50)
-                .setLogoImgPath("logo")
-                .setNumFieldOffsetY(170)
-                .setSloganOffsetY(230)
-                .setLogBtnOffsetY(254)
-                .setNumberSize(18)
-                .setPrivacyState(false)
-                .setNavTransparent(false)
-                .build();
-//                .addCustomView(mBtn, true, new JVerifyUIClickCallback() {
-//                    @Override
-//                    public void onClicked(Context context, View view) {
-//                        Toast.makeText(context,"动态注册的其他按钮",Toast.LENGTH_SHORT).show();
-//                    }
-//                }).addCustomView(mBtn2, false, new JVerifyUIClickCallback() {
-//                    @Override
-//                    public void onClicked(Context context, View view) {
-//                        Toast.makeText(context,"动态注册的其他按钮222",Toast.LENGTH_SHORT).show();
-//                    }
-//                }).addNavControlView(navBtn, new JVerifyUIClickCallback() {
-//                    @Override
-//                    public void onClicked(Context context, View view) {
-//                        Toast.makeText(context,"导航栏按钮点击",Toast.LENGTH_SHORT).show();
-//                    }
-//                }).setPrivacyOffsetY(30).build();
+                .setPrivacyText("登录即表示已阅读并同意","")
+                .setPrivacyWithBookTitleMark(true)
+                .setLogoImgPath("loge_txt")
+                .setPrivacyTextSize(12)
+                .overridePendingTransition(R.anim.activity_slide_enter_bottom, R.anim.activity_slide_exit_bottom)
+                .setSloganHidden(true)
+                .setLogBtnOffsetY(257)
+                .setPrivacyState(true)
+                .setPrivacyNavColor(Color.parseColor("#FFFFFF"))
+                .setPrivacyStatusBarColorWithNav(true)
+                .setPrivacyStatusBarDarkMode(true)
+                .addCustomView(otherLogin, true, new JVerifyUIClickCallback() {
+                    @Override
+                    public void onClicked(Context context, View view) {
+                        SendVerificationCodeActivity.invoke(OneClickLoginActivity2.this);
+                    }
+                })
+                .setPrivacyOffsetY(35).build();
         JVerificationInterface.setCustomUIWithConfig(uiConfig);
 
-//        JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
-//                .setAuthBGImgPath("main_bg")
-//                .setNavColor(0xffffffff)
-//                .setNavText("登录")
-//                .setNavTextColor(0xff333333)
-//                .setNavReturnImgPath("umcsdk_return_bg")
-//                .setLogoWidth(75)
-//                .setLogoHeight(75)
-//                .setLogoHidden(false)
-//                .setNumberColor(0xff333333)
-//                .setNumFieldOffsetY(160)
-//                .setLogBtnText("本机号码一键登录")
-//                .setLogBtnTextColor(0xffffffff)
-//                .setLogBtnImgPath("umcsdk_login_btn_bg")
-//                .setLogBtnHeight(47)
-//                .setLogBtnTextSize(15)
-//                .setAppPrivacyOne("悦美整形隐私政策", "https://docs.jiguang.cn//jverification/client/android_api/#sdkui")
-//                .setAppPrivacyColor(0xff666666, 0xff0085d0)
-//                .setUncheckedImgPath("umcsdk_uncheck_image")
-//                .setCheckedImgPath("umcsdk_check_image")
-//                .setSloganTextColor(0xff999999)
-//                .setLogoOffsetY(60)
-//                .setLogoImgPath("ic_launcher")
-//                .setSloganOffsetY(180)
-//                .setLogBtnOffsetY(224)
-//                .setPrivacyState(true)
-////                .addCustomView(otherLogin, false, new JVerifyUIClickCallback() {
-////                    @Override
-////                    public void onClicked(Context context, View view) {
-////
-////                    }
-////                })
-////                .addCustomView(mPhoneBtn, true, new JVerifyUIClickCallback() {
-////                    @Override
-////                    public void onClicked(Context context, View view) {
-////                        JVerificationInterface.dismissLoginAuthActivity();
-////                        jumpLogin((Activity) activity);
-////                    }
-////                })
-//                .setPrivacyOffsetY(35).build();
-//        JVerificationInterface.setCustomUIWithConfig(uiConfig);
-
-//        JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
-//            @Override
-//            public void onResult(int i, String s, String s1) {
-////                code: 返回码，2000代表获取成功，其他为失败，详见错误码描述
-////                content：成功时为token，可用于调用验证手机号接口。token有效期为1分钟，超过时效需要重新获取才能使用。失败时为失败信息
-////                operator：成功时为对应运营商，CM代表中国移动，CU代表中国联通，CT代表中国电信。失败时可能为null
-//                if (i == 2000){
-//                    AppLog.i("token=" + s + ", operator=" + s1);
-//                } else {
-//                    AppLog.i("code=" + i + ", message=" + s);
-//                }
-//            }
-//        });
-        JVerificationInterface.preLogin(this, 5000,new PreLoginListener() {
+        JVerificationInterface.preLogin(this, 5000, new PreLoginListener() {
             @Override
             public void onResult(final int code, final String content) {
-                AppLog.i("[" + code + "]message=" +  content );
+                AppLog.i("[" + code + "]message=" + content);
                 if (code == 7000) {
                     autoAuthLogin(OneClickLoginActivity2.this);
                 }
@@ -236,18 +208,6 @@ public class OneClickLoginActivity2 extends Activity {
     @OnClick({})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-//            case R.id.iv_close:
-//                finished();
-//                break;
-//            case R.id.tv_close:
-//                finished();
-//                break;
-//            case R.id.tv_login_bt:
-//
-//                break;
-//            case R.id.tv_phone_login:
-//                SendVerificationCodeActivity.invoke(OneClickLoginActivity2.this);
-//                break;
         }
     }
 
@@ -266,15 +226,17 @@ public class OneClickLoginActivity2 extends Activity {
 //                code: 返回码，6000代表loginToken获取成功，6001代表loginToken获取失败，其他返回码详见描述
 //                content：返回码的解释信息，若获取成功，内容信息代表loginToken。
 //                operator：成功时为对应运营商，CM代表中国移动，CU代表中国联通，CT代表中国电信。失败时可能为null
-                if (code == 6000){
-                    AppLog.i("code=" + code + ", token=" + content+" ,operator="+operator);
+                if (code == 6000) {
+                    AppLog.i("code=" + code + ", token=" + content + " ,operator=" + operator);
                     HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("loginToken",content);
+                    hashMap.put("loginToken", content);
                     loginHttp(hashMap);
-                }else{
-                    AppLog.i( "code=" + code + ", message=" + content);
-                    ToastUtils.toast(mContext,code+"").show();
-                    SendVerificationCodeActivity.invoke(OneClickLoginActivity2.this);
+                } else {
+                    AppLog.i("code=" + code + ", message=" + content);
+                    ToastUtils.toast(mContext, code + "").show();
+                    if(code != 6002){
+                        SendVerificationCodeActivity.invoke(OneClickLoginActivity2.this);
+                    }
                     finished();
                 }
             }
@@ -287,9 +249,9 @@ public class OneClickLoginActivity2 extends Activity {
             @Override
             public void onSuccess(ServerData serverData) {
                 if ("1".equals(serverData.code)) {
-                    UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data,UserInfo.class);
-                    KVUtils.getInstance().encode(Constants.UID,userInfo.getId());
-                    KVUtils.getInstance().encode("user",userInfo);
+                    UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                    KVUtils.getInstance().encode(Constants.UID, userInfo.getId());
+                    KVUtils.getInstance().encode("user", userInfo);
                     Util.setYuemeiInfo(userInfo.getDejia_info());
                     String registrationID = JPushInterface.getRegistrationID(mContext);
                     IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
@@ -299,11 +261,11 @@ public class OneClickLoginActivity2 extends Activity {
                     maps.put("location_city", "北京");
                     maps.put("brand", android.os.Build.BRAND + "_" + android.os.Build.MODEL);
                     maps.put("system", android.os.Build.VERSION.RELEASE);
-                    maps.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled())?"0":"1");
+                    maps.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled()) ? "0" : "1");
                     new BindJPushApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
                         @Override
                         public void onSuccess(ServerData serverData) {
-                            if("1".equals(serverData.code)){
+                            if ("1".equals(serverData.code)) {
                                 AppLog.i("message===" + serverData.message);
                             }
                         }
@@ -314,7 +276,7 @@ public class OneClickLoginActivity2 extends Activity {
                     EventBus.getDefault().post(new Event<>(1));
                     ToastUtils.toast(mContext, "登录成功").show();
                 } else {
-                    ToastUtils.toast(mContext,serverData.message).show();
+                    ToastUtils.toast(mContext, serverData.message).show();
                 }
                 finished();
             }
@@ -331,12 +293,10 @@ public class OneClickLoginActivity2 extends Activity {
         Intent intent = new Intent(context, OneClickLoginActivity2.class);
         intent.putExtra("type", type);
         context.startActivity(intent);
-//        ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, 0);
     }
 
     public void finished() {
-        finish();
-//        overridePendingTransition(0, R.anim.push_bottom_out);
+        mContext.finish();
     }
 
 
