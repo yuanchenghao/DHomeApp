@@ -5,6 +5,7 @@ import java.util.List;
 
 public class MyArticleInfo {
 
+    public String id;
     public UserData user_data;
     public String time_set;
     public int article_type;
@@ -14,6 +15,23 @@ public class MyArticleInfo {
     public String reply_num;
     public String agree_num;
     public String url;
+    public String is_agree;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIs_agree() {
+        return is_agree;
+    }
+
+    public void setIs_agree(String is_agree) {
+        this.is_agree = is_agree;
+    }
 
     public UserData getUser_data() {
         return user_data;

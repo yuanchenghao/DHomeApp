@@ -408,7 +408,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (index) {
             case 0:
                 if (homeFragment == null) {
-                    homeFragment = new HomeFragment();
+                    homeFragment = HomeFragment.newInstance();
                     transaction.add(R.id.fl, homeFragment);
                 } else {
                     transaction.show(homeFragment);
@@ -420,7 +420,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case 1:
                 if (circleFragment == null) {
-                    circleFragment = new CircleFragment();
+                    circleFragment = CircleFragment.newInstance();
                     transaction.add(R.id.fl, circleFragment);
                 } else {
                     transaction.show(circleFragment);
@@ -445,7 +445,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case 3:
                 if (messageFragment == null) {
-                    messageFragment = new MessageFragment();
+                    messageFragment = MessageFragment.newInstance();
                     transaction.add(R.id.fl, messageFragment);
                 } else {
                     transaction.show(messageFragment);
@@ -457,7 +457,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case 4:
                 if (myFragment == null) {
-                    myFragment = new MyFragment();
+                    myFragment = MyFragment.newInstance();
                     transaction.add(R.id.fl, myFragment);
                 } else {
                     transaction.show(myFragment);

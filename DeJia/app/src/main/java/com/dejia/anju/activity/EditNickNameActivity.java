@@ -17,7 +17,6 @@ import com.dejia.anju.api.SetUserApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
-import com.dejia.anju.model.SetUserInfo;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
@@ -136,8 +135,8 @@ public class EditNickNameActivity extends BaseActivity implements OnClickListene
             @Override
             public void onSuccess(ServerData serverData) {
                 if ("1".equals(serverData.code)) {
-                    SetUserInfo setUserInfo = JSONUtil.TransformSingleBean(serverData.data, SetUserInfo.class);
-                    userInfo.setNickname(setUserInfo.getUser_name());
+                    UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                    userInfo.setNickname(userInfo.getNickname());
                     KVUtils.getInstance().encode("user", userInfo);
                     //通知外部刷新
                     EventBus.getDefault().post(new Event<>(3));

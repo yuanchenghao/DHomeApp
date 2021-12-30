@@ -3,6 +3,7 @@ package com.dejia.anju.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.dejia.anju.R;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.utils.ToastUtils;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
@@ -19,6 +21,10 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.base.BaseActivity;
 import com.zhangyue.we.x2c.ano.Xml;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -51,12 +57,29 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mZXingView.startCamera(); // 打开后置摄像头开始预览，但是并未开始识别
-        mZXingView.startSpotAndShowRect(); // 显示扫描框，并开始识别
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEventMainThread(Event msgEvent) {
+        switch (msgEvent.getCode()) {
+            case 4:
+                finished();
+                break;
+        }
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mZXingView.startSpotAndShowRect();
+    }
+
 
     @Override
     protected void onStop() {
@@ -68,6 +91,7 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     protected void onDestroy() {
         mZXingView.onDestroy(); // 销毁二维码扫描控件
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     //震动
@@ -85,30 +109,7 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) rl.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
         rl.setLayoutParams(layoutParams);
-        XXPermissions.with(this)
-                // 申请单个权限
-                .permission(Permission.CAMERA)
-                .request(new OnPermissionCallback() {
-
-                    @Override
-                    public void onGranted(List<String> permissions, boolean all) {
-                        if (all) {
-//                            mZXingView.startCamera(); // 打开后置摄像头开始预览，但是并未开始识别
-//                            mZXingView.startSpotAndShowRect(); // 显示扫描框，并开始识别
-                        }
-                    }
-
-                    @Override
-                    public void onDenied(List<String> permissions, boolean never) {
-                        if (never) {
-//                            toast("被永久拒绝授权，请手动授予录音和日历权限");
-                            // 如果是被永久拒绝就跳转到应用权限系统设置页面
-                            XXPermissions.startPermissionActivity(mContext, permissions);
-                        } else {
-//                            toast("获取录音和日历权限失败");
-                        }
-                    }
-                });
+        getPermission();
         mZXingView.setDelegate(this);
     }
 
@@ -126,6 +127,11 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         }
     }
 
+    private void startScan() {
+        mZXingView.startCamera(); // 打开后置摄像头开始预览，但是并未开始识别
+        mZXingView.startSpotAndShowRect(); // 显示扫描框，并开始识别
+    }
+
     public void finished() {
         finish();
         overridePendingTransition(0, R.anim.push_bottom_out);
@@ -133,11 +139,14 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        if (!TextUtils.isEmpty(result)) {
-            setTitle("扫描结果为：" + result);
+        if (!TextUtils.isEmpty(result) && (result.contains("www.dejia.test") || result.contains("www.dejia.com"))) {
             vibrate();
-            mZXingView.startSpot(); // 开始识别
-            ToastUtils.toast(mContext,result);
+            mZXingView.stopCamera();
+            //跳转
+            ScanLoginActivity.invoke(mContext, result);
+        } else {
+            ToastUtils.toast(mContext, "链接无效，请重新扫描").show();
+            mZXingView.startSpot();
         }
     }
 
@@ -149,6 +158,32 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     @Override
     public void onScanQRCodeOpenCameraError() {
         AppLog.e("打开相机出错");
+        getPermission();
+    }
+
+    private void getPermission() {
+        XXPermissions.with(this)
+                // 申请单个权限
+                .permission(Permission.CAMERA)
+                .request(new OnPermissionCallback() {
+
+                    @Override
+                    public void onGranted(List<String> permissions, boolean all) {
+                        if (all) {
+                            startScan();
+                        }
+                    }
+
+                    @Override
+                    public void onDenied(List<String> permissions, boolean never) {
+                        if (never) {
+                            XXPermissions.startPermissionActivity(mContext, permissions);
+                        } else {
+                            ToastUtils.toast(mContext, "请开启相机权限").show();
+                            finished();
+                        }
+                    }
+                });
     }
 
     public static void invoke(Context context) {
@@ -161,9 +196,7 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == XXPermissions.REQUEST_CODE) {
             if (XXPermissions.isGranted(this, Permission.CAMERA)) {
-//                toast("用户已经在权限设置页授予了录音和日历权限");
-            } else {
-//                toast("用户没有在权限设置页授予权限");
+                startScan();
             }
         }
     }

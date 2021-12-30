@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.dejia.anju.R;
 import com.dejia.anju.api.FollowAndCancelApi;
+import com.dejia.anju.api.ZanApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.FollowAndCancelInfo;
@@ -139,7 +140,7 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type1View.rv_build.setLayoutManager(layoutManager);
-            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
             type1View.rv_build.setAdapter(buildAdapter);
             type1View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -174,7 +175,7 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type2View.rv_build.setLayoutManager(layoutManager);
-            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
             type2View.rv_build.setAdapter(buildAdapter);
             type2View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -213,7 +214,7 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type3View.rv_build.setLayoutManager(layoutManager);
-            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
             type3View.rv_build.setAdapter(buildAdapter);
             type3View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -223,15 +224,15 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         type3View.user_type.setVisibility(View.GONE);
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
             YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
-            HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(),"3");
+            HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "3");
             type3View.rv_img.setLayoutManager(gridLayoutManager);
             type3View.rv_img.setAdapter(homeItemImgAdapter);
             type3View.rv_img.setVisibility(View.VISIBLE);
             homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
                 @Override
                 public void item(List<ImgInfo> mList) {
-                    if(!TextUtils.isEmpty(mDatas.get(position).getUrl())){
-                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getUrl(),null);
+                    if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                        WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
                     }
                 }
             });
@@ -269,7 +270,7 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type4View.rv_build.setLayoutManager(layoutManager);
-            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
             type4View.rv_build.setAdapter(buildAdapter);
             type4View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -278,35 +279,35 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         type4View.tv_user_type_flag.setVisibility(View.GONE);
         type4View.user_type.setVisibility(View.GONE);
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
-            if(mDatas.get(position).getImg().size() == 1){
+            if (mDatas.get(position).getImg().size() == 1) {
                 YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(),"4");
+                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "4");
                 type4View.rv_img.setLayoutManager(ymLinearLayoutManager);
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
                 homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
                     @Override
                     public void item(List<ImgInfo> mList) {
-                        if(!TextUtils.isEmpty(mDatas.get(position).getUrl())){
-                            WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getUrl(),null);
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
                         }
                     }
                 });
-            }else{
+            } else {
                 YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
-                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(),"4");
+                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "4");
                 type4View.rv_img.setLayoutManager(gridLayoutManager);
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
                 homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
                     @Override
                     public void item(List<ImgInfo> mList) {
-                        if(!TextUtils.isEmpty(mDatas.get(position).getUrl())){
-                            WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getUrl(),null);
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
                         }
                     }
                 });
             }
             type4View.rv_img.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             type4View.rv_img.setVisibility(View.GONE);
         }
     }
@@ -455,11 +456,82 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             tv_zan_num.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    HashMap<String, Object> maps = new HashMap<>();
+                    //点赞类型（1文章点赞 ，2评论点赞）
+                    maps.put("agree_type", "1");
+                    //文章id 或者 评论id
+                    maps.put("ugc_or_reply_id", mDatas.get(getLayoutPosition()).getId());
+                    if ("0".equals(mDatas.get(getLayoutPosition()).getIs_agree())) {
+                        //没点过赞
+                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                            @Override
+                            public void onSuccess(ServerData serverData) {
+                                if ("1".equals(serverData.code)) {
+                                    ToastUtils.toast(mContext, "点赞成功").show();
+                                    mDatas.get(getLayoutPosition()).setAgree_num(Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) + 1 + "");
+                                    mDatas.get(getLayoutPosition()).setIs_agree("1");
+                                    notifyItemChanged(getLayoutPosition());
+                                }
+                            }
+                        });
+                    } else {
+                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                            @Override
+                            public void onSuccess(ServerData serverData) {
+                                if ("1".equals(serverData.code)) {
+                                    ToastUtils.toast(mContext, "取消赞成功").show();
+                                    mDatas.get(getLayoutPosition()).setIs_agree("0");
+                                    if (Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) > 0) {
+                                        mDatas.get(getLayoutPosition()).setAgree_num(Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) - 1 + "");
+                                    }
+                                    notifyItemChanged(getLayoutPosition());
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+            iv_zan_num.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HashMap<String, Object> maps = new HashMap<>();
+                    //点赞类型（1文章点赞 ，2评论点赞）
+                    maps.put("agree_type", "1");
+                    //文章id 或者 评论id
+                    maps.put("ugc_or_reply_id", mDatas.get(getLayoutPosition()).getId());
+                    if ("0".equals(mDatas.get(getLayoutPosition()).getIs_agree())) {
+                        //没点过赞
+                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                            @Override
+                            public void onSuccess(ServerData serverData) {
+                                if ("1".equals(serverData.code)) {
+                                    ToastUtils.toast(mContext, "点赞成功").show();
+                                    mDatas.get(getLayoutPosition()).setAgree_num(Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) + 1 + "");
+                                    mDatas.get(getLayoutPosition()).setIs_agree("1");
+                                    notifyItemChanged(getLayoutPosition());
+                                }
+                            }
+                        });
+                    } else {
+                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                            @Override
+                            public void onSuccess(ServerData serverData) {
+                                if ("1".equals(serverData.code)) {
+                                    ToastUtils.toast(mContext, "取消赞成功").show();
+                                    mDatas.get(getLayoutPosition()).setIs_agree("0");
+                                    if (Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) > 0) {
+                                        mDatas.get(getLayoutPosition()).setAgree_num(Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) - 1 + "");
+                                    }
+                                    notifyItemChanged(getLayoutPosition());
+                                }
+                            }
+                        });
+                    }
                 }
             });
         }
     }
+
 
     /**
      * 追加数据
@@ -478,7 +550,7 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public interface EventListener {
-//        void onItemFollowListener(View v, MyArticleInfo data, int pos);
+        //        void onItemFollowListener(View v, MyArticleInfo data, int pos);
         void onItemListener(View v, MyArticleInfo data, int pos);
     }
 }

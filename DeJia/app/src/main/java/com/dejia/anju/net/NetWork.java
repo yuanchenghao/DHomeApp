@@ -220,6 +220,7 @@ public class NetWork {
                 .cacheMode(CacheMode.DEFAULT)
                 .params(httpParams)
                 .headers(headers)
+                .addInterceptor(new LoggingInterceptor())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {

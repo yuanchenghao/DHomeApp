@@ -201,7 +201,7 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
                 .cacheMode(CacheMode.DEFAULT)
                 .headers(headers)
                 .params(httpParams)
-//                .addInterceptor(new LoggingInterceptor())
+                .addInterceptor(new LoggingInterceptor())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

@@ -1,5 +1,6 @@
 package com.dejia.anju.fragment;
 
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -25,6 +26,13 @@ public class CircleFragment extends BaseWebViewFragment {
     @BindView(R.id.ll)
     LinearLayout ll;
     private BaseWebViewClientMessage clientManager;
+
+    public static CircleFragment newInstance() {
+        Bundle args = new Bundle();
+        CircleFragment fragment = new CircleFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Xml(layouts = "fragment_circle")
     @Override

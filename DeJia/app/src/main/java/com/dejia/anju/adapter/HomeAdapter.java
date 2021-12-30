@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.api.FollowAndCancelApi;
+import com.dejia.anju.api.ZanApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.FollowAndCancelInfo;
@@ -733,6 +734,82 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
+                }
+            });
+            tv_zan_num.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HashMap<String, Object> maps = new HashMap<>();
+                    //点赞类型（1文章点赞 ，2评论点赞）
+                    maps.put("agree_type", "1");
+                    //文章id 或者 评论id
+                    maps.put("ugc_or_reply_id", mDatas.get(getLayoutPosition()).getId());
+                    if ("0".equals(mDatas.get(getLayoutPosition()).getIs_agree())) {
+                        //没点过赞
+                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                            @Override
+                            public void onSuccess(ServerData serverData) {
+                                if ("1".equals(serverData.code)) {
+                                    ToastUtils.toast(mContext, "点赞成功").show();
+                                    mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() + 1);
+                                    mDatas.get(getLayoutPosition()).setIs_agree("1");
+                                    notifyItemChanged(getLayoutPosition());
+                                }
+                            }
+                        });
+                    } else {
+                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                            @Override
+                            public void onSuccess(ServerData serverData) {
+                                if ("1".equals(serverData.code)) {
+                                    ToastUtils.toast(mContext, "取消赞成功").show();
+                                    mDatas.get(getLayoutPosition()).setIs_agree("0");
+                                    if (mDatas.get(getLayoutPosition()).getAgree_num() > 0) {
+                                        mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() - 1);
+                                    }
+                                    notifyItemChanged(getLayoutPosition());
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+            iv_zan_num.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HashMap<String, Object> maps = new HashMap<>();
+                    //点赞类型（1文章点赞 ，2评论点赞）
+                    maps.put("agree_type", "1");
+                    //文章id 或者 评论id
+                    maps.put("ugc_or_reply_id", mDatas.get(getLayoutPosition()).getId());
+                    if ("0".equals(mDatas.get(getLayoutPosition()).getIs_agree())) {
+                        //没点过赞
+                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                            @Override
+                            public void onSuccess(ServerData serverData) {
+                                if ("1".equals(serverData.code)) {
+                                    ToastUtils.toast(mContext, "点赞成功").show();
+                                    mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() + 1);
+                                    mDatas.get(getLayoutPosition()).setIs_agree("1");
+                                    notifyItemChanged(getLayoutPosition());
+                                }
+                            }
+                        });
+                    } else {
+                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                            @Override
+                            public void onSuccess(ServerData serverData) {
+                                if ("1".equals(serverData.code)) {
+                                    ToastUtils.toast(mContext, "取消赞成功").show();
+                                    mDatas.get(getLayoutPosition()).setIs_agree("0");
+                                    if (mDatas.get(getLayoutPosition()).getAgree_num() > 0) {
+                                        mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() - 1);
+                                    }
+                                    notifyItemChanged(getLayoutPosition());
+                                }
+                            }
+                        });
+                    }
                 }
             });
         }

@@ -89,6 +89,8 @@ public class PersonActivity extends BaseActivity {
     SmartRefreshLayout refresh_layout;
     @BindView(R.id.tv_renzheng_title)
     TextView tv_renzheng_title;
+    @BindView(R.id.tv_renzheng_title2)
+    TextView tv_renzheng_title2;
     @BindView(R.id.tv_content_title)
     TextView tv_content_title;
     @BindView(R.id.iv_close)
@@ -103,10 +105,13 @@ public class PersonActivity extends BaseActivity {
     LinearLayout ll_follow;
     @BindView(R.id.ll_renzheng)
     LinearLayout ll_renzheng;
+    @BindView(R.id.ll_content)
+    LinearLayout ll_content;
     private UserInfo userInfo;
     private String userId;
     private int page = 1;
     private MyArticleAdapter myArticleAdapter;
+    private HashMap<String, Object> map = new HashMap<>();
 
     @Xml(layouts = "activity_person")
     @Override
@@ -241,6 +246,7 @@ public class PersonActivity extends BaseActivity {
                 edit_info.setVisibility(View.VISIBLE);
                 tv_renzheng_title.setText("我的认证");
                 tv_content_title.setText("我的内容");
+                tv_renzheng_title2.setText("申请认证");
             } else {
                 //他人
                 iv_share.setVisibility(View.VISIBLE);
@@ -248,6 +254,7 @@ public class PersonActivity extends BaseActivity {
                 edit_info.setVisibility(View.GONE);
                 tv_renzheng_title.setText("TA的认证");
                 tv_content_title.setText("TA的内容");
+                tv_renzheng_title2.setText("");
             }
             if (!TextUtils.isEmpty(userInfo.getImg())) {
                 iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(userInfo.getImg()).setAutoPlayAnimations(true).build());
@@ -319,11 +326,13 @@ public class PersonActivity extends BaseActivity {
     }
 
     @SuppressLint("WrongConstant")
-    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow,R.id.ll_renzheng})
+    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow,R.id.ll_renzheng,R.id.ll_content})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan_code:
-                QRCodeActivity.invoke(mContext);
+                if(Util.isLogin()){
+                    QRCodeActivity.invoke(mContext);
+                }
                 break;
             case R.id.edit_info:
                 //编辑资料
@@ -341,16 +350,59 @@ public class PersonActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_context:
-                ToastUtils.toast(mContext, "内容").show();
+            case R.id.ll_content:
+                map.clear();
+                map.put("id", userInfo.getId());
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/myPost/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.ll_zan:
-                ToastUtils.toast(mContext, "获赞").show();
+                if (!TextUtils.isEmpty(userId) && userId.equals(Util.getUid())) {
+                    map.clear();
+                    map.put("id", userInfo.getId());
+                    try {
+                        StringBuffer stringBuffer = new StringBuffer();
+                        stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/messageAgreeMe/")
+                                .append("&request_param=")
+                                .append(JSONUtil.toJSONString(map));
+                        WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 break;
             case R.id.ll_fans:
-                ToastUtils.toast(mContext, "粉丝").show();
+                map.clear();
+                map.put("type", "1");
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/followList/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.ll_follow:
-                ToastUtils.toast(mContext, "关注").show();
+                map.clear();
+                map.put("type", "2");
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/followList/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.ll_renzheng:
                 if (!TextUtils.isEmpty(userId) && userId.equals(Util.getUid())) {

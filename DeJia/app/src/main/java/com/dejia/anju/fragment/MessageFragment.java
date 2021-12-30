@@ -17,9 +17,12 @@ import com.dejia.anju.AppLog;
 import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.adapter.MessageListAdapter;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.MessageListData;
 import com.dejia.anju.model.NoreadAndChatidInfo;
+import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.view.YMLinearLayoutManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -86,6 +89,8 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     private YMLinearLayoutManager ymLinearLayoutManager;
     private ArrayList<MessageListData> messageListData;
     private int mPos;
+    private HashMap<String, Object> map = new HashMap<>();
+    private UserInfo userInfo;
 
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -166,6 +171,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     protected void initView(View view) {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_title.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
+        userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
         setMultiOnClickListener(ll1, ll2, ll3, ll4, iv_close_notice, tv_open_notice);
     }
 
@@ -257,19 +263,59 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.ll1:
                 //回复我的
-                ToastUtils.toast(mContext,"回复我的").show();
+                map.clear();
+                map.put("id", userInfo.getId());
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/messageReplyMe/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.ll2:
                 //@我的
-                ToastUtils.toast(mContext,"@我的").show();
+                map.clear();
+                map.put("id", userInfo.getId());
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/messageAtMe/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.ll3:
                 //收到的赞
-                ToastUtils.toast(mContext,"收到的赞").show();
+                map.clear();
+                map.put("id", userInfo.getId());
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/messageAgreeMe/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.ll4:
                 //公告通知
-                ToastUtils.toast(mContext,"公告通知").show();
+                map.clear();
+                map.put("id", userInfo.getId());
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/messageNoticeMe/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.iv_close_notice:
                 ll_notice.setVisibility(View.GONE);

@@ -5,20 +5,36 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.activity.WebViewActivity;
+import com.dejia.anju.base.Constants;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.WebViewData;
+import com.dejia.anju.net.CookieConfig;
+import com.dejia.anju.net.FinalConstant1;
+import com.dejia.anju.net.SignUtils;
+import com.dejia.anju.net.YMHttpParams;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.HttpHeaders;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Response;
+
 
 public class WebUrlJumpManager {
     private WebViewData webViewData;
+    private Context mContext;
     private static volatile WebUrlJumpManager webUrlJumpManager;
 
     private WebUrlJumpManager() {
@@ -35,10 +51,15 @@ public class WebUrlJumpManager {
         return webUrlJumpManager;
     }
 
-    public void invoke(Context mContext, String url,WebViewData webViewData) {
-        if(webViewData == null){
+    public void invoke(Context mContext, String url, WebViewData mWebViewData) {
+        this.mContext = mContext;
+        if (mWebViewData == null) {
             if (TextUtils.isEmpty(url)) {
                 return;
+            }
+            if (url.contains("www.dejia.test/scan") || url.contains("www.dejia.com/scan")) {
+                Map paramMap = URLRequest(URLDecoder.decode(url));
+                url = "https://www.dejia.com/?webviewType=api&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/user/scan/&request_param={'code':" + paramMap.get("code") + "}";
             }
             Map paramMap = URLRequest(URLDecoder.decode(url));
             webViewData = new WebViewData.WebDataBuilder()
@@ -57,34 +78,51 @@ public class WebUrlJumpManager {
                     .setLink((String) (paramMap.get("link")))
                     .setRequest_param((String) (paramMap.get("request_param")))
                     .build();
-        }else{
-            webViewData = webViewData;
+        } else {
+            this.webViewData = mWebViewData;
         }
         if (webViewData != null) {
             if (!TextUtils.isEmpty(webViewData.getWebviewType()) && "api".equals(webViewData.getWebviewType())) {
                 //请求接口
-                ToastUtils.toast(mContext,"需要请求接口").show();
+                StringBuffer stringBuffer = new StringBuffer();
+                Map<String, Object> map = new HashMap<>();
+                if (webViewData != null
+                        && !TextUtils.isEmpty(webViewData.getLinkisJoint())
+                        && "1".equals(webViewData.getLinkisJoint())
+                        && !TextUtils.isEmpty(webViewData.getLink())) {
+                    //需要拼接link
+                    stringBuffer.append(FinalConstant1.HTTP)
+                            .append(FinalConstant1.SYMBOL1)
+                            .append(FinalConstant1.TEST_BASE_URL)
+                            .append(webViewData.getLink());
+                } else {
+                    //不需要拼接link
+                    stringBuffer.append(FinalConstant1.HTTP)
+                            .append(FinalConstant1.SYMBOL1)
+                            .append(FinalConstant1.TEST_BASE_URL);
+                }
+                if (webViewData != null && !TextUtils.isEmpty(webViewData.getRequest_param())) {
+                    map = JSONUtil.getMapForJson(webViewData.getRequest_param());
+                }
+                post(stringBuffer.toString(), map);
             } else if (!TextUtils.isEmpty(webViewData.getWebviewType()) && "native".equals(webViewData.getWebviewType())) {
                 //原生跳转
-                if(webViewData != null && !TextUtils.isEmpty(webViewData.getLink())){
-                    switch (webViewData.getLink()){
+                if (webViewData != null && !TextUtils.isEmpty(webViewData.getLink())) {
+                    switch (webViewData.getLink()) {
                         case "userHome":
-                            if(!TextUtils.isEmpty(webViewData.getRequest_param())){
+                            if (!TextUtils.isEmpty(webViewData.getRequest_param())) {
                                 Map<String, Object> map = JSONUtil.getMapForJson(webViewData.getRequest_param());
-                                String user_id = map.get("id")+"";
-                                if(!TextUtils.isEmpty(user_id)){
-                                    PersonActivity.invoke(mContext,user_id);
+                                String user_id = map.get("id") + "";
+                                if (!TextUtils.isEmpty(user_id)) {
+                                    PersonActivity.invoke(mContext, user_id);
                                 }
-//                                List<String> keys = new ArrayList<>(map.keySet());
-//                                for (int i = 0; i < keys.size(); i++) {
-//                                    String key = keys.get(i);
-//                                    String value = (String) map.get(key);
-//                                }
                             }
+                            break;
+                        case "editUserInfo":
+                            mContext.startActivity(new Intent(mContext, EditUserInfoActivity.class));
                             break;
                     }
                 }
-                ToastUtils.toast(mContext,"需要调回原生页面").show();
             } else {
                 //跳转web
                 startWebActivity(mContext, webViewData);
@@ -154,10 +192,38 @@ public class WebUrlJumpManager {
     /**
      * 打开公共WebActivity
      */
-    public void startWebActivity(Context context, WebViewData data) {
+    private void startWebActivity(Context context, WebViewData data) {
         Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(WebViewActivity.WEB_DATA, data);
         context.startActivity(intent);
+    }
+
+    private void post(String url, Map<String, Object> maps) {
+        YMHttpParams httpParams = SignUtils.buildHttpParam5(maps);
+        HttpHeaders headers = SignUtils.buildHttpHeaders(maps);
+        CookieConfig.getInstance().setCookie(FinalConstant1.HTTP, FinalConstant1.TEST_BASE_URL, FinalConstant1.TEST_BASE_URL);
+        OkGo.post(url)
+                .cacheMode(CacheMode.DEFAULT)
+                .params(httpParams)
+                .headers(headers)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String result, Call call, Response response) {
+                        String code = JSONUtil.resolveJson(result, Constants.CODE);
+                        String message = JSONUtil.resolveJson(result, Constants.MESSAGE);
+                        ToastUtils.toast(mContext, message).show();
+//                        if("1".equals(code)){
+                            EventBus.getDefault().post(new Event<>(4));
+//                        }else{
+//                            EventBus.getDefault().post(new Event<>(5));
+//                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
     }
 
 

@@ -91,6 +91,7 @@ public class HomeIndexBean {
          * agree_num : 0
          */
 
+        public String id;
         public UserData user_data;
         public String title;
         public int article_type;
@@ -100,6 +101,23 @@ public class HomeIndexBean {
         public int agree_num;
         public java.util.List<ImgInfo> img;
         public String url;
+        public String is_agree;
+
+        public String getIs_agree() {
+            return is_agree;
+        }
+
+        public void setIs_agree(String is_agree) {
+            this.is_agree = is_agree;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public String getUrl() {
             return url;

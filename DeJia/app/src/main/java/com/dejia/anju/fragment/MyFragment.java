@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
@@ -31,6 +32,7 @@ import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.YMLinearLayoutManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -42,9 +44,11 @@ import com.zhangyue.we.x2c.ano.Xml;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -104,9 +108,12 @@ public class MyFragment extends BaseFragment {
     LinearLayout ll_follow;
     @BindView(R.id.ll_renzheng)
     LinearLayout ll_renzheng;
+    @BindView(R.id.ll_content)
+    LinearLayout ll_content;
     private UserInfo userInfo;
     private int page = 1;
     private MyArticleAdapter myArticleAdapter;
+    private HashMap<String, Object> map = new HashMap<>();
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -186,11 +193,11 @@ public class MyFragment extends BaseFragment {
         new GetMyArticleApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(ServerData serverData) {
-                if (refresh_layout !=  null) {
+                if (refresh_layout != null) {
                     refresh_layout.finishRefresh();
                 }
                 if ("1".equals(serverData.code)) {
-                    if(serverData.data != null){
+                    if (serverData.data != null) {
                         List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
                         if (list != null) {
                             if (list.size() == 0) {
@@ -198,7 +205,7 @@ public class MyFragment extends BaseFragment {
                                     refresh_layout.finishLoadMoreWithNoMoreData();
                                 }
                             } else {
-                                if (refresh_layout !=  null) {
+                                if (refresh_layout != null) {
                                     refresh_layout.finishLoadMore();
                                 }
                             }
@@ -210,7 +217,7 @@ public class MyFragment extends BaseFragment {
                             tv_my_article.setVisibility(View.GONE);
                             rv.setVisibility(View.VISIBLE);
                         }
-                    }else{
+                    } else {
                         refresh_layout.finishLoadMoreWithNoMoreData();
                         ToastUtils.toast(mContext, serverData.message).show();
                     }
@@ -239,7 +246,7 @@ public class MyFragment extends BaseFragment {
                     WebUrlJumpManager.getInstance().invoke(mContext, list.get(pos).getUrl(), null);
                 }
             });
-        }else{
+        } else {
             myArticleAdapter.addData(list);
         }
     }
@@ -298,7 +305,7 @@ public class MyFragment extends BaseFragment {
             } else {
                 tv_follow.setText(userInfo.getFollowing_num());
             }
-            if(userInfo.getAuth() != null && userInfo.getAuth().size() > 0){
+            if (userInfo.getAuth() != null && userInfo.getAuth().size() > 0) {
                 YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 RecyclerView.ItemAnimator itemAnimator = rv_renzheng.getItemAnimator();
                 //取消局部刷新动画效果
@@ -309,7 +316,7 @@ public class MyFragment extends BaseFragment {
                 RenZhengListAdapter renZhengListAdapter = new RenZhengListAdapter(mContext, R.layout.item_renzhen, userInfo.getAuth());
                 rv_renzheng.setAdapter(renZhengListAdapter);
                 rv_renzheng.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 rv_renzheng.setVisibility(View.GONE);
             }
         }
@@ -336,12 +343,13 @@ public class MyFragment extends BaseFragment {
     }
 
     @SuppressLint("WrongConstant")
-    @OnClick({R.id.iv_scan_code, R.id.iv_drawer, R.id.edit_info,R.id.ll_introduce,R.id.ll_context,R.id.ll_zan,R.id.ll_fans,R.id.ll_follow,R.id.ll_renzheng})
+    @OnClick({R.id.iv_scan_code, R.id.iv_drawer, R.id.edit_info, R.id.ll_introduce, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow, R.id.ll_renzheng, R.id.ll_content})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan_code:
-                ToastUtils.toast(mContext,"正在开发中").show();
-//                QRCodeActivity.invoke(mContext);
+                if(Util.isLogin()){
+                    QRCodeActivity.invoke(mContext);
+                }
                 break;
             case R.id.iv_drawer:
                 if ((MainActivity) getActivity() != null && ((MainActivity) getActivity()).drawerLayout != null) {
@@ -356,16 +364,57 @@ public class MyFragment extends BaseFragment {
                 mContext.startActivity(new Intent(mContext, EditIntroduceActivity.class));
                 break;
             case R.id.ll_context:
-                ToastUtils.toast(mContext,"内容").show();
+            case R.id.ll_content:
+                map.clear();
+                map.put("id", userInfo.getId());
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/myPost/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.ll_zan:
-                ToastUtils.toast(mContext,"获赞").show();
+                map.clear();
+                map.put("id", userInfo.getId());
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/messageAgreeMe/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.ll_fans:
-                ToastUtils.toast(mContext,"粉丝").show();
+                map.clear();
+                map.put("type", "1");
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/followList/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.ll_follow:
-                ToastUtils.toast(mContext,"关注").show();
+                map.clear();
+                map.put("type", "2");
+                try {
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/followList/")
+                            .append("&request_param=")
+                            .append(JSONUtil.toJSONString(map));
+                    WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.ll_renzheng:
                 //认证
@@ -384,7 +433,7 @@ public class MyFragment extends BaseFragment {
                         .setShare_data("0")
                         .setLink("/vue/auth/")
                         .build();
-                WebUrlJumpManager.getInstance().invoke(mContext,"",webViewData);
+                WebUrlJumpManager.getInstance().invoke(mContext, "", webViewData);
                 break;
         }
     }

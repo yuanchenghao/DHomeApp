@@ -2,10 +2,8 @@ package com.dejia.anju.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +17,7 @@ import android.widget.TextView;
 
 import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
+import com.dejia.anju.api.SetUserApi;
 import com.dejia.anju.api.UpLoadImgApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
@@ -329,28 +328,45 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                     if ("1".equals(serverData.code)) {
                         List<UpLoadImgInfo> upLoadImgInfo = JSONUtil.jsonToArrayList(serverData.data, UpLoadImgInfo.class);
                         if (upLoadImgInfo != null && upLoadImgInfo.size() > 0) {
-                            userInfo.setImg(upLoadImgInfo.get(0).getShow_img_url());
-                            KVUtils.getInstance().encode("user", userInfo);
-                            if (!TextUtils.isEmpty(userInfo.getImg())) {
-                                iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(userInfo.getImg()).setAutoPlayAnimations(true).build());
-                            } else {
-                                iv_person.setBackgroundColor(Color.parseColor("#000000"));
-                            }
-                            //通知外部刷新
-                            EventBus.getDefault().post(new Event<>(3));
-                            ToastUtils.toast(mContext, "上传成功了哦~").show();
+                            setUserInfo(upLoadImgInfo.get(0).getPost_img_url());
                         } else {
                             ToastUtils.toast(mContext, "参数错误请重试").show();
                         }
                     } else {
                         ToastUtils.toast(mContext, serverData.message).show();
                     }
-                    //清除缓存
-                    PictureCacheManager.deleteCacheDirFile(mContext, PictureMimeType.ofImage());
                 }
             });
         } else {
             ToastUtils.toast(mContext, "图片路径错误请重试").show();
         }
+    }
+
+    //修改用户信息
+    private void setUserInfo(String post_img_url) {
+        HashMap<String, Object> maps = new HashMap<>();
+        maps.put("avatar", post_img_url);
+        new SetUserApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if ("1".equals(serverData.code)) {
+                    UserInfo UserInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                    userInfo.setImg(UserInfo.getImg());
+                    KVUtils.getInstance().encode("user", userInfo);
+                    if (!TextUtils.isEmpty(userInfo.getImg())) {
+                        iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(userInfo.getImg()).setAutoPlayAnimations(true).build());
+                    } else {
+                        iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
+                    }
+                    //通知外部刷新
+                    EventBus.getDefault().post(new Event<>(3));
+                    ToastUtils.toast(mContext, "上传成功了哦~").show();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+                //清除缓存
+                PictureCacheManager.deleteCacheDirFile(mContext, PictureMimeType.ofImage());
+            }
+        });
     }
 }
