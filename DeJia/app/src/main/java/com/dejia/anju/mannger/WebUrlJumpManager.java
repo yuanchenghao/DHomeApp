@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.dejia.anju.activity.BuildingImageActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.activity.WebViewActivity;
@@ -121,6 +122,16 @@ public class WebUrlJumpManager {
                         case "editUserInfo":
                             mContext.startActivity(new Intent(mContext, EditUserInfoActivity.class));
                             break;
+                        case "imageBrowser":
+                            if (!TextUtils.isEmpty(webViewData.getRequest_param())) {
+                                Map<String, Object> map = JSONUtil.getMapForJson(webViewData.getRequest_param());
+                                String building_id = map.get("building_id") + "";
+                                String index = map.get("index") + "";
+                                if (!TextUtils.isEmpty(building_id)) {
+                                    BuildingImageActivity.invoke(mContext, building_id, index);
+                                }
+                            }
+                            break;
                     }
                 }
             } else {
@@ -213,7 +224,7 @@ public class WebUrlJumpManager {
                         String message = JSONUtil.resolveJson(result, Constants.MESSAGE);
                         ToastUtils.toast(mContext, message).show();
 //                        if("1".equals(code)){
-                            EventBus.getDefault().post(new Event<>(4));
+                        EventBus.getDefault().post(new Event<>(4));
 //                        }else{
 //                            EventBus.getDefault().post(new Event<>(5));
 //                        }

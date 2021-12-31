@@ -26,7 +26,7 @@
         app:qrcv_isTipTextBelowRect="true"
         app:qrcv_maskColor="@color/transparent"
         app:qrcv_rectWidth="206dp"
-        app:qrcv_scanLineColor="#33A7FF"
+        app:qrcv_scanLineColor="@color/transparent"
         app:qrcv_scanLineMargin="0dp"
         app:qrcv_scanLineSize="0.5dp"
         app:qrcv_tipTextColor="@android:color/white"

@@ -125,7 +125,8 @@ public class WebViewActivity extends WebViewActivityImpl {
             //沉浸式布局
             QMUIStatusBarHelper.translucent(mContext);
             //状态栏白色
-            QMUIStatusBarHelper.setStatusBarDarkMode(mContext);
+//            QMUIStatusBarHelper.setStatusBarDarkMode(mContext);
+            QMUIStatusBarHelper.setStatusBarLightMode(mContext);
         }
         //是否需要标题
         if (mWebViewData != null

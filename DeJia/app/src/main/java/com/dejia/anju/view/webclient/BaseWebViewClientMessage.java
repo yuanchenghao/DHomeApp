@@ -17,6 +17,7 @@ import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -83,7 +84,7 @@ public class BaseWebViewClientMessage extends WebViewClient {
      * @return
      */
     @Override
-    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    public boolean shouldOverrideUrlLoading(@NotNull WebView view, String url) {
         AppLog.i("shouldOverrideUrlLoading......");
         WebView.HitTestResult hitTestResult = view.getHitTestResult();
         if (null == hitTestResult)
@@ -99,9 +100,9 @@ public class BaseWebViewClientMessage extends WebViewClient {
             case WebView.HitTestResult.GEO_TYPE: // 　地图类型
                 break;
             case WebView.HitTestResult.SRC_ANCHOR_TYPE: // 超链接
+            case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
                 WebUrlJumpManager.getInstance().invoke(mActivity, url, null);
                 break;
-            case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
             case WebView.HitTestResult.IMAGE_TYPE: // 处理长按图片的菜单项 }
                 return true;
             case WebView.HitTestResult.UNKNOWN_TYPE: //未知

@@ -158,7 +158,7 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     @Override
     public void onScanQRCodeOpenCameraError() {
         AppLog.e("打开相机出错");
-        getPermission();
+//        getPermission();
     }
 
     private void getPermission() {
