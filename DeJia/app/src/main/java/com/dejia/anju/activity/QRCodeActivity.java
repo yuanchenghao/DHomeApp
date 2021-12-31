@@ -8,6 +8,8 @@ import android.os.Vibrator;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -49,6 +51,9 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     ZXingView mZXingView;
     @BindView(R.id.rl)
     RelativeLayout rl;
+    @BindView(R.id.iv_scan)
+    ImageView iv_scan;
+    private Animation animation;
 
     @Xml(layouts = "activity_qr_code")
     @Override
@@ -90,6 +95,8 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     @Override
     protected void onDestroy() {
         mZXingView.onDestroy(); // 销毁二维码扫描控件
+        animation.cancel();
+        animation = null;
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
@@ -104,6 +111,7 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
 
     @Override
     protected void initView() {
+        animation = AnimationUtils.loadAnimation(mContext, R.anim.scan_anim);
         QMUIStatusBarHelper.translucent(this);
         QMUIStatusBarHelper.setStatusBarLightMode(this);
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) rl.getLayoutParams();
@@ -111,6 +119,19 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         rl.setLayoutParams(layoutParams);
         getPermission();
         mZXingView.setDelegate(this);
+
+//        animation.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {}
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {}
+//
+//        });
     }
 
     @Override
@@ -130,6 +151,7 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     private void startScan() {
         mZXingView.startCamera(); // 打开后置摄像头开始预览，但是并未开始识别
         mZXingView.startSpotAndShowRect(); // 显示扫描框，并开始识别
+        iv_scan.startAnimation(animation);
     }
 
     public void finished() {
@@ -147,6 +169,7 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         } else {
             ToastUtils.toast(mContext, "链接无效，请重新扫描").show();
             mZXingView.startSpot();
+            iv_scan.startAnimation(animation);
         }
     }
 
@@ -158,7 +181,6 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     @Override
     public void onScanQRCodeOpenCameraError() {
         AppLog.e("打开相机出错");
-//        getPermission();
     }
 
     private void getPermission() {
