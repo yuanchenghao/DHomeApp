@@ -1,66 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="#000000"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:id="@+id/rl"
-        android:layout_width="match_parent"
-        android:layout_height="49dp">
-
-        <ImageView
-            android:id="@+id/iv_close"
-            android:layout_width="@dimen/dp_27"
-            android:layout_height="@dimen/dp_27"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_16"
-            android:src="@mipmap/close_white" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="#FFFFFF"
-            android:text="11111111"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/iv_down"
-            android:layout_width="@dimen/dp_27"
-            android:layout_height="@dimen/dp_27"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_16"
-            android:src="@mipmap/download_iv" />
-
-    </RelativeLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_weight="0"
-        android:layout_marginBottom="@dimen/dp_5"
-        android:layout_centerInParent="true"
-        android:gravity="center_horizontal"
-        android:textSize="18sp"
-        app:tabBackground="@android:color/transparent"
-        app:tabIndicator="@drawable/indicator"
-        app:tabIndicatorColor="#5BB9FF"
-        app:tabMode="scrollable"
-        app:tabRippleColor="@color/transparent"
-        app:tabTextColor="#FFFFFF"
-        app:tabSelectedTextColor="#5BB9FF"/>
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical">
 
     <com.dejia.anju.view.HackyViewPager
         android:id="@+id/vp"
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl"
+            android:layout_width="match_parent"
+            android:layout_height="49dp">
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="@dimen/dp_27"
+                android:layout_height="@dimen/dp_27"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:src="@mipmap/close_white" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_down"
+                android:layout_width="@dimen/dp_27"
+                android:layout_height="@dimen/dp_27"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_16"
+                android:src="@mipmap/download_iv" />
+
+        </RelativeLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="0"
+            android:gravity="center_horizontal"
+            android:textSize="18sp"
+            app:tabBackground="@android:color/transparent"
+            app:tabIndicator="@drawable/indicator"
+            app:tabIndicatorColor="#5BB9FF"
+            app:tabMode="scrollable"
+            app:tabRippleColor="@color/transparent"
+            app:tabSelectedTextColor="#5BB9FF"
+            app:tabTextColor="#FFFFFF" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -126,11 +126,13 @@ public class WebUrlJumpManager {
                             if (!TextUtils.isEmpty(webViewData.getRequest_param())) {
                                 Map<String, Object> map = JSONUtil.getMapForJson(webViewData.getRequest_param());
                                 String building_id = map.get("building_id") + "";
-                                String index = map.get("index") + "";
+                                int index = (int) map.get("index");
                                 if (!TextUtils.isEmpty(building_id)) {
                                     BuildingImageActivity.invoke(mContext, building_id, index);
                                 }
                             }
+                        case "houseTypeImageBrowser":
+
                             break;
                     }
                 }

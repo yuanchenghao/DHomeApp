@@ -2,8 +2,14 @@ package com.dejia.anju.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +17,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
+import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.YMTabLayoutAdapter;
 import com.dejia.anju.api.BuildingBigImageApi;
@@ -32,16 +44,28 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -64,7 +88,7 @@ public class BuildingImageActivity extends BaseActivity {
     RelativeLayout rl;
     @BindView(R.id.vp)
     ViewPager vp;
-    private String index = "0";
+    private int index = 0;
     private String building_id;
     private List<BuildingImgInfo> list;
     private List<BuildingImgInfo> urlList;
@@ -96,7 +120,7 @@ public class BuildingImageActivity extends BaseActivity {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) rl.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
         rl.setLayoutParams(layoutParams);
-        index = getIntent().getStringExtra("index");
+        index = getIntent().getIntExtra("index", 0);
         building_id = getIntent().getStringExtra("building_id");
         if (TextUtils.isEmpty("building_id")) {
             ToastUtils.toast(mContext, "参数错误").show();
@@ -133,11 +157,28 @@ public class BuildingImageActivity extends BaseActivity {
                 urlList.add(buildingImgInfo);
             }
         }
-        tv_title.setText(Integer.parseInt(index) + 1 + "/" + urlList.size());
+        tv_title.setText(index + 1 + "/" + urlList.size());
         PictureSlidePagerAdapter ymTabLayoutAdapter = new PictureSlidePagerAdapter(getSupportFragmentManager(), urlList);
         vp.setAdapter(ymTabLayoutAdapter);
-        tab_layout.setupWithViewPager(vp);
-        vp.setCurrentItem(Integer.parseInt(index));
+//        tab_layout.setupWithViewPager(vp);
+        vp.setCurrentItem(index);
+        vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                index = position;
+                tv_title.setText(index + 1 + "/" + urlList.size());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -157,14 +198,14 @@ public class BuildingImageActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.iv_close})
+    @OnClick({R.id.iv_close, R.id.iv_down})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_close:
                 finished();
                 break;
             case R.id.iv_down:
-
+                saveImageUrlToGallery(mContext, urlList.get(index).getImg().getImg());
                 break;
         }
     }
@@ -173,7 +214,7 @@ public class BuildingImageActivity extends BaseActivity {
         finish();
     }
 
-    public static void invoke(Context context, String building_id, String index) {
+    public static void invoke(Context context, String building_id, int index) {
         Intent intent = new Intent(context, BuildingImageActivity.class);
         intent.putExtra("building_id", building_id);
         intent.putExtra("index", index);
@@ -189,7 +230,6 @@ public class BuildingImageActivity extends BaseActivity {
             this.urlList = list;
         }
 
-
         @Override
         public Fragment getItem(int position) {
             return PictureSlideFragment.newInstance(urlList.get(position).getImg().getImg());
@@ -199,12 +239,52 @@ public class BuildingImageActivity extends BaseActivity {
         public int getCount() {
             return urlList.size();
         }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return urlList.get(position).getTitle();
-        }
-
     }
 
+    //保存网络图片到相册
+    public void saveImageUrlToGallery(Context context, String url) {
+        Glide.with(context)
+                .asBitmap()
+                .load(url)
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        saveImageToGallery(mContext, resource, url.substring(url.lastIndexOf('/') + 1));
+                    }
+                });
+    }
+
+    //保存图片到相册
+    public void saveImageToGallery(Context context, Bitmap bitmap, String imageFileName) {
+        String saveImagePath = null;
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "dejia");
+        File imageFile = new File(storageDir, imageFileName);
+        if (!FileUtils.isFileExists(imageFile)) {
+            saveImagePath = imageFile.getAbsolutePath();
+            try {
+                OutputStream fout = new FileOutputStream(imageFile);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fout);
+                fout.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                ToastUtils.toast(mContext,"目录不兼容").show();
+            }
+            // 通知图库更新
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                MediaScannerConnection.scanFile(context, new String[]{saveImagePath}, null,
+                        (path1, uri) -> {
+                            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                            mediaScanIntent.setData(uri);
+                            context.sendBroadcast(mediaScanIntent);
+                        });
+            } else {
+                String relationDir = imageFile.getParent();
+                File file1 = new File(relationDir);
+                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,Uri.fromFile(file1.getAbsoluteFile())));
+            }
+            ToastUtils.toast(context, "保存成功,保存路径为：" + imageFile.getAbsolutePath()).show();
+        } else {
+            ToastUtils.toast(context, "已经保存了哦").show();
+        }
+    }
 }
