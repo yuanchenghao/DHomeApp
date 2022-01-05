@@ -68,7 +68,7 @@
         android:layout_marginRight="@dimen/dp_20" />
 </RelativeLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <com.dejia.anju.view.HackyViewPager
         android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

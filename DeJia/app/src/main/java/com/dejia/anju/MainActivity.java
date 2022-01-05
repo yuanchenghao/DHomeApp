@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -67,6 +68,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -117,6 +119,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private long mExitTime;
     private PictureWindowAnimationStyle mWindowAnimationStyle;
     private MessageShowApi messageShowApi;
+    //记录Fragment的位置
+    public int position = 0;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -125,6 +129,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 initFragment(0);
                 break;
         }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        position = savedInstanceState.getInt("position");
+        initFragment(position);
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        //记录当前的position
+        outState.putInt("position", position);
     }
 
     @Override
@@ -400,6 +417,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void initFragment(int index) {
+        this.position = index;
         manager = getSupportFragmentManager();
         // 开启事务
         transaction = manager.beginTransaction();
@@ -407,28 +425,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         hideFragment(transaction);
         switch (index) {
             case 0:
+                iv_home.setImageResource(R.mipmap.home_yes_icon_bottom);
+                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
+                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
+                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 if (homeFragment == null) {
                     homeFragment = HomeFragment.newInstance();
                     transaction.add(R.id.fl, homeFragment);
                 } else {
                     transaction.show(homeFragment);
                 }
-                iv_home.setImageResource(R.mipmap.home_yes_icon_bottom);
-                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
-                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
-                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 break;
             case 1:
+                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
+                iv_circle.setImageResource(R.mipmap.circle_yes_icon_bottom);
+                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
+                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 if (circleFragment == null) {
                     circleFragment = CircleFragment.newInstance();
                     transaction.add(R.id.fl, circleFragment);
                 } else {
                     transaction.show(circleFragment);
                 }
-                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
-                iv_circle.setImageResource(R.mipmap.circle_yes_icon_bottom);
-                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
-                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 break;
             case 2:
 //                if (toolFragment == null) {
@@ -444,28 +462,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 break;
             case 3:
+                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
+                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
+                iv_message.setImageResource(R.mipmap.message_yes_icon_bottom);
+                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 if (messageFragment == null) {
                     messageFragment = MessageFragment.newInstance();
                     transaction.add(R.id.fl, messageFragment);
                 } else {
                     transaction.show(messageFragment);
                 }
-                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
-                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
-                iv_message.setImageResource(R.mipmap.message_yes_icon_bottom);
-                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
                 break;
             case 4:
+                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
+                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
+                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
+                iv_my.setImageResource(R.mipmap.my_yes_icon_bottom);
                 if (myFragment == null) {
                     myFragment = MyFragment.newInstance();
                     transaction.add(R.id.fl, myFragment);
                 } else {
                     transaction.show(myFragment);
                 }
-                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
-                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
-                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
-                iv_my.setImageResource(R.mipmap.my_yes_icon_bottom);
                 break;
             default:
                 break;

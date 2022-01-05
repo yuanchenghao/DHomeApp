@@ -30,9 +30,12 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.getInstance().add(mContext);
         X2C.setContentView(this, getLayoutId());
         mContext = BaseActivity.this;
+        if (!mContext.getClass().getCanonicalName().contains("com.dejia.anju.SplashActivity")) {
+            DeJiaApp.abnormalStart(mContext);
+        }
+        ActivityManager.getInstance().add(mContext);
         ButterKnife.bind(mContext);
         //将当前的activity添加到ActivityManager中
         mInflater = LayoutInflater.from(mContext);
