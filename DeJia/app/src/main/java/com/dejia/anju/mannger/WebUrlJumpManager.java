@@ -17,6 +17,7 @@ import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.YMHttpParams;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.MapButtomDialogView;
 import com.dejia.anju.utils.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
@@ -83,7 +84,8 @@ public class WebUrlJumpManager {
             this.webViewData = mWebViewData;
         }
         if (webViewData != null) {
-            if (!TextUtils.isEmpty(webViewData.getWebviewType()) && "api".equals(webViewData.getWebviewType())) {
+            if (!TextUtils.isEmpty(webViewData.getWebviewType())
+                    && "api".equals(webViewData.getWebviewType())) {
                 //请求接口
                 StringBuffer stringBuffer = new StringBuffer();
                 Map<String, Object> map = new HashMap<>();
@@ -133,6 +135,25 @@ public class WebUrlJumpManager {
                             }
                         case "houseTypeImageBrowser":
 
+                            break;
+                    }
+                }
+            } else if (!TextUtils.isEmpty(webViewData.getWebviewType()) && "other".equals(webViewData.getWebviewType())) {
+                //type的值在link里 结合 request_param使用
+                if (!TextUtils.isEmpty(webViewData.getLink())) {
+                    switch (webViewData.getLink()) {
+                        case "MapNavigation":
+                            //跳外部地图
+                            if (!TextUtils.isEmpty(webViewData.getRequest_param())) {
+                                Map<String, Object> map = JSONUtil.getMapForJson(webViewData.getRequest_param());
+                                String name = map.get("name") + "";
+                                String lon = map.get("lon") + "";
+                                String lat = map.get("lat") + "";
+                                if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(lon) && !TextUtils.isEmpty(lat)){
+                                    MapButtomDialogView mapButtomDialogView = new MapButtomDialogView(mContext);
+                                    mapButtomDialogView.showView(name,lon,lat);
+                                }
+                            }
                             break;
                     }
                 }
