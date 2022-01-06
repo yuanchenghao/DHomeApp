@@ -119,6 +119,8 @@ public class FinalConstant1 {
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "insertAgree", POST);
         //小区图片大图浏览页面
         NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "building", "bigImg", POST);
+        //户型大图浏览接口
+        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "building", "houseTypeBigImg", POST);
 
         //私信
         //WebSocket解绑

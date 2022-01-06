@@ -26,6 +26,7 @@ import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.YMTabLayoutAdapter;
 import com.dejia.anju.api.BuildingBigImageApi;
+import com.dejia.anju.api.HouseTypeBigImageApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.base.BaseFragment;
@@ -35,6 +36,7 @@ import com.dejia.anju.model.BuildingImgInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.webclient.JsCallAndroid;
 import com.google.android.material.tabs.TabLayout;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
@@ -60,12 +62,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -88,10 +84,15 @@ public class BuildingImageActivity extends BaseActivity {
     RelativeLayout rl;
     @BindView(R.id.vp)
     ViewPager vp;
+    @BindView(R.id.tv_des)
+    TextView tv_des;
     private int index = 0;
-    private String building_id;
+    private String building_id = "";
+    private String house_type_id = "";
+    private String type;//0户型
     private List<BuildingImgInfo> list;
     private List<BuildingImgInfo> urlList;
+    private List<String> titleList;
 
     //    @Xml(layouts = "activity_building_image")
     @Override
@@ -120,35 +121,47 @@ public class BuildingImageActivity extends BaseActivity {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) rl.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
         rl.setLayoutParams(layoutParams);
-        index = getIntent().getIntExtra("index", 0);
-        building_id = getIntent().getStringExtra("building_id");
-        if (TextUtils.isEmpty("building_id")) {
-            ToastUtils.toast(mContext, "参数错误").show();
-            finished();
-            return;
+        type = getIntent().getStringExtra("type");
+        if (type.equals("0")) {
+            house_type_id = getIntent().getStringExtra("house_type_id");
+        } else {
+            building_id = getIntent().getStringExtra("building_id");
         }
+        index = getIntent().getIntExtra("index", 0);
     }
 
     @Override
     protected void initData() {
-        HashMap<String, Object> maps = new HashMap<>();
-        maps.put("building_id", building_id);
-        new BuildingBigImageApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
+        if (!TextUtils.isEmpty(house_type_id)) {
+            HashMap<String, Object> maps = new HashMap<>();
+            maps.put("house_type_id", house_type_id);
+            new HouseTypeBigImageApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
                     list = JSONUtil.jsonToArrayList(serverData.data, BuildingImgInfo.class);
                     setImageAdapter();
                 } else {
                     ToastUtils.toast(mContext, serverData.message).show();
                 }
-            }
-        });
+            });
+        } else {
+            HashMap<String, Object> maps = new HashMap<>();
+            maps.put("building_id", building_id);
+            new BuildingBigImageApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                if ("1".equals(serverData.code)) {
+                    list = JSONUtil.jsonToArrayList(serverData.data, BuildingImgInfo.class);
+                    setImageAdapter();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            });
+        }
     }
 
     private void setImageAdapter() {
         urlList = new ArrayList<>();
+        titleList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
+            titleList.add(list.get(i).getTitle());
             for (int j = 0; j < list.get(i).getImg_list().size(); j++) {
                 BuildingImgInfo buildingImgInfo = new BuildingImgInfo();
                 buildingImgInfo.setId(list.get(i).getId());
@@ -157,10 +170,18 @@ public class BuildingImageActivity extends BaseActivity {
                 urlList.add(buildingImgInfo);
             }
         }
+        if (!TextUtils.isEmpty(house_type_id)) {
+            tv_des.setText(urlList.get(index).getTitle());
+            tv_des.setVisibility(View.VISIBLE);
+            tab_layout.setVisibility(View.GONE);
+        } else {
+            tv_des.setVisibility(View.GONE);
+            tab_layout.setVisibility(View.VISIBLE);
+            setTabLayout(titleList);
+        }
         tv_title.setText(index + 1 + "/" + urlList.size());
         PictureSlidePagerAdapter ymTabLayoutAdapter = new PictureSlidePagerAdapter(getSupportFragmentManager(), urlList);
         vp.setAdapter(ymTabLayoutAdapter);
-//        tab_layout.setupWithViewPager(vp);
         vp.setCurrentItem(index);
         vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -172,6 +193,15 @@ public class BuildingImageActivity extends BaseActivity {
             public void onPageSelected(int position) {
                 index = position;
                 tv_title.setText(index + 1 + "/" + urlList.size());
+                tv_des.setText(urlList.get(position).getTitle());
+                if (!TextUtils.isEmpty(building_id)) {
+                    for (int i = 0; i < titleList.size(); i++) {
+                        if (urlList.get(position).getTitle().equals(titleList.get(i))) {
+                            tab_layout.setScrollPosition(i, 0, true);
+                            break;
+                        }
+                    }
+                }
             }
 
             @Override
@@ -182,8 +212,14 @@ public class BuildingImageActivity extends BaseActivity {
         tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-//                vp.setCurrentItem(tab.getPosition());
-                tv_title.setText(tab.getPosition() + 1 + "/" + urlList.size());
+                if (!TextUtils.isEmpty(building_id)) {
+                    for (int i = 0; i < urlList.size(); i++) {
+                        if (tab.getText().equals(urlList.get(i).getTitle())) {
+                            vp.setCurrentItem(i);
+                            break;
+                        }
+                    }
+                }
             }
 
             @Override
@@ -196,6 +232,20 @@ public class BuildingImageActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void setTabLayout(List<String> titleList) {
+        //初始化Tablayout
+        for (int i = 0; i < titleList.size(); i++) {
+            tab_layout.addTab(tab_layout.newTab().setText(titleList.get(i)).setTag(titleList.get(i)));
+        }
+        //设置tablayout起始点
+        for (int i = 0; i < titleList.size(); i++) {
+            if (urlList.get(index).getTitle().equals(titleList.get(i))) {
+                tab_layout.setScrollPosition(i, 0, true);
+                break;
+            }
+        }
     }
 
     @OnClick({R.id.iv_close, R.id.iv_down})
@@ -214,10 +264,12 @@ public class BuildingImageActivity extends BaseActivity {
         finish();
     }
 
-    public static void invoke(Context context, String building_id, int index) {
+    public static void invoke(Context context, String building_id, int index, String house_type_id, String type) {
         Intent intent = new Intent(context, BuildingImageActivity.class);
         intent.putExtra("building_id", building_id);
         intent.putExtra("index", index);
+        intent.putExtra("house_type_id", house_type_id);
+        intent.putExtra("type", type);
         context.startActivity(intent);
     }
 
@@ -267,7 +319,7 @@ public class BuildingImageActivity extends BaseActivity {
                 fout.close();
             } catch (Exception e) {
                 e.printStackTrace();
-                ToastUtils.toast(mContext,"目录不兼容").show();
+                ToastUtils.toast(mContext, "目录不兼容").show();
             }
             // 通知图库更新
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -280,7 +332,7 @@ public class BuildingImageActivity extends BaseActivity {
             } else {
                 String relationDir = imageFile.getParent();
                 File file1 = new File(relationDir);
-                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,Uri.fromFile(file1.getAbsoluteFile())));
+                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.fromFile(file1.getAbsoluteFile())));
             }
             ToastUtils.toast(context, "保存成功,保存路径为：" + imageFile.getAbsolutePath()).show();
         } else {

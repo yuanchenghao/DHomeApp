@@ -328,9 +328,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         type5View.rv.setAdapter(homeFollowItem5Adapter);
         homeFollowItem5Adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                if(!TextUtils.isEmpty(mDatas.get(position).getNo_follow_creator_article_list().getList().get(position).getUrl())){
-                    WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getNo_follow_creator_article_list().getList().get(position).getUrl(),null);
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int i) {
+                if(!TextUtils.isEmpty(mDatas.get(position).getNo_follow_creator_article_list().getList().get(i).getUrl())){
+                    WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getNo_follow_creator_article_list().getList().get(i).getUrl(),null);
                 }
             }
         });

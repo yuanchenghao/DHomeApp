@@ -130,11 +130,19 @@ public class WebUrlJumpManager {
                                 String building_id = map.get("building_id") + "";
                                 int index = (int) map.get("index");
                                 if (!TextUtils.isEmpty(building_id)) {
-                                    BuildingImageActivity.invoke(mContext, building_id, index);
+                                    BuildingImageActivity.invoke(mContext, building_id, index, "","1");
                                 }
                             }
+                            break;
                         case "houseTypeImageBrowser":
-
+                            if (!TextUtils.isEmpty(webViewData.getRequest_param())) {
+                                Map<String, Object> map = JSONUtil.getMapForJson(webViewData.getRequest_param());
+                                String house_type_id = map.get("house_type_id") + "";
+                                int index = (int) map.get("index");
+                                if (!TextUtils.isEmpty(house_type_id)) {
+                                    BuildingImageActivity.invoke(mContext, "", index, house_type_id,"0");
+                                }
+                            }
                             break;
                     }
                 }
@@ -149,9 +157,9 @@ public class WebUrlJumpManager {
                                 String name = map.get("name") + "";
                                 String lon = map.get("lon") + "";
                                 String lat = map.get("lat") + "";
-                                if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(lon) && !TextUtils.isEmpty(lat)){
+                                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(lon) && !TextUtils.isEmpty(lat)) {
                                     MapButtomDialogView mapButtomDialogView = new MapButtomDialogView(mContext);
-                                    mapButtomDialogView.showView(name,lon,lat);
+                                    mapButtomDialogView.showView(name, lon, lat);
                                 }
                             }
                             break;
