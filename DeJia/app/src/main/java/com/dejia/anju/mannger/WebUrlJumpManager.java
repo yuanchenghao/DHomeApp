@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.dejia.anju.activity.BuildingImageActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.PersonActivity;
+import com.dejia.anju.activity.SearchActivity;
 import com.dejia.anju.activity.WebViewActivity;
 import com.dejia.anju.base.Constants;
 import com.dejia.anju.event.Event;
@@ -143,6 +144,9 @@ public class WebUrlJumpManager {
                                     BuildingImageActivity.invoke(mContext, "", index, house_type_id,"0");
                                 }
                             }
+                            break;
+                        case "searchIndex":
+                            SearchActivity.invoke(mContext);
                             break;
                     }
                 }

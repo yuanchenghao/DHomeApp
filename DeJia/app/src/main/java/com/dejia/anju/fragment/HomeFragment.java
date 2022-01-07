@@ -190,7 +190,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_search:
-                mContext.startActivity(new Intent(mContext, SearchActivity.class));
+                SearchActivity.invoke(mContext);
                 break;
         }
     }

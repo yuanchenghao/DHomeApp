@@ -37,7 +37,7 @@ public abstract class BaseWebViewFragment extends BaseFragment {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void initWebView() {
+    public void initWebView() {
         mWebView = new WebView(mContext);
         // android 5.0以上默认不支持Mixed Content
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

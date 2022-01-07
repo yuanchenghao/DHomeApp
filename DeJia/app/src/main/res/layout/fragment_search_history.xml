@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/search_init_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="最近搜索"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:textColor="#1C2125"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/search_init_record_remove"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dp_15"
+                android:layout_marginRight="@dimen/dp_5"
+                android:src="@mipmap/search_init_clean" />
+        </RelativeLayout>
+
+        <!--历史搜索记录-->
+        <com.dejia.anju.view.FlowLayout
+            android:id="@+id/search_init_record_recycler"
+            app:horizontalSpacing="@dimen/dp_8"
+            app:verticalSpacing="@dimen/dp_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20" />
+
+    </LinearLayout>
+
+</LinearLayout>

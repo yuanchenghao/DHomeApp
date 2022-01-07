@@ -1,5 +1,7 @@
 package com.dejia.anju.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -12,22 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dejia.anju.R;
-import com.dejia.anju.adapter.SearchInitFlowLayout;
 import com.dejia.anju.base.BaseActivity;
-import com.dejia.anju.mannger.WebUrlJumpManager;
+import com.dejia.anju.fragment.SearchHistoryFragment;
+import com.dejia.anju.fragment.SearchResultFragment;
 import com.dejia.anju.model.HistorySearchWords;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
-import com.dejia.anju.net.SignUtils;
-import com.dejia.anju.net.WebSignData;
-import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
-import com.dejia.anju.view.FlowLayout;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.kymjs.aframe.database.KJDB;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,13 +39,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     ImageView iv_close_et;
     @BindView(R.id.tv_quit)
     TextView tv_quit;
-    @BindView(R.id.search_init_record)
-    LinearLayout search_init_record;
-    @BindView(R.id.search_init_record_remove)
-    ImageView search_init_record_remove;
-    @BindView(R.id.search_init_record_recycler)
-    FlowLayout search_init_record_recycler;
     private KJDB mKjdb;
+    private SearchHistoryFragment searchHistoryFragment;
+    private SearchResultFragment searchResultFragment;
+    private boolean isResultVisable;
 
     @Xml(layouts = "activity_search")
     @Override
@@ -61,9 +55,33 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_top.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
         setMultiOnClickListener(iv_close_et, tv_quit);
-        Util.showSoftInputFromWindow(mContext, ed);
+        //设置历史搜索数据
         mKjdb = KJDB.create(mContext, FinalConstant1.SEARCH_HISTORY);
-        setHistoryData(mKjdb.findAll(HistorySearchWords.class));
+        Util.showSoftInputFromWindow(mContext, ed);
+        setHistoryFragment();
+    }
+
+    //设置历史记录fragment
+    private void setHistoryFragment() {
+        searchHistoryFragment = SearchHistoryFragment.newInstance();
+        setActivityFragment(R.id.search_result_fragment, searchHistoryFragment);
+        searchHistoryFragment.setOnEventClickListener(new SearchHistoryFragment.OnEventClickListener() {
+            @Override
+            public void onHistoryClick(View v, String key) {
+                Util.hideSoftKeyboard(mContext);
+                ed.setText(key);
+//                ed.setSelection(key.length());
+                ed.clearFocus();
+                setResultFragment();
+            }
+        });
+    }
+
+    //设置结果页
+    private void setResultFragment() {
+        isResultVisable = true;
+        saveRecord(ed.getText().toString().trim());
+        invokeWebSearchActivity(ed.getText().toString().trim());
     }
 
     @Override
@@ -93,19 +111,27 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (!TextUtils.isEmpty(ed.getText().toString().trim())) {
-                        saveRecord(ed.getText().toString().trim());
-                        invokeWebSearchActivity(ed.getText().toString().trim());
+                        setResultFragment();
                     }
                     return true;
                 }
                 return false;
             }
         });
+        ed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus && isResultVisable) {
+                    isResultVisable = false;
+                    setHistoryFragment();
+                }
+            }
+        });
     }
 
     private void invokeWebSearchActivity(String key) {
-        HashMap<String,String> map = new HashMap<>();
-        map.put("key",key);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("key", key);
         WebViewData webViewData = new WebViewData.WebDataBuilder()
                 .setWebviewType("webview")
                 .setLinkisJoint("1")
@@ -122,7 +148,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 .setLink("/vue/searchIndex/")
                 .setRequest_param(map.toString())
                 .build();
-        WebUrlJumpManager.getInstance().invoke(mContext,"",webViewData);
+        searchResultFragment = SearchResultFragment.newInstance(webViewData);
+        setActivityFragment(R.id.search_result_fragment, searchResultFragment);
     }
 
     @Override
@@ -139,45 +166,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    /**
-     * 设置历史记录
-     * @param hsdatas
-     */
-    private void setHistoryData(List<HistorySearchWords> hsdatas) {
-        ArrayList<String> hsdatas1 = new ArrayList<>();
-        if (hsdatas.size() > 0) {
-            search_init_record.setVisibility(View.VISIBLE);
-            for (int i = 0; i < (hsdatas.size() > 16 ? 16 : hsdatas.size()); i++) {
-                hsdatas1.add(hsdatas.get((hsdatas.size() - 1) - i).getHwords());
-            }
-            search_init_record_recycler.setMaxLine(2);
-            SearchInitFlowLayout mSearchInitFlowLayout = new SearchInitFlowLayout(mContext, search_init_record_recycler, hsdatas1);
-            //历史记录点击事件
-            mSearchInitFlowLayout.setClickCallBack(new SearchInitFlowLayout.ClickCallBack() {
-                @Override
-                public void onClick(View v, int pos, String key) {
-                    // 先隐藏键盘
-                    Util.hideSoftKeyboard(mContext);
-                    ed.setText(key);
-                    ed.setSelection(key.length());
-                    invokeWebSearchActivity(key);
-                }
-            });
-            //清除历史记录
-            search_init_record_remove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    List<HistorySearchWords> hsdatas = mKjdb.findAll(HistorySearchWords.class);
-                    for (int i = 0; i < hsdatas.size(); i++) {
-                        mKjdb.delete(hsdatas.get(i));
-                    }
-                    search_init_record.setVisibility(View.GONE);
-                }
-            });
-        } else {
-            search_init_record.setVisibility(View.GONE);
-        }
-    }
 
     /**
      * 保存搜索记录
@@ -195,4 +183,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             mKjdb.save(hs);
         }
     }
+
+    public static void invoke(Context context) {
+        Intent intent = new Intent(context, SearchActivity.class);
+        context.startActivity(intent);
+    }
+
 }
