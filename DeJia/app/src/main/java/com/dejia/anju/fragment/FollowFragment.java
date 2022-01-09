@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -92,12 +91,7 @@ public class FollowFragment extends BaseFragment {
 
     private void onVisible() {
         if (!mHasLoadedOnce) {
-            smartRefreshLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    smartRefreshLayout.autoRefresh();
-                }
-            }, 500);
+            smartRefreshLayout.postDelayed(() -> smartRefreshLayout.autoRefresh(), 500);
         }
     }
 
@@ -117,15 +111,6 @@ public class FollowFragment extends BaseFragment {
         if (smartRefreshLayout != null) {
             smartRefreshLayout.autoRefresh();
         }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        Bundle args = getArguments();
-//        if (args != null) {
-//
-//        }
     }
 
     @Xml(layouts = "fragment_follow")
@@ -164,84 +149,81 @@ public class FollowFragment extends BaseFragment {
         homeFollowApi = new HomeFollowApi();
         Map<String, Object> maps = new HashMap<String, Object>();
         maps.put("page", page);
-        homeFollowApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if(smartRefreshLayout != null){
-                    smartRefreshLayout.finishRefresh();
-                }
-                if ("1".equals(serverData.code)) {
-                    mHasLoadedOnce = true;
-                    homeFollowBean = JSONUtil.TransformSingleBean(serverData.data, HomeFollowBean.class);
-                    if (homeFollowBean != null) {
-                        mDatas = new ArrayList<>();
-                        if (page == 1) {
-                            if (homeFollowBean.getNo_follow_creator_list() != null
-                                    && homeFollowBean.getNo_follow_creator_list().size() > 0) {
-                                HomeFollowListBean h = new HomeFollowListBean();
-                                h.setNo_follow_creator_list(homeFollowBean.getNo_follow_creator_list());
-                                mDatas.add(h);
-                            }
-                            if (homeFollowBean.getFollow_creator_list() != null
-                                    && homeFollowBean.getFollow_creator_list().size() > 0) {
-                                HomeFollowListBean h = new HomeFollowListBean();
-                                h.setFollow_creator_list(homeFollowBean.getFollow_creator_list());
-                                mDatas.add(h);
-                            }
-                            if (homeFollowBean.getBuilds() != null
-                                    && homeFollowBean.getBuilds().size() > 0) {
-                                HomeFollowListBean h = new HomeFollowListBean();
-                                h.setBuilds(homeFollowBean.getBuilds());
-                                mDatas.add(h);
-                            }
-                            if (homeFollowBean.getNo_follow_creator_article_list() != null
-                                    && homeFollowBean.getNo_follow_creator_article_list().size() > 0) {
-                                for (int i = 0; i < homeFollowBean.getNo_follow_creator_article_list().size(); i++) {
-                                    HomeFollowBean.NoFollowCreatorArticleList noFollowCreatorArticleList = new HomeFollowBean.NoFollowCreatorArticleList();
-                                    noFollowCreatorArticleList.setList(homeFollowBean.getNo_follow_creator_article_list().get(i).getList());
-                                    noFollowCreatorArticleList.setUser_data(homeFollowBean.getNo_follow_creator_article_list().get(i).getUser_data());
-                                    HomeFollowListBean h = new HomeFollowListBean();
-                                    h.setNo_follow_creator_article_list(noFollowCreatorArticleList);
-                                    mDatas.add(h);
-                                }
-                            }
+        homeFollowApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if (smartRefreshLayout != null) {
+                smartRefreshLayout.finishRefresh();
+            }
+            if ("1".equals(serverData.code)) {
+                mHasLoadedOnce = true;
+                homeFollowBean = JSONUtil.TransformSingleBean(serverData.data, HomeFollowBean.class);
+                if (homeFollowBean != null) {
+                    mDatas = new ArrayList<>();
+                    if (page == 1) {
+                        if (homeFollowBean.getNo_follow_creator_list() != null
+                                && homeFollowBean.getNo_follow_creator_list().size() > 0) {
+                            HomeFollowListBean h = new HomeFollowListBean();
+                            h.setNo_follow_creator_list(homeFollowBean.getNo_follow_creator_list());
+                            mDatas.add(h);
                         }
-                        if (homeFollowBean.getFollow_creator_article_list() != null
-                                && homeFollowBean.getFollow_creator_article_list().size() > 0) {
-                            for (int i = 0; i < homeFollowBean.getFollow_creator_article_list().size(); i++) {
-                                HomeFollowBean.FollowCreatorArticleList followCreatorArticleList = new HomeFollowBean.FollowCreatorArticleList();
-                                followCreatorArticleList.setUser_data(homeFollowBean.getFollow_creator_article_list().get(i).getUser_data());
-                                followCreatorArticleList.setTitle(homeFollowBean.getFollow_creator_article_list().get(i).getTitle());
-                                followCreatorArticleList.setArticle_type(homeFollowBean.getFollow_creator_article_list().get(i).getArticle_type());
-                                followCreatorArticleList.setImg(homeFollowBean.getFollow_creator_article_list().get(i).getImg());
-                                followCreatorArticleList.setBuilding(homeFollowBean.getFollow_creator_article_list().get(i).getBuilding());
-                                followCreatorArticleList.setTime_set(homeFollowBean.getFollow_creator_article_list().get(i).getTime_set());
-                                followCreatorArticleList.setReply_num(homeFollowBean.getFollow_creator_article_list().get(i).getReply_num());
-                                followCreatorArticleList.setAgree_num(homeFollowBean.getFollow_creator_article_list().get(i).getAgree_num());
-                                followCreatorArticleList.setUrl(homeFollowBean.getFollow_creator_article_list().get(i).getUrl());
+                        if (homeFollowBean.getFollow_creator_list() != null
+                                && homeFollowBean.getFollow_creator_list().size() > 0) {
+                            HomeFollowListBean h = new HomeFollowListBean();
+                            h.setFollow_creator_list(homeFollowBean.getFollow_creator_list());
+                            mDatas.add(h);
+                        }
+                        if (homeFollowBean.getBuilds() != null
+                                && homeFollowBean.getBuilds().size() > 0) {
+                            HomeFollowListBean h = new HomeFollowListBean();
+                            h.setBuilds(homeFollowBean.getBuilds());
+                            mDatas.add(h);
+                        }
+                        if (homeFollowBean.getNo_follow_creator_article_list() != null
+                                && homeFollowBean.getNo_follow_creator_article_list().size() > 0) {
+                            for (int i = 0; i < homeFollowBean.getNo_follow_creator_article_list().size(); i++) {
+                                HomeFollowBean.NoFollowCreatorArticleList noFollowCreatorArticleList = new HomeFollowBean.NoFollowCreatorArticleList();
+                                noFollowCreatorArticleList.setList(homeFollowBean.getNo_follow_creator_article_list().get(i).getList());
+                                noFollowCreatorArticleList.setUser_data(homeFollowBean.getNo_follow_creator_article_list().get(i).getUser_data());
                                 HomeFollowListBean h = new HomeFollowListBean();
-                                h.setFollow_creator_article_list(followCreatorArticleList);
+                                h.setNo_follow_creator_article_list(noFollowCreatorArticleList);
                                 mDatas.add(h);
                             }
                         }
-                        if (mDatas != null && mDatas.size() == 0) {
-                            if (smartRefreshLayout == null) {
-                                return;
-                            }
-                            smartRefreshLayout.finishLoadMoreWithNoMoreData();
-                        } else {
-                            if (smartRefreshLayout == null) {
-                                return;
-                            }
-                            smartRefreshLayout.finishLoadMore();
-                        }
-                        setHomeListAdapter();
-                    } else {
-                        smartRefreshLayout.finishLoadMoreWithNoMoreData();
                     }
+                    if (homeFollowBean.getFollow_creator_article_list() != null
+                            && homeFollowBean.getFollow_creator_article_list().size() > 0) {
+                        for (int i = 0; i < homeFollowBean.getFollow_creator_article_list().size(); i++) {
+                            HomeFollowBean.FollowCreatorArticleList followCreatorArticleList = new HomeFollowBean.FollowCreatorArticleList();
+                            followCreatorArticleList.setUser_data(homeFollowBean.getFollow_creator_article_list().get(i).getUser_data());
+                            followCreatorArticleList.setTitle(homeFollowBean.getFollow_creator_article_list().get(i).getTitle());
+                            followCreatorArticleList.setArticle_type(homeFollowBean.getFollow_creator_article_list().get(i).getArticle_type());
+                            followCreatorArticleList.setImg(homeFollowBean.getFollow_creator_article_list().get(i).getImg());
+                            followCreatorArticleList.setBuilding(homeFollowBean.getFollow_creator_article_list().get(i).getBuilding());
+                            followCreatorArticleList.setTime_set(homeFollowBean.getFollow_creator_article_list().get(i).getTime_set());
+                            followCreatorArticleList.setReply_num(homeFollowBean.getFollow_creator_article_list().get(i).getReply_num());
+                            followCreatorArticleList.setAgree_num(homeFollowBean.getFollow_creator_article_list().get(i).getAgree_num());
+                            followCreatorArticleList.setUrl(homeFollowBean.getFollow_creator_article_list().get(i).getUrl());
+                            HomeFollowListBean h = new HomeFollowListBean();
+                            h.setFollow_creator_article_list(followCreatorArticleList);
+                            mDatas.add(h);
+                        }
+                    }
+                    if (mDatas != null && mDatas.size() == 0) {
+                        if (smartRefreshLayout == null) {
+                            return;
+                        }
+                        smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                    } else {
+                        if (smartRefreshLayout == null) {
+                            return;
+                        }
+                        smartRefreshLayout.finishLoadMore();
+                    }
+                    setHomeListAdapter();
                 } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
+                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
                 }
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -258,6 +240,7 @@ public class FollowFragment extends BaseFragment {
             rv.setLayoutManager(ymLinearLayoutManager);
             rv.setItemViewCacheSize(20);
             homeFollowAdapter = new HomeFollowAdapter(mContext, mDatas);
+            homeFollowAdapter.setRecycleviewPool(rv.getRecycledViewPool());
             rv.setAdapter(homeFollowAdapter);
         } else {
             //添加

@@ -2,19 +2,19 @@ package com.dejia.anju.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.dejia.anju.R;
-import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.HomeFollowBean;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+
 import androidx.annotation.Nullable;
 
 public class HomeFollowItem2Adapter extends BaseQuickAdapter<HomeFollowBean.FollowCreatorList, BaseViewHolder> {
@@ -36,12 +36,9 @@ public class HomeFollowItem2Adapter extends BaseQuickAdapter<HomeFollowBean.Foll
         } else {
             baseViewHolder.setText(R.id.tv_name, "");
         }
-        baseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!TextUtils.isEmpty(followCreatorList.getUrl())){
-                    WebUrlJumpManager.getInstance().invoke(mContext,followCreatorList.getUrl(),null);
-                }
+        baseViewHolder.itemView.setOnClickListener(v -> {
+            if(!TextUtils.isEmpty(followCreatorList.getUrl())){
+                WebUrlJumpManager.getInstance().invoke(mContext,followCreatorList.getUrl(),null);
             }
         });
     }

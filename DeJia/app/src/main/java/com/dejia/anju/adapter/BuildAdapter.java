@@ -13,6 +13,7 @@ import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.HomeFollowBean;
 
 import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,12 +70,9 @@ public class BuildAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             iv_build = itemView.findViewById(R.id.iv_build);
             tv_build = itemView.findViewById(R.id.tv_build);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getUrl())){
-                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getUrl(),null);
-                    }
+            itemView.setOnClickListener(v -> {
+                if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getUrl())){
+                    WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getUrl(),null);
                 }
             });
         }

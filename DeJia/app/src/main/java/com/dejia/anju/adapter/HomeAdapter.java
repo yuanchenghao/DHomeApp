@@ -1,7 +1,6 @@
 package com.dejia.anju.adapter;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.api.FollowAndCancelApi;
@@ -21,9 +18,7 @@ import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.HomeIndexBean;
-import com.dejia.anju.model.ImgInfo;
 import com.dejia.anju.net.ServerData;
-import com.dejia.anju.utils.GlideEngine;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
@@ -31,9 +26,7 @@ import com.dejia.anju.view.YMGridLayoutManager;
 import com.dejia.anju.view.YMLinearLayoutManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.luck.picture.lib.PictureSelector;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,6 +42,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private LayoutInflater mInflater;
     private Activity mContext;
     private List<HomeIndexBean.HomeList> mDatas;
+    //缓存池
+    private RecyclerView.RecycledViewPool mRecycleViewPool;
 
     public HomeAdapter(Activity context, List<HomeIndexBean.HomeList> datas) {
         this.mContext = context;
@@ -225,7 +220,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type1View.rv_build.setLayoutManager(layoutManager);
-            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+            if (mRecycleViewPool != null) {
+                type1View.rv_build.setRecycledViewPool(mRecycleViewPool);
+            }
             type1View.rv_build.setAdapter(buildAdapter);
             type1View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -240,28 +238,22 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type1View.tv_user_type_flag.setVisibility(View.GONE);
             type1View.user_type.setVisibility(View.GONE);
         }
-        type1View.tv_follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
-                hashMap.put("obj_type", "1");
-                new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
-                    @Override
-                    public void onSuccess(ServerData serverData) {
-                        if ("1".equals(serverData.code)) {
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
-                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
-                                mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
-                                notifyItemChanged(position, "follow");
-                            }
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        } else {
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        }
+        type1View.tv_follow.setOnClickListener(v -> {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
+            hashMap.put("obj_type", "1");
+            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+                if ("1".equals(serverData.code)) {
+                    FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                    if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
+                        mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                        notifyItemChanged(position, "follow");
                     }
-                });
-            }
+                    ToastUtils.toast(mContext, serverData.message).show();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            });
         });
     }
 
@@ -300,7 +292,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type2View.rv_build.setLayoutManager(layoutManager);
-            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+            if (mRecycleViewPool != null) {
+                type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+            }
             type2View.rv_build.setAdapter(buildAdapter);
             type2View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -318,28 +313,22 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type2View.tv_user_type_flag.setVisibility(View.GONE);
             type2View.user_type.setVisibility(View.GONE);
         }
-        type2View.tv_follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
-                hashMap.put("obj_type", "1");
-                new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
-                    @Override
-                    public void onSuccess(ServerData serverData) {
-                        if ("1".equals(serverData.code)) {
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
-                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
-                                mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
-                                notifyItemChanged(position, "follow");
-                            }
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        } else {
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        }
+        type2View.tv_follow.setOnClickListener(v -> {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
+            hashMap.put("obj_type", "1");
+            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+                if ("1".equals(serverData.code)) {
+                    FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                    if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
+                        mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                        notifyItemChanged(position, "follow");
                     }
-                });
-            }
+                    ToastUtils.toast(mContext, serverData.message).show();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            });
         });
     }
 
@@ -379,7 +368,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type3View.rv_build.setLayoutManager(layoutManager);
-            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+            if (mRecycleViewPool != null) {
+                type3View.rv_build.setRecycledViewPool(mRecycleViewPool);
+            }
             type3View.rv_build.setAdapter(buildAdapter);
             type3View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -399,40 +391,34 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.HORIZONTAL, false);
             HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "3");
             type3View.rv_img.setLayoutManager(gridLayoutManager);
+            if (mRecycleViewPool != null) {
+                type3View.rv_img.setRecycledViewPool(mRecycleViewPool);
+            }
             type3View.rv_img.setAdapter(homeItemImgAdapter);
-            homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
-                @Override
-                public void item(List<ImgInfo> mList) {
-                    if(!TextUtils.isEmpty(mDatas.get(position).getUrl())){
-                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getUrl(),null);
-                    }
+            homeItemImgAdapter.setListener(mList -> {
+                if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                    WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
                 }
             });
         } else {
             type3View.rv_img.setVisibility(View.GONE);
         }
-        type3View.tv_follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
-                hashMap.put("obj_type", "1");
-                new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
-                    @Override
-                    public void onSuccess(ServerData serverData) {
-                        if ("1".equals(serverData.code)) {
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
-                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
-                                mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
-                                notifyItemChanged(position, "follow");
-                            }
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        } else {
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        }
+        type3View.tv_follow.setOnClickListener(v -> {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
+            hashMap.put("obj_type", "1");
+            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+                if ("1".equals(serverData.code)) {
+                    FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                    if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
+                        mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                        notifyItemChanged(position, "follow");
                     }
-                });
-            }
+                    ToastUtils.toast(mContext, serverData.message).show();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            });
         });
     }
 
@@ -475,7 +461,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type4View.rv_build.setLayoutManager(layoutManager);
-            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getBuilding());
+            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+            if (mRecycleViewPool != null) {
+                type4View.rv_build.setRecycledViewPool(mRecycleViewPool);
+            }
             type4View.rv_build.setAdapter(buildAdapter);
             type4View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -495,26 +484,26 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
                 HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "4");
                 type4View.rv_img.setLayoutManager(ymLinearLayoutManager);
+                if (mRecycleViewPool != null) {
+                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
+                }
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
-                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
-                    @Override
-                    public void item(List<ImgInfo> mList) {
-                        if(!TextUtils.isEmpty(mDatas.get(position).getUrl())){
-                            WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getUrl(),null);
-                        }
+                homeItemImgAdapter.setListener(mList -> {
+                    if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                        WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
                     }
                 });
             } else {
                 YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
                 HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "4");
                 type4View.rv_img.setLayoutManager(gridLayoutManager);
+                if (mRecycleViewPool != null) {
+                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
+                }
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
-                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
-                    @Override
-                    public void item(List<ImgInfo> mList) {
-                        if(!TextUtils.isEmpty(mDatas.get(position).getUrl())){
-                            WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getUrl(),null);
-                        }
+                homeItemImgAdapter.setListener(mList -> {
+                    if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                        WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
                     }
                 });
             }
@@ -522,29 +511,27 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type4View.rv_img.setVisibility(View.GONE);
         }
-        type4View.tv_follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
-                hashMap.put("obj_type", "1");
-                new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
-                    @Override
-                    public void onSuccess(ServerData serverData) {
-                        if ("1".equals(serverData.code)) {
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
-                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
-                                mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
-                                notifyItemChanged(position, "follow");
-                            }
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        } else {
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        }
+        type4View.tv_follow.setOnClickListener(v -> {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
+            hashMap.put("obj_type", "1");
+            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+                if ("1".equals(serverData.code)) {
+                    FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                    if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
+                        mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                        notifyItemChanged(position, "follow");
                     }
-                });
-            }
+                    ToastUtils.toast(mContext, serverData.message).show();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            });
         });
+    }
+
+    public void setRecycleviewPool(RecyclerView.RecycledViewPool pool) {
+        this.mRecycleViewPool = pool;
     }
 
     class Type1ViewHolder extends RecyclerView.ViewHolder {
@@ -569,24 +556,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_context = itemView.findViewById(R.id.tv_context);
             ll_location = itemView.findViewById(R.id.ll_location);
             rv_build = itemView.findViewById(R.id.rv_build);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
-                }
-            });
-            iv_person.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
-                }
-            });
-            tv_name.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
-                }
-            });
+            itemView.setOnClickListener(v -> mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition()));
+            iv_person.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
+            tv_name.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
         }
     }
 
@@ -616,24 +588,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_des = itemView.findViewById(R.id.tv_des);
             ll_location = itemView.findViewById(R.id.ll_location);
             rv_build = itemView.findViewById(R.id.rv_build);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
-                }
-            });
-            iv_person.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
-                }
-            });
-            tv_name.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
-                }
-            });
+            itemView.setOnClickListener(v -> mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition()));
+            iv_person.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
+            tv_name.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
         }
     }
 
@@ -663,24 +620,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             rv_build = itemView.findViewById(R.id.rv_build);
             rv_img = itemView.findViewById(R.id.rv_img);
             ll_comment_zan = itemView.findViewById(R.id.ll_comment_zan);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
-                }
-            });
-            iv_person.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
-                }
-            });
-            tv_name.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
-                }
-            });
+            itemView.setOnClickListener(v -> mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition()));
+            iv_person.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
+            tv_name.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
         }
     }
 
@@ -718,98 +660,65 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             iv_zan_num = itemView.findViewById(R.id.iv_zan_num);
             tv_zan_num = itemView.findViewById(R.id.tv_zan_num);
             ll_comment_zan = itemView.findViewById(R.id.ll_comment_zan);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition());
+            itemView.setOnClickListener(v -> mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition()));
+            iv_person.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
+            tv_name.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
+            tv_zan_num.setOnClickListener(v -> {
+                HashMap<String, Object> maps = new HashMap<>();
+                //点赞类型（1文章点赞 ，2评论点赞）
+                maps.put("agree_type", "1");
+                //文章id 或者 评论id
+                maps.put("ugc_or_reply_id", mDatas.get(getLayoutPosition()).getId());
+                if ("0".equals(mDatas.get(getLayoutPosition()).getIs_agree())) {
+                    //没点过赞
+                    new ZanApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                        if ("1".equals(serverData.code)) {
+                            ToastUtils.toast(mContext, "点赞成功").show();
+                            mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() + 1);
+                            mDatas.get(getLayoutPosition()).setIs_agree("1");
+                            notifyItemChanged(getLayoutPosition());
+                        }
+                    });
+                } else {
+                    new ZanApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                        if ("1".equals(serverData.code)) {
+                            ToastUtils.toast(mContext, "取消赞成功").show();
+                            mDatas.get(getLayoutPosition()).setIs_agree("0");
+                            if (mDatas.get(getLayoutPosition()).getAgree_num() > 0) {
+                                mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() - 1);
+                            }
+                            notifyItemChanged(getLayoutPosition());
+                        }
+                    });
                 }
             });
-            iv_person.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
-                }
-            });
-            tv_name.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + "");
-                }
-            });
-            tv_zan_num.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    HashMap<String, Object> maps = new HashMap<>();
-                    //点赞类型（1文章点赞 ，2评论点赞）
-                    maps.put("agree_type", "1");
-                    //文章id 或者 评论id
-                    maps.put("ugc_or_reply_id", mDatas.get(getLayoutPosition()).getId());
-                    if ("0".equals(mDatas.get(getLayoutPosition()).getIs_agree())) {
-                        //没点过赞
-                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                            @Override
-                            public void onSuccess(ServerData serverData) {
-                                if ("1".equals(serverData.code)) {
-                                    ToastUtils.toast(mContext, "点赞成功").show();
-                                    mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() + 1);
-                                    mDatas.get(getLayoutPosition()).setIs_agree("1");
-                                    notifyItemChanged(getLayoutPosition());
-                                }
+            iv_zan_num.setOnClickListener(v -> {
+                HashMap<String, Object> maps = new HashMap<>();
+                //点赞类型（1文章点赞 ，2评论点赞）
+                maps.put("agree_type", "1");
+                //文章id 或者 评论id
+                maps.put("ugc_or_reply_id", mDatas.get(getLayoutPosition()).getId());
+                if ("0".equals(mDatas.get(getLayoutPosition()).getIs_agree())) {
+                    //没点过赞
+                    new ZanApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                        if ("1".equals(serverData.code)) {
+                            ToastUtils.toast(mContext, "点赞成功").show();
+                            mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() + 1);
+                            mDatas.get(getLayoutPosition()).setIs_agree("1");
+                            notifyItemChanged(getLayoutPosition());
+                        }
+                    });
+                } else {
+                    new ZanApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                        if ("1".equals(serverData.code)) {
+                            ToastUtils.toast(mContext, "取消赞成功").show();
+                            mDatas.get(getLayoutPosition()).setIs_agree("0");
+                            if (mDatas.get(getLayoutPosition()).getAgree_num() > 0) {
+                                mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() - 1);
                             }
-                        });
-                    } else {
-                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                            @Override
-                            public void onSuccess(ServerData serverData) {
-                                if ("1".equals(serverData.code)) {
-                                    ToastUtils.toast(mContext, "取消赞成功").show();
-                                    mDatas.get(getLayoutPosition()).setIs_agree("0");
-                                    if (mDatas.get(getLayoutPosition()).getAgree_num() > 0) {
-                                        mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() - 1);
-                                    }
-                                    notifyItemChanged(getLayoutPosition());
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-            iv_zan_num.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    HashMap<String, Object> maps = new HashMap<>();
-                    //点赞类型（1文章点赞 ，2评论点赞）
-                    maps.put("agree_type", "1");
-                    //文章id 或者 评论id
-                    maps.put("ugc_or_reply_id", mDatas.get(getLayoutPosition()).getId());
-                    if ("0".equals(mDatas.get(getLayoutPosition()).getIs_agree())) {
-                        //没点过赞
-                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                            @Override
-                            public void onSuccess(ServerData serverData) {
-                                if ("1".equals(serverData.code)) {
-                                    ToastUtils.toast(mContext, "点赞成功").show();
-                                    mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() + 1);
-                                    mDatas.get(getLayoutPosition()).setIs_agree("1");
-                                    notifyItemChanged(getLayoutPosition());
-                                }
-                            }
-                        });
-                    } else {
-                        new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                            @Override
-                            public void onSuccess(ServerData serverData) {
-                                if ("1".equals(serverData.code)) {
-                                    ToastUtils.toast(mContext, "取消赞成功").show();
-                                    mDatas.get(getLayoutPosition()).setIs_agree("0");
-                                    if (mDatas.get(getLayoutPosition()).getAgree_num() > 0) {
-                                        mDatas.get(getLayoutPosition()).setAgree_num(mDatas.get(getLayoutPosition()).getAgree_num() - 1);
-                                    }
-                                    notifyItemChanged(getLayoutPosition());
-                                }
-                            }
-                        });
-                    }
+                            notifyItemChanged(getLayoutPosition());
+                        }
+                    });
                 }
             });
         }

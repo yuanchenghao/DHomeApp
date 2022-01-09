@@ -1,6 +1,5 @@
 package com.dejia.anju.fragment;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -165,21 +164,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     } else {
                         cityPopWindow = new BaseCityPopWindow(mContext, ll_root, cityInfo);
                         cityPopWindow.showPop(statusbarHeight);
-                        cityPopWindow.setOnAllClickListener(new BaseCityPopWindow.OnAllClickListener() {
-                            @Override
-                            public void onAllClick(String city) {
-                                if (!TextUtils.isEmpty(city)) {
-                                    cityPopWindow.dismiss();
-                                    tv_city.setText(city);
-                                    Util.setCity(city);
-                                    if (ymTabLayoutAdapter.getItem(mFragmentSelectedPos) instanceof RecommendFragment) {
-                                        if (ymTabLayoutAdapter != null && (RecommendFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos) != null) {
-                                            ((RecommendFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos)).refresh();
-                                        }
-                                    } else {
-                                        if (ymTabLayoutAdapter != null && (FollowFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos) != null) {
-                                            ((FollowFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos)).refresh();
-                                        }
+                        cityPopWindow.setOnAllClickListener((BaseCityPopWindow.OnAllClickListener) city -> {
+                            if (!TextUtils.isEmpty(city)) {
+                                cityPopWindow.dismiss();
+                                tv_city.setText(city);
+                                Util.setCity(city);
+                                if (ymTabLayoutAdapter.getItem(mFragmentSelectedPos) instanceof RecommendFragment) {
+                                    if (ymTabLayoutAdapter != null && (RecommendFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos) != null) {
+                                        ((RecommendFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos)).refresh();
+                                    }
+                                } else {
+                                    if (ymTabLayoutAdapter != null && (FollowFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos) != null) {
+                                        ((FollowFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos)).refresh();
                                     }
                                 }
                             }
@@ -197,12 +193,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private void getCityList() {
         getCityApi = new GetCityApi();
-        getCityApi.getCallBack(mContext, new HashMap<>(), new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    cityInfo = JSONUtil.TransformSingleBean(serverData.data, CityInfo.class);
-                }
+        getCityApi.getCallBack(mContext, new HashMap<>(), (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                cityInfo = JSONUtil.TransformSingleBean(serverData.data, CityInfo.class);
             }
         });
     }

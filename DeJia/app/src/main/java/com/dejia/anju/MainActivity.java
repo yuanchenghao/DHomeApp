@@ -14,11 +14,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.dejia.anju.activity.CancellationActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
-import com.dejia.anju.activity.OneClickLoginActivity;
 import com.dejia.anju.activity.OneClickLoginActivity2;
 import com.dejia.anju.activity.ToolOfProductionActivity;
 import com.dejia.anju.api.GetVersionApi;

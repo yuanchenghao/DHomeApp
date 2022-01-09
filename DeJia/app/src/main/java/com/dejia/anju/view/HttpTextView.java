@@ -8,6 +8,7 @@ import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 import android.util.Patterns;
 import android.view.View;
+
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

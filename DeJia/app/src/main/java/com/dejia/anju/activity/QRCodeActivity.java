@@ -13,15 +13,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
+import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.utils.ToastUtils;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.dejia.anju.AppLog;
-import com.dejia.anju.base.BaseActivity;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.greenrobot.eventbus.EventBus;

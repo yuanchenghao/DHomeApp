@@ -5,17 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+
 import com.dejia.anju.R;
 import com.dejia.anju.base.BaseWebViewFragment;
 import com.dejia.anju.net.FinalConstant1;
-import com.dejia.anju.view.webclient.BaseWebViewClientCallback;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhangyue.we.x2c.ano.Xml;
 
-import androidx.annotation.NonNull;
 import butterknife.BindView;
 
 public class CircleFragment extends BaseWebViewFragment {
@@ -48,21 +45,13 @@ public class CircleFragment extends BaseWebViewFragment {
         mWebView.setWebViewClient(clientManager);
         ll_web.addView(mWebView);
         //下拉刷新
-        mRefreshWebView.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                initWebVeiw();
-            }
-        });
+        mRefreshWebView.setOnRefreshListener(refreshLayout -> initWebVeiw());
 
-        clientManager.setBaseWebViewClientCallback(new BaseWebViewClientCallback() {
-            @Override
-            public void otherJump(String url) {
-                try {
-                    showWebDetail(url);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        clientManager.setBaseWebViewClientCallback(url -> {
+            try {
+                showWebDetail(url);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         initWebVeiw();
@@ -74,7 +63,6 @@ public class CircleFragment extends BaseWebViewFragment {
 
     @Override
     protected boolean ymShouldOverrideUrlLoading(WebView view, String url) {
-
         return true;
     }
 

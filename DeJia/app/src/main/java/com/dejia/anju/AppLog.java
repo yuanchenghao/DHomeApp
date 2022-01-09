@@ -2,8 +2,6 @@ package com.dejia.anju;
 
 import android.util.Log;
 
-import com.dejia.anju.BuildConfig;
-
 public class AppLog {
     static String className;//类名
     static String methodName;//方法名

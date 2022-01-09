@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import com.dejia.anju.R;
 //私信页面复制pop
 public class CopyPopWindow extends PopupWindow {

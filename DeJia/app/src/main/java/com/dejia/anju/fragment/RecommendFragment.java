@@ -7,6 +7,7 @@ import android.view.View;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.BannerAdapter;
 import com.dejia.anju.adapter.HomeAdapter;
+import com.dejia.anju.adapter.HomeFollowAdapter;
 import com.dejia.anju.api.HomeIndexApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
@@ -232,7 +233,9 @@ public class RecommendFragment extends BaseFragment {
                 ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
             }
             rv.setLayoutManager(ymLinearLayoutManager);
+            rv.setItemViewCacheSize(20);
             homeAdapter = new HomeAdapter(mContext, homeIndexBean.getList());
+            homeAdapter.setRecycleviewPool(rv.getRecycledViewPool());
             rv.setAdapter(homeAdapter);
             homeAdapter.setEventListener(new HomeAdapter.EventListener() {
                 @Override

@@ -1,7 +1,6 @@
 package com.dejia.anju.adapter;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.dejia.anju.R;
-import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.HomeFollowListBean;
-import com.dejia.anju.model.ImgInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
@@ -45,6 +40,8 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private LayoutInflater mInflater;
     private Activity mContext;
     private List<HomeFollowListBean> mDatas;
+    //缓存池
+    private RecyclerView.RecycledViewPool mRecycleViewPool;
 
     public HomeFollowAdapter(Activity context, List<HomeFollowListBean> datas) {
         this.mContext = context;
@@ -68,6 +65,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
+    public void setRecycleviewPool(RecyclerView.RecycledViewPool pool) {
+        this.mRecycleViewPool = pool;
+    }
 
     @Override
     public int getItemCount() {
@@ -165,6 +165,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
         type1View.rv.setLayoutManager(layoutManager);
         HomeFollowItem1Adapter homeFollowItem1Adapter = new HomeFollowItem1Adapter(mContext, mDatas.get(position).getNo_follow_creator_list());
+        if (mRecycleViewPool != null) {
+            type1View.rv.setRecycledViewPool(mRecycleViewPool);
+        }
         type1View.rv.setAdapter(homeFollowItem1Adapter);
     }
 
@@ -172,6 +175,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
         type2View.rv.setLayoutManager(layoutManager);
         HomeFollowItem2Adapter homeFollowItem2Adapter = new HomeFollowItem2Adapter(mContext, R.layout.item_follow_person, mDatas.get(position).getFollow_creator_list());
+        if (mRecycleViewPool != null) {
+            type2View.rv.setRecycledViewPool(mRecycleViewPool);
+        }
         type2View.rv.setAdapter(homeFollowItem2Adapter);
     }
 
@@ -179,13 +185,13 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
         type3View.rv.setLayoutManager(layoutManager);
         HomeFollowItem3Adapter homeFollowItem3Adapter = new HomeFollowItem3Adapter(R.layout.item_follow_build, mDatas.get(position).getBuilds());
+        if (mRecycleViewPool != null) {
+            type3View.rv.setRecycledViewPool(mRecycleViewPool);
+        }
         type3View.rv.setAdapter(homeFollowItem3Adapter);
-        homeFollowItem3Adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                if(!TextUtils.isEmpty(mDatas.get(position).getBuilds().get(position).getUrl())){
-                    WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getBuilds().get(position).getUrl(),null);
-                }
+        homeFollowItem3Adapter.setOnItemClickListener((adapter, view, position1) -> {
+            if (!TextUtils.isEmpty(mDatas.get(position1).getBuilds().get(position1).getUrl())) {
+                WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position1).getBuilds().get(position1).getUrl(), null);
             }
         });
     }
@@ -221,7 +227,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (mDatas.get(position).getFollow_creator_article_list().getBuilding() != null && mDatas.get(position).getFollow_creator_article_list().getBuilding().size() > 0) {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type4View.rv_build.setLayoutManager(layoutManager);
-            BuildAdapter buildAdapter = new BuildAdapter(mContext,mDatas.get(position).getFollow_creator_article_list().getBuilding());
+            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getFollow_creator_article_list().getBuilding());
             type4View.rv_build.setAdapter(buildAdapter);
             type4View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -238,59 +244,53 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
         if (mDatas.get(position).getFollow_creator_article_list().getImg() != null
                 && mDatas.get(position).getFollow_creator_article_list().getImg().size() > 0) {
-            if(mDatas.get(position).getFollow_creator_article_list().getImg().size() == 1){
+            if (mDatas.get(position).getFollow_creator_article_list().getImg().size() == 1) {
                 YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getFollow_creator_article_list().getImg(), ScreenUtils.getScreenWidth(),"4");
+                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getFollow_creator_article_list().getImg(), ScreenUtils.getScreenWidth(), "4");
                 type4View.rv_img.setLayoutManager(ymLinearLayoutManager);
+                if (mRecycleViewPool != null) {
+                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
+                }
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
-                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
-                    @Override
-                    public void item(List<ImgInfo> mList) {
-                        if(!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUrl())){
-                            WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getFollow_creator_article_list().getUrl(),null);
-                        }
+                homeItemImgAdapter.setListener(mList -> {
+                    if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUrl())) {
+                        WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getFollow_creator_article_list().getUrl(), null);
                     }
                 });
-            }else{
+            } else {
                 YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
-                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getFollow_creator_article_list().getImg(), ScreenUtils.getScreenWidth(),"4");
+                HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getFollow_creator_article_list().getImg(), ScreenUtils.getScreenWidth(), "4");
                 type4View.rv_img.setLayoutManager(gridLayoutManager);
+                if (mRecycleViewPool != null) {
+                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
+                }
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
-                homeItemImgAdapter.setListener(new HomeItemImgAdapter.CallbackListener() {
-                    @Override
-                    public void item(List<ImgInfo> mList) {
-                        if(!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUrl())){
-                            WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getFollow_creator_article_list().getUrl(),null);
-                        }
+                homeItemImgAdapter.setListener(mList -> {
+                    if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUrl())) {
+                        WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getFollow_creator_article_list().getUrl(), null);
                     }
                 });
             }
             type4View.rv_img.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             type4View.rv_img.setVisibility(View.GONE);
         }
-        type4View.tv_follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("obj_id", mDatas.get(position).getFollow_creator_article_list().getUser_data().getUser_id());
-                hashMap.put("obj_type", "1");
-                new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
-                    @Override
-                    public void onSuccess(ServerData serverData) {
-                        if ("1".equals(serverData.code)) {
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
-                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
-                                mDatas.get(position).getFollow_creator_article_list().getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
-                                notifyItemChanged(position, "follow");
-                            }
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        } else {
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        }
+        type4View.tv_follow.setOnClickListener(v -> {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("obj_id", mDatas.get(position).getFollow_creator_article_list().getUser_data().getUser_id());
+            hashMap.put("obj_type", "1");
+            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+                if ("1".equals(serverData.code)) {
+                    FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                    if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
+                        mDatas.get(position).getFollow_creator_article_list().getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                        notifyItemChanged(position, "follow");
                     }
-                });
-            }
+                    ToastUtils.toast(mContext, serverData.message).show();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            });
         });
     }
 
@@ -325,37 +325,31 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         type5View.rv.setLayoutManager(layoutManager);
         HomeFollowItem5Adapter homeFollowItem5Adapter = new HomeFollowItem5Adapter(R.layout.item_no_follow_text, mDatas.get(position).getNo_follow_creator_article_list().getList());
+        if (mRecycleViewPool != null) {
+            type5View.rv.setRecycledViewPool(mRecycleViewPool);
+        }
         type5View.rv.setAdapter(homeFollowItem5Adapter);
-        homeFollowItem5Adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int i) {
-                if(!TextUtils.isEmpty(mDatas.get(position).getNo_follow_creator_article_list().getList().get(i).getUrl())){
-                    WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(position).getNo_follow_creator_article_list().getList().get(i).getUrl(),null);
-                }
+        homeFollowItem5Adapter.setOnItemClickListener((adapter, view, i) -> {
+            if (!TextUtils.isEmpty(mDatas.get(position).getNo_follow_creator_article_list().getList().get(i).getUrl())) {
+                WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getNo_follow_creator_article_list().getList().get(i).getUrl(), null);
             }
         });
-        type5View.tv_follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("obj_id", mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getUser_id());
-                hashMap.put("obj_type", "1");
-                new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
-                    @Override
-                    public void onSuccess(ServerData serverData) {
-                        if ("1".equals(serverData.code)) {
-                            FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
-                            if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
-                                mDatas.get(position).getNo_follow_creator_article_list().getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
-                                notifyItemChanged(position, "follow");
-                            }
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        } else {
-                            ToastUtils.toast(mContext, serverData.message).show();
-                        }
+        type5View.tv_follow.setOnClickListener(v -> {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("obj_id", mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getUser_id());
+            hashMap.put("obj_type", "1");
+            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+                if ("1".equals(serverData.code)) {
+                    FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                    if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
+                        mDatas.get(position).getNo_follow_creator_article_list().getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                        notifyItemChanged(position, "follow");
                     }
-                });
-            }
+                    ToastUtils.toast(mContext, serverData.message).show();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
+                }
+            });
         });
     }
 
@@ -413,36 +407,24 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             rv_build = itemView.findViewById(R.id.rv_build);
             rv_img = itemView.findViewById(R.id.rv_img);
             ll_comment_zan = itemView.findViewById(R.id.ll_comment_zan);
-            iv_person.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl())){
-                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl(),null);
-                    }
+            iv_person.setOnClickListener(v -> {
+                if (!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl())) {
+                    WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl(), null);
                 }
             });
-            tv_name.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl())){
-                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl(),null);
-                    }
+            tv_name.setOnClickListener(v -> {
+                if (!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl())) {
+                    WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUser_data().getUrl(), null);
                 }
             });
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl())){
-                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl(),null);
-                    }
+            itemView.setOnClickListener(v -> {
+                if (!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl())) {
+                    WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl(), null);
                 }
             });
-            rv_img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl())){
-                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl(),null);
-                    }
+            rv_img.setOnClickListener(v -> {
+                if (!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl())) {
+                    WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(getLayoutPosition()).getFollow_creator_article_list().getUrl(), null);
                 }
             });
         }
@@ -464,20 +446,14 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             user_type = itemView.findViewById(R.id.user_type);
             tv_follow = itemView.findViewById(R.id.tv_follow);
             rv = itemView.findViewById(R.id.rv);
-            iv_person.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl())){
-                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl(),null);
-                    }
+            iv_person.setOnClickListener(v -> {
+                if (!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl())) {
+                    WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl(), null);
                 }
             });
-            tv_name.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl())){
-                        WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl(),null);
-                    }
+            tv_name.setOnClickListener(v -> {
+                if (!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl())) {
+                    WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(getLayoutPosition()).getNo_follow_creator_article_list().getUser_data().getUrl(), null);
                 }
             });
         }

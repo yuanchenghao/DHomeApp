@@ -17,9 +17,10 @@ import com.dejia.anju.R;
 import com.dejia.anju.api.BindJPushApi;
 import com.dejia.anju.api.OneClickLoginApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
+import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.base.Constants;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.UserInfo;
-import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
@@ -27,21 +28,16 @@ import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.webSocket.IMManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.dejia.anju.base.BaseActivity;
-
-import java.util.HashMap;
-
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import butterknife.BindView;
-
-import com.dejia.anju.event.Event;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.HashMap;
+
+import androidx.core.app.NotificationManagerCompat;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;

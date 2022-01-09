@@ -1,8 +1,12 @@
 package com.dejia.anju.net;
 
+import com.dejia.anju.AppLog;
 import com.dejia.anju.DeJiaApp;
-import com.dejia.anju.MainActivity;
+import com.dejia.anju.base.Constants;
+import com.dejia.anju.model.SessionidData;
+import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.utils.Util;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
@@ -21,13 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.dejia.anju.AppLog;
-import com.dejia.anju.base.Constants;
-import com.dejia.anju.model.SessionidData;
-import com.dejia.anju.utils.JSONUtil;
-import com.dejia.anju.utils.KVUtils;
-import com.dejia.anju.utils.Util;
 
 import okhttp3.Call;
 import okhttp3.Response;

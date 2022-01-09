@@ -23,15 +23,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SizeUtils;
-import com.dejia.anju.mannger.WebUrlJumpManager;
-import com.dejia.anju.model.WebViewData;
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.dejia.anju.R;
 import com.dejia.anju.api.GetCodeApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.mannger.WebUrlJumpManager;
+import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.ServerData;
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.greenrobot.eventbus.EventBus;

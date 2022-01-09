@@ -27,6 +27,7 @@ import com.zhangyue.we.x2c.ano.Xml;
 
 import org.qiyi.basecore.taskmanager.IdleTask;
 import org.qiyi.basecore.taskmanager.ParallelTask;
+
 import java.util.ArrayList;
 import java.util.List;
 

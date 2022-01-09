@@ -14,7 +14,6 @@ import com.dejia.anju.R;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.mannger.WebUrlJumpManager;
-import com.dejia.anju.utils.ToastUtils;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
 

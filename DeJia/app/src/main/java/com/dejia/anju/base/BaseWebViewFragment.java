@@ -17,7 +17,6 @@ import android.webkit.WebViewClient;
 
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
-import com.dejia.anju.view.ScrollWebView;
 
 import org.apache.http.util.EncodingUtils;
 

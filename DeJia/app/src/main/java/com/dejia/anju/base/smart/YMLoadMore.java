@@ -1,7 +1,6 @@
 package com.dejia.anju.base.smart;
 
 import android.content.Context;
-
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -21,6 +20,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 

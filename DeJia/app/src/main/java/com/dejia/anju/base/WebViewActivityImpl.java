@@ -6,7 +6,6 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
-import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -16,10 +15,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.dejia.anju.AppLog;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
-import com.dejia.anju.view.webclient.JsCallAndroid;
 
 import java.util.Map;
 

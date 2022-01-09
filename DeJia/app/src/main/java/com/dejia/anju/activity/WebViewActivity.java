@@ -9,21 +9,15 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.base.WebViewActivityImpl;
-import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
-import com.dejia.anju.net.SignUtils;
-import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.utils.JSONUtil;
-import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.view.CommonTopBar;
 import com.dejia.anju.view.MyPullRefresh;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
@@ -42,7 +36,6 @@ import java.util.Map;
 import androidx.annotation.RequiresApi;
 import butterknife.BindView;
 
-import static com.dejia.anju.net.FinalConstant1.SYMBOL5;
 import static com.qmuiteam.qmui.util.QMUIDisplayHelper.getStatusBarHeight;
 
 public class WebViewActivity extends WebViewActivityImpl {

@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
         <item name="qmui_config_color_blue">@color/white</item>
     </style>

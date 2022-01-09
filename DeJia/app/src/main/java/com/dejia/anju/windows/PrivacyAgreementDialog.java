@@ -12,6 +12,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
+
 import com.dejia.anju.R;
 import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.WebViewData;

@@ -7,8 +7,8 @@ import android.webkit.CookieManager;
 import com.dejia.anju.DeJiaApp;
 import com.dejia.anju.model.SessionidData;
 import com.dejia.anju.utils.KVUtils;
-import com.lzy.okgo.model.HttpHeaders;
 import com.dejia.anju.utils.Util;
+import com.lzy.okgo.model.HttpHeaders;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

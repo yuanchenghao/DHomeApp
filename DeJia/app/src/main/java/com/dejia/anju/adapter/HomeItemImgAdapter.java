@@ -1,7 +1,6 @@
 package com.dejia.anju.adapter;
 
 import android.app.Activity;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
-import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.ImgInfo;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;

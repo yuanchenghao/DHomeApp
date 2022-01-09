@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
+
 import com.dejia.anju.model.Emoji;
 import com.dejia.anju.view.HttpTextView;
 

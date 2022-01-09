@@ -10,7 +10,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,7 +19,6 @@ import com.dejia.anju.R;
 import com.dejia.anju.api.BindJPushApi;
 import com.dejia.anju.api.OneClickLoginApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
-import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.base.Constants;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.model.UserInfo;
@@ -31,7 +29,6 @@ import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.webSocket.IMManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.zhangyue.we.x2c.ano.Xml;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,14 +38,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
-import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIClickCallback;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
-import cn.jiguang.verifysdk.api.LoginSettings;
 import cn.jiguang.verifysdk.api.PreLoginListener;
 import cn.jiguang.verifysdk.api.PrivacyBean;
 import cn.jiguang.verifysdk.api.VerifyListener;

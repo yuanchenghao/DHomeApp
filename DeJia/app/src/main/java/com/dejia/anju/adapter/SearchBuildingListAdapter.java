@@ -7,8 +7,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.dejia.anju.R;
 import com.dejia.anju.model.SearchBuildingInfo;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 /**
  * 搜索楼盘列表页适配器

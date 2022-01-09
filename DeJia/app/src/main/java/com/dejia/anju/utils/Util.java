@@ -34,8 +34,6 @@ import com.dejia.anju.model.SessionidData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.ServerData;
 import com.google.gson.Gson;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cookie.store.CookieStore;
 
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
@@ -49,8 +47,6 @@ import java.util.List;
 
 import androidx.annotation.RequiresApi;
 import cn.jpush.android.api.JPushInterface;
-import okhttp3.Cookie;
-import okhttp3.HttpUrl;
 
 public final class Util {
     /**

@@ -2,8 +2,6 @@ package com.dejia.anju.view.webclient;
 
 import android.app.Activity;
 import android.webkit.JavascriptInterface;
-import com.dejia.anju.AppLog;
-import com.dejia.anju.utils.ToastUtils;
 
 public class JsCallAndroid {
     public Activity mContext;

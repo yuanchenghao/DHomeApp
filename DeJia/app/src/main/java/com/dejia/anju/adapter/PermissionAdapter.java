@@ -1,12 +1,13 @@
 package com.dejia.anju.adapter;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.dejia.anju.model.PermsissionData;
-
-import java.util.List;
 import com.dejia.anju.R;
+import com.dejia.anju.model.PermsissionData;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.List;
 
 import androidx.annotation.Nullable;
 

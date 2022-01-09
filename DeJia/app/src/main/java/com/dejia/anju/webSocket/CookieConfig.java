@@ -1,8 +1,8 @@
 package com.dejia.anju.webSocket;
 
+import com.dejia.anju.utils.Util;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
-import com.dejia.anju.utils.Util;
 
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;

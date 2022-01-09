@@ -4,11 +4,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.widget.Button;
 
+import com.dejia.anju.R;
 import com.dejia.anju.adapter.PermissionAdapter;
 import com.dejia.anju.model.PermsissionData;
 
 import java.util.List;
-import com.dejia.anju.R;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

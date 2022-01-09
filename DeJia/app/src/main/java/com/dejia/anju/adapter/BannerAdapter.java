@@ -6,11 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.dejia.anju.R;
 import com.dejia.anju.model.HomeIndexBean;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.util.List;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<HomeIndexBean.FocusPicture, BannerAdapter.BannerViewHolder> {

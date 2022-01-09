@@ -2,7 +2,6 @@ package com.dejia.anju.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,28 +113,22 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ((viewHolder) holder).tv_follow.setText("互相关注");
                     break;
             }
-            ((viewHolder) holder).tv_follow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("obj_id", noFollowCreatorList.getId());
-                    hashMap.put("obj_type", "1");
-                    new FollowAndCancelApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
-                        @Override
-                        public void onSuccess(ServerData serverData) {
-                            if ("1".equals(serverData.code)) {
-                                FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
-                                if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
-                                    noFollowCreatorList.setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
-                                    notifyItemChanged(position, "follow");
-                                }
-                                ToastUtils.toast(mContext, serverData.message).show();
-                            } else {
-                                ToastUtils.toast(mContext, serverData.message).show();
-                            }
+            ((viewHolder) holder).tv_follow.setOnClickListener(v -> {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("obj_id", noFollowCreatorList.getId());
+                hashMap.put("obj_type", "1");
+                new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+                    if ("1".equals(serverData.code)) {
+                        FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                        if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
+                            noFollowCreatorList.setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
+                            notifyItemChanged(position, "follow");
                         }
-                    });
-                }
+                        ToastUtils.toast(mContext, serverData.message).show();
+                    } else {
+                        ToastUtils.toast(mContext, serverData.message).show();
+                    }
+                });
             });
         }
     }
@@ -157,12 +150,7 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_tag = itemView.findViewById(R.id.tv_tag);
             tv_follow = itemView.findViewById(R.id.tv_follow);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PersonActivity.invoke(mContext,mDatas.get(getLayoutPosition()).getId());
-                }
-            });
+            itemView.setOnClickListener(v -> PersonActivity.invoke(mContext,mDatas.get(getLayoutPosition()).getId()));
         }
     }
 }

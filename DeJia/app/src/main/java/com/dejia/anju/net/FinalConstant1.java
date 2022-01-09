@@ -6,7 +6,6 @@ import com.dejia.anju.R;
 
 import static com.dejia.anju.net.EnumInterfaceType.POST;
 import static com.dejia.anju.net.EnumInterfaceType.UPLOAD;
-import static org.apache.http.HttpVersion.HTTP;
 
 public class FinalConstant1 {
     // token

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.dejia.anju.R;
 import com.dejia.anju.model.MessageBean;
 import com.dejia.anju.utils.Expression;
@@ -89,24 +90,21 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         /* time */
         setTimePoint(holder.chatTime, tbub, position);
-        holder.content.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                CopyPopWindow copyPopWindow = new CopyPopWindow(mContext);
-                View contentView = copyPopWindow.getContentView();
-                contentView.measure(makeDropDownMeasureSpec(copyPopWindow.getWidth()), makeDropDownMeasureSpec(copyPopWindow.getHeight()));
-                int offsetX = Math.abs(copyPopWindow.getContentView().getMeasuredWidth() - holder.content.getWidth()) / 2;
-                int offsetY = -(copyPopWindow.getContentView().getMeasuredHeight() + holder.content.getHeight());
-                PopupWindowCompat.showAsDropDown(copyPopWindow, holder.content, offsetX, offsetY, Gravity.START);
-                copyPopWindow.setOnTextClickListener(new CopyPopWindow.OnTextClickListener() {
-                    @Override
-                    public void onTextClick() {
-                        Util.setClipboard(mContext, holder.content.getText().toString());
-                        ToastUtils.toast(mContext, "复制成功").show();
-                    }
-                });
-                return false;
-            }
+        holder.content.setOnLongClickListener(v -> {
+            CopyPopWindow copyPopWindow = new CopyPopWindow(mContext);
+            View contentView = copyPopWindow.getContentView();
+            contentView.measure(makeDropDownMeasureSpec(copyPopWindow.getWidth()), makeDropDownMeasureSpec(copyPopWindow.getHeight()));
+            int offsetX = Math.abs(copyPopWindow.getContentView().getMeasuredWidth() - holder.content.getWidth()) / 2;
+            int offsetY = -(copyPopWindow.getContentView().getMeasuredHeight() + holder.content.getHeight());
+            PopupWindowCompat.showAsDropDown(copyPopWindow, holder.content, offsetX, offsetY, Gravity.START);
+            copyPopWindow.setOnTextClickListener(new CopyPopWindow.OnTextClickListener() {
+                @Override
+                public void onTextClick() {
+                    Util.setClipboard(mContext, holder.content.getText().toString());
+                    ToastUtils.toast(mContext, "复制成功").show();
+                }
+            });
+            return false;
         });
         try {
             String content = tbub.getContent().replace("\\n", "\n");
@@ -130,24 +128,21 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
             setTimePoint(holder.chat_time, tbub, position);
             holder.content.setVisibility(View.VISIBLE);
-            holder.content.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    CopyPopWindow copyPopWindow = new CopyPopWindow(mContext);
-                    View contentView = copyPopWindow.getContentView();
-                    contentView.measure(makeDropDownMeasureSpec(copyPopWindow.getWidth()), makeDropDownMeasureSpec(copyPopWindow.getHeight()));
-                    int offsetX = Math.abs(copyPopWindow.getContentView().getMeasuredWidth() - holder.content.getWidth()) / 2;
-                    int offsetY = -(copyPopWindow.getContentView().getMeasuredHeight() + holder.content.getHeight());
-                    PopupWindowCompat.showAsDropDown(copyPopWindow, holder.content, offsetX, offsetY, Gravity.START);
-                    copyPopWindow.setOnTextClickListener(new CopyPopWindow.OnTextClickListener() {
-                        @Override
-                        public void onTextClick() {
-                            Util.setClipboard(mContext, holder.content.getText().toString());
-                            ToastUtils.toast(mContext, "复制成功").show();
-                        }
-                    });
-                    return false;
-                }
+            holder.content.setOnLongClickListener(v -> {
+                CopyPopWindow copyPopWindow = new CopyPopWindow(mContext);
+                View contentView = copyPopWindow.getContentView();
+                contentView.measure(makeDropDownMeasureSpec(copyPopWindow.getWidth()), makeDropDownMeasureSpec(copyPopWindow.getHeight()));
+                int offsetX = Math.abs(copyPopWindow.getContentView().getMeasuredWidth() - holder.content.getWidth()) / 2;
+                int offsetY = -(copyPopWindow.getContentView().getMeasuredHeight() + holder.content.getHeight());
+                PopupWindowCompat.showAsDropDown(copyPopWindow, holder.content, offsetX, offsetY, Gravity.START);
+                copyPopWindow.setOnTextClickListener(new CopyPopWindow.OnTextClickListener() {
+                    @Override
+                    public void onTextClick() {
+                        Util.setClipboard(mContext, holder.content.getText().toString());
+                        ToastUtils.toast(mContext, "复制成功").show();
+                    }
+                });
+                return false;
             });
 //                holder.headicon.setOnClickListener(new View.OnClickListener() {
 //                    @Override

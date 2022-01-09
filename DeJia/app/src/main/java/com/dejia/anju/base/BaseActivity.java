@@ -1,17 +1,13 @@
 package com.dejia.anju.base;
 
-import android.app.Activity;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.blankj.utilcode.util.ScreenUtils;
 import com.dejia.anju.DeJiaApp;
+import com.dejia.anju.mannger.ActivityManager;
 import com.dejia.anju.utils.Util;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.dejia.anju.mannger.ActivityManager;
 import com.zhangyue.we.x2c.X2C;
 
 import androidx.appcompat.app.AppCompatActivity;
