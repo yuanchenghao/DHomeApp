@@ -1,6 +1,7 @@
 package com.dejia.anju.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -26,11 +27,20 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     protected View mView;                              //布局
     private Unbinder mUnbinder;                        //解除绑定使用
 
+    /**
+     * 获得全局的，防止使用getActivity()为空
+     * @param context
+     */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mContext = (Activity) context;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getActivity();
+//        mContext = getActivity();
         mInflater = LayoutInflater.from(mContext);
         //状态栏高度
         statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(mContext);

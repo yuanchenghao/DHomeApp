@@ -2,6 +2,7 @@ package com.dejia.anju;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -10,9 +11,11 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.AppUtils;
@@ -121,6 +124,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private MessageShowApi messageShowApi;
     //记录Fragment的位置
     public int position = 0;
+    private boolean interceptFlag;
+    private ProgressBar pd;
+    private Button cancelBt;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -281,39 +287,75 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     //查看版本
     private void getVersion() {
-        HashMap<String,Object> maps = new HashMap<>();
-        new GetVersionApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if("1".equals(serverData.code)){
-                    VersionInfo versionInfo = JSONUtil.TransformSingleBean(serverData.data, VersionInfo.class);
-                    if(versionInfo != null && !TextUtils.isEmpty(versionInfo.getVer())){
-                        if(AppUtils.getAppVersionCode() == Integer.parseInt(versionInfo.getVer())){
-                            ToastUtils.toast(mContext,"当前版本是最新版本").show();
-                        }else{
-
-                        }
+        new GetVersionApi().getCallBack(mContext, new HashMap<>(), (BaseCallBackListener<ServerData>) serverData -> {
+            if("1".equals(serverData.code)){
+                VersionInfo versionInfo = JSONUtil.TransformSingleBean(serverData.data, VersionInfo.class);
+                if(versionInfo != null && !TextUtils.isEmpty(versionInfo.getVer())){
+                    if(AppUtils.getAppVersionCode() == Integer.parseInt(versionInfo.getVer())){
+                        ToastUtils.toast(mContext,"当前版本是最新版本").show();
                     }else{
-                        ToastUtils.toast(mContext,"未获取到最新版本信息").show();
+                        DialogUtils.showUpdataVersionDialog(mContext, versionInfo.getTitle(), "立即更新", "暂不更新", versionInfo.getStatus(), new DialogUtils.CallBack2() {
+                            @Override
+                            public void onYesClick() {
+                                if (XXPermissions.isGranted(mContext, Permission.WRITE_EXTERNAL_STORAGE)) {
+                                    startDownLoad(versionInfo);
+                                } else {
+                                    XXPermissions.with(mContext)
+                                            // 申请单个权限
+                                            .permission(Permission.WRITE_EXTERNAL_STORAGE)
+                                            .request(new OnPermissionCallback() {
+
+                                                @Override
+                                                public void onGranted(List<String> permissions, boolean all) {
+                                                    if (all) {
+                                                        startDownLoad(versionInfo);
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onDenied(List<String> permissions, boolean never) {
+
+                                                }
+                                            });
+                                }
+                                System.exit(0);
+                            }
+
+                            @Override
+                            public void onNoClick() {
+                                DialogUtils.closeDialog();
+                            }
+                        });
                     }
+                }else{
+                    ToastUtils.toast(mContext,"未获取到最新版本信息").show();
                 }
             }
         });
     }
 
+    //开始下载
+    private void startDownLoad(VersionInfo versionInfo) {
+//        interceptFlag = false;
+        DialogUtils.closeDialog();
+//        downLoadApk(versionInfo.getUrl());
+        Intent intent= new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri content_url = Uri.parse("http://dldir1.qq.com/dmpt/apkSet/9.9.5/qqcomic_android_9.9.5_dm306015005.apk");
+        intent.setData(content_url);
+        startActivity(intent);
+    }
+
     private void getMessageNum() {
         HashMap<String,Object> maps = new HashMap<>();
-        new MessageCountApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if("1".equals(serverData.code)){
-                    MessageCountInfo messageCountInfo = JSONUtil.TransformSingleBean(serverData.data,MessageCountInfo.class);
-                    KVUtils.getInstance().encode("message_count",messageCountInfo);
-                    if(messageCountInfo != null && messageCountInfo.getSum_num() > 0){
-                        iv_dots.setVisibility(View.VISIBLE);
-                    }else{
-                        iv_dots.setVisibility(View.GONE);
-                    }
+        new MessageCountApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if("1".equals(serverData.code)){
+                MessageCountInfo messageCountInfo = JSONUtil.TransformSingleBean(serverData.data,MessageCountInfo.class);
+                KVUtils.getInstance().encode("message_count",messageCountInfo);
+                if(messageCountInfo != null && messageCountInfo.getSum_num() > 0){
+                    iv_dots.setVisibility(View.VISIBLE);
+                }else{
+                    iv_dots.setVisibility(View.GONE);
                 }
             }
         });
@@ -322,15 +364,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     //请求公用模块控制
     private void getMessageShow() {
         messageShowApi = new MessageShowApi();
-        messageShowApi.getCallBack(mContext, new HashMap<String, Object>(), new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    MessageShowInfo messageShowInfo = JSONUtil.TransformSingleBean(serverData.data, MessageShowInfo.class);
-                    KVUtils.getInstance().encode("message_show", messageShowInfo);
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
-                }
+        messageShowApi.getCallBack(mContext, new HashMap<>(), (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                MessageShowInfo messageShowInfo = JSONUtil.TransformSingleBean(serverData.data, MessageShowInfo.class);
+                KVUtils.getInstance().encode("message_show", messageShowInfo);
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -593,6 +632,101 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             mNetStatus.netStatus(netMobile);
         }
     }
+
+    /*
+     * 从服务器中下载APK
+     */
+//    protected void downLoadApk(String apkUrl) {
+//        ProgDialog editDialog = new ProgDialog(mContext, R.style.mystyle, R.layout.dialog_progress);
+//        editDialog.setCanceledOnTouchOutside(false);
+//        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+//            ToastUtils.toast(mContext,"SD卡不可用").show();
+//        } else {
+//            editDialog.show();
+//            pd = editDialog.findViewById(R.id.progress_aaaaaa);
+//            cancelBt = editDialog.findViewById(R.id.cancel_btn_aa);
+//            cancelBt.setOnClickListener(arg0 -> {
+//                editDialog.dismiss();
+//                interceptFlag = true;
+//            });
+//            new Thread() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        File file = getFileFromServer("http://dldir1.qq.com/dmpt/apkSet/9.9.5/qqcomic_android_9.9.5_dm306015005.apk", pd);
+//                        sleep(1000);
+//                        if (!interceptFlag) {
+//                            installApk(file);
+//                        }
+//                        // 结束掉进度条对话框
+//                        editDialog.dismiss();
+//                    } catch (Exception e) {
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                ToastUtils.toast(mContext,"下载新版本失败").show();
+//                            }
+//                        });
+//                    }
+//                }
+//            }.start();
+//        }
+//    }
+
+
+    // 安装apk
+//    protected void installApk(File file) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//判读版本是否在7.0以上
+//            Uri apkUri = FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", file);//在AndroidManifest中的android:authorities值
+//            Intent install = new Intent(Intent.ACTION_VIEW);
+//            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            install.setDataAndType(apkUri, "application/vnd.android.package-archive");
+//            startActivity(install);
+//        } else {
+//            Intent intent = new Intent();
+//            // 执行动作
+//            intent.setAction(Intent.ACTION_VIEW);
+//            // 执行的数据类型
+//            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+//            startActivity(intent);
+//        }
+//    }
+
+//    public File getFileFromServer(String path, ProgressBar pd) throws Exception {
+//        // 如果相等的话表示当前的sdcard挂载在手机上并且是可用的
+//        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+//            URL url = new URL(path);
+//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//            conn.setRequestProperty("Accept-Encoding", "identity");
+//            conn.setConnectTimeout(5000);
+//            // 获取到文件的大小
+//            pd.setMax(conn.getContentLength());
+//            pd.getMax();
+//            InputStream is = conn.getInputStream();
+//            File file = new File(Environment.getExternalStorageDirectory(), "updata.apk");
+//            FileOutputStream fos = new FileOutputStream(file);
+//            BufferedInputStream bis = new BufferedInputStream(is);
+//            byte[] buffer = new byte[1024];
+//            int len;
+//            int total = 0;
+//            while ((len = bis.read(buffer)) != -1) {
+//                fos.write(buffer, 0, len);
+//                total += len;
+//                // 获取当前下载量
+//                pd.setProgress(total);
+//                if (interceptFlag) {
+//                    break;
+//                }
+//            }
+//            fos.close();
+//            bis.close();
+//            is.close();
+//            return file;
+//        } else {
+//            return null;
+//        }
+//    }
 
     @Override
     protected void onDestroy() {
