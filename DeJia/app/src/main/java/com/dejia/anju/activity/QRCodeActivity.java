@@ -17,6 +17,7 @@ import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
@@ -167,9 +168,12 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
             //跳转
             ScanLoginActivity.invoke(mContext, result);
         } else {
-            ToastUtils.toast(mContext, "链接无效，请重新扫描").show();
-            mZXingView.startSpot();
-            iv_scan.startAnimation(animation);
+            DialogUtils.showScanErrorDialog(mContext, () -> {
+                DialogUtils.closeDialog();
+//                    ToastUtils.toast(mContext, "链接无效，请重新扫描").show();
+                mZXingView.startSpotAndShowRect();
+                iv_scan.startAnimation(animation);
+            });
         }
     }
 
