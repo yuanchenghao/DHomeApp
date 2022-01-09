@@ -229,15 +229,12 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
             httpParams.put(toolSelectImgAdapter.getData().get(i) + "",
                     new File(toolSelectImgAdapter.getData().get(i).getCompressPath()));
         }
-        upLoadUgcImageApi.getCallBack(mContext, map, httpParams, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    List<UgcUploadImageInfo> list = JSONUtil.jsonToArrayList(serverData.data, UgcUploadImageInfo.class);
-                    postUgc(list);
-                } else {
-                    ToastUtils.toast(mContext, "图片上传失败请重试").show();
-                }
+        upLoadUgcImageApi.getCallBack(mContext, map, httpParams, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                List<UgcUploadImageInfo> list = JSONUtil.jsonToArrayList(serverData.data, UgcUploadImageInfo.class);
+                postUgc(list);
+            } else {
+                ToastUtils.toast(mContext, "图片上传失败请重试").show();
             }
         });
     }
@@ -261,15 +258,12 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                 maps.put("rel_loupan", new Gson().toJson(list1).toString());
             }
             //            maps.put("rel_house_type","");
-            ugcSaveApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                @Override
-                public void onSuccess(ServerData serverData) {
-                    if ("1".equals(serverData.code)) {
-                        ToastUtils.toast(mContext, "上传文章成功").show();
-                        finish();
-                    } else {
-                        ToastUtils.toast(mContext, serverData.message).show();
-                    }
+            ugcSaveApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                if ("1".equals(serverData.code)) {
+                    ToastUtils.toast(mContext, "上传文章成功").show();
+                    finish();
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
                 }
             });
         } else {

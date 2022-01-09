@@ -189,12 +189,6 @@ public class BaseWebViewClientMessage extends WebViewClient {
         Log.e(TAG, "onReceivedError111......" + urlStr.toString());
     }
 
-
-    public void loadUrl(WebView webView, String mUrl, HashMap<String, Object> mSingStr) {
-        WebSignData addressAndHead = SignUtils.getAddressAndHead(mUrl, mSingStr);
-        webView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
-    }
-
     /**
      * 这里432、5466、6080、6011、441
      */

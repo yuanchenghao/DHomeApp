@@ -84,12 +84,7 @@ public class WebViewActivity extends WebViewActivityImpl {
             mRefreshWebViewContainer.setVisibility(View.VISIBLE);
             mWebViewContainer.setVisibility(View.GONE);
             mRefreshWebViewContainer.addView(mWebView);
-            mRefreshWebViewContainer.setRefreshListener(new MyPullRefresh.RefreshListener() {
-                @Override
-                public void onRefresh() {
-                    loadLink();
-                }
-            });
+            mRefreshWebViewContainer.setRefreshListener(() -> loadLink());
         } else {
             mRefreshWebViewContainer.setVisibility(View.GONE);
             mWebViewContainer.setVisibility(View.VISIBLE);
@@ -265,7 +260,7 @@ public class WebViewActivity extends WebViewActivityImpl {
             if (parent != null) {
                 ((ViewGroup) parent).removeView(mWebView);
             }
-            loadUrl("about:blank");
+            postUrl("about:blank");
             mWebView.stopLoading();
             mWebView.clearFormData();
             mWebView.clearMatches();
@@ -310,7 +305,7 @@ public class WebViewActivity extends WebViewActivityImpl {
         if (mWebView != null && mWebViewData != null) {
             // 跳转并进行页面加载
             if (!TextUtils.isEmpty(linkUrl)) {
-                loadUrl(linkUrl);
+                postUrl(linkUrl);
             }
         }
     }

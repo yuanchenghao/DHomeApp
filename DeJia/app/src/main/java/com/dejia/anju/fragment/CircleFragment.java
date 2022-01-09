@@ -83,6 +83,6 @@ public class CircleFragment extends BaseWebViewFragment {
      * 初始化
      */
     private void initWebVeiw() {
-        loadUrl(FinalConstant1.HTML_CIRCLE);
+        postUrl(FinalConstant1.HTML_CIRCLE);
     }
 }

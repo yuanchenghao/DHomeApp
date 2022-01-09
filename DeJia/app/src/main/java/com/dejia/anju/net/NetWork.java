@@ -39,8 +39,6 @@ public class NetWork {
      */
     private static volatile NetWork netWork;
     private final Gson mGson;
-    public static final String IS_SHOW_LOGIN = "0";
-    public static final String IS_SHOW_LOGIN_CHAT = "0";
 
     private NetWork() {
         mGson = new Gson();

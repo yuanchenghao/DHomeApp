@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -162,41 +163,35 @@ public class VerificationCodeActivity extends BaseActivity {
                     HashMap<String,Object> maps = new HashMap<>();
                     maps.put("phone",mPhone);
                     maps.put("code",verificationCode);
-                    new VerificationCodeLoginApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                        @Override
-                        public void onSuccess(ServerData serverData) {
-                            pb.setVisibility(View.GONE);
-                            tv_get_code.setText("确定");
-                            if("1".equals(serverData.code)){
-                                UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data,UserInfo.class);
-                                KVUtils.getInstance().encode(Constants.UID,userInfo.getId());
-                                KVUtils.getInstance().encode("user",userInfo);
-                                Util.setYuemeiInfo(userInfo.getDejia_info());
-                                String registrationID = JPushInterface.getRegistrationID(mContext);
-                                IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
-                                IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(baseTestService);
-                                HashMap<String, Object> maps = new HashMap<>();
-                                maps.put("reg_id", registrationID);
-                                maps.put("location_city", Util.getCity());
-                                maps.put("brand", android.os.Build.BRAND + "_" + android.os.Build.MODEL);
-                                maps.put("system", android.os.Build.VERSION.RELEASE);
-                                maps.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled())?"0":"1");
-                                new BindJPushApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                                    @Override
-                                    public void onSuccess(ServerData serverData) {
-                                        if("1".equals(serverData.code)){
-                                            AppLog.i("message===" + serverData.message);
-                                        }
-                                    }
-                                });
-                                ToastUtils.toast(mContext, "登录成功").show();
-                                //清空预取号缓存
-                                JVerificationInterface.clearPreLoginCache();
-                                //发登录广播
-                                EventBus.getDefault().post(new Event<>(1));
-                            }else{
-                                ToastUtils.toast(mContext, serverData.message).show();
-                            }
+                    new VerificationCodeLoginApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                        pb.setVisibility(View.GONE);
+                        tv_get_code.setText("确定");
+                        if("1".equals(serverData.code)){
+                            UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data,UserInfo.class);
+                            KVUtils.getInstance().encode(Constants.UID,userInfo.getId());
+                            KVUtils.getInstance().encode("user",userInfo);
+                            Util.setYuemeiInfo(userInfo.getDejia_info());
+                            String registrationID = JPushInterface.getRegistrationID(mContext);
+                            IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
+                            IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(baseTestService);
+                            HashMap<String, Object> maps1 = new HashMap<>();
+                            maps1.put("reg_id", registrationID);
+                            maps1.put("location_city", Util.getCity());
+                            maps1.put("brand", Build.BRAND + "_" + Build.MODEL);
+                            maps1.put("system", Build.VERSION.RELEASE);
+                            maps1.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled())?"0":"1");
+                            new BindJPushApi().getCallBack(mContext, maps1, (BaseCallBackListener<ServerData>) serverData1 -> {
+                                if("1".equals(serverData1.code)){
+                                    AppLog.i("message===" + serverData1.message);
+                                }
+                            });
+                            ToastUtils.toast(mContext, "登录成功").show();
+                            //清空预取号缓存
+                            JVerificationInterface.clearPreLoginCache();
+                            //发登录广播
+                            EventBus.getDefault().post(new Event<>(1));
+                        }else{
+                            ToastUtils.toast(mContext, serverData.message).show();
                         }
                     });
                 }
@@ -204,12 +199,9 @@ public class VerificationCodeActivity extends BaseActivity {
             case R.id.tv_bottom:
                 HashMap<String, Object> maps = new HashMap<>();
                 maps.put("phone", mPhone);
-                new GetCodeApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                    @Override
-                    public void onSuccess(ServerData serverData) {
-                        if ("1".equals(serverData.code)) {
-                            countDownTimer.start();
-                        }
+                new GetCodeApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                    if ("1".equals(serverData.code)) {
+                        countDownTimer.start();
                     }
                 });
                 break;

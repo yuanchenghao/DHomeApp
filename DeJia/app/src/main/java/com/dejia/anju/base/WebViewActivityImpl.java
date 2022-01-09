@@ -18,6 +18,9 @@ import android.webkit.WebViewClient;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
 
+import org.apache.http.util.EncodingUtils;
+
+import java.util.HashMap;
 import java.util.Map;
 
 @SuppressLint("Registered")
@@ -202,26 +205,32 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity {
     protected void onYmProgressChanged(WebView view, int newProgress) {
     }
 
-    /**
-     * 加载webView
-     *
-     * @param url
-     * @param paramMap
-     * @param headMap
-     */
-    protected void loadUrl(String url, Map<String, Object> paramMap, Map<String, Object> headMap) {
-        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap, headMap);
-        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
-    }
+//    /**
+//     * 加载webView
+//     *
+//     * @param url
+//     * @param paramMap
+//     * @param headMap
+//     */
+//    protected void loadUrl(String url, Map<String, Object> paramMap, Map<String, Object> headMap) {
+//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap, headMap);
+//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+//    }
+//
+//    protected void loadUrl(String url, Map<String, Object> paramMap) {
+//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap);
+//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+//    }
+//
+//    protected void loadUrl(String url) {
+//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
+//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+//    }
 
-    protected void loadUrl(String url, Map<String, Object> paramMap) {
-        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap);
-        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
-    }
-
-    protected void loadUrl(String url) {
+    protected void postUrl(String url) {
         WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
-        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+        HashMap<String, Object> addressAndHeadMap = new HashMap<>();
+        mWebView.postUrl(addressAndHead.getUrl(), EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
     }
 }
 

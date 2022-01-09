@@ -96,12 +96,7 @@ public class RecommendFragment extends BaseFragment {
 
     private void onVisible() {
         if (!mHasLoadedOnce) {
-            smartRefreshLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    smartRefreshLayout.autoRefresh();
-                }
-            }, 500);
+            smartRefreshLayout.postDelayed(() -> smartRefreshLayout.autoRefresh(), 500);
         }
     }
 
@@ -182,43 +177,40 @@ public class RecommendFragment extends BaseFragment {
         homeIndexApi = new HomeIndexApi();
         Map<String, Object> maps = new HashMap<String, Object>();
         maps.put("page", page);
-        homeIndexApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                smartRefreshLayout.finishRefresh();
-                if ("1".equals(serverData.code)) {
-                    mHasLoadedOnce = true;
-                    homeIndexBean = JSONUtil.TransformSingleBean(serverData.data, HomeIndexBean.class);
-                    if (homeIndexBean != null
-                            && homeIndexBean.getFocus_picture() != null
-                            && homeIndexBean.getFocus_picture().size() > 0) {
-                        //设置轮播
-                        setBanner(homeIndexBean.getFocus_picture());
-                        banner.setVisibility(View.VISIBLE);
-                    } else {
-                        if (page == 1) {
-                            banner.setVisibility(View.GONE);
-                        }
-                    }
-                    if (homeIndexBean != null && homeIndexBean.getList() != null) {
-                        if (homeIndexBean.getList().size() == 0) {
-                            if (smartRefreshLayout == null) {
-                                return;
-                            }
-                            smartRefreshLayout.finishLoadMoreWithNoMoreData();
-                        } else {
-                            if (smartRefreshLayout == null) {
-                                return;
-                            }
-                            smartRefreshLayout.finishLoadMore();
-                        }
-                        setHomeListAdapter();
-                    } else {
-                        smartRefreshLayout.finishLoadMoreWithNoMoreData();
-                    }
+        homeIndexApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            smartRefreshLayout.finishRefresh();
+            if ("1".equals(serverData.code)) {
+                mHasLoadedOnce = true;
+                homeIndexBean = JSONUtil.TransformSingleBean(serverData.data, HomeIndexBean.class);
+                if (homeIndexBean != null
+                        && homeIndexBean.getFocus_picture() != null
+                        && homeIndexBean.getFocus_picture().size() > 0) {
+                    //设置轮播
+                    setBanner(homeIndexBean.getFocus_picture());
+                    banner.setVisibility(View.VISIBLE);
                 } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
+                    if (page == 1) {
+                        banner.setVisibility(View.GONE);
+                    }
                 }
+                if (homeIndexBean != null && homeIndexBean.getList() != null) {
+                    if (homeIndexBean.getList().size() == 0) {
+                        if (smartRefreshLayout == null) {
+                            return;
+                        }
+                        smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                    } else {
+                        if (smartRefreshLayout == null) {
+                            return;
+                        }
+                        smartRefreshLayout.finishLoadMore();
+                    }
+                    setHomeListAdapter();
+                } else {
+                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                }
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -237,12 +229,9 @@ public class RecommendFragment extends BaseFragment {
             homeAdapter = new HomeAdapter(mContext, homeIndexBean.getList());
             homeAdapter.setRecycleviewPool(rv.getRecycledViewPool());
             rv.setAdapter(homeAdapter);
-            homeAdapter.setEventListener(new HomeAdapter.EventListener() {
-                @Override
-                public void onItemListener(View v, HomeIndexBean.HomeList data, int pos) {
-                    if (!TextUtils.isEmpty(data.getUrl())) {
-                        WebUrlJumpManager.getInstance().invoke(mContext,data.getUrl(),null);
-                    }
+            homeAdapter.setEventListener((v, data, pos) -> {
+                if (!TextUtils.isEmpty(data.getUrl())) {
+                    WebUrlJumpManager.getInstance().invoke(mContext,data.getUrl(),null);
                 }
             });
         } else {
@@ -256,13 +245,10 @@ public class RecommendFragment extends BaseFragment {
         banner.addBannerLifecycleObserver(this)//添加生命周期观察者
                 .setAdapter(new BannerAdapter(focus_picture));
         banner.start();
-        banner.setOnBannerListener(new OnBannerListener() {
-            @Override
-            public void OnBannerClick(Object data, int position) {
-                HomeIndexBean.FocusPicture FocusPicture = (HomeIndexBean.FocusPicture) data;
-                if (data != null && !TextUtils.isEmpty(FocusPicture.getUrl())) {
-                    WebUrlJumpManager.getInstance().invoke(mContext,FocusPicture.getUrl(),null);
-                }
+        banner.setOnBannerListener((data, position) -> {
+            HomeIndexBean.FocusPicture FocusPicture = (HomeIndexBean.FocusPicture) data;
+            if (data != null && !TextUtils.isEmpty(FocusPicture.getUrl())) {
+                WebUrlJumpManager.getInstance().invoke(mContext,FocusPicture.getUrl(),null);
             }
         });
     }

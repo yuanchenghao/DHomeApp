@@ -131,19 +131,16 @@ public class EditNickNameActivity extends BaseActivity implements OnClickListene
         setUserApi = new SetUserApi();
         HashMap<String, Object> maps = new HashMap<>();
         maps.put("nickname", ed.getText().toString().trim());
-        setUserApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
-                    userInfo.setNickname(userInfo.getNickname());
-                    KVUtils.getInstance().encode("user", userInfo);
-                    //通知外部刷新
-                    EventBus.getDefault().post(new Event<>(3));
-                    ToastUtils.toast(mContext, "修改成功").show();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
-                }
+        setUserApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                userInfo.setNickname(userInfo.getNickname());
+                KVUtils.getInstance().encode("user", userInfo);
+                //通知外部刷新
+                EventBus.getDefault().post(new Event<>(3));
+                ToastUtils.toast(mContext, "修改成功").show();
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }

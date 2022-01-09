@@ -203,31 +203,25 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         chatUpdateReadApi = new ChatUpdateReadApi();
         Map<String, Object> maps = new HashMap<String, Object>();
         maps.put("id", mId);
-        chatUpdateReadApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    ChatUpdateReadInfo chatUpdateReadInfo = JSONUtil.TransformSingleBean(serverData.data, ChatUpdateReadInfo.class);
-                    //通知列表页更新未读消息数角标
-                    NoreadAndChatidInfo noreadAndChatidInfo = new NoreadAndChatidInfo();
-                    noreadAndChatidInfo.setId(mId);
-                    noreadAndChatidInfo.setNoread(chatUpdateReadInfo.getNoread());
-                    EventBus.getDefault().post(new Event<NoreadAndChatidInfo>(2,noreadAndChatidInfo));
-                }
+        chatUpdateReadApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                ChatUpdateReadInfo chatUpdateReadInfo = JSONUtil.TransformSingleBean(serverData.data, ChatUpdateReadInfo.class);
+                //通知列表页更新未读消息数角标
+                NoreadAndChatidInfo noreadAndChatidInfo = new NoreadAndChatidInfo();
+                noreadAndChatidInfo.setId(mId);
+                noreadAndChatidInfo.setNoread(chatUpdateReadInfo.getNoread());
+                EventBus.getDefault().post(new Event<>(2, noreadAndChatidInfo));
             }
         });
     }
 
     private void initListener() {
-        ll_input.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (!isFlag) {
-                    Util.showKeyBoard(mContext, ll_input);
-                    isFlag = true;
-                }
-                return false;
+        ll_input.setOnTouchListener((v, event) -> {
+            if (!isFlag) {
+                Util.showKeyBoard(mContext, ll_input);
+                isFlag = true;
             }
+            return false;
         });
 
         SoftKeyBoardListener.setListener(mContext, new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
@@ -241,18 +235,15 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             }
         });
 
-        mess_et.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (!TextUtils.isEmpty(mess_et.getText().toString().trim())) {
-                        sendMessage(mess_et.getText().toString().trim());
-                        mess_et.setText("");
-                    }
-                    return true;
+        mess_et.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (!TextUtils.isEmpty(mess_et.getText().toString().trim())) {
+                    sendMessage(mess_et.getText().toString().trim());
+                    mess_et.setText("");
                 }
-                return false;
+                return true;
             }
+            return false;
         });
         content_lv.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
@@ -283,22 +274,19 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         Map<String, Object> maps = new HashMap<String, Object>();
         maps.put("id", mId);
         chatIndexApi = new ChatIndexApi();
-        chatIndexApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    AppLog.i("获取页面信息成功");
-                    ChatIndexInfo chatIndexInfo = JSONUtil.TransformSingleBean(serverData.data, ChatIndexInfo.class);
-                    tv_name.setText(chatIndexInfo.getTitle());
-                    tv_type.setText(chatIndexInfo.getSubtitle());
-                    //获取聊天信息
-                    getMessageInfo();
-                    //更新未读消息数
-                    upDataChatRead();
-                } else {
-                    AppLog.i("获取页面信息失败");
-                    ToastUtils.toast(mContext, serverData.message).show();
-                }
+        chatIndexApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                AppLog.i("获取页面信息成功");
+                ChatIndexInfo chatIndexInfo = JSONUtil.TransformSingleBean(serverData.data, ChatIndexInfo.class);
+                tv_name.setText(chatIndexInfo.getTitle());
+                tv_type.setText(chatIndexInfo.getSubtitle());
+                //获取聊天信息
+                getMessageInfo();
+                //更新未读消息数
+                upDataChatRead();
+            } else {
+                AppLog.i("获取页面信息失败");
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -310,41 +298,38 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         maps.put("page", "1");
 //        maps.put("msgtime", mDateTime);
         getMessageApi = new GetMessageApi();
-        getMessageApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    mDataList = JSONUtil.jsonToArrayList(serverData.data, MessageBean.DataBean.class);
-                    if (CollectionUtils.isNotEmpty(mDataList)) {
-                        mDateTime = mDataList.get(0).getDateTime();
-                        for (MessageBean.DataBean dataBean : mDataList) {
-                            dataBean.handlerMessageTypeAndViewStatus();
-                        }
-                        tblist = mDataList;
-                        if (tblist.size() <= 4) {
-                            //列表布局正向显示(从上到下)
-                            content_lv.setLinearLayout(false);
-                        } else {
-                            //列表布局反向显示(从下到上)
-                            content_lv.setLinearLayout(true);
-                        }
-                        chatAdapter = new ChatAdapter(mContext, tblist);
-                        content_lv.setAdapter(chatAdapter);
-                    } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                content_lv.setLinearLayout(false);
-                                if (chatAdapter == null) {
-                                    chatAdapter = new ChatAdapter(mContext, tblist);
-                                }
-                                content_lv.setAdapter(chatAdapter);
-                            }
-                        });
+        getMessageApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                mDataList = JSONUtil.jsonToArrayList(serverData.data, MessageBean.DataBean.class);
+                if (CollectionUtils.isNotEmpty(mDataList)) {
+                    mDateTime = mDataList.get(0).getDateTime();
+                    for (MessageBean.DataBean dataBean : mDataList) {
+                        dataBean.handlerMessageTypeAndViewStatus();
                     }
+                    tblist = mDataList;
+                    if (tblist.size() <= 4) {
+                        //列表布局正向显示(从上到下)
+                        content_lv.setLinearLayout(false);
+                    } else {
+                        //列表布局反向显示(从下到上)
+                        content_lv.setLinearLayout(true);
+                    }
+                    chatAdapter = new ChatAdapter(mContext, tblist);
+                    content_lv.setAdapter(chatAdapter);
                 } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            content_lv.setLinearLayout(false);
+                            if (chatAdapter == null) {
+                                chatAdapter = new ChatAdapter(mContext, tblist);
+                            }
+                            content_lv.setAdapter(chatAdapter);
+                        }
+                    });
                 }
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -357,44 +342,35 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         maps.put("class_id", "1");
         maps.put("content", content);
         chatSendApi = new ChatSendApi();
-        chatSendApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    WebSocketBean webSocketBean = JSONUtil.TransformSingleBean(serverData.data, WebSocketBean.class);
-                    Calendar cal = Calendar.getInstance();
-                    String timeSet = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
-                    dataBean = new MessageBean.DataBean(webSocketBean.getFrom_client_img(), content, 0, ChatAdapter.TO_USER_MSG, Util.getSecondTimestamp() + "", timeSet);
-                    dataBean.setType(ChatAdapter.TO_USER_MSG);
-                    dataBean.setContent(content);
-                    tblist.add(dataBean);
-                    if(tblist.size() < 2){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                content_lv.setLinearLayout(false);
-                                if(chatAdapter == null){
-                                    chatAdapter = new ChatAdapter(mContext,tblist);
-                                }
-                            }
-                        });
-                    }
-                    mHandler.sendEmptyMessage(SEND_OK);
-                }else{
-                    dataBean.setMessageStatus(-1);
-                    if(chatAdapter != null){
-                        chatAdapter.notifyDataSetChanged();
-                    }
+        chatSendApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                WebSocketBean webSocketBean = JSONUtil.TransformSingleBean(serverData.data, WebSocketBean.class);
+                Calendar cal = Calendar.getInstance();
+                String timeSet = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+                dataBean = new MessageBean.DataBean(webSocketBean.getFrom_client_img(), content, 0, ChatAdapter.TO_USER_MSG, Util.getSecondTimestamp() + "", timeSet);
+                dataBean.setType(ChatAdapter.TO_USER_MSG);
+                dataBean.setContent(content);
+                tblist.add(dataBean);
+                if(tblist.size() < 2){
+                    runOnUiThread(() -> {
+                        content_lv.setLinearLayout(false);
+                        if(chatAdapter == null){
+                            chatAdapter = new ChatAdapter(mContext,tblist);
+                        }
+                    });
                 }
-            }
-        });
-        NetWork.getInstance().setOnErrorCallBack(new NetWork.OnErrorCallBack() {
-            @Override
-            public void onErrorCallBack(Call call, Response response, Exception e) {
+                mHandler.sendEmptyMessage(SEND_OK);
+            }else{
                 dataBean.setMessageStatus(-1);
                 if(chatAdapter != null){
                     chatAdapter.notifyDataSetChanged();
                 }
+            }
+        });
+        NetWork.getInstance().setOnErrorCallBack((call, response, e) -> {
+            dataBean.setMessageStatus(-1);
+            if(chatAdapter != null){
+                chatAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -478,37 +454,34 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             params.put("msgtime", mDateTime);
         }
         params.put("group_id", mGroupId);
-        new GetMessageApi().getCallBack(mContext, params, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData data) {
-                if ("1".equals(data.code)) {
-                    ArrayList<MessageBean.DataBean> dataBeen = JSONUtil.jsonToArrayList(data.data, MessageBean.DataBean.class);
-                    if (CollectionUtils.isNotEmpty(dataBeen)) {
-                        mDateTime = dataBeen.get(0).getDateTime();
-                        for (MessageBean.DataBean dataBean : dataBeen) {
-                            dataBean.handlerMessageTypeAndViewStatus();
-                        }
-                        pagelist = dataBeen;
-                        position = pagelist.size();
-                        if (pagelist.size() != 0) {
-                            tblist.addAll(0, pagelist);
-                            Message message = mHandler.obtainMessage();
-                            message.obj = tblist;
-                            message.what = PULL_TO_REFRESH_DOWN;
-                            mHandler.sendMessage(message);
-                            page = (Integer.parseInt(page)) + 1 + "";
-                        } else {
-                            if ("2".equals(page)) {
-                                content_lv.setPullLoadMoreCompleted();
-                            }
-                        }
+        new GetMessageApi().getCallBack(mContext, params, (BaseCallBackListener<ServerData>) data -> {
+            if ("1".equals(data.code)) {
+                ArrayList<MessageBean.DataBean> dataBeen = JSONUtil.jsonToArrayList(data.data, MessageBean.DataBean.class);
+                if (CollectionUtils.isNotEmpty(dataBeen)) {
+                    mDateTime = dataBeen.get(0).getDateTime();
+                    for (MessageBean.DataBean dataBean : dataBeen) {
+                        dataBean.handlerMessageTypeAndViewStatus();
+                    }
+                    pagelist = dataBeen;
+                    position = pagelist.size();
+                    if (pagelist.size() != 0) {
+                        tblist.addAll(0, pagelist);
+                        Message message = mHandler.obtainMessage();
+                        message.obj = tblist;
+                        message.what = PULL_TO_REFRESH_DOWN;
+                        mHandler.sendMessage(message);
+                        page = (Integer.parseInt(page)) + 1 + "";
                     } else {
-                        content_lv.setPullLoadMoreCompleted();
-                        ToastUtils.toast(mContext, "已加载全部历史消息").show();
+                        if ("2".equals(page)) {
+                            content_lv.setPullLoadMoreCompleted();
+                        }
                     }
                 } else {
-                    ToastUtils.toast(mContext, data.message).show();
+                    content_lv.setPullLoadMoreCompleted();
+                    ToastUtils.toast(mContext, "已加载全部历史消息").show();
                 }
+            } else {
+                ToastUtils.toast(mContext, data.message).show();
             }
         });
     }

@@ -10,17 +10,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.adapter.MessageListAdapter;
 import com.dejia.anju.api.GetMessageListApi;
+import com.dejia.anju.api.MessageCountApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.mannger.WebUrlJumpManager;
+import com.dejia.anju.model.MessageCountInfo;
 import com.dejia.anju.model.MessageListData;
 import com.dejia.anju.model.NoreadAndChatidInfo;
 import com.dejia.anju.model.UserInfo;
@@ -91,6 +91,12 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     private HashMap<String, Object> map = new HashMap<>();
     private UserInfo userInfo;
 
+    public static MessageFragment newInstance() {
+        Bundle args = new Bundle();
+        MessageFragment fragment = new MessageFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -128,14 +134,6 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
-
-    public static MessageFragment newInstance() {
-        Bundle args = new Bundle();
-        MessageFragment fragment = new MessageFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,6 +151,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onResume() {
         super.onResume();
+        getMessageNum();
         if (!NotificationManagerCompat.from(mContext).areNotificationsEnabled()) {
             ll_notice.setVisibility(View.VISIBLE);
         } else {
@@ -193,6 +192,41 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                 page = 1;
                 messageListAdapter = null;
                 getMessageList();
+                getMessageNum();
+            }
+        });
+    }
+
+    //请求各种消息数
+    private void getMessageNum() {
+        new MessageCountApi().getCallBack(mContext, new HashMap<>(), (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                KVUtils.getInstance().encode("message_count", JSONUtil.TransformSingleBean(serverData.data, MessageCountInfo.class));
+            }
+            MessageCountInfo messageCountInfo = KVUtils.getInstance().decodeParcelable("message_count", MessageCountInfo.class);
+            if (messageCountInfo != null && messageCountInfo.getChat_num() > 0) {
+                item_inform_tv1.setText(messageCountInfo.getChat_num() + "");
+                item_inform_tv1.setVisibility(View.VISIBLE);
+            } else {
+                item_inform_tv1.setVisibility(View.GONE);
+            }
+            if (messageCountInfo != null && messageCountInfo.getAt_me_num() > 0) {
+                item_inform_tv2.setText(messageCountInfo.getAt_me_num() + "");
+                item_inform_tv2.setVisibility(View.VISIBLE);
+            } else {
+                item_inform_tv2.setVisibility(View.GONE);
+            }
+            if (messageCountInfo != null && messageCountInfo.getZan_me_num() > 0) {
+                item_inform_tv3.setText(messageCountInfo.getZan_me_num() + "");
+                item_inform_tv3.setVisibility(View.VISIBLE);
+            } else {
+                item_inform_tv3.setVisibility(View.GONE);
+            }
+            if (messageCountInfo != null && messageCountInfo.getNotice_num() > 0) {
+                item_inform_tv4.setText(messageCountInfo.getNotice_num() + "");
+                item_inform_tv4.setVisibility(View.VISIBLE);
+            } else {
+                item_inform_tv4.setVisibility(View.GONE);
             }
         });
     }
@@ -201,31 +235,28 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     private void getMessageList() {
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("page", page);
-        new GetMessageListApi().getCallBack(mContext, map, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    if (serverData.data != null) {
-                        messageListData = JSONUtil.jsonToArrayList(serverData.data, MessageListData.class);
-                        smartRefreshLayout.finishRefresh();
-                        if (messageListData.size() == 0) {
-                            if (smartRefreshLayout == null) {
-                                return;
-                            }
-                            smartRefreshLayout.finishLoadMoreWithNoMoreData();
-                        } else {
-                            if (smartRefreshLayout == null) {
-                                return;
-                            }
-                            smartRefreshLayout.finishLoadMore();
+        new GetMessageListApi().getCallBack(mContext, map, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                if (serverData.data != null) {
+                    messageListData = JSONUtil.jsonToArrayList(serverData.data, MessageListData.class);
+                    smartRefreshLayout.finishRefresh();
+                    if (messageListData.size() == 0) {
+                        if (smartRefreshLayout == null) {
+                            return;
                         }
-                        setMessageListAdapter();
-                    } else {
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                    } else {
+                        if (smartRefreshLayout == null) {
+                            return;
+                        }
+                        smartRefreshLayout.finishLoadMore();
                     }
-                }else{
-                    ToastUtils.toast(mContext,serverData.message).show();
+                    setMessageListAdapter();
+                } else {
+                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
                 }
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -242,14 +273,9 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             rv.setLayoutManager(ymLinearLayoutManager);
             messageListAdapter = new MessageListAdapter(mContext, R.layout.item_message_chat_list, messageListData);
             rv.setAdapter(messageListAdapter);
-            messageListAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                    ChatActivity.invoke(mContext
-                            , messageListAdapter.getData().get(position).getId()
-                            , messageListAdapter.getData().get(position).getGroupUserId());
-                }
-            });
+            messageListAdapter.setOnItemClickListener((adapter, view, position) -> ChatActivity.invoke(mContext
+                    , messageListAdapter.getData().get(position).getId()
+                    , messageListAdapter.getData().get(position).getGroupUserId()));
         } else {
             //添加
             messageListAdapter.addData(messageListData);

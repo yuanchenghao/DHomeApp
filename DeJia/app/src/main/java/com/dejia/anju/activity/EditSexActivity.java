@@ -228,20 +228,17 @@ public class EditSexActivity extends BaseActivity implements OnClickListener {
         setUserApi = new SetUserApi();
         HashMap<String, Object> maps = new HashMap<>();
         maps.put("sex", select);
-        setUserApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
-                    userInfo.setSex(userInfo.getSex());
-                    KVUtils.getInstance().encode("user", userInfo);
-                    //通知外部刷新
-                    EventBus.getDefault().post(new Event<>(3));
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
-                }
-                finish();
+        setUserApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                userInfo.setSex(userInfo.getSex());
+                KVUtils.getInstance().encode("user", userInfo);
+                //通知外部刷新
+                EventBus.getDefault().post(new Event<>(3));
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
+            finish();
         });
     }
 

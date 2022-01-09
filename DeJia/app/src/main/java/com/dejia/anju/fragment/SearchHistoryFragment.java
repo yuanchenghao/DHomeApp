@@ -71,24 +71,18 @@ public class SearchHistoryFragment extends BaseFragment {
             search_init_record_recycler.setMaxLine(2);
             SearchInitFlowLayout mSearchInitFlowLayout = new SearchInitFlowLayout(mContext, search_init_record_recycler, hsdatas1);
             //历史记录点击事件
-            mSearchInitFlowLayout.setClickCallBack(new SearchInitFlowLayout.ClickCallBack() {
-                @Override
-                public void onClick(View v, int pos, String key) {
-                    if (onEventClickListener != null) {
-                        onEventClickListener.onHistoryClick(v, key);
-                    }
+            mSearchInitFlowLayout.setClickCallBack((v, pos, key) -> {
+                if (onEventClickListener != null) {
+                    onEventClickListener.onHistoryClick(v, key);
                 }
             });
             //清除历史记录
-            search_init_record_remove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    List<HistorySearchWords> hsdatas = mKjdb.findAll(HistorySearchWords.class);
-                    for (int i = 0; i < hsdatas.size(); i++) {
-                        mKjdb.delete(hsdatas.get(i));
-                    }
-                    search_init_record.setVisibility(View.GONE);
+            search_init_record_remove.setOnClickListener(v -> {
+                List<HistorySearchWords> hsdatas2 = mKjdb.findAll(HistorySearchWords.class);
+                for (int i = 0; i < hsdatas2.size(); i++) {
+                    mKjdb.delete(hsdatas2.get(i));
                 }
+                search_init_record.setVisibility(View.GONE);
             });
         } else {
             search_init_record.setVisibility(View.GONE);

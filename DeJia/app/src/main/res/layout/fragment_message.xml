@@ -11,22 +11,6 @@
         android:layout_height="50dp"
         android:orientation="vertical">
 
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/ll_back"-->
-        <!--            android:layout_width="44dp"-->
-        <!--            android:orientation="horizontal"-->
-        <!--            android:layout_height="match_parent">-->
-
-        <!--        <ImageView-->
-        <!--            android:layout_width="@dimen/dp_24"-->
-        <!--            android:layout_height="@dimen/dp_24"-->
-        <!--            android:layout_centerVertical="true"-->
-        <!--            android:src="@mipmap/back_black"-->
-        <!--            android:layout_gravity="center_vertical"-->
-        <!--            android:layout_marginLeft="@dimen/dp_16" />-->
-
-        <!--        </LinearLayout>-->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

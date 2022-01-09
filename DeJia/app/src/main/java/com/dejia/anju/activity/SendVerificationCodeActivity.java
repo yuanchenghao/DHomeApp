@@ -143,12 +143,9 @@ public class SendVerificationCodeActivity extends BaseActivity {
                 }
                 HashMap<String, Object> maps = new HashMap<>();
                 maps.put("phone", ed.getText().toString().trim());
-                new GetCodeApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                    @Override
-                    public void onSuccess(ServerData serverData) {
-                        if ("1".equals(serverData.code)) {
-                            VerificationCodeActivity.invoke(mContext, ed.getText().toString().trim());
-                        }
+                new GetCodeApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                    if ("1".equals(serverData.code)) {
+                        VerificationCodeActivity.invoke(mContext, ed.getText().toString().trim());
                     }
                 });
                 break;
@@ -277,12 +274,7 @@ public class SendVerificationCodeActivity extends BaseActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (inOrOut) {
-                    view.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            translationAnimation(view, false);
-                        }
-                    }, 2000);
+                    view.postDelayed(() -> translationAnimation(view, false), 2000);
                 } else {
                     view.setVisibility(View.GONE);
                 }

@@ -168,17 +168,14 @@ public class MyFragment extends BaseFragment {
     private void getUserInfo() {
         HashMap<String, Object> maps = new HashMap<>();
         maps.put("id", userInfo.getId());
-        new GetUserInfoApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    UserInfo user = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
-                    KVUtils.getInstance().encode("user", user);
-                    userInfo = user;
-                    upDataUi();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
-                }
+        new GetUserInfoApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                UserInfo user = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                KVUtils.getInstance().encode("user", user);
+                userInfo = user;
+                upDataUi();
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -188,40 +185,37 @@ public class MyFragment extends BaseFragment {
         HashMap<String, Object> maps = new HashMap<>();
         maps.put("id", userInfo.getId());
         maps.put("page", page);
-        new GetMyArticleApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if (refresh_layout != null) {
-                    refresh_layout.finishRefresh();
-                }
-                if ("1".equals(serverData.code)) {
-                    if (serverData.data != null) {
-                        List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
-                        if (list != null) {
-                            if (list.size() == 0) {
-                                if (refresh_layout != null) {
-                                    refresh_layout.finishLoadMoreWithNoMoreData();
-                                }
-                            } else {
-                                if (refresh_layout != null) {
-                                    refresh_layout.finishLoadMore();
-                                }
+        new GetMyArticleApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if (refresh_layout != null) {
+                refresh_layout.finishRefresh();
+            }
+            if ("1".equals(serverData.code)) {
+                if (serverData.data != null) {
+                    List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
+                    if (list != null) {
+                        if (list.size() == 0) {
+                            if (refresh_layout != null) {
+                                refresh_layout.finishLoadMoreWithNoMoreData();
                             }
-                            setMyArticleList(list);
                         } else {
-                            refresh_layout.finishLoadMoreWithNoMoreData();
+                            if (refresh_layout != null) {
+                                refresh_layout.finishLoadMore();
+                            }
                         }
-                        if (list != null && list.size() > 0 && page == 1) {
-                            tv_my_article.setVisibility(View.GONE);
-                            rv.setVisibility(View.VISIBLE);
-                        }
+                        setMyArticleList(list);
                     } else {
                         refresh_layout.finishLoadMoreWithNoMoreData();
-                        ToastUtils.toast(mContext, serverData.message).show();
+                    }
+                    if (list != null && list.size() > 0 && page == 1) {
+                        tv_my_article.setVisibility(View.GONE);
+                        rv.setVisibility(View.VISIBLE);
                     }
                 } else {
+                    refresh_layout.finishLoadMoreWithNoMoreData();
                     ToastUtils.toast(mContext, serverData.message).show();
                 }
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -238,12 +232,7 @@ public class MyFragment extends BaseFragment {
             rv.setLayoutManager(ymLinearLayoutManager);
             myArticleAdapter = new MyArticleAdapter(mContext, list);
             rv.setAdapter(myArticleAdapter);
-            myArticleAdapter.setEventListener(new MyArticleAdapter.EventListener() {
-                @Override
-                public void onItemListener(View v, MyArticleInfo data, int pos) {
-                    WebUrlJumpManager.getInstance().invoke(mContext, list.get(pos).getUrl(), null);
-                }
-            });
+            myArticleAdapter.setEventListener((v, data, pos) -> WebUrlJumpManager.getInstance().invoke(mContext, list.get(pos).getUrl(), null));
         } else {
             myArticleAdapter.addData(list);
         }

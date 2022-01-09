@@ -155,17 +155,14 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
     public void postIslogout() {
         userLogoutApi = new UserLogoutApi();
         HashMap<String, Object> maps = new HashMap<>();
-        userLogoutApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    DialogUtils.closeDialog();
-                    //注销成功
-                    ll_layout1.setVisibility(View.GONE);
-                    ll_layout3.setVisibility(View.VISIBLE);
-                } else {
-                    Toast.makeText(mContext, serverData.message, Toast.LENGTH_SHORT).show();
-                }
+        userLogoutApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                DialogUtils.closeDialog();
+                //注销成功
+                ll_layout1.setVisibility(View.GONE);
+                ll_layout3.setVisibility(View.VISIBLE);
+            } else {
+                Toast.makeText(mContext, serverData.message, Toast.LENGTH_SHORT).show();
             }
         });
     }

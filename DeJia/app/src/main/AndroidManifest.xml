@@ -151,6 +151,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+        <!-- 解决 java.lang.NoClassDefFoundError: Failed resolution of: Lorg/apache/http/util/-->
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />

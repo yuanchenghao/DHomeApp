@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -173,13 +174,10 @@ public class OneClickLoginActivity2 extends Activity {
                 .setPrivacyOffsetY(35).build();
         JVerificationInterface.setCustomUIWithConfig(uiConfig);
 
-        JVerificationInterface.preLogin(this, 5000, new PreLoginListener() {
-            @Override
-            public void onResult(final int code, final String content) {
-                AppLog.i("[" + code + "]message=" + content);
-                if (code == 7000) {
-                    autoAuthLogin(OneClickLoginActivity2.this);
-                }
+        JVerificationInterface.preLogin(this, 5000, (code, content) -> {
+            AppLog.i("[" + code + "]message=" + content);
+            if (code == 7000) {
+                autoAuthLogin(OneClickLoginActivity2.this);
             }
         });
     }
@@ -239,41 +237,38 @@ public class OneClickLoginActivity2 extends Activity {
 
 
     private void loginHttp(HashMap<String, Object> hashMap) {
-        new OneClickLoginApi().getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
-                    KVUtils.getInstance().encode(Constants.UID, userInfo.getId());
-                    KVUtils.getInstance().encode("user", userInfo);
-                    Util.setYuemeiInfo(userInfo.getDejia_info());
-                    String registrationID = JPushInterface.getRegistrationID(mContext);
-                    IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
-                    IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(baseTestService);
-                    HashMap<String, Object> maps = new HashMap<>();
-                    maps.put("reg_id", registrationID);
-                    maps.put("location_city", Util.getCity());
-                    maps.put("brand", android.os.Build.BRAND + "_" + android.os.Build.MODEL);
-                    maps.put("system", android.os.Build.VERSION.RELEASE);
-                    maps.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled()) ? "0" : "1");
-                    new BindJPushApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                        @Override
-                        public void onSuccess(ServerData serverData) {
-                            if ("1".equals(serverData.code)) {
-                                AppLog.i("message===" + serverData.message);
-                            }
+        new OneClickLoginApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                KVUtils.getInstance().encode(Constants.UID, userInfo.getId());
+                KVUtils.getInstance().encode("user", userInfo);
+                Util.setYuemeiInfo(userInfo.getDejia_info());
+                String registrationID = JPushInterface.getRegistrationID(mContext);
+                IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
+                IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(baseTestService);
+                HashMap<String, Object> maps = new HashMap<>();
+                maps.put("reg_id", registrationID);
+                maps.put("location_city", Util.getCity());
+                maps.put("brand", Build.BRAND + "_" + Build.MODEL);
+                maps.put("system", Build.VERSION.RELEASE);
+                maps.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled()) ? "0" : "1");
+                new BindJPushApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
+                    @Override
+                    public void onSuccess(ServerData serverData) {
+                        if ("1".equals(serverData.code)) {
+                            AppLog.i("message===" + serverData.message);
                         }
-                    });
-                    //清空预取号缓存
-                    JVerificationInterface.clearPreLoginCache();
-                    //发登录广播
-                    EventBus.getDefault().post(new Event<>(1));
-                    ToastUtils.toast(mContext, "登录成功").show();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
-                }
-                finished();
+                    }
+                });
+                //清空预取号缓存
+                JVerificationInterface.clearPreLoginCache();
+                //发登录广播
+                EventBus.getDefault().post(new Event<>(1));
+                ToastUtils.toast(mContext, "登录成功").show();
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
+            finished();
         });
     }
 

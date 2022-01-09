@@ -164,7 +164,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     } else {
                         cityPopWindow = new BaseCityPopWindow(mContext, ll_root, cityInfo);
                         cityPopWindow.showPop(statusbarHeight);
-                        cityPopWindow.setOnAllClickListener((BaseCityPopWindow.OnAllClickListener) city -> {
+                        cityPopWindow.setOnAllClickListener(city -> {
                             if (!TextUtils.isEmpty(city)) {
                                 cityPopWindow.dismiss();
                                 tv_city.setText(city);

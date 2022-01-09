@@ -65,15 +65,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private void setHistoryFragment() {
         searchHistoryFragment = SearchHistoryFragment.newInstance();
         setActivityFragment(R.id.search_result_fragment, searchHistoryFragment);
-        searchHistoryFragment.setOnEventClickListener(new SearchHistoryFragment.OnEventClickListener() {
-            @Override
-            public void onHistoryClick(View v, String key) {
-                Util.hideSoftKeyboard(mContext);
-                ed.setText(key);
+        searchHistoryFragment.setOnEventClickListener((v, key) -> {
+            Util.hideSoftKeyboard(mContext);
+            ed.setText(key);
 //                ed.setSelection(key.length());
-                ed.clearFocus();
-                setResultFragment();
-            }
+            ed.clearFocus();
+            setResultFragment();
         });
     }
 
@@ -106,25 +103,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
             }
         });
-        ed.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (!TextUtils.isEmpty(ed.getText().toString().trim())) {
-                        setResultFragment();
-                    }
-                    return true;
+        ed.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (!TextUtils.isEmpty(ed.getText().toString().trim())) {
+                    setResultFragment();
                 }
-                return false;
+                return true;
             }
+            return false;
         });
-        ed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus && isResultVisable) {
-                    isResultVisable = false;
-                    setHistoryFragment();
-                }
+        ed.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus && isResultVisable) {
+                isResultVisable = false;
+                setHistoryFragment();
             }
         });
     }

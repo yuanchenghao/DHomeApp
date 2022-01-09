@@ -347,8 +347,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void getMessageNum() {
-        HashMap<String,Object> maps = new HashMap<>();
-        new MessageCountApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+        new MessageCountApi().getCallBack(mContext, new HashMap<>(), (BaseCallBackListener<ServerData>) serverData -> {
             if("1".equals(serverData.code)){
                 MessageCountInfo messageCountInfo = JSONUtil.TransformSingleBean(serverData.data,MessageCountInfo.class);
                 KVUtils.getInstance().encode("message_count",messageCountInfo);

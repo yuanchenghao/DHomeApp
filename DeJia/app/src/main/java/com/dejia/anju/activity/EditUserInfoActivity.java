@@ -114,12 +114,9 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
     private void clearAllCacheDir() {
         if (mContext != null) {
             if (PermissionChecker.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                PictureCacheManager.deleteAllCacheDirFile(mContext, new OnCallbackListener<String>() {
-                    @Override
-                    public void onCall(String absolutePath) {
-                        new PictureMediaScannerConnection(mContext, absolutePath);
-                        AppLog.i("刷新图库:" + absolutePath);
-                    }
+                PictureCacheManager.deleteAllCacheDirFile(mContext, absolutePath -> {
+                    new PictureMediaScannerConnection(mContext, absolutePath);
+                    AppLog.i("刷新图库:" + absolutePath);
                 });
             } else {
                 PermissionChecker.requestPermissions(mContext, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -211,13 +208,10 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = 0.7f;
         getWindow().setAttributes(lp);
-        selectUserAvatarPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                WindowManager.LayoutParams lp = getWindow().getAttributes();
-                lp.alpha = 1f;
-                getWindow().setAttributes(lp);
-            }
+        selectUserAvatarPopWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams lp1 = getWindow().getAttributes();
+            lp1.alpha = 1f;
+            getWindow().setAttributes(lp1);
         });
         selectUserAvatarPopWindow.showAtLocation(ll_root, Gravity.BOTTOM, 0, 0);
         selectUserAvatarPopWindow.setOnTextClickListener(new SelectUserAvatarPopWindow.OnTextClickListener() {
@@ -322,19 +316,16 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
             Map<String, Object> maps = new HashMap<>();
             HttpParams params = new HttpParams();
             params.put("avatar", new File(path));
-            upLoadImgApi.getCallBack(mContext, maps, params, new BaseCallBackListener<ServerData>() {
-                @Override
-                public void onSuccess(ServerData serverData) {
-                    if ("1".equals(serverData.code)) {
-                        List<UpLoadImgInfo> upLoadImgInfo = JSONUtil.jsonToArrayList(serverData.data, UpLoadImgInfo.class);
-                        if (upLoadImgInfo != null && upLoadImgInfo.size() > 0) {
-                            setUserInfo(upLoadImgInfo.get(0).getPost_img_url());
-                        } else {
-                            ToastUtils.toast(mContext, "参数错误请重试").show();
-                        }
+            upLoadImgApi.getCallBack(mContext, maps, params, (BaseCallBackListener<ServerData>) serverData -> {
+                if ("1".equals(serverData.code)) {
+                    List<UpLoadImgInfo> upLoadImgInfo = JSONUtil.jsonToArrayList(serverData.data, UpLoadImgInfo.class);
+                    if (upLoadImgInfo != null && upLoadImgInfo.size() > 0) {
+                        setUserInfo(upLoadImgInfo.get(0).getPost_img_url());
                     } else {
-                        ToastUtils.toast(mContext, serverData.message).show();
+                        ToastUtils.toast(mContext, "参数错误请重试").show();
                     }
+                } else {
+                    ToastUtils.toast(mContext, serverData.message).show();
                 }
             });
         } else {
@@ -346,27 +337,24 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
     private void setUserInfo(String post_img_url) {
         HashMap<String, Object> maps = new HashMap<>();
         maps.put("avatar", post_img_url);
-        new SetUserApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    UserInfo UserInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
-                    userInfo.setImg(UserInfo.getImg());
-                    KVUtils.getInstance().encode("user", userInfo);
-                    if (!TextUtils.isEmpty(userInfo.getImg())) {
-                        iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(userInfo.getImg()).setAutoPlayAnimations(true).build());
-                    } else {
-                        iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
-                    }
-                    //通知外部刷新
-                    EventBus.getDefault().post(new Event<>(3));
-                    ToastUtils.toast(mContext, "上传成功了哦~").show();
+        new SetUserApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                UserInfo UserInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                userInfo.setImg(UserInfo.getImg());
+                KVUtils.getInstance().encode("user", userInfo);
+                if (!TextUtils.isEmpty(userInfo.getImg())) {
+                    iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(userInfo.getImg()).setAutoPlayAnimations(true).build());
                 } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
+                    iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
                 }
-                //清除缓存
-                PictureCacheManager.deleteCacheDirFile(mContext, PictureMimeType.ofImage());
+                //通知外部刷新
+                EventBus.getDefault().post(new Event<>(3));
+                ToastUtils.toast(mContext, "上传成功了哦~").show();
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
+            //清除缓存
+            PictureCacheManager.deleteCacheDirFile(mContext, PictureMimeType.ofImage());
         });
     }
 }

@@ -106,7 +106,7 @@ public class SearchResultFragment extends BaseWebViewFragment {
         if (mWebView != null && mWebViewData != null) {
             // 跳转并进行页面加载
             if (!TextUtils.isEmpty(linkUrl)) {
-                loadUrl(linkUrl);
+                postUrl(linkUrl);
             }
         }
     }
@@ -139,7 +139,7 @@ public class SearchResultFragment extends BaseWebViewFragment {
             if (parent != null) {
                 ((ViewGroup) parent).removeView(mWebView);
             }
-            loadUrl("about:blank");
+            postUrl("about:blank");
             mWebView.stopLoading();
             mWebView.clearFormData();
             mWebView.clearMatches();

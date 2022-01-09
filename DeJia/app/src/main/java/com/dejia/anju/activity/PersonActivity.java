@@ -19,11 +19,13 @@ import com.dejia.anju.api.GetUserInfoApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.mannger.WebUrlJumpManager;
+import com.dejia.anju.model.MessageShowInfo;
 import com.dejia.anju.model.MyArticleInfo;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.YMLinearLayoutManager;
@@ -158,40 +160,37 @@ public class PersonActivity extends BaseActivity {
         HashMap<String, Object> maps = new HashMap<>();
         maps.put("id", userId);
         maps.put("page", page);
-        new GetMyArticleApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if (refresh_layout !=  null) {
-                    refresh_layout.finishRefresh();
-                }
-                if ("1".equals(serverData.code)) {
-                    if(serverData.data != null){
-                        List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
-                        if (list != null) {
-                            if (list.size() == 0) {
-                                if (refresh_layout != null) {
-                                    refresh_layout.finishLoadMoreWithNoMoreData();
-                                }
-                            } else {
-                                if (refresh_layout != null) {
-                                    refresh_layout.finishLoadMore();
-                                }
+        new GetMyArticleApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if (refresh_layout != null) {
+                refresh_layout.finishRefresh();
+            }
+            if ("1".equals(serverData.code)) {
+                if (serverData.data != null) {
+                    List<MyArticleInfo> list = JSONUtil.jsonToArrayList(serverData.data, MyArticleInfo.class);
+                    if (list != null) {
+                        if (list.size() == 0) {
+                            if (refresh_layout != null) {
+                                refresh_layout.finishLoadMoreWithNoMoreData();
                             }
-                            setMyArticleList(list);
                         } else {
-                            refresh_layout.finishLoadMoreWithNoMoreData();
+                            if (refresh_layout != null) {
+                                refresh_layout.finishLoadMore();
+                            }
                         }
-                        if (list != null && list.size() > 0 && page == 1) {
-                            tv_my_article.setVisibility(View.GONE);
-                            rv.setVisibility(View.VISIBLE);
-                        }
-                    }else{
+                        setMyArticleList(list);
+                    } else {
                         refresh_layout.finishLoadMoreWithNoMoreData();
-                        ToastUtils.toast(mContext, serverData.message).show();
+                    }
+                    if (list != null && list.size() > 0 && page == 1) {
+                        tv_my_article.setVisibility(View.GONE);
+                        rv.setVisibility(View.VISIBLE);
                     }
                 } else {
+                    refresh_layout.finishLoadMoreWithNoMoreData();
                     ToastUtils.toast(mContext, serverData.message).show();
                 }
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -208,12 +207,7 @@ public class PersonActivity extends BaseActivity {
             rv.setLayoutManager(ymLinearLayoutManager);
             myArticleAdapter = new MyArticleAdapter(mContext, list);
             rv.setAdapter(myArticleAdapter);
-            myArticleAdapter.setEventListener(new MyArticleAdapter.EventListener() {
-                @Override
-                public void onItemListener(View v, MyArticleInfo data, int pos) {
-                    WebUrlJumpManager.getInstance().invoke(mContext, list.get(pos).getUrl(), null);
-                }
-            });
+            myArticleAdapter.setEventListener((v, data, pos) -> WebUrlJumpManager.getInstance().invoke(mContext, list.get(pos).getUrl(), null));
         } else {
             myArticleAdapter.addData(list);
         }
@@ -223,16 +217,13 @@ public class PersonActivity extends BaseActivity {
     private void getUserInfo() {
         HashMap<String, Object> maps = new HashMap<>();
         maps.put("id", userId);
-        new GetUserInfoApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if ("1".equals(serverData.code)) {
-                    UserInfo user = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
-                    userInfo = user;
-                    upDataUi();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
-                }
+        new GetUserInfoApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                UserInfo user = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                userInfo = user;
+                upDataUi();
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -249,7 +240,12 @@ public class PersonActivity extends BaseActivity {
                 tv_renzheng_title2.setText("申请认证");
             } else {
                 //他人
-                iv_share.setVisibility(View.VISIBLE);
+                MessageShowInfo messageShowInfo = KVUtils.getInstance().decodeParcelable("message_show", MessageShowInfo.class);
+                if (messageShowInfo != null && !TextUtils.isEmpty(messageShowInfo.getShare()) && !messageShowInfo.getShare().equals("0")) {
+                    iv_share.setVisibility(View.VISIBLE);
+                } else {
+                    iv_share.setVisibility(View.GONE);
+                }
                 iv_scan_code.setVisibility(View.GONE);
                 edit_info.setVisibility(View.GONE);
                 tv_renzheng_title.setText("TA的认证");
@@ -326,11 +322,11 @@ public class PersonActivity extends BaseActivity {
     }
 
     @SuppressLint("WrongConstant")
-    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow,R.id.ll_renzheng,R.id.ll_content})
+    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow, R.id.ll_renzheng, R.id.ll_content})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan_code:
-                if(Util.isLogin()){
+                if (Util.isLogin()) {
                     QRCodeActivity.invoke(mContext);
                 }
                 break;

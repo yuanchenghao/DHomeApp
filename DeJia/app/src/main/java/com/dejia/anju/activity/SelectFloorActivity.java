@@ -113,23 +113,16 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
 
     private void getSearchList(String building_name) {
         getBuildingInfoApi = new GetBuildingInfoApi();
-        HashMap<String,Object> maps = new HashMap<>();
-        maps.put("building_name",building_name);
-        getBuildingInfoApi.getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-            @Override
-            public void onSuccess(ServerData serverData) {
-                if("1".equals(serverData.code)){
-                    List<SearchBuildingInfo> buildingList = JSONUtil.jsonToArrayList(serverData.data,SearchBuildingInfo.class);
-//                    if(buildingList != null && buildingList.size() > 0){
-                        tv_des.setVisibility(View.GONE);
-                        setBuildingList(buildingList);
-//                    }else{
-//                        tv_des.setVisibility(View.VISIBLE);
-//                    }
-                }else{
-                    tv_des.setVisibility(View.VISIBLE);
-                    ToastUtils.toast(mContext,serverData.message).show();
-                }
+        HashMap<String, Object> maps = new HashMap<>();
+        maps.put("building_name", building_name);
+        getBuildingInfoApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                List<SearchBuildingInfo> buildingList = JSONUtil.jsonToArrayList(serverData.data, SearchBuildingInfo.class);
+                tv_des.setVisibility(View.GONE);
+                setBuildingList(buildingList);
+            } else {
+                tv_des.setVisibility(View.VISIBLE);
+                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -145,13 +138,10 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
         rv.setLayoutManager(ymLinearLayoutManager);
         searchBuildingListAdapter = new SearchBuildingListAdapter(mContext, R.layout.item_search_building_list, buildingList);
         rv.setAdapter(searchBuildingListAdapter);
-        searchBuildingListAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                searchBuildingInfo = searchBuildingListAdapter.getData().get(position);
-                ed.setText(searchBuildingListAdapter.getData().get(position).getName());
-                ed.setSelection(searchBuildingListAdapter.getData().get(position).getName().length());
-            }
+        searchBuildingListAdapter.setOnItemClickListener((adapter, view, position) -> {
+            searchBuildingInfo = searchBuildingListAdapter.getData().get(position);
+            ed.setText(searchBuildingListAdapter.getData().get(position).getName());
+            ed.setSelection(searchBuildingListAdapter.getData().get(position).getName().length());
         });
     }
 
