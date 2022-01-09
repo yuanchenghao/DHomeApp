@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -298,11 +300,12 @@ public class BuildingImageActivity extends BaseActivity {
 
     //保存图片到相册
     public void saveImageToGallery(Context context, Bitmap bitmap, String imageFileName) {
-        String saveImagePath = null;
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "dejia");
+        File storageDir = new File(context.getExternalFilesDir(null).getPath()  + "/dejia");
+        if (!storageDir.exists()) {
+            storageDir.mkdir();
+        }
         File imageFile = new File(storageDir, imageFileName);
         if (!FileUtils.isFileExists(imageFile)) {
-            saveImagePath = imageFile.getAbsolutePath();
             try {
                 OutputStream fout = new FileOutputStream(imageFile);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fout);
@@ -311,22 +314,41 @@ public class BuildingImageActivity extends BaseActivity {
                 e.printStackTrace();
                 ToastUtils.toast(mContext, "目录不兼容").show();
             }
-            // 通知图库更新
+            // 其次把文件插入到系统图库
+            try {
+                MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                        imageFile.getAbsolutePath(), imageFileName, null);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            // 最后通知图库更新
+            // 判断SDK版本是否是4.4或者高于4.4
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                MediaScannerConnection.scanFile(context, new String[]{saveImagePath}, null,
-                        (path1, uri) -> {
-                            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                            mediaScanIntent.setData(uri);
-                            context.sendBroadcast(mediaScanIntent);
-                        });
+                String[] paths = new String[]{imageFile.getAbsolutePath()};
+                MediaScannerConnection.scanFile(context, paths, null, null);
+//                galleryAddPic(imageFile);
             } else {
-                String relationDir = imageFile.getParent();
-                File file1 = new File(relationDir);
-                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.fromFile(file1.getAbsoluteFile())));
+                final Intent intent;
+                if (imageFile.isDirectory()) {
+                    intent = new Intent(Intent.ACTION_MEDIA_MOUNTED);
+                    intent.setClassName("com.android.providers.media", "com.android.providers.media.MediaScannerReceiver");
+                    intent.setData(Uri.fromFile(imageFile));
+                } else {
+                    intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    intent.setData(Uri.fromFile(imageFile));
+                }
+                context.sendBroadcast(intent);
             }
             ToastUtils.toast(context, "保存成功,保存路径为：" + imageFile.getAbsolutePath()).show();
         } else {
             ToastUtils.toast(context, "已经保存了哦").show();
         }
+    }
+
+    public void galleryAddPic(File currentPhotoPath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(currentPhotoPath);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
     }
 }
