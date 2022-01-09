@@ -120,19 +120,6 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         rl.setLayoutParams(layoutParams);
         getPermission();
         mZXingView.setDelegate(this);
-
-//        animation.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {}
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {}
-//
-//        });
     }
 
     @Override
