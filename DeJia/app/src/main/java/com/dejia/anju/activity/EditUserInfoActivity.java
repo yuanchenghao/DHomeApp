@@ -225,7 +225,6 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                         .isEnableCrop(true)
                         .isCompress(true)// 是否压缩
                         .compressQuality(60)// 图片压缩后输出质量 0~ 100
-                        .circleDimmedLayer(true)
                         .withAspectRatio(1, 1)
                         .circleDimmedLayer(true)
                         .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
@@ -251,7 +250,6 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                         .isEnableCrop(true)
                         .isCompress(true)// 是否压缩
                         .compressQuality(60)// 图片压缩后输出质量 0~ 100
-                        .circleDimmedLayer(true)
                         .isZoomAnim(true)
                         .withAspectRatio(1, 1)
                         .circleDimmedLayer(true)
