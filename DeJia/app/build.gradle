@@ -170,10 +170,10 @@ dependencies {
     //低版本优化启动速度
     implementation 'com.bytedance.boost_multidex:boost_multidex:1.0.1'
     //fresco
-    implementation 'com.facebook.fresco:fresco:1.13.0'
-    implementation 'com.facebook.fresco:animated-gif:1.13.0'
-    implementation 'com.facebook.fresco:animated-webp:1.13.0'
-    implementation 'com.facebook.fresco:webpsupport:1.13.0'
+    implementation 'com.facebook.fresco:fresco:2.6.0'
+    implementation 'com.facebook.fresco:animated-gif:2.6.0'
+    implementation 'com.facebook.fresco:animated-webp:2.6.0'
+    implementation 'com.facebook.fresco:webpsupport:2.6.0'
     // mmkv存储
     implementation 'com.tencent:mmkv-static:1.2.7'
     //okgo

@@ -112,7 +112,6 @@ public class RecommendFragment extends BaseFragment {
     }
 
 
-
     @Xml(layouts = "fragment_recommend")
     @Override
     protected int getLayoutId() {
@@ -169,7 +168,9 @@ public class RecommendFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         //销毁
-        banner.destroy();
+        if (banner != null) {
+            banner.destroy();
+        }
     }
 
     //获取首页数据
@@ -231,7 +232,7 @@ public class RecommendFragment extends BaseFragment {
             rv.setAdapter(homeAdapter);
             homeAdapter.setEventListener((v, data, pos) -> {
                 if (!TextUtils.isEmpty(data.getUrl())) {
-                    WebUrlJumpManager.getInstance().invoke(mContext,data.getUrl(),null);
+                    WebUrlJumpManager.getInstance().invoke(mContext, data.getUrl(), null);
                 }
             });
         } else {
@@ -248,7 +249,7 @@ public class RecommendFragment extends BaseFragment {
         banner.setOnBannerListener((data, position) -> {
             HomeIndexBean.FocusPicture FocusPicture = (HomeIndexBean.FocusPicture) data;
             if (data != null && !TextUtils.isEmpty(FocusPicture.getUrl())) {
-                WebUrlJumpManager.getInstance().invoke(mContext,FocusPicture.getUrl(),null);
+                WebUrlJumpManager.getInstance().invoke(mContext, FocusPicture.getUrl(), null);
             }
         });
     }

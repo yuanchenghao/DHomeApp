@@ -21,6 +21,7 @@ import com.dejia.anju.mannger.ImagePipelineConfigUtils;
 import com.dejia.anju.utils.KVUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
+import com.facebook.imagepipeline.nativecode.ImagePipelineNativeLoader;
 import com.squareup.leakcanary.LeakCanary;
 
 import org.qiyi.basecore.taskmanager.ParallelTask;

@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,9 @@ import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
 import com.google.android.material.tabs.TabLayout;
+import com.hjq.permissions.OnPermissionCallback;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,7 +41,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -201,6 +202,9 @@ public class BuildingImageActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void setTabLayout(List<String> titleList) {
         tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -224,9 +228,6 @@ public class BuildingImageActivity extends BaseActivity {
 
             }
         });
-    }
-
-    private void setTabLayout(List<String> titleList) {
         //初始化Tablayout
         for (int i = 0; i < titleList.size(); i++) {
             tab_layout.addTab(tab_layout.newTab().setText(titleList.get(i)).setTag(titleList.get(i)));
@@ -234,7 +235,7 @@ public class BuildingImageActivity extends BaseActivity {
         //设置tablayout起始点
         for (int i = 0; i < titleList.size(); i++) {
             if (urlList.get(index).getTitle().equals(titleList.get(i))) {
-                tab_layout.setScrollPosition(i, 0, true);
+                tab_layout.getTabAt(i).select();
                 break;
             }
         }
@@ -247,7 +248,27 @@ public class BuildingImageActivity extends BaseActivity {
                 finished();
                 break;
             case R.id.iv_down:
-                saveImageUrlToGallery(mContext, urlList.get(index).getImg().getImg());
+                if (XXPermissions.isGranted(mContext, Permission.WRITE_EXTERNAL_STORAGE)) {
+                    saveImageUrlToGallery(mContext, urlList.get(index).getImg().getImg());
+                } else {
+                    XXPermissions.with(mContext)
+                            // 申请单个权限
+                            .permission(Permission.WRITE_EXTERNAL_STORAGE)
+                            .request(new OnPermissionCallback() {
+
+                                @Override
+                                public void onGranted(List<String> permissions, boolean all) {
+                                    if (all) {
+                                        saveImageUrlToGallery(mContext, urlList.get(index).getImg().getImg());
+                                    }
+                                }
+
+                                @Override
+                                public void onDenied(List<String> permissions, boolean never) {
+
+                                }
+                            });
+                }
                 break;
         }
     }
@@ -300,7 +321,7 @@ public class BuildingImageActivity extends BaseActivity {
 
     //保存图片到相册
     public void saveImageToGallery(Context context, Bitmap bitmap, String imageFileName) {
-        File storageDir = new File(context.getExternalFilesDir(null).getPath()  + "/dejia");
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString());
         if (!storageDir.exists()) {
             storageDir.mkdir();
         }
@@ -311,22 +332,23 @@ public class BuildingImageActivity extends BaseActivity {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fout);
                 fout.close();
             } catch (Exception e) {
-                e.printStackTrace();
                 ToastUtils.toast(mContext, "目录不兼容").show();
-            }
-            // 其次把文件插入到系统图库
-            try {
-                MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                        imageFile.getAbsolutePath(), imageFileName, null);
-            } catch (FileNotFoundException e) {
                 e.printStackTrace();
+
             }
+//            // 其次把文件插入到系统图库
+//            try {
+//                MediaStore.Images.Media.insertImage(context.getContentResolver(),
+//                        imageFile.getAbsolutePath(), imageFileName, null);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+
             // 最后通知图库更新
             // 判断SDK版本是否是4.4或者高于4.4
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 String[] paths = new String[]{imageFile.getAbsolutePath()};
                 MediaScannerConnection.scanFile(context, paths, null, null);
-//                galleryAddPic(imageFile);
             } else {
                 final Intent intent;
                 if (imageFile.isDirectory()) {
@@ -343,12 +365,5 @@ public class BuildingImageActivity extends BaseActivity {
         } else {
             ToastUtils.toast(context, "已经保存了哦").show();
         }
-    }
-
-    public void galleryAddPic(File currentPhotoPath) {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri contentUri = Uri.fromFile(currentPhotoPath);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
     }
 }
