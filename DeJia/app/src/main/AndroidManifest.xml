@@ -33,7 +33,6 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.dejia.anju.activity.OneClickLoginActivity2"
-            android:theme="@style/myTransparent"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.dejia.anju.activity.SendVerificationCodeActivity"
