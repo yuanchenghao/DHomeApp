@@ -220,7 +220,6 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                 //拍照
                 PictureSelector.create(mContext)
                         .openCamera(PictureMimeType.ofImage())
-                        .circleDimmedLayer(true)
                         .isAndroidQTransform(true)
                         .isEnableCrop(true)
                         .isCompress(true)// 是否压缩
@@ -229,7 +228,7 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                         .circleDimmedLayer(true)
                         .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
                         .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
-                        .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
+                        .freeStyleCropEnabled(false)// 裁剪框是否可拖拽
                         .cutOutQuality(90)// 裁剪输出质量 默认100
                         .minimumCompressSize(100)// 小于100kb的图片不压缩
                         .imageEngine(GlideEngine.createGlideEngine())
@@ -255,7 +254,7 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
                         .circleDimmedLayer(true)
                         .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
                         .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
-                        .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
+                        .freeStyleCropEnabled(false)// 裁剪框是否可拖拽
                         .cutOutQuality(90)// 裁剪输出质量 默认100
                         .minimumCompressSize(100)// 小于100kb的图片不压缩
 //                        .isOpenClickSound(true)// 是否开启点击声音
