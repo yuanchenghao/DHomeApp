@@ -8,6 +8,7 @@ import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.google.gson.Gson;
+import com.hjq.gson.factory.GsonFactory;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
@@ -41,7 +42,7 @@ public class NetWork {
     private final Gson mGson;
 
     private NetWork() {
-        mGson = new Gson();
+        mGson = GsonFactory.getSingletonGson();
     }
 
     public static NetWork getInstance() {

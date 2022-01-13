@@ -34,6 +34,7 @@ import com.dejia.anju.model.SessionidData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.ServerData;
 import com.google.gson.Gson;
+import com.hjq.gson.factory.GsonFactory;
 
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
@@ -191,7 +192,7 @@ public final class Util {
     public static void setSessionid() {
         String sessionid = System.currentTimeMillis() + Util.getImei() + Util.getVersionName() + FinalConstant1.MYAPP_MARKET;
         SessionidData sessionidData = new SessionidData(System.currentTimeMillis(), Util.StringInMd5(sessionid));
-        KVUtils.getInstance().encode(FinalConstant1.SESSIONID, new Gson().toJson(sessionidData));
+        KVUtils.getInstance().encode(FinalConstant1.SESSIONID, GsonFactory.getSingletonGson().toJson(sessionidData));
     }
 
     /**

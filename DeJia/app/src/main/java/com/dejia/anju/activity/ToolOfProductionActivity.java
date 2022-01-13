@@ -28,6 +28,7 @@ import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.view.YMGridLayoutManager;
 import com.google.gson.Gson;
+import com.hjq.gson.factory.GsonFactory;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -251,11 +252,11 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
             ugcSaveApi = new UgcSaveApi();
             HashMap<String, Object> maps = new HashMap<>();
             maps.put("content", ed.getText().toString().trim());
-            maps.put("image", new Gson().toJson(imgList).toString());
+            maps.put("image", GsonFactory.getSingletonGson().toJson(imgList).toString());
             if(searchBuildingInfo != null){
                 List list1 = new ArrayList();
                 list1.add(searchBuildingInfo);
-                maps.put("rel_loupan", new Gson().toJson(list1).toString());
+                maps.put("rel_loupan", GsonFactory.getSingletonGson().toJson(list1).toString());
             }
             //            maps.put("rel_house_type","");
             ugcSaveApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {

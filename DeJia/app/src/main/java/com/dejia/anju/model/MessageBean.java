@@ -8,6 +8,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.hjq.gson.factory.GsonFactory;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -159,7 +160,7 @@ public class MessageBean {
 
             @Override
             public DataBean deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                MessageBean.DataBean options = new Gson().fromJson(json, MessageBean.DataBean.class);
+                MessageBean.DataBean options = GsonFactory.getSingletonGson().fromJson(json, MessageBean.DataBean.class);
                 JsonObject jsonObject = json.getAsJsonObject();
 
                 if (jsonObject.has("classid")) {

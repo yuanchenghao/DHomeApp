@@ -19,6 +19,7 @@ import com.dejia.anju.utils.TopWindowUtils;
 import com.dejia.anju.utils.Util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hjq.gson.factory.GsonFactory;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
@@ -93,7 +94,7 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
                 break;
             case "ping":
                 AppLog.i("ping");
-                webSocket.send(new Gson().toJson(new Pong("pong")));
+                webSocket.send(GsonFactory.getSingletonGson().toJson(new Pong("pong")));
                 break;
             case "say":
                 AppLog.i("say");
