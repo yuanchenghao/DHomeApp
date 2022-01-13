@@ -21,7 +21,6 @@ import com.dejia.anju.net.WebSignData;
 import org.apache.http.util.EncodingUtils;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import androidx.annotation.Nullable;
 @SuppressLint("Registered")

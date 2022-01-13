@@ -33,7 +33,6 @@ import com.dejia.anju.base.Constants;
 import com.dejia.anju.model.SessionidData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.ServerData;
-import com.google.gson.Gson;
 import com.hjq.gson.factory.GsonFactory;
 
 import java.lang.reflect.Method;

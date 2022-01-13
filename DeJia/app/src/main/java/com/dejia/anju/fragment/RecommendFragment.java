@@ -7,7 +7,6 @@ import android.view.View;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.BannerAdapter;
 import com.dejia.anju.adapter.HomeAdapter;
-import com.dejia.anju.adapter.HomeFollowAdapter;
 import com.dejia.anju.api.HomeIndexApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
@@ -21,7 +20,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.youth.banner.Banner;
-import com.youth.banner.listener.OnBannerListener;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import java.util.HashMap;

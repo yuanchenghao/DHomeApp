@@ -80,11 +80,11 @@ public class JSONUtil {
      * @return
      */
     public static <T> T TransformSingleBean(String jsonStr, Class<T> clazz) {
-        Gson gson = GsonFactory.getSingletonGson();
+        Gson gson = GsonFactory.newGsonBuilder()
 //                new GsonBuilder()
-//                .setPrettyPrinting()
-//                .disableHtmlEscaping()
-//                .create();
+                .setPrettyPrinting()
+                .disableHtmlEscaping()
+                .create();
         return gson.fromJson(jsonStr, clazz);
     }
 

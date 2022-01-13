@@ -44,7 +44,6 @@ import butterknife.OnClick;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIClickCallback;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
-import cn.jiguang.verifysdk.api.PreLoginListener;
 import cn.jiguang.verifysdk.api.PrivacyBean;
 import cn.jiguang.verifysdk.api.VerifyListener;
 import cn.jpush.android.api.JPushInterface;

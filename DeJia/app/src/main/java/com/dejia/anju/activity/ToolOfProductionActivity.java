@@ -27,7 +27,6 @@ import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.view.YMGridLayoutManager;
-import com.google.gson.Gson;
 import com.hjq.gson.factory.GsonFactory;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;

@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -57,10 +56,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import okhttp3.Call;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
-import okhttp3.Response;
 
 //私信页面
 public class ChatActivity extends BaseActivity implements View.OnClickListener, MessageCallBack {

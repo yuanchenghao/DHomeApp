@@ -9,8 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.webkit.WebView;
 
 import com.bun.miitmdid.core.JLibrary;
@@ -21,7 +19,6 @@ import com.dejia.anju.mannger.ImagePipelineConfigUtils;
 import com.dejia.anju.utils.KVUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
-import com.facebook.imagepipeline.nativecode.ImagePipelineNativeLoader;
 import com.squareup.leakcanary.LeakCanary;
 
 import org.qiyi.basecore.taskmanager.ParallelTask;

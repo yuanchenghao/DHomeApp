@@ -2,7 +2,6 @@ package com.dejia.anju.model;
 
 import com.dejia.anju.adapter.ChatAdapter;
 import com.dejia.anju.utils.Util;
-import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

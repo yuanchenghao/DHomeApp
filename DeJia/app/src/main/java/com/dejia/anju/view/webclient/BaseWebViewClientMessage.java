@@ -13,13 +13,9 @@ import android.webkit.WebViewClient;
 
 import com.dejia.anju.AppLog;
 import com.dejia.anju.mannger.WebUrlJumpManager;
-import com.dejia.anju.net.SignUtils;
-import com.dejia.anju.net.WebSignData;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
-
-import java.util.HashMap;
 
 public class BaseWebViewClientMessage extends WebViewClient {
 

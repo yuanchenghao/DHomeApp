@@ -388,7 +388,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
             type3View.rv_img.setVisibility(View.VISIBLE);
-            YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.HORIZONTAL, false);
+            YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
             HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "3");
             type3View.rv_img.setLayoutManager(gridLayoutManager);
             if (mRecycleViewPool != null) {
