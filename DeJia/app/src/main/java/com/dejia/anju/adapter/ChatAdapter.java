@@ -135,12 +135,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 int offsetX = Math.abs(copyPopWindow.getContentView().getMeasuredWidth() - holder.content.getWidth()) / 2;
                 int offsetY = -(copyPopWindow.getContentView().getMeasuredHeight() + holder.content.getHeight());
                 PopupWindowCompat.showAsDropDown(copyPopWindow, holder.content, offsetX, offsetY, Gravity.START);
-                copyPopWindow.setOnTextClickListener(new CopyPopWindow.OnTextClickListener() {
-                    @Override
-                    public void onTextClick() {
-                        Util.setClipboard(mContext, holder.content.getText().toString());
-                        ToastUtils.toast(mContext, "复制成功").show();
-                    }
+                copyPopWindow.setOnTextClickListener(() -> {
+                    Util.setClipboard(mContext, holder.content.getText().toString());
+                    ToastUtils.toast(mContext, "复制成功").show();
                 });
                 return false;
             });

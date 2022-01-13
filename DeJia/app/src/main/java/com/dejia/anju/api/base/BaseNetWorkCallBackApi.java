@@ -1,7 +1,6 @@
 package com.dejia.anju.api.base;
 
 import com.dejia.anju.net.NetWork;
-import com.dejia.anju.net.ServerCallback;
 import com.dejia.anju.net.ServerData;
 
 import java.util.HashMap;
@@ -25,12 +24,7 @@ public class BaseNetWorkCallBackApi {
      * @param listener
      */
     public void startCallBack(final BaseCallBackListener<ServerData> listener) {
-        NetWork.getInstance().call(mController, mMethodName, mHashMap, new ServerCallback() {
-            @Override
-            public void onServerCallback(ServerData mData) {
-                    listener.onSuccess(mData);
-            }
-        });
+        NetWork.getInstance().call(mController, mMethodName, mHashMap, mData -> listener.onSuccess(mData));
     }
 
     public void addData(String key, String value) {

@@ -91,12 +91,7 @@ public class PictureCacheManager {
                         boolean isResult = file.delete();
                         if (isResult) {
                             if (isRefresh) {
-                                PictureThreadUtils.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        new PictureMediaScannerConnection(context, file.getAbsolutePath());
-                                    }
-                                });
+                                PictureThreadUtils.runOnUiThread(() -> new PictureMediaScannerConnection(context, file.getAbsolutePath()));
                             } else {
                                 if (listener != null) {
                                     listener.onCall(file.getAbsolutePath());

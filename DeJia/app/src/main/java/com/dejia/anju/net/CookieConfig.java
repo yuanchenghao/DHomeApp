@@ -36,7 +36,7 @@ public class CookieConfig {
         cookieStore.saveCookie(httpUrl, yuemeiinfo);
     }
 
-
+    //Caused by: java.lang.IllegalArgumentException: unexpected host: 172.16.10.200:8080
     public void setCookie(String scheme, String host, String domain) {
 //        String mYuemeiinfo = Util.getYuemeiInfo();
 //        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();

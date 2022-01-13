@@ -9,13 +9,10 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.bun.miitmdid.core.IIdentifierListener;
 import com.bun.miitmdid.core.MdidSdkHelper;
-import com.bun.miitmdid.supplier.IdSupplier;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.base.Constants;
 import com.dejia.anju.mannger.PermissionManager;
@@ -169,15 +166,13 @@ public class SplashActivity extends BaseActivity {
             mLocationClient.startLocation();
         }
         //设置定位回调监听
-        mLocationClient.setLocationListener(new AMapLocationListener() {
-            @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                if (aMapLocation != null) {
-                    if (aMapLocation.getErrorCode() == 0) {
-                        if(aMapLocation != null && !TextUtils.isEmpty(aMapLocation.getCity())){
-                            KVUtils.getInstance().encode(CITY,aMapLocation.getCity());
-                        }
-                        //可在其中解析amapLocation获取相应内容。
+        mLocationClient.setLocationListener(aMapLocation -> {
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    if(aMapLocation != null && !TextUtils.isEmpty(aMapLocation.getCity())){
+                        KVUtils.getInstance().encode(CITY,aMapLocation.getCity());
+                    }
+                    //可在其中解析amapLocation获取相应内容。
 //                        aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
 //                        aMapLocation.getLatitude();//获取纬度
 //                        aMapLocation.getLongitude();//获取经度
@@ -195,12 +190,11 @@ public class SplashActivity extends BaseActivity {
 //                        aMapLocation.getBuildingId();//获取当前室内定位的建筑物Id
 //                        aMapLocation.getFloor();//获取当前室内定位的楼层
 //                        aMapLocation.getGpsAccuracyStatus();//获取GPS的当前状态
-                    }else {
-                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                        AppLog.e("AmapError|"+"location Error, ErrCode:"
-                                + aMapLocation.getErrorCode() + ", errInfo:"
-                                + aMapLocation.getErrorInfo());
-                    }
+                }else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    AppLog.e("AmapError|"+"location Error, ErrCode:"
+                            + aMapLocation.getErrorCode() + ", errInfo:"
+                            + aMapLocation.getErrorInfo());
                 }
             }
         });
@@ -216,51 +210,45 @@ public class SplashActivity extends BaseActivity {
             }
         }.postUI();
         new ParallelTask()
-                .addSubTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        //接口注册
-                        registeredInterface();
-                    }
+                .addSubTask(() -> {
+                    //接口注册
+                    registeredInterface();
                 })
                 .execute();
     }
 
     private void initMdidSdk() {
-            MdidSdkHelper.InitSdk(this, true, new IIdentifierListener() {
-                @Override
-                public void OnSupport(boolean isSupport, IdSupplier idSupplier) {
+            MdidSdkHelper.InitSdk(this, true, (isSupport, idSupplier) -> {
+                try {
+                    String deviceId;
+                    if (isSupport) {
+                        // 支持获取补充设备标识
+                        deviceId = idSupplier.getOAID();
+                    } else {
+                        // 不支持获取补充设备标识
+                        // 可以自己决定设备标识获取方案，这里直接使用了ANDROID_ID
+                        deviceId = getAndroidId(getApplicationContext());
+                    }
+                    // 将设备标识MD5加密后返回，以获取统一格式
+                    String digest = MD5Utils.digest(deviceId);
+                    KVUtils.getInstance().encode("device_id", digest);
                     try {
-                        String deviceId;
-                        if (isSupport) {
-                            // 支持获取补充设备标识
-                            deviceId = idSupplier.getOAID();
+                        String oaid = idSupplier.getOAID();
+                        if (!TextUtils.isEmpty(oaid)) {
+                            KVUtils.getInstance().encode("oaid", oaid);
                         } else {
-                            // 不支持获取补充设备标识
-                            // 可以自己决定设备标识获取方案，这里直接使用了ANDROID_ID
-                            deviceId = getAndroidId(getApplicationContext());
-                        }
-                        // 将设备标识MD5加密后返回，以获取统一格式
-                        String digest = MD5Utils.digest(deviceId);
-                        KVUtils.getInstance().encode("device_id", digest);
-                        try {
-                            String oaid = idSupplier.getOAID();
-                            if (!TextUtils.isEmpty(oaid)) {
-                                KVUtils.getInstance().encode("oaid", oaid);
-                            } else {
-                                KVUtils.getInstance().encode("oaid", "");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                             KVUtils.getInstance().encode("oaid", "");
-                        }
-                        // 释放连接
-                        if (idSupplier != null) {
-                            idSupplier.shutDown();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        KVUtils.getInstance().encode("oaid", "");
                     }
+                    // 释放连接
+                    if (idSupplier != null) {
+                        idSupplier.shutDown();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
     }

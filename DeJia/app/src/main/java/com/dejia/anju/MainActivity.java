@@ -187,76 +187,53 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         drawerLayout.setClipToPadding(false);
         //关闭手势滑动
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        navigation.getHeaderView(0).findViewById(R.id.tv_quit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.closeDrawers();
-                //退出登录
-                Util.clearUserData(mContext);
-                initFragment(0);
-            }
+        navigation.getHeaderView(0).findViewById(R.id.tv_quit).setOnClickListener(v -> {
+            drawerLayout.closeDrawers();
+            //退出登录
+            Util.clearUserData(mContext);
+            initFragment(0);
         });
-        navigation.getHeaderView(0).findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.closeDrawers();
-            }
+        navigation.getHeaderView(0).findViewById(R.id.iv_close).setOnClickListener(v -> drawerLayout.closeDrawers());
+        navigation.getHeaderView(0).findViewById(R.id.ll_about).setOnClickListener(v -> {
+            drawerLayout.closeDrawers();
+            //关于
+            ToastUtils.toast(mContext, "关于").show();
         });
-        navigation.getHeaderView(0).findViewById(R.id.ll_about).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.closeDrawers();
-                //关于
-                ToastUtils.toast(mContext, "关于").show();
-            }
+        navigation.getHeaderView(0).findViewById(R.id.ll_clean).setOnClickListener(v -> {
+            DataCleanManager.deleteFolderFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.dejia.anju",
+                    false);
+            ((TextView) navigation.getHeaderView(0).findViewById(R.id.tv_clean)).setText(getCacheSize());
         });
-        navigation.getHeaderView(0).findViewById(R.id.ll_clean).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DataCleanManager.deleteFolderFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.dejia.anju",
-                        false);
-                ((TextView) navigation.getHeaderView(0).findViewById(R.id.tv_clean)).setText(getCacheSize());
-            }
+        navigation.getHeaderView(0).findViewById(R.id.ll_ys).setOnClickListener(v -> {
+            //隐私
+            drawerLayout.closeDrawers();
+            WebViewData webViewData = new WebViewData.WebDataBuilder()
+                    .setWebviewType("webview")
+                    .setLinkisJoint("1")
+                    .setIsHide("0")
+                    .setIsRefresh("0")
+                    .setEnableSafeArea("0")
+                    .setBounces("1")
+                    .setIsRemoveUpper("0")
+                    .setEnableBottomSafeArea("0")
+                    .setBgColor("#F6F6F6")
+                    .setIs_back("1")
+                    .setIs_share("0")
+                    .setShare_data("0")
+                    .setLink("/vue/privacyAgreement/")
+                    .setRequest_param("")
+                    .build();
+            WebUrlJumpManager.getInstance().invoke(mContext,"",webViewData);
         });
-        navigation.getHeaderView(0).findViewById(R.id.ll_ys).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //隐私
-                drawerLayout.closeDrawers();
-                WebViewData webViewData = new WebViewData.WebDataBuilder()
-                        .setWebviewType("webview")
-                        .setLinkisJoint("1")
-                        .setIsHide("0")
-                        .setIsRefresh("0")
-                        .setEnableSafeArea("0")
-                        .setBounces("1")
-                        .setIsRemoveUpper("0")
-                        .setEnableBottomSafeArea("0")
-                        .setBgColor("#F6F6F6")
-                        .setIs_back("1")
-                        .setIs_share("0")
-                        .setShare_data("0")
-                        .setLink("/vue/privacyAgreement/")
-                        .setRequest_param("")
-                        .build();
-                WebUrlJumpManager.getInstance().invoke(mContext,"",webViewData);
-            }
+        navigation.getHeaderView(0).findViewById(R.id.ll_kill).setOnClickListener(v -> {
+            //注销
+            drawerLayout.closeDrawers();
+            mContext.startActivity(new Intent(mContext, CancellationActivity.class));
         });
-        navigation.getHeaderView(0).findViewById(R.id.ll_kill).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //注销
-                drawerLayout.closeDrawers();
-                mContext.startActivity(new Intent(mContext, CancellationActivity.class));
-            }
-        });
-        navigation.getHeaderView(0).findViewById(R.id.ver).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //版本号
-                drawerLayout.closeDrawers();
-                getVersion();
-            }
+        navigation.getHeaderView(0).findViewById(R.id.ver).setOnClickListener(v -> {
+            //版本号
+            drawerLayout.closeDrawers();
+            getVersion();
         });
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override

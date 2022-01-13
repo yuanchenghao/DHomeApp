@@ -438,17 +438,14 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         }
                     });
                 } else {
-                    new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                        @Override
-                        public void onSuccess(ServerData serverData) {
-                            if ("1".equals(serverData.code)) {
-                                ToastUtils.toast(mContext, "取消赞成功").show();
-                                mDatas.get(getLayoutPosition()).setIs_agree("0");
-                                if (Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) > 0) {
-                                    mDatas.get(getLayoutPosition()).setAgree_num(Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) - 1 + "");
-                                }
-                                notifyItemChanged(getLayoutPosition());
+                    new ZanApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                        if ("1".equals(serverData.code)) {
+                            ToastUtils.toast(mContext, "取消赞成功").show();
+                            mDatas.get(getLayoutPosition()).setIs_agree("0");
+                            if (Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) > 0) {
+                                mDatas.get(getLayoutPosition()).setAgree_num(Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) - 1 + "");
                             }
+                            notifyItemChanged(getLayoutPosition());
                         }
                     });
                 }

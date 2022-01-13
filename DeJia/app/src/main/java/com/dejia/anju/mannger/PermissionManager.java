@@ -2,14 +2,12 @@ package com.dejia.anju.mannger;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
 
 import com.dejia.anju.model.PermsissionData;
 import com.dejia.anju.windows.ApplyPermissionDialog;
@@ -118,19 +116,11 @@ public class PermissionManager {
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
             builder.setTitle("权限不可用")
                     .setMessage(message + "\n 请在-应用设置-权限-中,将以上权限打开.")
-                    .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 跳转到应用设置界面
-                            goToAppSetting();
-                        }
+                    .setPositiveButton("立即开启", (dialog, which) -> {
+                        // 跳转到应用设置界面
+                        goToAppSetting();
                     })
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mActivity.finish();
-                        }
-                    }).setCancelable(false);
+                    .setNegativeButton("取消", (dialog, which) -> mActivity.finish()).setCancelable(false);
             mAskDialog = builder.create();
         }
 
@@ -159,12 +149,9 @@ public class PermissionManager {
             mApplyPermissionDialog.setCanceledOnTouchOutside(false);
         }
         if (mApplyPermissionDialog != null) {
-            mApplyPermissionDialog.knowBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mApplyPermissionDialog.dismiss();
-                    startRequestPermission(mActivity, mNeedApply);
-                }
+            mApplyPermissionDialog.knowBtn.setOnClickListener(v -> {
+                mApplyPermissionDialog.dismiss();
+                startRequestPermission(mActivity, mNeedApply);
             });
         }
         if (!mActivity.isFinishing() && !mApplyPermissionDialog.isShowing()) {

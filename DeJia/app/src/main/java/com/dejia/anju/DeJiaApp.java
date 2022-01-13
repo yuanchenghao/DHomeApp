@@ -29,7 +29,6 @@ import java.lang.reflect.Method;
 import androidx.annotation.RequiresApi;
 import androidx.multidex.MultiDex;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
-import cn.jiguang.verifysdk.api.RequestCallback;
 
 import static com.dejia.anju.base.Constants.STATE_NORMAL;
 
@@ -107,33 +106,19 @@ public class DeJiaApp extends Application {
 
     private void startInitThreadPool() {
         new ParallelTask()
-                .addSubTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        //初始化缓存
-                        KVUtils.initialize(getContext());
-                    }
+                .addSubTask(() -> {
+                    //初始化缓存
+                    KVUtils.initialize(getContext());
                 })
-                .addSubTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        //联网请求框架初始化
-                        netWorkConfig();
-                    }
+                .addSubTask(() -> {
+                    //联网请求框架初始化
+                    netWorkConfig();
                 })
-                .addSubTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        //fresco图片加载框架
-                        frescoConfig();
-                    }
+                .addSubTask(() -> {
+                    //fresco图片加载框架
+                    frescoConfig();
                 })
-                .addSubTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        initJVerificationInterface();
-                    }
-                })
+                .addSubTask(() -> initJVerificationInterface())
                 .execute();
     }
 
@@ -142,12 +127,7 @@ public class DeJiaApp extends Application {
      */
     private void initJVerificationInterface() {
         JVerificationInterface.setDebugMode(true);
-        JVerificationInterface.init(this, 5000, new RequestCallback<String>() {
-            @Override
-            public void onResult(int code, String msg) {
-                AppLog.i("code = " + code + " msg = " + msg);
-            }
-        });
+        JVerificationInterface.init(this, 5000, (code, msg) -> AppLog.i("code = " + code + " msg = " + msg));
     }
 
 
@@ -196,27 +176,21 @@ public class DeJiaApp extends Application {
         MultiDex.install(this);
         JLibrary.InitEntry(base);
         fixFinalizerDaemonTimeOutBug();
-//        new Handler(getMainLooper()).post(new Runnable() {
-//            @Override
-//            public void run() {
-//                while (true) {
-//                    try {
-//                        //try-catch主线程的所有异常；
-//                        // Looper.loop()内部是一个死循环，出现异常时才会退出，所以这里使用while(true)。
-//                        Looper.loop();
-//                    } catch (Throwable e) {
-//                        AppLog.i("Looper.loop(): " + e.getMessage());
-//                    }
+//        new Handler(getMainLooper()).post(() -> {
+//            while (true) {
+//                try {
+//                    //try-catch主线程的所有异常；
+//                    // Looper.loop()内部是一个死循环，出现异常时才会退出，所以这里使用while(true)。
+//                    Looper.loop();
+//                } catch (Throwable e) {
+//                    AppLog.i("Looper.loop(): " + e.getMessage());
 //                }
 //            }
 //        });
 //
-//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-//            @Override
-//            public void uncaughtException(Thread t, Throwable e) {
-//                //try-catch子线程的所有异常。
-//                AppLog.i("UncaughtExceptionHandler: " + e.getMessage());
-//            }
+//        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+//            //try-catch子线程的所有异常。
+//            AppLog.i("UncaughtExceptionHandler: " + e.getMessage());
 //        });
     }
 
