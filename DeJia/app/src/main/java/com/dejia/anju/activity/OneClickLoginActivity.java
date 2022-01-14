@@ -282,12 +282,12 @@ public class OneClickLoginActivity extends BaseActivity {
         Intent intent = new Intent(context, OneClickLoginActivity.class);
         intent.putExtra("type", type);
         context.startActivity(intent);
-        ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, 0);
+//        ((Activity) context).overridePendingTransition(R.anim.activity_slide_enter_bottom, R.anim.activity_slide_exit_bottom);
     }
 
     public void finished() {
         finish();
-        overridePendingTransition(0, R.anim.push_bottom_out);
+//        overridePendingTransition(R.anim.activity_slide_exit_bottom, R.anim.activity_slide_enter_bottom);
     }
 
 

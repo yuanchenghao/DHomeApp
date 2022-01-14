@@ -111,7 +111,7 @@ public class ImagePipelineConfigUtils {
         ImagePipelineConfig.Builder configBuilder = ImagePipelineConfig.newBuilder(context)
                 .setDownsampleEnabled(true)
                 .setProgressiveJpegConfig(progressiveJpegConfig)
-                .setBitmapsConfig(Bitmap.Config.RGB_565)
+                .setBitmapsConfig(Bitmap.Config.ARGB_8888)
                 .setBitmapMemoryCacheParamsSupplier(mSupplierMemoryCacheParams)
                 .setSmallImageDiskCacheConfig(diskSmallCacheConfig)
                 .setMainDiskCacheConfig(diskCacheConfig)
@@ -126,8 +126,7 @@ public class ImagePipelineConfigUtils {
                 final double suggestedTrimRatio = trimType.getSuggestedTrimRatio();
                 if (MemoryTrimType.OnCloseToDalvikHeapLimit.getSuggestedTrimRatio() == suggestedTrimRatio
                         || MemoryTrimType.OnSystemLowMemoryWhileAppInBackground.getSuggestedTrimRatio() == suggestedTrimRatio
-                        || MemoryTrimType.OnSystemLowMemoryWhileAppInForeground.getSuggestedTrimRatio() == suggestedTrimRatio
-                ) {
+                        || MemoryTrimType.OnSystemLowMemoryWhileAppInForeground.getSuggestedTrimRatio() == suggestedTrimRatio) {
                     ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
                 }
             }

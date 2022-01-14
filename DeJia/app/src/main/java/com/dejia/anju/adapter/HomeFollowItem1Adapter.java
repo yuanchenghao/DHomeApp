@@ -12,6 +12,7 @@ import com.dejia.anju.R;
 import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
+import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.HomeFollowBean;
 import com.dejia.anju.net.ServerData;
@@ -87,16 +88,9 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 ((viewHolder) holder).tv_tag.setVisibility(View.INVISIBLE);
             }
-            ((viewHolder) holder).iv_pic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ToastUtils.toast(mContext, "个人页").show();
-                }
-            });
-            ((viewHolder) holder).tv_follow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ToastUtils.toast(mContext, "关注").show();
+            ((viewHolder) holder).iv_pic.setOnClickListener(v -> {
+                if (noFollowCreatorList != null && !TextUtils.isEmpty(noFollowCreatorList.getUrl())) {
+                    WebUrlJumpManager.getInstance().invoke(mContext, noFollowCreatorList.getUrl(), null);
                 }
             });
             switch (noFollowCreatorList.getIs_following()) {
@@ -150,7 +144,7 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_tag = itemView.findViewById(R.id.tv_tag);
             tv_follow = itemView.findViewById(R.id.tv_follow);
-            itemView.setOnClickListener(v -> PersonActivity.invoke(mContext,mDatas.get(getLayoutPosition()).getId()));
+            itemView.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getId()));
         }
     }
 }

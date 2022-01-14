@@ -1,3 +1,5 @@
+include ':PictureLibrary'
+include ':GsonLibrary'
 include ':jiguang'
 include ':app'
 rootProject.name = "DeJia"

@@ -144,7 +144,7 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
 
     public void finished() {
         finish();
-        overridePendingTransition(0, R.anim.push_bottom_out);
+//        overridePendingTransition( R.anim.anim_no, R.anim.push_bottom_out);
     }
 
     @Override

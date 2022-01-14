@@ -20,11 +20,19 @@ android {
         viewBinding {
             enabled = true
         }
+        vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
                 JPUSH_PKGNAME : applicationId,
                 JPUSH_APPKEY : "b0284645123918d186e6e164", //Portal上注册的包名对应的 appKey.
                 JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
         ]
+    }
+
+    // 防止编码问题
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+        options.addStringOption('charSet', 'UTF-8')
     }
 
     //签名信息
@@ -144,13 +152,14 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation files('libs\\KJFrameForAndroid_V1.31.jar')
     implementation files('libs\\jverification-android-not_support_dynamic-release-2.7.6.jar')
     implementation files('libs\\jcore-android-3.1.0.jar')
-    implementation files('libs\\jcore-android-3.1.0.jar')
+    implementation project(path: ':GsonLibrary')
+    implementation project(path: ':PictureLibrary')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -211,13 +220,8 @@ dependencies {
     implementation 'io.github.youth5201314:banner:2.2.2'
     //gson
     implementation 'com.google.code.gson:gson:2.8.9'
-    //pictureSelector
-    //https://github.com/LuckSiege/PictureSelector/blob/master/README_CN.md
-    implementation 'io.github.lucksiege:pictureselector:v2.7.2'
     // 权限请求框架：https://github.com/getActivity/XXPermissions
     implementation 'com.github.getActivity:XXPermissions:13.2'
-    // Gson 解析容错：https://github.com/getActivity/GsonFactory
-    implementation 'com.github.getActivity:GsonFactory:5.2'
     //leakcanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'

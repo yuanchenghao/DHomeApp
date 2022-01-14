@@ -3,7 +3,6 @@ package com.dejia.anju.activity;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -169,12 +168,12 @@ public class SendVerificationCodeActivity extends BaseActivity {
     public static void invoke(Context context) {
         Intent intent = new Intent(context, SendVerificationCodeActivity.class);
         context.startActivity(intent);
-        ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, 0);
+//        ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, R.anim.anim_no);
     }
 
     public void finished() {
         finish();
-        overridePendingTransition(0, R.anim.push_bottom_out);
+//        overridePendingTransition( R.anim.anim_no, R.anim.push_bottom_out);
     }
 
 

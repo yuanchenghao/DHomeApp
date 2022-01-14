@@ -264,6 +264,15 @@ public class HomeFollowBean {
         public String id;
         public String user_img;
         public int is_following;
+        public String url;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
 
         public String getNickname() {
             return nickname;

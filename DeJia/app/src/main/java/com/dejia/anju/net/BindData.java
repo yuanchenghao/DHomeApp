@@ -1,7 +1,5 @@
 package com.dejia.anju.net;
 
-import java.nio.Buffer;
-
 public class BindData {
     private String TAG = "BindData";
     private String agreement;//请求协议

@@ -1,6 +1,5 @@
 package com.dejia.anju.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -58,12 +57,18 @@ import static com.dejia.anju.base.Constants.baseTestService;
  */
 
 public class VerificationCodeActivity extends BaseActivity {
-    @BindView(R.id.iv_close) ImageView iv_close;
-    @BindView(R.id.tv_phone) TextView tv_phone;
-    @BindView(R.id.input) VerificationCodeView input;
-    @BindView(R.id.tv_get_code) TextView tv_get_code;
-    @BindView(R.id.tv_bottom) TextView tv_bottom;
-    @BindView(R.id.pb) ProgressBar pb;
+    @BindView(R.id.iv_close)
+    ImageView iv_close;
+    @BindView(R.id.tv_phone)
+    TextView tv_phone;
+    @BindView(R.id.input)
+    VerificationCodeView input;
+    @BindView(R.id.tv_get_code)
+    TextView tv_get_code;
+    @BindView(R.id.tv_bottom)
+    TextView tv_bottom;
+    @BindView(R.id.pb)
+    ProgressBar pb;
     private String mPhone;
     private CountDownTimer countDownTimer;
     private String verificationCode;
@@ -88,7 +93,7 @@ public class VerificationCodeActivity extends BaseActivity {
     @Override
     protected void initView() {
         mPhone = getIntent().getStringExtra("phone");
-        if(TextUtils.isEmpty(mPhone)){
+        if (TextUtils.isEmpty(mPhone)) {
             finished();
             return;
         }
@@ -97,12 +102,13 @@ public class VerificationCodeActivity extends BaseActivity {
         statusbarHeight = QMUIStatusBarHelper.getStatusbarHeight(mContext);
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) iv_close.getLayoutParams();
         layoutParams.topMargin = statusbarHeight + SizeUtils.dp2px(20);
-        tv_phone.setText("已发送4位验证码至  "+mPhone);
+        tv_get_code.setEnabled(false);
+        tv_phone.setText("已发送4位验证码至  " + mPhone);
         countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 tv_bottom.setTextColor(Color.parseColor("#1C2125"));
-                tv_bottom.setText("重新获取"+millisUntilFinished/1000+"秒");
+                tv_bottom.setText("重新获取" + millisUntilFinished / 1000 + "秒");
                 tv_bottom.setEnabled(false);
             }
 
@@ -118,18 +124,21 @@ public class VerificationCodeActivity extends BaseActivity {
         input.setInputCompleteListener(new VerificationCodeView.InputCompleteListener() {
             @Override
             public void inputComplete() {
-                if(input.getEtNumber() == 4){
+                if (input.getInputContent().length() == 4) {
                     verificationCode = input.getInputContent();
                     tv_get_code.setBackgroundResource(R.drawable.shape_24_33a7ff);
+                    tv_get_code.setEnabled(true);
                 }
             }
 
             @Override
             public void deleteContent() {
-                if(input.getEtNumber() != 4){
+                if (input.getInputContent().length() != 4) {
                     tv_get_code.setBackgroundResource(R.drawable.shape_24_d5edfe);
-                }else{
+                    tv_get_code.setEnabled(false);
+                } else {
                     tv_get_code.setBackgroundResource(R.drawable.shape_24_33a7ff);
+                    tv_get_code.setEnabled(true);
                 }
             }
         });
@@ -157,19 +166,19 @@ public class VerificationCodeActivity extends BaseActivity {
                 finished();
                 break;
             case R.id.tv_get_code:
-                if(!TextUtils.isEmpty(mPhone) && !TextUtils.isEmpty(verificationCode)){
+                if (!TextUtils.isEmpty(mPhone) && !TextUtils.isEmpty(verificationCode)) {
                     pb.setVisibility(View.VISIBLE);
                     tv_get_code.setText("");
-                    HashMap<String,Object> maps = new HashMap<>();
-                    maps.put("phone",mPhone);
-                    maps.put("code",verificationCode);
+                    HashMap<String, Object> maps = new HashMap<>();
+                    maps.put("phone", mPhone);
+                    maps.put("code", verificationCode);
                     new VerificationCodeLoginApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
                         pb.setVisibility(View.GONE);
                         tv_get_code.setText("确定");
-                        if("1".equals(serverData.code)){
-                            UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data,UserInfo.class);
-                            KVUtils.getInstance().encode(Constants.UID,userInfo.getId());
-                            KVUtils.getInstance().encode("user",userInfo);
+                        if ("1".equals(serverData.code)) {
+                            UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
+                            KVUtils.getInstance().encode(Constants.UID, userInfo.getId());
+                            KVUtils.getInstance().encode("user", userInfo);
                             Util.setYuemeiInfo(userInfo.getDejia_info());
                             String registrationID = JPushInterface.getRegistrationID(mContext);
                             IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
@@ -179,9 +188,9 @@ public class VerificationCodeActivity extends BaseActivity {
                             maps1.put("location_city", Util.getCity());
                             maps1.put("brand", Build.BRAND + "_" + Build.MODEL);
                             maps1.put("system", Build.VERSION.RELEASE);
-                            maps1.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled())?"0":"1");
+                            maps1.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled()) ? "0" : "1");
                             new BindJPushApi().getCallBack(mContext, maps1, (BaseCallBackListener<ServerData>) serverData1 -> {
-                                if("1".equals(serverData1.code)){
+                                if ("1".equals(serverData1.code)) {
                                     AppLog.i("message===" + serverData1.message);
                                 }
                             });
@@ -190,7 +199,7 @@ public class VerificationCodeActivity extends BaseActivity {
                             JVerificationInterface.clearPreLoginCache();
                             //发登录广播
                             EventBus.getDefault().post(new Event<>(1));
-                        }else{
+                        } else {
                             ToastUtils.toast(mContext, serverData.message).show();
                         }
                     });
@@ -213,16 +222,16 @@ public class VerificationCodeActivity extends BaseActivity {
      *
      * @param context
      */
-    public static void invoke(Context context,String phone) {
+    public static void invoke(Context context, String phone) {
         Intent intent = new Intent(context, VerificationCodeActivity.class);
-        intent.putExtra("phone",phone);
+        intent.putExtra("phone", phone);
         context.startActivity(intent);
-        ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, 0);
+//        ((Activity) context).overridePendingTransition(R.anim.push_bottom_in,  R.anim.anim_no);
     }
 
     public void finished() {
         finish();
-        overridePendingTransition(0, R.anim.push_bottom_out);
+//        overridePendingTransition( R.anim.anim_no, R.anim.push_bottom_out);
     }
 
 
