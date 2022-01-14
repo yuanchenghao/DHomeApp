@@ -116,6 +116,12 @@ public class MyFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
         switch (msgEvent.getCode()) {
+            case 1:
+                page = 1;
+                myArticleAdapter = null;
+                userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
+                upDataUi();
+                getMyArticle();
             case 3:
                 userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
                 upDataUi();

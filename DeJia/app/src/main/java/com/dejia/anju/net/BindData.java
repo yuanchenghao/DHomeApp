@@ -1,5 +1,7 @@
 package com.dejia.anju.net;
 
+import java.nio.Buffer;
+
 public class BindData {
     private String TAG = "BindData";
     private String agreement;//请求协议
@@ -33,16 +35,15 @@ public class BindData {
         String mUrl;
         switch (addr) {
             case FinalConstant1.BASE_URL:
-
-                mUrl = agreement + FinalConstant1.SYMBOL1 + addr + FinalConstant1.SYMBOL2
-//                        + FinalConstant1.YUEMEI_VER + FinalConstant1.SYMBOL2
-                        + entry + FinalConstant1.SYMBOL2 + ifaceName + FinalConstant1.SYMBOL2;
+                mUrl = new StringBuffer(agreement).append(FinalConstant1.SYMBOL1).append(addr).append(FinalConstant1.SYMBOL2)
+//                        .append(FinalConstant1.YUEMEI_VER)append(FinalConstant1.SYMBOL2)
+                        .append(entry).append(FinalConstant1.SYMBOL2).append(ifaceName).append(FinalConstant1.SYMBOL2).toString();
                 break;
 
             case FinalConstant1.BASE_API_M_URL:
             case FinalConstant1.BASE_API_URL:
-                mUrl = agreement + FinalConstant1.SYMBOL1 + addr + FinalConstant1.SYMBOL2
-                        + FinalConstant1.API + FinalConstant1.SYMBOL2 + entry + FinalConstant1.SYMBOL2 + ifaceName + FinalConstant1.SYMBOL2;
+                mUrl = new StringBuffer(agreement).append(FinalConstant1.SYMBOL1).append(addr).append(FinalConstant1.SYMBOL2)
+                        .append(FinalConstant1.API).append(FinalConstant1.SYMBOL2).append(entry).append(FinalConstant1.SYMBOL2).append(ifaceName).append(FinalConstant1.SYMBOL2).toString();
 
                 break;
 
@@ -51,8 +52,8 @@ public class BindData {
             case FinalConstant1.BASE_NEWS_URL:
             case FinalConstant1.BASE_SERVICE:
             default:
-                mUrl = agreement + FinalConstant1.SYMBOL1 + addr + FinalConstant1.SYMBOL2
-                        + entry + FinalConstant1.SYMBOL2 + ifaceName + FinalConstant1.SYMBOL2;
+                mUrl = new StringBuffer(agreement).append(FinalConstant1.SYMBOL1).append(addr).append(FinalConstant1.SYMBOL2)
+                        .append(entry).append(FinalConstant1.SYMBOL2).append(ifaceName).append(FinalConstant1.SYMBOL2).toString();
 
                 break;
         }
@@ -65,29 +66,29 @@ public class BindData {
      * 设置后缀
      */
     private void setSuffix() {
-        PARAMETERS1 = FinalConstant1.CITY + FinalConstant1.SYMBOL2 + city + FinalConstant1.SYMBOL2
-                + FinalConstant1.UID + FinalConstant1.SYMBOL2 + uid + FinalConstant1.SYMBOL2
-                + FinalConstant1.APPKEY + FinalConstant1.SYMBOL2 + FinalConstant1.YUEMEI_APP_KEY + FinalConstant1.SYMBOL2
-                + FinalConstant1.VER + FinalConstant1.SYMBOL2 + FinalConstant1.YUEMEI_VER + FinalConstant1.SYMBOL2
-                + FinalConstant1.DEVICE + FinalConstant1.SYMBOL2 + FinalConstant1.YUEMEI_DEVICE + FinalConstant1.SYMBOL2
-                + FinalConstant1.MARKET + FinalConstant1.SYMBOL2
-//                + FinalConstant1.YUEMEI_MARKET + FinalConstant1.SYMBOL2
-                + FinalConstant1.ONLYKEY + FinalConstant1.SYMBOL2 + imei + FinalConstant1.SYMBOL2
-                + FinalConstant1.IMEI + FinalConstant1.SYMBOL2 + imei + FinalConstant1.SYMBOL2
-                + FinalConstant1.APPFROM + FinalConstant1.SYMBOL2 + FinalConstant1.APP_FROM + FinalConstant1.SYMBOL2
-                + FinalConstant1.ISFIRSTACTIVE + FinalConstant1.SYMBOL2 + is_first_active + FinalConstant1.SYMBOL2;
+        PARAMETERS1 = new StringBuffer(FinalConstant1.CITY).append(FinalConstant1.SYMBOL2).append(city).append(FinalConstant1.SYMBOL2)
+                .append(FinalConstant1.UID).append(FinalConstant1.SYMBOL2).append(uid).append(FinalConstant1.SYMBOL2)
+                 .append(FinalConstant1.APPKEY).append(FinalConstant1.SYMBOL2).append(FinalConstant1.YUEMEI_APP_KEY).append(FinalConstant1.SYMBOL2)
+                .append(FinalConstant1.VER).append(FinalConstant1.SYMBOL2).append(FinalConstant1.YUEMEI_VER).append(FinalConstant1.SYMBOL2)
+                .append(FinalConstant1.DEVICE).append(FinalConstant1.SYMBOL2).append(FinalConstant1.YUEMEI_DEVICE).append(FinalConstant1.SYMBOL2)
+                .append(FinalConstant1.MARKET).append(FinalConstant1.SYMBOL2)
+//               .append(FinalConstant1.YUEMEI_MARKET).append(FinalConstant1.SYMBOL2)
+                .append(FinalConstant1.ONLYKEY).append(FinalConstant1.SYMBOL2).append(imei).append(FinalConstant1.SYMBOL2)
+                .append(FinalConstant1.IMEI).append(FinalConstant1.SYMBOL2).append(imei).append(FinalConstant1.SYMBOL2)
+                .append(FinalConstant1.APPFROM).append(FinalConstant1.SYMBOL2).append(FinalConstant1.APP_FROM).append(FinalConstant1.SYMBOL2)
+                .append(FinalConstant1.ISFIRSTACTIVE).append(FinalConstant1.SYMBOL2).append(is_first_active).append(FinalConstant1.SYMBOL2).toString();
 
-        PARAMETERS2 = FinalConstant1.CITY + FinalConstant1.SYMBOL4 + city + FinalConstant1.SYMBOL5
-                + FinalConstant1.UID + FinalConstant1.SYMBOL4 + uid + FinalConstant1.SYMBOL5
-                + FinalConstant1.APPKEY + FinalConstant1.SYMBOL4 + FinalConstant1.YUEMEI_APP_KEY + FinalConstant1.SYMBOL5
-//                + FinalConstant1.VER + FinalConstant1.SYMBOL4 + FinalConstant1.YUEMEI_VER + FinalConstant1.SYMBOL5
-                + FinalConstant1.DEVICE + FinalConstant1.SYMBOL4 + FinalConstant1.YUEMEI_DEVICE + FinalConstant1.SYMBOL5
-                + FinalConstant1.MARKET + FinalConstant1.SYMBOL4
-//                + FinalConstant1.YUEMEI_MARKET + FinalConstant1.SYMBOL5
-                + FinalConstant1.ONLYKEY + FinalConstant1.SYMBOL4 + imei + FinalConstant1.SYMBOL5
-                + FinalConstant1.IMEI + FinalConstant1.SYMBOL4 + imei + FinalConstant1.SYMBOL5
-                + FinalConstant1.APPFROM + FinalConstant1.SYMBOL4 + FinalConstant1.APP_FROM + FinalConstant1.SYMBOL4
-                + FinalConstant1.ISFIRSTACTIVE + FinalConstant1.SYMBOL4 + is_first_active + FinalConstant1.SYMBOL4;
+        PARAMETERS2 = new StringBuffer(FinalConstant1.CITY ).append(FinalConstant1.SYMBOL4).append(city).append(FinalConstant1.SYMBOL5)
+                .append(FinalConstant1.UID).append(FinalConstant1.SYMBOL4).append(uid).append(FinalConstant1.SYMBOL5)
+                .append(FinalConstant1.APPKEY).append(FinalConstant1.SYMBOL4).append(FinalConstant1.YUEMEI_APP_KEY).append(FinalConstant1.SYMBOL5)
+//                .append(FinalConstant1.VER).append(FinalConstant1.SYMBOL4).append(FinalConstant1.YUEMEI_VER).append(FinalConstant1.SYMBOL5)
+                .append(FinalConstant1.DEVICE).append(FinalConstant1.SYMBOL4).append(FinalConstant1.YUEMEI_DEVICE).append(FinalConstant1.SYMBOL5)
+                .append(FinalConstant1.MARKET).append(FinalConstant1.SYMBOL4)
+//                .append(FinalConstant1.YUEMEI_MARKET).append(FinalConstant1.SYMBOL5)
+                .append(FinalConstant1.ONLYKEY).append(FinalConstant1.SYMBOL4).append(imei).append(FinalConstant1.SYMBOL5)
+                .append(FinalConstant1.IMEI).append(FinalConstant1.SYMBOL4).append(imei).append(FinalConstant1.SYMBOL5)
+                .append(FinalConstant1.APPFROM).append(FinalConstant1.SYMBOL4).append(FinalConstant1.APP_FROM).append(FinalConstant1.SYMBOL4)
+                .append(FinalConstant1.ISFIRSTACTIVE).append(FinalConstant1.SYMBOL4).append(is_first_active).append(FinalConstant1.SYMBOL4).toString();
     }
 
     public String getAgreement() {
