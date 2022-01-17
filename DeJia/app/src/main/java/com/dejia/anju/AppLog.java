@@ -35,36 +35,41 @@ public class AppLog {
     }
 
     public static void e(String message){
-        if (!isDebuggable())
+        if (!isDebuggable()) {
             return;
+        }
         getMethodNames(new Throwable().getStackTrace());
         Log.e(className, createLog(message));
     }
 
     public static void i(String message){
-        if (!isDebuggable())
+        if (!isDebuggable()) {
             return;
+        }
         getMethodNames(new Throwable().getStackTrace());
         Log.i(className, createLog(message));
     }
 
     public static void d(String message){
-        if (!isDebuggable())
+        if (!isDebuggable()) {
             return;
+        }
         getMethodNames(new Throwable().getStackTrace());
         Log.d(className, createLog(message));
     }
 
     public static void v(String message){
-        if (!isDebuggable())
+        if (!isDebuggable()) {
             return;
+        }
         getMethodNames(new Throwable().getStackTrace());
         Log.v(className, createLog(message));
     }
 
     public static void w(String message){
-        if (!isDebuggable())
+        if (!isDebuggable()) {
             return;
+        }
         getMethodNames(new Throwable().getStackTrace());
         Log.w(className, createLog(message));
     }

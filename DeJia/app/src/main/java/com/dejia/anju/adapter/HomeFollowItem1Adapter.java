@@ -28,6 +28,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+/**
+ * @author ych
+ */
 public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private List<HomeFollowBean.NoFollowCreatorList> mDatas;
@@ -108,7 +111,7 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
                     break;
             }
             ((viewHolder) holder).tv_follow.setOnClickListener(v -> {
-                HashMap<String, Object> hashMap = new HashMap<>();
+                HashMap<String, Object> hashMap = new HashMap<>(0);
                 hashMap.put("obj_id", noFollowCreatorList.getId());
                 hashMap.put("obj_type", "1");
                 new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
@@ -118,10 +121,8 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
                             noFollowCreatorList.setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                             notifyItemChanged(position, "follow");
                         }
-                        ToastUtils.toast(mContext, serverData.message).show();
-                    } else {
-                        ToastUtils.toast(mContext, serverData.message).show();
                     }
+                    ToastUtils.toast(mContext, serverData.message).show();
                 });
             });
         }

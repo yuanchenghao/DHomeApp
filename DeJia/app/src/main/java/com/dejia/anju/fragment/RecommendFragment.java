@@ -32,7 +32,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
-//首页推荐fragment
+/**
+ * @author ych
+ * 首页推荐fragment
+ */
 public class RecommendFragment extends BaseFragment {
     @BindView(R.id.smartRefreshLayout)
     SmartRefreshLayout smartRefreshLayout;
@@ -174,7 +177,7 @@ public class RecommendFragment extends BaseFragment {
     //获取首页数据
     private void getHomeList() {
         homeIndexApi = new HomeIndexApi();
-        Map<String, Object> maps = new HashMap<String, Object>();
+        Map<String, Object> maps = new HashMap<>(0);
         maps.put("page", page);
         homeIndexApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             smartRefreshLayout.finishRefresh();

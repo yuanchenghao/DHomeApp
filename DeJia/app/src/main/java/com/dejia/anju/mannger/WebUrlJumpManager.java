@@ -89,7 +89,7 @@ public class WebUrlJumpManager {
                     && "api".equals(webViewData.getWebviewType())) {
                 //请求接口
                 StringBuffer stringBuffer = new StringBuffer();
-                Map<String, Object> map = new HashMap<>();
+                Map<String, Object> map = new HashMap<>(0);
                 if (webViewData != null
                         && !TextUtils.isEmpty(webViewData.getLinkisJoint())
                         && "1".equals(webViewData.getLinkisJoint())
@@ -189,7 +189,7 @@ public class WebUrlJumpManager {
      * @return url请求参数部分
      */
     public static Map<String, String> URLRequest(String URL) {
-        Map<String, String> mapRequest = new HashMap<String, String>();
+        Map<String, String> mapRequest = new HashMap<>(0);
         String[] arrSplit = null;
         String strUrlParam = TruncateUrlPage(URL);
         if (strUrlParam == null) {

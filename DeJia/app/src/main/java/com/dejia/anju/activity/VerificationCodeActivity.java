@@ -169,7 +169,7 @@ public class VerificationCodeActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(mPhone) && !TextUtils.isEmpty(verificationCode)) {
                     pb.setVisibility(View.VISIBLE);
                     tv_get_code.setText("");
-                    HashMap<String, Object> maps = new HashMap<>();
+                    HashMap<String, Object> maps = new HashMap<>(0);
                     maps.put("phone", mPhone);
                     maps.put("code", verificationCode);
                     new VerificationCodeLoginApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
@@ -183,7 +183,7 @@ public class VerificationCodeActivity extends BaseActivity {
                             String registrationID = JPushInterface.getRegistrationID(mContext);
                             IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
                             IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(baseTestService);
-                            HashMap<String, Object> maps1 = new HashMap<>();
+                            HashMap<String, Object> maps1 = new HashMap<>(0);
                             maps1.put("reg_id", registrationID);
                             maps1.put("location_city", Util.getCity());
                             maps1.put("brand", Build.BRAND + "_" + Build.MODEL);
@@ -206,7 +206,7 @@ public class VerificationCodeActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_bottom:
-                HashMap<String, Object> maps = new HashMap<>();
+                HashMap<String, Object> maps = new HashMap<>(0);
                 maps.put("phone", mPhone);
                 new GetCodeApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
                     if ("1".equals(serverData.code)) {

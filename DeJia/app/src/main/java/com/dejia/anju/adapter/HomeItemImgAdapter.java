@@ -18,6 +18,9 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * @author ych
+ */
 public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;
@@ -101,7 +104,10 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.
     }
 
     public interface CallbackListener {
-        //图片点击
+        /**
+         * 图片点击
+         * @param mList
+         */
         void item(List<ImgInfo> mList);
     }
 

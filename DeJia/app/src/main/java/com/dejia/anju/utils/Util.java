@@ -200,7 +200,7 @@ public final class Util {
     public static void clearUserData(Context mContext) {
 //        关闭极光推送
         String registrationID = JPushInterface.getRegistrationID(mContext);
-        HashMap<String, Object> maps = new HashMap<>();
+        HashMap<String, Object> maps = new HashMap<>(0);
         maps.put("reg_id", registrationID);
         new UnBindJPushApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override

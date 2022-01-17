@@ -13,7 +13,7 @@ public class BaseNetWorkCallBackApi {
     private String TAG = "BaseNetWorkCallBackApi";
 
     public BaseNetWorkCallBackApi(String controller, String methodName) {
-        mHashMap = new HashMap<>();
+        mHashMap = new HashMap<>(0);
         this.mController = controller;
         this.mMethodName = methodName;
     }

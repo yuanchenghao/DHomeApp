@@ -166,7 +166,7 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
 
     private void bindWebSocket(String string, String mReplace) {
         String client_id = JSONUtil.resolveJson(string, "client_id");
-        Map<String, Object> maps = new HashMap<>();
+        Map<String, Object> maps = new HashMap<>(0);
         maps.put("client_id", client_id);
         HttpHeaders headers = SignUtils.buildHttpHeaders(maps);
         HttpParams httpParams = SignUtils.buildHttpParam5(maps);

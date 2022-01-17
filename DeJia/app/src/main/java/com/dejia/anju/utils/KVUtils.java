@@ -22,7 +22,7 @@ public class KVUtils {
     private static final String TAG = KVUtils.class.getSimpleName();
 
     // 持有类存储 Key-Holder
-    private static final Map<String, Holder> HOLDER_MAP = new HashMap<>();
+    private static final Map<String, Holder> HOLDER_MAP = new HashMap<>(0);
     // Default MMKV Holder
     private static Holder DEFAULT_HOLDER = null;
 

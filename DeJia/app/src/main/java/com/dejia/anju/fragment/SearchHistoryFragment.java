@@ -20,7 +20,10 @@ import java.util.List;
 
 import butterknife.BindView;
 
-//搜索历史
+/**
+ * @author ych
+ * 搜索历史
+ */
 public class SearchHistoryFragment extends BaseFragment {
     @BindView(R.id.search_init_record)
     LinearLayout search_init_record;

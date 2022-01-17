@@ -26,11 +26,14 @@ public class FinalConstant1 {
     public static final String APPFROM = "app_from";
     public static final String ISFIRSTACTIVE = "is_first_active";
     //公共参数value
-    public static final String YUEMEI_VER = AppUtils.getAppVersionName();                                       //版本号
+    //版本号
+    public static final String YUEMEI_VER = AppUtils.getAppVersionName();
     public static final String APP_FROM = "1";
     public static final String SESSIONID = "sessionid";
-    public static final String YUEMEI_DEVICE = "android";                                                  //android还是ios（设备标识）
-    public static final String MYAPP_MARKET = DeJiaApp.getContext().getString(R.string.marketv);          //自己写的渠道
+    //android还是ios（设备标识）
+    public static final String YUEMEI_DEVICE = "android";
+    //自己写的渠道
+    public static final String MYAPP_MARKET = DeJiaApp.getContext().getString(R.string.marketv);
     //    private static final String NETWORK_MARKET = Cfg.loadStr(DeJiaApp.getContext(), SplashActivity.NETWORK_MARKET, "");//接口返回的渠道
 //    public static String YUEMEI_MARKET = TextUtils.isEmpty(NETWORK_MARKET) ? (VASDOLLY_MARKET == null ? MYAPP_MARKET : VASDOLLY_MARKET) : NETWORK_MARKET;          //市场渠道
     public static final String SEARCH_HISTORY = "search_history";

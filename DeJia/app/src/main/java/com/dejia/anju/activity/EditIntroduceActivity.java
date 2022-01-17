@@ -32,7 +32,10 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 
-//修改简介
+/**
+ * @author ych
+ * 修改简介
+ */
 public class EditIntroduceActivity extends BaseActivity implements OnClickListener {
     @BindView(R.id.rl_title)
     RelativeLayout rl_title;
@@ -133,7 +136,7 @@ public class EditIntroduceActivity extends BaseActivity implements OnClickListen
     //修改用户信息
     private void setUserInfo() {
         setUserApi = new SetUserApi();
-        HashMap<String, Object> maps = new HashMap<>();
+        HashMap<String, Object> maps = new HashMap<>(0);
         maps.put("personal_info", ed.getText().toString().trim());
         setUserApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {

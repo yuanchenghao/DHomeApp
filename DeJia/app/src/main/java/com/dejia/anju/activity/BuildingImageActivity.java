@@ -126,7 +126,7 @@ public class BuildingImageActivity extends BaseActivity {
     @Override
     protected void initData() {
         if (!TextUtils.isEmpty(house_type_id)) {
-            HashMap<String, Object> maps = new HashMap<>();
+            HashMap<String, Object> maps = new HashMap<>(0);
             maps.put("house_type_id", house_type_id);
             new HouseTypeBigImageApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
@@ -137,7 +137,7 @@ public class BuildingImageActivity extends BaseActivity {
                 }
             });
         } else {
-            HashMap<String, Object> maps = new HashMap<>();
+            HashMap<String, Object> maps = new HashMap<>(0);
             maps.put("building_id", building_id);
             new BuildingBigImageApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
@@ -344,8 +344,7 @@ public class BuildingImageActivity extends BaseActivity {
 //                e.printStackTrace();
 //            }
 
-            // 最后通知图库更新
-            // 判断SDK版本是否是4.4或者高于4.4
+            //最后通知图库更新 判断SDK版本是否是4.4或者高于4.4
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 String[] paths = new String[]{imageFile.getAbsolutePath()};
                 MediaScannerConnection.scanFile(context, paths, null, null);

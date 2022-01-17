@@ -17,6 +17,9 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 
+/**
+ * @author ych
+ */
 public class HomeFollowItem2Adapter extends BaseQuickAdapter<HomeFollowBean.FollowCreatorList, BaseViewHolder> {
     private Context mContext;
     public HomeFollowItem2Adapter(Context mContext,int layoutResId, @Nullable List<HomeFollowBean.FollowCreatorList> list) {

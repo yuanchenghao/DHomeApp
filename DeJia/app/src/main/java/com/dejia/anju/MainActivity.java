@@ -264,7 +264,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     //查看版本
     private void getVersion() {
-        new GetVersionApi().getCallBack(mContext, new HashMap<>(), (BaseCallBackListener<ServerData>) serverData -> {
+        new GetVersionApi().getCallBack(mContext, new HashMap<>(0), (BaseCallBackListener<ServerData>) serverData -> {
             if("1".equals(serverData.code)){
                 VersionInfo versionInfo = JSONUtil.TransformSingleBean(serverData.data, VersionInfo.class);
                 if(versionInfo != null && !TextUtils.isEmpty(versionInfo.getVer())){
@@ -324,7 +324,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void getMessageNum() {
-        new MessageCountApi().getCallBack(mContext, new HashMap<>(), (BaseCallBackListener<ServerData>) serverData -> {
+        new MessageCountApi().getCallBack(mContext, new HashMap<>(0), (BaseCallBackListener<ServerData>) serverData -> {
             if("1".equals(serverData.code)){
                 MessageCountInfo messageCountInfo = JSONUtil.TransformSingleBean(serverData.data,MessageCountInfo.class);
                 KVUtils.getInstance().encode("message_count",messageCountInfo);
@@ -340,7 +340,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     //请求公用模块控制
     private void getMessageShow() {
         messageShowApi = new MessageShowApi();
-        messageShowApi.getCallBack(mContext, new HashMap<>(), (BaseCallBackListener<ServerData>) serverData -> {
+        messageShowApi.getCallBack(mContext, new HashMap<>(0), (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 MessageShowInfo messageShowInfo = JSONUtil.TransformSingleBean(serverData.data, MessageShowInfo.class);
                 KVUtils.getInstance().encode("message_show", messageShowInfo);
@@ -463,19 +463,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     transaction.show(circleFragment);
                 }
                 break;
-            case 2:
-//                if (toolFragment == null) {
-//                    toolFragment = new ToolFragment();
-//                    transaction.add(R.id.fl, toolFragment);
-//                } else {
-//                    transaction.show(toolFragment);
-//                }
-//                invokeToolActivity();
-//                iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
-//                iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
-//                iv_message.setImageResource(R.mipmap.message_no_icon_bottom);
-//                iv_my.setImageResource(R.mipmap.my_no_icon_bottom);
-                break;
             case 3:
                 iv_home.setImageResource(R.mipmap.home_no_icon_bottom);
                 iv_circle.setImageResource(R.mipmap.circle_no_icon_bottom);
@@ -556,12 +543,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 .selectionMode(PictureConfig.MULTIPLE)
                 .setPictureWindowAnimationStyle(mWindowAnimationStyle)
                 .maxSelectNum(9)
-                .isCompress(true)// 是否压缩
-                .compressQuality(60)// 图片压缩后输出质量 0~ 100
+                // 是否压缩
+                .isCompress(true)
+                // 图片压缩后输出质量 0~ 100
+                .compressQuality(60)
                 .circleDimmedLayer(true)
                 .isZoomAnim(true)
                 .withAspectRatio(1, 1)
-                .minimumCompressSize(100)// 小于100kb的图片不压缩
+                // 小于100kb的图片不压缩
+                .minimumCompressSize(100)
                 .imageEngine(GlideEngine.createGlideEngine())
                 .forResult(PictureConfig.CHOOSE_REQUEST);
     }
@@ -574,9 +564,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (circleFragment != null) {
             transaction.hide(circleFragment);
         }
-//        if (toolFragment != null) {
-//            transaction.hide(toolFragment);
-//        }
         if (messageFragment != null) {
             transaction.hide(messageFragment);
         }

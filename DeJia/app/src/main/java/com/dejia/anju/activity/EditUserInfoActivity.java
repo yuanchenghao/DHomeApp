@@ -53,7 +53,10 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-//编辑用户信息
+/**
+ * @author ych
+ * 编辑用户信息
+ */
 public class EditUserInfoActivity extends BaseActivity implements OnClickListener {
     @BindView(R.id.ll_root)
     LinearLayout ll_root;
@@ -269,34 +272,11 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
+                case PictureConfig.REQUEST_CAMERA:
                     // 结果回调
                     List<LocalMedia> chooseResult = PictureSelector.obtainMultipleResult(data);
-                    // 例如 LocalMedia 里面返回五种path
-                    // 1.media.getPath(); 为原图path
-                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-                    // 4.media.getOriginalPath()); media.isOriginal());为true时此字段才有值
-                    // 5.media.getAndroidQToPath();为Android Q版本特有返回的字段，此字段有值就用来做上传使用
-                    // 如果同时开启裁剪和压缩，则取压缩路径为准因为是先裁剪后压缩
-//                    for (LocalMedia media : chooseResult) {
-//                        Log.i(TAG, "是否压缩:" + media.isCompressed());
-//                        Log.i(TAG, "压缩:" + media.getCompressPath());
-//                        Log.i(TAG, "原图:" + media.getPath());
-//                        Log.i(TAG, "绝对路径:" + media.getRealPath());
-//                        Log.i(TAG, "是否裁剪:" + media.isCut());
-//                        Log.i(TAG, "裁剪:" + media.getCutPath());
-//                        Log.i(TAG, "是否开启原图:" + media.isOriginal());
-//                        Log.i(TAG, "原图路径:" + media.getOriginalPath());
-//                        Log.i(TAG, "Android Q 特有Path:" + media.getAndroidQToPath());
-//                    }
                     if (chooseResult != null && chooseResult.size() > 0) {
                         sendUserIcon(chooseResult.get(0).getCutPath());
-                    }
-                    break;
-                case PictureConfig.REQUEST_CAMERA:
-                    List<LocalMedia> cameraResult = PictureSelector.obtainMultipleResult(data);
-                    if (cameraResult != null && cameraResult.size() > 0) {
-                        sendUserIcon(cameraResult.get(0).getCutPath());
                     }
                     break;
                 default:
@@ -308,7 +288,7 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
     public void sendUserIcon(String path) {
         if (!TextUtils.isEmpty(path)) {
             upLoadImgApi = new UpLoadImgApi();
-            Map<String, Object> maps = new HashMap<>();
+            Map<String, Object> maps = new HashMap<>(0);
             HttpParams params = new HttpParams();
             params.put("avatar", new File(path));
             upLoadImgApi.getCallBack(mContext, maps, params, (BaseCallBackListener<ServerData>) serverData -> {
@@ -330,7 +310,7 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
 
     //修改用户信息
     private void setUserInfo(String post_img_url) {
-        HashMap<String, Object> maps = new HashMap<>();
+        HashMap<String, Object> maps = new HashMap<>(0);
         maps.put("avatar", post_img_url);
         new SetUserApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {

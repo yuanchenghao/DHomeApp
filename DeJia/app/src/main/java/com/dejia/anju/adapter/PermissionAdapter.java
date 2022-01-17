@@ -12,6 +12,9 @@ import java.util.List;
 import androidx.annotation.Nullable;
 
 
+/**
+ * @author ych
+ */
 public class PermissionAdapter extends BaseQuickAdapter<PermsissionData, BaseViewHolder> {
     public PermissionAdapter(int layoutResId, @Nullable List<PermsissionData> data) {
         super(layoutResId, data);

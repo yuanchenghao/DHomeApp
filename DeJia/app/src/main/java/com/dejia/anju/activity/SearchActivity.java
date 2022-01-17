@@ -121,7 +121,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void invokeWebSearchActivity(String key) {
-        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, String> map = new HashMap<>(0);
         map.put("key", key);
         WebViewData webViewData = new WebViewData.WebDataBuilder()
                 .setWebviewType("webview")

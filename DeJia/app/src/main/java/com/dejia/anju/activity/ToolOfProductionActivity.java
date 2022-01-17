@@ -223,7 +223,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
     //上传图片
     private void postImg() {
         upLoadUgcImageApi = new UpLoadUgcImageApi();
-        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>(0);
         HttpParams httpParams = new HttpParams();
         for (int i = 0; i < toolSelectImgAdapter.getData().size(); i++) {
             httpParams.put(toolSelectImgAdapter.getData().get(i) + "",
@@ -244,12 +244,12 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         if (list != null && list.size() > 0) {
             List imgList = new ArrayList();
             for(int i = 0;i<list.size();i++){
-                HashMap map = new HashMap();
+                HashMap map = new HashMap(0);
                 map.put("img", list.get(i).getPost_img_url());
                 imgList.add(map);
             }
             ugcSaveApi = new UgcSaveApi();
-            HashMap<String, Object> maps = new HashMap<>();
+            HashMap<String, Object> maps = new HashMap<>(0);
             maps.put("content", ed.getText().toString().trim());
             maps.put("image", GsonFactory.getSingletonGson().toJson(imgList).toString());
             if(searchBuildingInfo != null){

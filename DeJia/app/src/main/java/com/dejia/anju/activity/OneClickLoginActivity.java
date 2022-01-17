@@ -86,6 +86,7 @@ public class OneClickLoginActivity extends BaseActivity {
         return R.layout.activity_one_click_login;
     }
 
+    @Override
     public void initView() {
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
                 .setAuthBGImgPath("main_bg")
@@ -145,6 +146,7 @@ public class OneClickLoginActivity extends BaseActivity {
         layoutParams2.topMargin = statusbarHeight + SizeUtils.dp2px(20);
     }
 
+    @Override
     public void initData() {
         if(!JVerificationInterface.checkVerifyEnable(this)){
             AppLog.i("当前网络环境不支持认证");
@@ -220,7 +222,7 @@ public class OneClickLoginActivity extends BaseActivity {
 //                operator：成功时为对应运营商，CM代表中国移动，CU代表中国联通，CT代表中国电信。失败时可能为null
                 if (code == 6000){
                     AppLog.i("code=" + code + ", token=" + content+" ,operator="+operator);
-                    HashMap<String, Object> hashMap = new HashMap<>();
+                    HashMap<String, Object> hashMap = new HashMap<>(0);
                     hashMap.put("loginToken",content);
                     loginHttp(hashMap);
                 }else{
@@ -245,7 +247,7 @@ public class OneClickLoginActivity extends BaseActivity {
                     String registrationID = JPushInterface.getRegistrationID(mContext);
                     IMManager.getInstance(mContext).getIMNetInstance().closeWebSocket();
                     IMManager.getInstance(mContext).getIMNetInstance().connWebSocket(baseTestService);
-                    HashMap<String, Object> maps = new HashMap<>();
+                    HashMap<String, Object> maps = new HashMap<>(0);
                     maps.put("reg_id", registrationID);
                     maps.put("location_city", Util.getCity());
                     maps.put("brand", android.os.Build.BRAND + "_" + android.os.Build.MODEL);

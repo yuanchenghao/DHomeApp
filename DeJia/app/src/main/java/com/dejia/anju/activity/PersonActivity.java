@@ -49,8 +49,6 @@ import butterknife.OnClick;
 public class PersonActivity extends BaseActivity {
     @BindView(R.id.iv_scan_code)
     ImageView iv_scan_code;
-    //    @BindView(R.id.iv_drawer)
-//    ImageView iv_drawer;
     @BindView(R.id.iv_share)
     ImageView iv_share;
     @BindView(R.id.ll_title)
@@ -113,7 +111,7 @@ public class PersonActivity extends BaseActivity {
     private String userId;
     private int page = 1;
     private MyArticleAdapter myArticleAdapter;
-    private HashMap<String, Object> map = new HashMap<>();
+    private HashMap<String, Object> map = new HashMap<>(0);
 
     @Xml(layouts = "activity_person")
     @Override
@@ -128,7 +126,6 @@ public class PersonActivity extends BaseActivity {
         layoutParams.height = statusbarHeight + SizeUtils.dp2px(50);
         ll_title.setLayoutParams(layoutParams);
         ll_title.setPadding(0, statusbarHeight, 0, 0);
-//        userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
         rv.setNestedScrollingEnabled(false);
         rv_renzheng.setNestedScrollingEnabled(false);
         getUserInfo();
@@ -155,9 +152,11 @@ public class PersonActivity extends BaseActivity {
         });
     }
 
-    //获取我的文章列表
+    /**
+     * 获取我的文章列表
+     */
     private void getMyArticle() {
-        HashMap<String, Object> maps = new HashMap<>();
+        HashMap<String, Object> maps = new HashMap<>(0);
         maps.put("id", userId);
         maps.put("page", page);
         new GetMyArticleApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
@@ -215,7 +214,7 @@ public class PersonActivity extends BaseActivity {
 
     //获取用户信息 主要是为了拿到认证信息
     private void getUserInfo() {
-        HashMap<String, Object> maps = new HashMap<>();
+        HashMap<String, Object> maps = new HashMap<>(0);
         maps.put("id", userId);
         new GetUserInfoApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
@@ -327,7 +326,7 @@ public class PersonActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.iv_scan_code:
                 if (Util.isLogin()) {
-                    QRCodeActivity.invoke(mContext);
+                    QrCodeActivity.invoke(mContext);
                 }
                 break;
             case R.id.edit_info:
@@ -379,7 +378,7 @@ public class PersonActivity extends BaseActivity {
                 map.put("type", "1");
                 try {
                     StringBuffer stringBuffer = new StringBuffer();
-                    stringBuffer.append("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/followList/")
+                    new StringBuffer("https://www.dejia.com/?webviewType=webview&link_is_joint=1&isHide=1&isRefresh=0&enableSafeArea=0&isRemoveUpper=0&bounces=1&enableBottomSafeArea=0&bgColor=#F6F6F6&link=/vue/followList/")
                             .append("&request_param=")
                             .append(JSONUtil.toJSONString(map));
                     WebUrlJumpManager.getInstance().invoke(mContext, stringBuffer.toString(), null);

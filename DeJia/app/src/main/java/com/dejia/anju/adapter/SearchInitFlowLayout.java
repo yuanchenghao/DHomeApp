@@ -13,6 +13,9 @@ import com.dejia.anju.view.FlowLayout;
 
 import java.util.List;
 
+/**
+ * @author ych
+ */
 public class SearchInitFlowLayout {
     private final String TAG = "SearchInitFlowLayout";
     private Activity mContext;
@@ -41,14 +44,14 @@ public class SearchInitFlowLayout {
             view.setBackgroundResource(R.drawable.shape_bian_yuanjiao_f6f6f6);
             mFlowLayout.addView(view, i, lp);
             view.setTag(i);
-            view.setOnClickListener(new onClickView());
+            view.setOnClickListener(new OnClickView());
         }
     }
 
     /**
      * 点击按钮回调
      */
-    class onClickView implements View.OnClickListener {
+    class OnClickView implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             int selected = (int) v.getTag();
@@ -65,6 +68,12 @@ public class SearchInitFlowLayout {
     private ClickCallBack clickCallBack;
 
     public interface ClickCallBack {
+        /**
+         * 点击
+         * @param v
+         * @param pos
+         * @param key
+         */
         void onClick(View v, int pos, String key);
     }
 

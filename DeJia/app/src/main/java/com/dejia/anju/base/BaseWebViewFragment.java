@@ -241,7 +241,7 @@ public abstract class BaseWebViewFragment extends BaseFragment {
 
     protected void postUrl(String url) {
         WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
-        HashMap<String, Object> addressAndHeadMap = new HashMap<>();
+        HashMap<String, Object> addressAndHeadMap = new HashMap<>(0);
         mWebView.postUrl(url, EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
     }
 

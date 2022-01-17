@@ -12,12 +12,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 
-public class YMTabLayoutAdapter extends FragmentStatePagerAdapter {
+/**
+ * @author ych
+ */
+public class YmTabLayoutAdapter extends FragmentStatePagerAdapter {
     private static final String TAG = "YMTabLayoutAdapter";
     private List<String> titleList;
     private List<BaseFragment> fragmentList;
 
-    public YMTabLayoutAdapter(FragmentManager fm, List<String> mPageTitleList, List<BaseFragment> mFragmentList) {
+    public YmTabLayoutAdapter(FragmentManager fm, List<String> mPageTitleList, List<BaseFragment> mFragmentList) {
         super(fm);
         this.titleList = mPageTitleList;
         this.fragmentList = mFragmentList;

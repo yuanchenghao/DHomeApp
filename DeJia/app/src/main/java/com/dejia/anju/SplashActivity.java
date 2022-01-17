@@ -38,7 +38,10 @@ import static com.dejia.anju.net.BuildConfig.registeredInterface;
 import static com.dejia.anju.net.FinalConstant1.CITY;
 import static com.dejia.anju.utils.Util.getAndroidId;
 
-//启动页
+/**
+ * @author ych
+ * 启动页
+ */
 public class SplashActivity extends BaseActivity {
     private PrivacyAgreementDialog privacyAgreementDialog;
     private PermissionManager mPermissionManager;
@@ -296,13 +299,6 @@ public class SplashActivity extends BaseActivity {
             //这种方案适用于 API21——25，即 5.0——7.1 之间的版本可以使用
             intent.putExtra("app_package", mContext.getPackageName());
             intent.putExtra("app_uid", mContext.getApplicationInfo().uid);
-            // 小米6 -MIUI9.6-8.0.0系统，是个特例，通知设置界面只能控制"允许使用通知圆点"
-            //  if ("MI 6".equals(Build.MODEL)) {
-            //      intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            //      Uri uri = Uri.fromParts("package", getPackageName(), null);
-            //      intent.setData(uri);
-            //      // intent.setAction("com.android.settings/.SubSettings");
-            //  }
             startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();

@@ -16,7 +16,7 @@ import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.EditIntroduceActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
-import com.dejia.anju.activity.QRCodeActivity;
+import com.dejia.anju.activity.QrCodeActivity;
 import com.dejia.anju.adapter.MyArticleAdapter;
 import com.dejia.anju.adapter.RenZhengListAdapter;
 import com.dejia.anju.api.GetMyArticleApi;
@@ -55,6 +55,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * @author ych
+ */
 public class MyFragment extends BaseFragment {
     @BindView(R.id.iv_scan_code)
     ImageView iv_scan_code;
@@ -111,7 +114,7 @@ public class MyFragment extends BaseFragment {
     private UserInfo userInfo;
     private int page = 1;
     private MyArticleAdapter myArticleAdapter;
-    private HashMap<String, Object> map = new HashMap<>();
+    private HashMap<String, Object> map = new HashMap<>(0);
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -172,7 +175,7 @@ public class MyFragment extends BaseFragment {
 
     //获取用户信息 主要是为了拿到认证信息
     private void getUserInfo() {
-        HashMap<String, Object> maps = new HashMap<>();
+        HashMap<String, Object> maps = new HashMap<>(0);
         maps.put("id", userInfo.getId());
         new GetUserInfoApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
@@ -188,7 +191,7 @@ public class MyFragment extends BaseFragment {
 
     //获取我的文章列表
     private void getMyArticle() {
-        HashMap<String, Object> maps = new HashMap<>();
+        HashMap<String, Object> maps = new HashMap<>(0);
         maps.put("id", userInfo.getId());
         maps.put("page", page);
         new GetMyArticleApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
@@ -341,7 +344,7 @@ public class MyFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.iv_scan_code:
                 if(Util.isLogin()){
-                    QRCodeActivity.invoke(mContext);
+                    QrCodeActivity.invoke(mContext);
                 }
                 break;
             case R.id.iv_drawer:

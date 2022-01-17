@@ -228,7 +228,7 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity {
 
     protected void postUrl(String url) {
         WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
-        HashMap<String, Object> addressAndHeadMap = new HashMap<>();
+        HashMap<String, Object> addressAndHeadMap = new HashMap<>(0);
         mWebView.postUrl(addressAndHead.getUrl(), EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
     }
 }

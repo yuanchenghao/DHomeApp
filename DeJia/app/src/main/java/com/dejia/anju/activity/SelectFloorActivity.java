@@ -110,7 +110,7 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
 
     private void getSearchList(String building_name) {
         getBuildingInfoApi = new GetBuildingInfoApi();
-        HashMap<String, Object> maps = new HashMap<>();
+        HashMap<String, Object> maps = new HashMap<>(0);
         maps.put("building_name", building_name);
         getBuildingInfoApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {

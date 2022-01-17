@@ -140,7 +140,7 @@ public class SendVerificationCodeActivity extends BaseActivity {
                     translationAnimation(sku_bubble, true);
                     return;
                 }
-                HashMap<String, Object> maps = new HashMap<>();
+                HashMap<String, Object> maps = new HashMap<>(0);
                 maps.put("phone", ed.getText().toString().trim());
                 new GetCodeApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
                     if ("1".equals(serverData.code)) {

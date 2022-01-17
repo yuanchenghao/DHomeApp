@@ -12,6 +12,9 @@ import com.dejia.anju.model.CityInfo;
 
 import java.util.List;
 
+/**
+ * @author ych
+ */
 public class HotCityAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater inflater;

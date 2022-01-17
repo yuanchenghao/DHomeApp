@@ -34,6 +34,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * @author ych
+ */
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int ITEM_TYPE_ONE = 1;       //长图文无图类型
     private final int ITEM_TYPE_TOW = 2;       //长图文一张图类型
@@ -239,7 +242,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type1View.user_type.setVisibility(View.GONE);
         }
         type1View.tv_follow.setOnClickListener(v -> {
-            HashMap<String, Object> hashMap = new HashMap<>();
+            HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
             new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
@@ -249,10 +252,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                         notifyItemChanged(position, "follow");
                     }
-                    ToastUtils.toast(mContext, serverData.message).show();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
                 }
+                ToastUtils.toast(mContext, serverData.message).show();
             });
         });
     }
@@ -314,7 +315,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type2View.user_type.setVisibility(View.GONE);
         }
         type2View.tv_follow.setOnClickListener(v -> {
-            HashMap<String, Object> hashMap = new HashMap<>();
+            HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
             new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
@@ -324,10 +325,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                         notifyItemChanged(position, "follow");
                     }
-                    ToastUtils.toast(mContext, serverData.message).show();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
                 }
+                ToastUtils.toast(mContext, serverData.message).show();
             });
         });
     }
@@ -404,7 +403,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type3View.rv_img.setVisibility(View.GONE);
         }
         type3View.tv_follow.setOnClickListener(v -> {
-            HashMap<String, Object> hashMap = new HashMap<>();
+            HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
             new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
@@ -414,10 +413,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                         notifyItemChanged(position, "follow");
                     }
-                    ToastUtils.toast(mContext, serverData.message).show();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
                 }
+                ToastUtils.toast(mContext, serverData.message).show();
             });
         });
     }
@@ -512,7 +509,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type4View.rv_img.setVisibility(View.GONE);
         }
         type4View.tv_follow.setOnClickListener(v -> {
-            HashMap<String, Object> hashMap = new HashMap<>();
+            HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
             new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
@@ -522,10 +519,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         mDatas.get(position).getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                         notifyItemChanged(position, "follow");
                     }
-                    ToastUtils.toast(mContext, serverData.message).show();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
                 }
+                ToastUtils.toast(mContext, serverData.message).show();
             });
         });
     }
@@ -664,7 +659,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             iv_person.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
             tv_name.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
             tv_zan_num.setOnClickListener(v -> {
-                HashMap<String, Object> maps = new HashMap<>();
+                HashMap<String, Object> maps = new HashMap<>(0);
                 //点赞类型（1文章点赞 ，2评论点赞）
                 maps.put("agree_type", "1");
                 //文章id 或者 评论id
@@ -693,7 +688,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
             iv_zan_num.setOnClickListener(v -> {
-                HashMap<String, Object> maps = new HashMap<>();
+                HashMap<String, Object> maps = new HashMap<>(0);
                 //点赞类型（1文章点赞 ，2评论点赞）
                 maps.put("agree_type", "1");
                 //文章id 或者 评论id

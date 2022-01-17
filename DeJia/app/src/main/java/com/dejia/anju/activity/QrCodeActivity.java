@@ -39,13 +39,14 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 
 /**
- * 文 件 名: VerificationCodeActivity
- * 创 建 人: 原成昊
+ * 文 件 名: QrCodeActivity
+ *
+ * @author 原成昊
  * 邮   箱: 188897876@qq.com
  * 修改备注：二维码识别
  */
 
-public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate {
+public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate {
     @BindView(R.id.iv_close)
     ImageView iv_close;
     @BindView(R.id.zxingview)
@@ -157,7 +158,6 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         } else {
             DialogUtils.showScanErrorDialog(mContext, () -> {
                 DialogUtils.closeDialog();
-//                    ToastUtils.toast(mContext, "链接无效，请重新扫描").show();
                 mZXingView.startSpotAndShowRect();
                 iv_scan.startAnimation(animation);
             });
@@ -200,7 +200,7 @@ public class QRCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     }
 
     public static void invoke(Context context) {
-        Intent intent = new Intent(context, QRCodeActivity.class);
+        Intent intent = new Intent(context, QrCodeActivity.class);
         context.startActivity(intent);
     }
 

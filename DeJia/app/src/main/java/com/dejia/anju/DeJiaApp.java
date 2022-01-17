@@ -32,6 +32,9 @@ import cn.jiguang.verifysdk.api.JVerificationInterface;
 
 import static com.dejia.anju.base.Constants.STATE_NORMAL;
 
+/**
+ * @author ych
+ */
 public class DeJiaApp extends Application {
     private static Context mContext;
     private static DeJiaApp mInstance;
@@ -94,7 +97,9 @@ public class DeJiaApp extends Application {
     }
 
     public String getProcessName(Context context) {
-        if (context == null) return null;
+        if (context == null) {
+            return null;
+        }
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningAppProcessInfo processInfo : manager.getRunningAppProcesses()) {
             if (processInfo.pid == android.os.Process.myPid()) {

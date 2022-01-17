@@ -18,6 +18,9 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * @author ych
+ */
 public class ToolSelectImgAdapter extends RecyclerView.Adapter<ToolSelectImgAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;

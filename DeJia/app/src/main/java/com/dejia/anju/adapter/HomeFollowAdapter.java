@@ -31,12 +31,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * @author ych
+ */
 public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final int ITEM_TYPE_ONE = 1;       //无关注时作者类型
-    private final int ITEM_TYPE_TOW = 2;       //有关注时作者类型
-    private final int ITEM_TYPE_THTEE = 3;     //关注楼盘 流式类型
-    private final int ITEM_TYPE_FOUR = 4;      //无关注优秀创作者文章列表类型
-    private final int ITEM_TYPE_FIVE = 5;      //有关注时关注用户发的文章
+    //无关注时作者类型
+    private final int ITEM_TYPE_ONE = 1;
+    //有关注时作者类型
+    private final int ITEM_TYPE_TOW = 2;
+    //关注楼盘 流式类型
+    private final int ITEM_TYPE_THTEE = 3;
+    //无关注优秀创作者文章列表类型
+    private final int ITEM_TYPE_FOUR = 4;
+    //有关注时关注用户发的文章
+    private final int ITEM_TYPE_FIVE = 5;
     private LayoutInflater mInflater;
     private Activity mContext;
     private List<HomeFollowListBean> mDatas;
@@ -276,7 +284,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             type4View.rv_img.setVisibility(View.GONE);
         }
         type4View.tv_follow.setOnClickListener(v -> {
-            HashMap<String, Object> hashMap = new HashMap<>();
+            HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getFollow_creator_article_list().getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
             new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
@@ -286,10 +294,8 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         mDatas.get(position).getFollow_creator_article_list().getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                         notifyItemChanged(position, "follow");
                     }
-                    ToastUtils.toast(mContext, serverData.message).show();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
                 }
+                ToastUtils.toast(mContext, serverData.message).show();
             });
         });
     }
@@ -335,7 +341,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
         });
         type5View.tv_follow.setOnClickListener(v -> {
-            HashMap<String, Object> hashMap = new HashMap<>();
+            HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
             new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
@@ -345,10 +351,8 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         mDatas.get(position).getNo_follow_creator_article_list().getUser_data().setIs_following(Integer.parseInt(followAndCancelInfo.getFollowing()));
                         notifyItemChanged(position, "follow");
                     }
-                    ToastUtils.toast(mContext, serverData.message).show();
-                } else {
-                    ToastUtils.toast(mContext, serverData.message).show();
                 }
+                ToastUtils.toast(mContext, serverData.message).show();
             });
         });
     }

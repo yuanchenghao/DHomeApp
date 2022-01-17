@@ -129,7 +129,7 @@ public class EditNickNameActivity extends BaseActivity implements OnClickListene
     //修改用户信息
     private void setUserInfo() {
         setUserApi = new SetUserApi();
-        HashMap<String, Object> maps = new HashMap<>();
+        HashMap<String, Object> maps = new HashMap<>(0);
         maps.put("nickname", ed.getText().toString().trim());
         setUserApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {

@@ -147,7 +147,7 @@ public class FollowFragment extends BaseFragment {
 
     private void getFollowList() {
         homeFollowApi = new HomeFollowApi();
-        Map<String, Object> maps = new HashMap<String, Object>();
+        Map<String, Object> maps = new HashMap<>(0);
         maps.put("page", page);
         homeFollowApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if (smartRefreshLayout != null) {

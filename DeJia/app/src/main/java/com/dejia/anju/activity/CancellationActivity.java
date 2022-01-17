@@ -154,7 +154,7 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
     //确认注销
     public void postIslogout() {
         userLogoutApi = new UserLogoutApi();
-        HashMap<String, Object> maps = new HashMap<>();
+        HashMap<String, Object> maps = new HashMap<>(0);
         userLogoutApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 DialogUtils.closeDialog();

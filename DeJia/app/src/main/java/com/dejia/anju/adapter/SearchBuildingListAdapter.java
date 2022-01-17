@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 /**
  * 搜索楼盘列表页适配器
+ * @author ych
  */
 public class SearchBuildingListAdapter extends BaseQuickAdapter<SearchBuildingInfo, BaseViewHolder> {
     private Context mContext;

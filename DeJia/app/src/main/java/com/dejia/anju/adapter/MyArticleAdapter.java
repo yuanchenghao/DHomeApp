@@ -419,7 +419,7 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ll_comment_zan = itemView.findViewById(R.id.ll_comment_zan);
             itemView.setOnClickListener(v -> mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition()));
             tv_zan_num.setOnClickListener(v -> {
-                HashMap<String, Object> maps = new HashMap<>();
+                HashMap<String, Object> maps = new HashMap<>(0);
                 //点赞类型（1文章点赞 ，2评论点赞）
                 maps.put("agree_type", "1");
                 //文章id 或者 评论id
@@ -451,7 +451,7 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
             iv_zan_num.setOnClickListener(v -> {
-                HashMap<String, Object> maps = new HashMap<>();
+                HashMap<String, Object> maps = new HashMap<>(0);
                 //点赞类型（1文章点赞 ，2评论点赞）
                 maps.put("agree_type", "1");
                 //文章id 或者 评论id

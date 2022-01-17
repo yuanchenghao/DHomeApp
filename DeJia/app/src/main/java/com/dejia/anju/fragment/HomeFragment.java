@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.dejia.anju.R;
 import com.dejia.anju.activity.SearchActivity;
-import com.dejia.anju.adapter.YMTabLayoutAdapter;
+import com.dejia.anju.adapter.YmTabLayoutAdapter;
 import com.dejia.anju.api.GetCityApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
@@ -33,6 +33,9 @@ import java.util.List;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
+/**
+ * @author ych
+ */
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.ll_root)
     View ll_root;
@@ -53,7 +56,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     //viewpager相关
     private ArrayList<BaseFragment> fragmentList = new ArrayList<>();
     private List<String> titleList = new ArrayList<>();
-    private YMTabLayoutAdapter ymTabLayoutAdapter;
+    private YmTabLayoutAdapter ymTabLayoutAdapter;
     //当前选中
     private int mFragmentSelectedPos = 0;
     private CityInfo cityInfo;
@@ -86,7 +89,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         titleList.add("关注");
         fragmentList.add(RecommendFragment.newInstance());
         fragmentList.add(FollowFragment.newInstance());
-        ymTabLayoutAdapter = new YMTabLayoutAdapter(getChildFragmentManager(), titleList, fragmentList);
+        ymTabLayoutAdapter = new YmTabLayoutAdapter(getChildFragmentManager(), titleList, fragmentList);
         vp.setAdapter(ymTabLayoutAdapter);
         home_tab_layout.setupWithViewPager(vp);
         setTabmStyle();
@@ -129,7 +132,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void setTabmStyle() {
-        for (int i = 0; i < home_tab_layout.getTabCount(); i++) {//根据Tab数量循环来设置
+        //根据Tab数量循环来设置
+        for (int i = 0; i < home_tab_layout.getTabCount(); i++) {
             TabLayout.Tab tab = home_tab_layout.getTabAt(i);
             if (tab != null) {
                 View view = LayoutInflater.from(mContext).inflate(R.layout.item_tablayout, null);
@@ -146,7 +150,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     ((TextView) view.findViewById(R.id.tv_tab)).setTextSize(18);
                     ((TextView) view.findViewById(R.id.tv_tab)).setTypeface(Typeface.DEFAULT);
                 }
-                tab.setCustomView(view);//最后添加view到Tab上面
+                //最后添加view到Tab上面
+                tab.setCustomView(view);
             }
         }
     }
@@ -193,7 +198,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private void getCityList() {
         getCityApi = new GetCityApi();
-        getCityApi.getCallBack(mContext, new HashMap<>(), (BaseCallBackListener<ServerData>) serverData -> {
+        getCityApi.getCallBack(mContext, new HashMap<>(0), (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 cityInfo = JSONUtil.TransformSingleBean(serverData.data, CityInfo.class);
             }

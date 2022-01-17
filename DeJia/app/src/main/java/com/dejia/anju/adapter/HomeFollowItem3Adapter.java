@@ -13,6 +13,9 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 
+/**
+ * @author ych
+ */
 public class HomeFollowItem3Adapter extends BaseQuickAdapter<HomeFollowBean.BuildsBean, BaseViewHolder> {
     public HomeFollowItem3Adapter(int layoutResId, @Nullable List<HomeFollowBean.BuildsBean> list) {
         super(layoutResId, list);

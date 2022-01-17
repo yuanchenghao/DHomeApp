@@ -22,7 +22,10 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-//搜索结果
+/**
+ * @author ych
+ * 搜索结果
+ */
 public class SearchResultFragment extends BaseWebViewFragment {
     @BindView(R.id.fl)
     FrameLayout fl;
@@ -87,9 +90,6 @@ public class SearchResultFragment extends BaseWebViewFragment {
                 }
             }
         }
-//        if (fl.getChildCount() > 0) {
-//            fl.removeAllViews();
-//        }
         fl.addView(mWebView);
         BaseWebViewClientMessage clientManager = new BaseWebViewClientMessage(mContext);
         mWebView.setWebViewClient(clientManager);

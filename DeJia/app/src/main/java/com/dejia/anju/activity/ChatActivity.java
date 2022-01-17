@@ -198,7 +198,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     private void upDataChatRead() {
         chatUpdateReadApi = new ChatUpdateReadApi();
-        Map<String, Object> maps = new HashMap<String, Object>();
+        Map<String, Object> maps = new HashMap<>(0);
         maps.put("id", mId);
         chatUpdateReadApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
@@ -268,7 +268,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     //获取页面信息
     private void getChatIndexInfo() {
-        Map<String, Object> maps = new HashMap<String, Object>();
+        Map<String, Object> maps = new HashMap<>(0);
         maps.put("id", mId);
         chatIndexApi = new ChatIndexApi();
         chatIndexApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
@@ -290,7 +290,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     //获取私信信息
     private void getMessageInfo() {
-        Map<String, Object> maps = new HashMap<String, Object>();
+        Map<String, Object> maps = new HashMap<>(0);
         maps.put("id", mId);
         maps.put("page", "1");
 //        maps.put("msgtime", mDateTime);
@@ -333,7 +333,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     //发送私信消息
     private void sendMessage(String content) {
-        Map<String, Object> maps = new HashMap<String, Object>();
+        Map<String, Object> maps = new HashMap<>(0);
         maps.put("id", mId);
         //类型 暂时只有文字
         maps.put("class_id", "1");
@@ -444,7 +444,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         if (pagelist != null) {
             pagelist.clear();
         }
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>(0);
         params.put("id", mId);
         params.put("page", page);
         if (Integer.parseInt(page) > 1) {

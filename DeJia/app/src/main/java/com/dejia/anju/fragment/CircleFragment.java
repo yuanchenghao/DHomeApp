@@ -15,6 +15,9 @@ import com.zhangyue.we.x2c.ano.Xml;
 
 import butterknife.BindView;
 
+/**
+ * @author ych
+ */
 public class CircleFragment extends BaseWebViewFragment {
     @BindView(R.id.community_web_view)
     SmartRefreshLayout mRefreshWebView;

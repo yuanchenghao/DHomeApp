@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * 认证列表页适配器
+ * @author ych
  */
 public class RenZhengListAdapter extends BaseQuickAdapter<Auth, BaseViewHolder> {
     private Context mContext;

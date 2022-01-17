@@ -102,7 +102,7 @@ public class JSONUtil {
         //根据逗号截取字符串数组
         String[] str1 = str.split(",");
         //创建Map对象
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(0);
         //循环加入map集合
         for (int i = 0; i < str1.length; i++) {
             //根据":"截取字符串数组
@@ -546,7 +546,7 @@ public class JSONUtil {
             Iterator<String> keyIter = jsonObject.keys();
             String key;
             Object value;
-            Map<String, Object> valueMap = new HashMap<String, Object>();
+            Map<String, Object> valueMap = new HashMap<>(0);
             while (keyIter.hasNext()) {
                 key = keyIter.next();
                 value = jsonObject.get(key);

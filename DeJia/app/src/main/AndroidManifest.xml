@@ -41,7 +41,7 @@
             android:name="com.dejia.anju.activity.VerificationCodeActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name="com.dejia.anju.activity.QRCodeActivity"
+            android:name="com.dejia.anju.activity.QrCodeActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.dejia.anju.activity.ScanLoginActivity"

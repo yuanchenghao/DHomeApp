@@ -53,7 +53,10 @@ import butterknife.BindView;
 import static android.app.Notification.EXTRA_CHANNEL_ID;
 import static android.provider.Settings.EXTRA_APP_PACKAGE;
 
-//私信列表页
+/**
+ * @author ych
+ * 私信列表页
+ */
 public class MessageFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.ll_title)
     LinearLayout ll_title;
@@ -88,7 +91,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     private YMLinearLayoutManager ymLinearLayoutManager;
     private ArrayList<MessageListData> messageListData;
     private int mPos;
-    private HashMap<String, Object> map = new HashMap<>();
+    private HashMap<String, Object> map = new HashMap<>(0);
     private UserInfo userInfo;
 
     public static MessageFragment newInstance() {
@@ -106,7 +109,9 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                 String mNoread = ((NoreadAndChatidInfo) msgEvent.getData()).getNoread();
                 boolean refreshMessageList = true;
                 if (getActivity() != null) {
-                    if (messageListAdapter == null) return;
+                    if (messageListAdapter == null) {
+                        return;
+                    }
                     List<MessageListData> mData = messageListAdapter.getData();
                     for (int i = 0; i < mData.size(); i++) {
                         if (mId.equals(mData.get(i).getId())) {
@@ -199,7 +204,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
 
     //请求各种消息数
     private void getMessageNum() {
-        new MessageCountApi().getCallBack(mContext, new HashMap<>(), (BaseCallBackListener<ServerData>) serverData -> {
+        new MessageCountApi().getCallBack(mContext, new HashMap<>(0), (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 KVUtils.getInstance().encode("message_count", JSONUtil.TransformSingleBean(serverData.data, MessageCountInfo.class));
             }
@@ -233,7 +238,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
 
     //请求消息列表
     private void getMessageList() {
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<>(0);
         map.put("page", page);
         new GetMessageListApi().getCallBack(mContext, map, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {

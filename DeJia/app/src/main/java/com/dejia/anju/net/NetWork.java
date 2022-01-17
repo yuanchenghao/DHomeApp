@@ -57,7 +57,7 @@ public class NetWork {
     }
 
     //保存所有注册的数据
-    private HashMap<String, BindData> mBindDatas = new HashMap<>();
+    private HashMap<String, BindData> mBindDatas = new HashMap<>(0);
 
     /**
      * 注册请求地址

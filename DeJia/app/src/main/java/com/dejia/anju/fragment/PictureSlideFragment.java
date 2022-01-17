@@ -12,7 +12,10 @@ import com.zhangyue.we.x2c.ano.Xml;
 
 import butterknife.BindView;
 
-//大图浏览页面
+/**
+ * @author ych
+ * 大图浏览页面
+ */
 public class PictureSlideFragment extends BaseFragment {
     private String url;
     @BindView(R.id.photo_view)

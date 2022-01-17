@@ -2,7 +2,6 @@ package com.dejia.anju.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
@@ -33,11 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.RequiresApi;
 import butterknife.BindView;
 
 import static com.qmuiteam.qmui.util.QMUIDisplayHelper.getStatusBarHeight;
 
+/**
+ * @author ych
+ * 公共webview
+ */
 public class WebViewActivity extends WebViewActivityImpl {
 
     @BindView(R.id.activity_web_view)
@@ -112,8 +114,6 @@ public class WebViewActivity extends WebViewActivityImpl {
         } else {
             //沉浸式布局
             QMUIStatusBarHelper.translucent(mContext);
-            //状态栏白色
-//            QMUIStatusBarHelper.setStatusBarDarkMode(mContext);
             QMUIStatusBarHelper.setStatusBarLightMode(mContext);
         }
         //是否需要标题
@@ -220,14 +220,6 @@ public class WebViewActivity extends WebViewActivityImpl {
     protected void onYmPageFinished(WebView view, String url) {
     }
 
-//    @Override
-//    protected boolean ymShouldOverrideUrlLoading(WebView view, String request) {
-//        if(!TextUtils.isEmpty(request)){
-//            WebUrlJumpManager.getInstance().invoke(mContext,request,null);
-//        }
-//        return super.ymShouldOverrideUrlLoading(view, request);
-//    }
-
     @Override
     public void onPause() {
         if (mWebView != null) {
@@ -277,30 +269,10 @@ public class WebViewActivity extends WebViewActivityImpl {
         }
     }
 
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (mWebView != null && (keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
-//            if (mWebViewData != null && TextUtils.isEmpty(mWebViewData.get)) {
-//                mWebView.goBack(); // 浏览网页历史记录 goBack()和goForward()
-//                return true;
-//            }
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-    }
-
 
     /**
      * 加载URL
      */
-//    mWebView.loadUrl("http://172.16.10.200:8888/front/yxxtest/test-android.html");
     private void loadLink() {
         if (mWebView != null && mWebViewData != null) {
             // 跳转并进行页面加载

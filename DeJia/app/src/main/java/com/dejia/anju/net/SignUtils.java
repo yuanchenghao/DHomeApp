@@ -47,7 +47,7 @@ public class SignUtils {
 
     private static final String DEFAULT_CHARSET = "UTF-8";
 
-    private static final HashMap<String, Object> addressAndHeadMap = new HashMap<>();
+    private static final HashMap<String, Object> addressAndHeadMap = new HashMap<>(0);
 
     private static final CookieManager cookieManager = CookieManager.getInstance();
 
@@ -83,7 +83,7 @@ public class SignUtils {
 //            tyUrl = url + builder.toString();
 //        }
         String sign = SignUtils.getSign(headMap);
-        Map<String, String> singStr = new HashMap<>();
+        Map<String, String> singStr = new HashMap<>(0);
         if (!TextUtils.isEmpty(sign)) {
             singStr.put("sign", sign);
         } else {
@@ -234,7 +234,7 @@ public class SignUtils {
      */
     @SuppressLint("NewApi")
     public static Map<String, String> buildHttpParamMap(Map<String, Object> map) {
-        Map<String, String> keyValues = new HashMap<>();
+        Map<String, String> keyValues = new HashMap<>(0);
         keyValues.put(FinalConstant1.CITY, URLEncoder.encode(Util.getCity()));
         keyValues.put(FinalConstant1.UID, Util.getUid());
         keyValues.put(FinalConstant1.VER, FinalConstant1.YUEMEI_VER);

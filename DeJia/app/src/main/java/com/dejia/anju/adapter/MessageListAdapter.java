@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * 消息列表页适配器
+ * @author ych
  */
 public class MessageListAdapter extends BaseQuickAdapter<MessageListData, BaseViewHolder> {
     private Context mContext;
@@ -112,7 +113,9 @@ public class MessageListAdapter extends BaseQuickAdapter<MessageListData, BaseVi
      */
     public void setNoread(int pos, String noread) {
         if (!(mData == null || mData.isEmpty())) {
-            if (pos >= mData.size()) return;
+            if (pos >= mData.size()) {
+                return;
+            }
             mData.get(pos).setNoread(noread);
         }
     }

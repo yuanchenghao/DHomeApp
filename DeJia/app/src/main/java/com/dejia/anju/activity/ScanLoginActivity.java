@@ -23,7 +23,10 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
-//扫码确认登录页
+/**
+ * @author ych
+ * 扫码确认登录页
+ */
 public class ScanLoginActivity extends BaseActivity implements OnClickListener {
     @BindView(R.id.rl_title)
     RelativeLayout rl_title;
@@ -94,8 +97,6 @@ public class ScanLoginActivity extends BaseActivity implements OnClickListener {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.ll_back:
-                finish();
-                break;
             case R.id.tv_cancel:
                 finish();
                 break;
