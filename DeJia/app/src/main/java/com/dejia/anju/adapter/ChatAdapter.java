@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dejia.anju.R;
+import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.model.MessageBean;
 import com.dejia.anju.utils.Expression;
 import com.dejia.anju.utils.ToastUtils;
@@ -141,15 +142,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 });
                 return false;
             });
-//                holder.headicon.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        String userImgJumpUrl = tbub.getUser_img_jumpUrl();
-//                        if (!EmptyUtils.isEmpty(userImgJumpUrl)){
-//                            WebUrlTypeUtil.getInstance(context).urlToApp(userImgJumpUrl);
-//                        }
-//                    }
-//                });
             try {
                 String content = tbub.getContent().replace("\\n", "\n");
                 Expression.handlerEmojiText(holder.content, content, mContext);
@@ -228,6 +220,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             chat_time = view.findViewById(R.id.chat_time1);
             content = view.findViewById(R.id.content);
             sendFailImg = view.findViewById(R.id.mysend_fail_img);
+            headicon.setOnClickListener(v -> {
+                if (!TextUtils.isEmpty(userList.get(getLayoutPosition()).getFromUserId())) {
+                    PersonActivity.invoke(mContext, userList.get(getLayoutPosition()).getFromUserId());
+                }
+            });
         }
     }
 
@@ -245,6 +242,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             content = view.findViewById(R.id.mycontent);
             messageContainer = view.findViewById(R.id.message_container_right);
             sendFailImg = view.findViewById(R.id.mysend_fail_img);
+            headicon.setOnClickListener(v -> {
+                if (!TextUtils.isEmpty(userList.get(getLayoutPosition()).getFromUserId())) {
+                    PersonActivity.invoke(mContext, userList.get(getLayoutPosition()).getFromUserId());
+                }
+            });
         }
     }
 
