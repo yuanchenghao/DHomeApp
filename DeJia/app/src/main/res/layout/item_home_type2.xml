@@ -40,7 +40,6 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="好评与差评"
                 android:textColor="#1C2125"
                 android:textSize="@dimen/sp_14"
                 android:textStyle="bold" />
@@ -49,7 +48,6 @@
                 android:id="@+id/tv_user_type_flag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="得家优质创作者LV1"
                 android:layout_marginLeft="@dimen/dp_8"
                 android:textSize="9sp"
                 android:textColor="#33A7FF" />
@@ -64,7 +62,6 @@
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10天前"
                     android:layout_marginRight="@dimen/dp_8"
                     android:textColor="#919699"
                     android:textSize="@dimen/sp_12" />
@@ -73,7 +70,6 @@
                     android:id="@+id/user_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="得家优质创作者LV1"
                     android:textColor="#919699"
                     android:textSize="@dimen/sp_12" />
 
@@ -111,20 +107,18 @@
                 android:id="@+id/tv_context"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:ellipsize="end"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:textColor="#1C2125"
-                android:text="穿越紫禁来看山,玖瀛府开盘盛典暨山居生活美好首映" />
+                android:textColor="#1C2125" />
 
             <TextView
                 android:id="@+id/tv_des"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="在前两日，焦点君给大家说了下近期新获预售证的项目情况……"
                 android:textSize="@dimen/sp_12"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:ellipsize="end"
                 android:textColor="#6F7375" />
 
@@ -134,6 +128,7 @@
             android:id="@+id/iv_img"
             android:layout_width="110dp"
             android:layout_height="82.5dp"
+            android:layout_marginTop="5.5dp"
             android:layout_weight="0"
             app:fadeDuration="100"
             app:retryImageScaleType="centerCrop" />

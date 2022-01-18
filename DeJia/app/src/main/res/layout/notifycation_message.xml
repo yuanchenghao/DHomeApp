@@ -6,11 +6,13 @@
     android:paddingLeft="@dimen/dp_10"
     android:paddingRight="@dimen/dp_10"
     android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/toast_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,6 +43,7 @@
             android:layout_marginTop="13dp"
             android:layout_marginRight="@dimen/dp_10"
             android:layout_marginBottom="10dp">
+
             <TextView
                 android:id="@+id/notify_content"
                 android:layout_width="wrap_content"
@@ -49,6 +52,7 @@
                 android:maxLines="2"
                 android:textColor="#ff333333"
                 android:textSize="14sp" />
+
             <TextView
                 android:id="@+id/notify_content1"
                 android:layout_width="wrap_content"
@@ -57,6 +61,7 @@
                 android:textColor="#fff1bb"
                 android:textStyle="bold"
                 android:visibility="gone" />
+
             <TextView
                 android:id="@+id/notify_content2"
                 android:layout_width="wrap_content"
@@ -66,6 +71,7 @@
                 android:textStyle="bold"
                 android:visibility="gone" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/notify_edt"
             android:layout_width="match_parent"

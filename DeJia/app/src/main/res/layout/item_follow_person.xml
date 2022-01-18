@@ -23,7 +23,6 @@
         android:ellipsize="end"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="谁谁谁"
         android:textColor="#1C2125"
         android:layout_marginTop="@dimen/dp_8"
         android:textSize="@dimen/sp_12" />

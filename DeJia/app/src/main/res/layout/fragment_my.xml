@@ -29,12 +29,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!--            <ImageView-->
-                <!--                android:id="@+id/iv_close"-->
-                <!--                android:layout_width="@dimen/dp_24"-->
-                <!--                android:layout_height="@dimen/dp_24"-->
-                <!--                android:layout_marginLeft="@dimen/dp_16"-->
-                <!--                android:src="@mipmap/back" />-->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -93,7 +87,6 @@
                             android:layout_marginLeft="@dimen/dp_12"
                             android:layout_marginTop="@dimen/dp_7"
                             android:layout_toRightOf="@id/iv_person"
-                            android:text="小宇小宇宙"
                             android:textColor="#FFFFFF"
                             android:textSize="18sp"
                             android:textStyle="bold" />

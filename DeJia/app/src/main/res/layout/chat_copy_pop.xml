@@ -12,11 +12,9 @@
         android:text="复制"
         android:textColor="#ffffffff"
         android:textSize="15sp"
-        android:background="@drawable/chat_copy_pop_shap"
-        />
+        android:background="@drawable/chat_copy_pop_shap" />
     <View
         android:layout_width="@dimen/dp_15"
         android:layout_height="@dimen/dp_15"
-        android:background="@drawable/triangle_shap"
-        />
+        android:background="@drawable/triangle_shap" />
 </LinearLayout>

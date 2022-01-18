@@ -11,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:lineSpacingExtra="3.0dip"
-        android:maxWidth="180dip"
+        android:lineSpacingExtra="@dimen/dp_3"
+        android:maxWidth="180dp"
         android:textColor="#ffffff"
         android:textSize="12sp" />
 

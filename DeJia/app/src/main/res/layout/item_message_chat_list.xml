@@ -36,7 +36,6 @@
                 android:visibility="gone"
                 android:background="@drawable/dot_new_tips"
                 android:gravity="center"
-
                 android:textColor="@color/white"
                 android:textSize="8sp" />
 
@@ -86,12 +85,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="3.5dp">
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/kefu_icon"-->
-<!--                    android:layout_width="@dimen/dp_19"-->
-<!--                    android:layout_height="@dimen/dp_19"-->
-<!--                    android:layout_marginRight="2dp" />-->
 
                 <TextView
                     android:id="@+id/tv_message"

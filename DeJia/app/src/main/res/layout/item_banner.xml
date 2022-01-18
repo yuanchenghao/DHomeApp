@@ -27,8 +27,7 @@
             android:textSize="21sp"
             android:visibility="gone"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:text="石景山要卖八万我就俩字儿" />
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -76,7 +75,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="11sp"
                 android:visibility="gone"
-                android:text="认真买房工会"
                 android:textColor="#FFFFFF" />
 
         </LinearLayout>
