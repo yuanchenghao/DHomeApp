@@ -101,6 +101,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         return fragment;
     }
 
+
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
         switch (msgEvent.getCode()) {
