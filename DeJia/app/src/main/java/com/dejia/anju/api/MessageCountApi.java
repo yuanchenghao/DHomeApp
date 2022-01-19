@@ -13,6 +13,6 @@ public class MessageCountApi implements BaseCallBackApi {
 
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("message", "messageCount", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("message", "messageCount", maps, context, mData -> listener.onSuccess(mData));
     }
 }

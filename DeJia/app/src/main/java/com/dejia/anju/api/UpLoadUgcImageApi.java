@@ -13,6 +13,6 @@ import java.util.Map;
 public class UpLoadUgcImageApi implements BaseCallBackUploadApi {
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, HttpParams uploadPamas, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("ugc", "uploadImage", maps, uploadPamas, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("ugc", "uploadImage", maps, uploadPamas,context, mData -> listener.onSuccess(mData));
     }
 }

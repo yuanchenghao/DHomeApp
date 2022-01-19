@@ -102,6 +102,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         return R.layout.activity_tool_production;
     }
 
+    @Override
     protected void initView() {
         QMUIStatusBarHelper.translucent(this);
         QMUIStatusBarHelper.setStatusBarLightMode(this);

@@ -1,5 +1,7 @@
 package com.dejia.anju.api.base;
 
+import android.content.Context;
+
 import com.dejia.anju.net.NetWork;
 import com.dejia.anju.net.ServerData;
 
@@ -10,12 +12,14 @@ public class BaseNetWorkCallBackApi {
     private HashMap<String, Object> mHashMap;  //传值容器
     private final String mController;
     private final String mMethodName;
+    private Context context;
     private String TAG = "BaseNetWorkCallBackApi";
 
-    public BaseNetWorkCallBackApi(String controller, String methodName) {
+    public BaseNetWorkCallBackApi(String controller, String methodName,Context mContext) {
         mHashMap = new HashMap<>(0);
         this.mController = controller;
         this.mMethodName = methodName;
+        this.context = mContext;
     }
 
     /**
@@ -24,7 +28,7 @@ public class BaseNetWorkCallBackApi {
      * @param listener
      */
     public void startCallBack(final BaseCallBackListener<ServerData> listener) {
-        NetWork.getInstance().call(mController, mMethodName, mHashMap, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call(mController, mMethodName, mHashMap, context, mData -> listener.onSuccess(mData));
     }
 
     public void addData(String key, String value) {

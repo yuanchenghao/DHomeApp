@@ -13,6 +13,6 @@ public class GetCodeApi implements BaseCallBackApi {
 
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("verificationcode", "getLoginVerificationCode", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("verificationcode", "getLoginVerificationCode", maps, context, mData -> listener.onSuccess(mData));
     }
 }

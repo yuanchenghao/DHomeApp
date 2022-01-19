@@ -7,6 +7,7 @@ import android.view.View;
 import com.dejia.anju.DeJiaApp;
 import com.dejia.anju.mannger.ActivityManager;
 import com.dejia.anju.utils.Util;
+import com.lzy.okgo.OkGo;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.X2C;
 
@@ -126,4 +127,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
     }
 
+    @Override
+    protected void onDestroy() {
+        OkGo.getInstance().cancelTag(mContext);
+        super.onDestroy();
+    }
 }

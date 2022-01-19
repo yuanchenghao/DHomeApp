@@ -13,6 +13,6 @@ public class UgcSaveApi implements BaseCallBackApi {
 
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("ugc", "save", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("ugc", "save", maps, context, mData -> listener.onSuccess(mData));
     }
 }

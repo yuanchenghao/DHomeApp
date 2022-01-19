@@ -13,6 +13,6 @@ public class GetUserInfoApi implements BaseCallBackApi {
 
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("user", "getUserInfo", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("user", "getUserInfo", maps, context, mData -> listener.onSuccess(mData));
     }
 }

@@ -13,6 +13,6 @@ public class ChatIndexApi implements BaseCallBackApi {
 
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("chat", "index", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("chat", "index", maps, context, mData -> listener.onSuccess(mData));
     }
 }

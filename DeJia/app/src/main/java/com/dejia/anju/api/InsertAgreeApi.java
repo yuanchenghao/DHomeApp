@@ -12,6 +12,6 @@ import java.util.Map;
 public class InsertAgreeApi implements BaseCallBackApi {
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("user", "insertAgree", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("user", "insertAgree", maps, context, mData -> listener.onSuccess(mData));
     }
 }

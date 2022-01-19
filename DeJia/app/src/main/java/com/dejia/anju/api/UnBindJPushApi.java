@@ -13,6 +13,6 @@ public class UnBindJPushApi implements BaseCallBackApi {
 
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("message", "jPushClose", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("message", "jPushClose", maps, context, mData -> listener.onSuccess(mData));
     }
 }

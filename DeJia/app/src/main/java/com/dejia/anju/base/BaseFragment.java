@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.lzy.okgo.OkGo;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.X2C;
 
@@ -35,6 +36,12 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext = (Activity) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.mContext = null;
     }
 
     @Override
@@ -112,5 +119,12 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(id, fragment);
         transaction.commitAllowingStateLoss();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        OkGo.getInstance().cancelTag(mContext);
+        super.onDestroy();
     }
 }

@@ -1,5 +1,7 @@
 package com.dejia.anju.net;
 
+import android.content.Context;
+
 import com.dejia.anju.AppLog;
 import com.dejia.anju.DeJiaApp;
 import com.dejia.anju.base.Constants;
@@ -106,11 +108,11 @@ public class NetWork {
      * @param maps:参数
      * @param cb：回调
      */
-    public void call(String entry, String ifaceName, Map<String, Object> maps, ServerCallback cb) {
-        call(entry, ifaceName, maps, null, cb);
+    public void call(String entry, String ifaceName, Map<String, Object> maps, Context mContext, ServerCallback cb) {
+        call(entry, ifaceName, maps, null,mContext, cb);
     }
 
-    public void call(String entry, String ifaceName, Map<String, Object> maps, HttpParams uploadParams, ServerCallback cb) {
+    public void call(String entry, String ifaceName, Map<String, Object> maps, HttpParams uploadParams, Context mContext, ServerCallback cb) {
         boolean isChange = false;
 
         BindData bindData = mBindDatas.get(entry + ifaceName);
@@ -155,10 +157,10 @@ public class NetWork {
 
         switch (bindData.getIfaceType()) {
             case GET:
-                get(bindData, maps, cb);
+                get(bindData, maps, cb, mContext);
                 break;
             case POST:
-                post(bindData, maps, cb);
+                post(bindData, maps, cb, mContext);
                 break;
             case CACHE_GET:
                 cacheGet(bindData, maps, cb);
@@ -170,7 +172,7 @@ public class NetWork {
                 download(bindData, maps, cb);
                 break;
             case UPLOAD:
-                upload(bindData, maps, uploadParams, cb);
+                upload(bindData, maps, uploadParams, cb, mContext);
                 break;
         }
     }
@@ -182,12 +184,12 @@ public class NetWork {
      * @param cb
      * @param maps
      */
-    public void get(final BindData bindData, Map<String, Object> maps, final ServerCallback cb) {
+    public void get(final BindData bindData, Map<String, Object> maps, final ServerCallback cb, Context mContext) {
         Map<String, String> httpParams = SignUtils.buildHttpParamMap(maps);
         HttpHeaders headers = SignUtils.buildHttpHeaders(maps);
         CookieConfig.getInstance().setCookie(bindData.getAgreement(), bindData.getAddr(), bindData.getAddr());
         String url = getherUrl(bindData, httpParams);
-        OkGo.get(url).headers(headers).execute(new StringCallback() {
+        OkGo.get(url).headers(headers).tag(mContext).execute(new StringCallback() {
             @Override
             public void onSuccess(String result, Call call, Response response) {
                 handleResponse(bindData, result, cb);
@@ -208,7 +210,7 @@ public class NetWork {
      * @param maps
      * @param cb
      */
-    public void post(final BindData bindData, Map<String, Object> maps, final ServerCallback cb) {
+    public void post(final BindData bindData, Map<String, Object> maps, final ServerCallback cb, Context mContext) {
         YMHttpParams httpParams = SignUtils.buildHttpParam5(maps);
         HttpHeaders headers = SignUtils.buildHttpHeaders(maps);
         CookieConfig.getInstance().setCookie(bindData.getAgreement(), bindData.getAddr(), bindData.getAddr());
@@ -216,6 +218,7 @@ public class NetWork {
                 .cacheMode(CacheMode.DEFAULT)
                 .params(httpParams)
                 .headers(headers)
+                .tag(mContext)
                 .addInterceptor(new LoggingInterceptor())
                 .execute(new StringCallback() {
                     @Override
@@ -295,7 +298,7 @@ public class NetWork {
      * @param maps
      * @param cb
      */
-    public void upload(final BindData bindData, Map<String, Object> maps, HttpParams uploadParams, final ServerCallback cb) {
+    public void upload(final BindData bindData, Map<String, Object> maps, HttpParams uploadParams, final ServerCallback cb, Context mContext) {
         //上传判断 获取参数
         if (uploadParams != null) {
             Map<String, String> map = SignUtils.buildHttpParamMap(maps);
@@ -322,7 +325,7 @@ public class NetWork {
         HttpHeaders headers = SignUtils.buildHttpHeaders(maps);
 
         CookieConfig.getInstance().setCookie(bindData.getAgreement(), bindData.getAddr(), bindData.getAddr());
-        OkGo.post(bindData.getUrl()).cacheMode(CacheMode.DEFAULT).params(uploadParams).headers(headers).execute(new StringCallback() {
+        OkGo.post(bindData.getUrl()).cacheMode(CacheMode.DEFAULT).params(uploadParams).headers(headers).tag(mContext).execute(new StringCallback() {
             @Override
             public void onSuccess(String result, Call call, Response response) {
                 handleResponse(bindData, result, cb);

@@ -13,6 +13,6 @@ public class BindJPushApi implements BaseCallBackApi {
 
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("message", "jPushBind", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("message", "jPushBind", maps, context, mData -> listener.onSuccess(mData));
     }
 }

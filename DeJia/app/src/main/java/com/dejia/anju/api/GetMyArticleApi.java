@@ -13,6 +13,6 @@ public class GetMyArticleApi implements BaseCallBackApi {
 
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("user", "myArticle", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("user", "myArticle", maps, context, mData -> listener.onSuccess(mData));
     }
 }

@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
+import com.lzy.okgo.OkGo;
 
 import org.apache.http.util.EncodingUtils;
 
@@ -245,5 +246,10 @@ public abstract class BaseWebViewFragment extends BaseFragment {
         mWebView.postUrl(url, EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
     }
 
+    @Override
+    public void onDestroy() {
+        OkGo.getInstance().cancelTag(mContext);
+        super.onDestroy();
+    }
 
 }

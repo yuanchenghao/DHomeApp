@@ -12,6 +12,6 @@ import java.util.Map;
 public class FollowAndCancelApi implements BaseCallBackApi {
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("follow", "following", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("follow", "following", maps, context, mData -> listener.onSuccess(mData));
     }
 }

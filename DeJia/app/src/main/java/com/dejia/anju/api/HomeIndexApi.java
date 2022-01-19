@@ -12,6 +12,6 @@ public class HomeIndexApi implements BaseCallBackApi {
 
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("home", "index", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("home", "index", maps, context, mData -> listener.onSuccess(mData));
     }
 }

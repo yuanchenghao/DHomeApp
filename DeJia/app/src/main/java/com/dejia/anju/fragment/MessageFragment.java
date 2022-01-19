@@ -108,7 +108,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                 String mId = ((NoreadAndChatidInfo) msgEvent.getData()).getId();
                 String mNoread = ((NoreadAndChatidInfo) msgEvent.getData()).getNoread();
                 boolean refreshMessageList = true;
-                if (getActivity() != null) {
+                if (mContext != null) {
                     if (messageListAdapter == null) {
                         return;
                     }
@@ -121,7 +121,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                         }
                     }
                     AppLog.i("mPos === " + mPos);
-                    if (getActivity() != null) {
+                    if (mContext != null) {
                         if (refreshMessageList) {
                             this.page = 1;
                             this.messageListAdapter = null;

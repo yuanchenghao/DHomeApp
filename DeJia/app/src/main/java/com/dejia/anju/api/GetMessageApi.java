@@ -12,6 +12,6 @@ import java.util.Map;
 public class GetMessageApi implements BaseCallBackApi {
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("chat", "getMessage", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("chat", "getMessage", maps, context, mData -> listener.onSuccess(mData));
     }
 }

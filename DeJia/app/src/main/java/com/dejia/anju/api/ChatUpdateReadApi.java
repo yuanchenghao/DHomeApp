@@ -13,6 +13,6 @@ public class ChatUpdateReadApi implements BaseCallBackApi {
 
     @Override
     public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("chat", "updateRead", maps, mData -> listener.onSuccess(mData));
+        NetWork.getInstance().call("chat", "updateRead", maps, context, mData -> listener.onSuccess(mData));
     }
 }

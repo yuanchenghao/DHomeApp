@@ -348,8 +348,8 @@ public class MyFragment extends BaseFragment {
                 }
                 break;
             case R.id.iv_drawer:
-                if ((MainActivity) getActivity() != null && ((MainActivity) getActivity()).drawerLayout != null) {
-                    ((MainActivity) getActivity()).drawerLayout.openDrawer(Gravity.END);
+                if ((MainActivity) mContext != null && ((MainActivity) mContext).drawerLayout != null) {
+                    ((MainActivity) mContext).drawerLayout.openDrawer(Gravity.END);
                 }
                 break;
             case R.id.edit_info:
