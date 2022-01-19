@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.dejia.anju.R;
+import com.dejia.anju.adapter.PictureSlidePagerAdapter;
 import com.dejia.anju.api.BuildingBigImageApi;
 import com.dejia.anju.api.HouseTypeBigImageApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
@@ -30,6 +31,7 @@ import com.dejia.anju.model.BuildingImgInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.view.HackyViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
@@ -76,7 +78,7 @@ public class BuildingImageActivity extends BaseActivity {
     @BindView(R.id.rl)
     RelativeLayout rl;
     @BindView(R.id.vp)
-    ViewPager vp;
+    HackyViewPager vp;
     @BindView(R.id.tv_des)
     TextView tv_des;
     private int index = 0;
@@ -284,26 +286,6 @@ public class BuildingImageActivity extends BaseActivity {
         intent.putExtra("house_type_id", house_type_id);
         intent.putExtra("type", type);
         context.startActivity(intent);
-    }
-
-
-    private class PictureSlidePagerAdapter extends FragmentStatePagerAdapter {
-        private List<BuildingImgInfo> urlList;
-
-        public PictureSlidePagerAdapter(FragmentManager fm, List<BuildingImgInfo> list) {
-            super(fm);
-            this.urlList = list;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return PictureSlideFragment.newInstance(urlList.get(position).getImg().getImg());
-        }
-
-        @Override
-        public int getCount() {
-            return urlList.size();
-        }
     }
 
     //保存网络图片到相册

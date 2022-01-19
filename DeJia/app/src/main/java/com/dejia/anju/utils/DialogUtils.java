@@ -29,8 +29,9 @@ public class DialogUtils {
 
     //确认注销账号弹窗
     public static void showCancellationDialog(final Context context, String content, String yes, String no, final CallBack2 callBack) {
-        if (context == null)
+        if (context == null) {
             return;
+        }
         closeDialog();
         dialog = new Dialog(context, R.style.MagicDialogTheme);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
@@ -44,7 +45,8 @@ public class DialogUtils {
                 Class decorViewClazz = Class.forName("com.android.internal.policy.DecorView");
                 Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
                 field.setAccessible(true);
-                field.setInt(dialog.getWindow().getDecorView(), Color.TRANSPARENT);  //去掉高版本蒙层改为透明
+                //去掉高版本蒙层改为透明
+                field.setInt(dialog.getWindow().getDecorView(), Color.TRANSPARENT);
             } catch (Exception e) {
             }
         }
@@ -73,8 +75,9 @@ public class DialogUtils {
 
     // 更新弹窗
     public static void showUpdataVersionDialog(final Context context, String content, String yes, String no, String status, final CallBack2 callBack) {
-        if (context == null)
+        if (context == null) {
             return;
+        }
         closeDialog();
         dialog = new Dialog(context, R.style.MagicDialogTheme);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
@@ -88,7 +91,8 @@ public class DialogUtils {
                 Class decorViewClazz = Class.forName("com.android.internal.policy.DecorView");
                 Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
                 field.setAccessible(true);
-                field.setInt(dialog.getWindow().getDecorView(), Color.TRANSPARENT);  //去掉高版本蒙层改为透明
+                //去掉高版本蒙层改为透明
+                field.setInt(dialog.getWindow().getDecorView(), Color.TRANSPARENT);
             } catch (Exception e) {
             }
         }
@@ -124,8 +128,9 @@ public class DialogUtils {
 
     // 二维码扫描失败弹窗
     public static void showScanErrorDialog(final Context context, final CallBack callBack) {
-        if (context == null)
+        if (context == null) {
             return;
+        }
         closeDialog();
         dialog = new Dialog(context, R.style.MagicDialogTheme);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
@@ -139,7 +144,8 @@ public class DialogUtils {
                 Class decorViewClazz = Class.forName("com.android.internal.policy.DecorView");
                 Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
                 field.setAccessible(true);
-                field.setInt(dialog.getWindow().getDecorView(), Color.TRANSPARENT);  //去掉高版本蒙层改为透明
+                //去掉高版本蒙层改为透明
+                field.setInt(dialog.getWindow().getDecorView(), Color.TRANSPARENT);
             } catch (Exception e) {
             }
         }
