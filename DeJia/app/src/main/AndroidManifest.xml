@@ -29,9 +29,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name="com.dejia.anju.activity.OneClickLoginActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
             android:name="com.dejia.anju.activity.OneClickLoginActivity2"
             android:screenOrientation="portrait"></activity>
         <activity
