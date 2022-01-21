@@ -107,9 +107,9 @@ public abstract class BaseWebViewActivity extends AppCompatActivity implements V
     public void onClick(View v) {
     }
 
-    @Override
-    protected void onDestroy() {
-        OkGo.getInstance().cancelTag(mContext);
-        super.onDestroy();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        OkGo.getInstance().cancelTag(mContext);
+//        super.onDestroy();
+//    }
 }

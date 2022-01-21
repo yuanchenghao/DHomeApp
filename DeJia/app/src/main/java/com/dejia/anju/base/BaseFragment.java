@@ -122,9 +122,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     }
 
 
-    @Override
-    public void onDestroy() {
-        OkGo.getInstance().cancelTag(mContext);
-        super.onDestroy();
-    }
+//    @Override
+//    public void onDestroy() {
+//        OkGo.getInstance().cancelTag(mContext);
+//        super.onDestroy();
+//    }
 }

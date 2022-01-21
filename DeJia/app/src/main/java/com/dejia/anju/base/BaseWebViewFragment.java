@@ -246,10 +246,10 @@ public abstract class BaseWebViewFragment extends BaseFragment {
         mWebView.postUrl(url, EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
     }
 
-    @Override
-    public void onDestroy() {
-        OkGo.getInstance().cancelTag(mContext);
-        super.onDestroy();
-    }
+//    @Override
+//    public void onDestroy() {
+//        OkGo.getInstance().cancelTag(mContext);
+//        super.onDestroy();
+//    }
 
 }

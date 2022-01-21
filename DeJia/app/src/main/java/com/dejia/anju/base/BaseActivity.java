@@ -127,9 +127,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
     }
 
-    @Override
-    protected void onDestroy() {
-        OkGo.getInstance().cancelTag(mContext);
-        super.onDestroy();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        OkGo.getInstance().cancelTag(mContext);
+//        super.onDestroy();
+//    }
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -224,7 +225,7 @@ public class OneClickLoginActivity2 extends Activity {
                     loginHttp(hashMap);
                 } else {
                     AppLog.i("code=" + code + ", message=" + content);
-                    ToastUtils.toast(mContext, code + "").show();
+//                    ToastUtils.toast(mContext, code + "").show();
                     if(code != 6002){
                         SendVerificationCodeActivity.invoke(OneClickLoginActivity2.this);
                     }
@@ -237,7 +238,7 @@ public class OneClickLoginActivity2 extends Activity {
 
     private void loginHttp(HashMap<String, Object> hashMap) {
         new OneClickLoginApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
-            if ("1".equals(serverData.code)) {
+            if ("1".equals(serverData.code) && !"[]".equals(serverData.data)) {
                 UserInfo userInfo = JSONUtil.TransformSingleBean(serverData.data, UserInfo.class);
                 KVUtils.getInstance().encode(Constants.UID, userInfo.getId());
                 KVUtils.getInstance().encode("user", userInfo);
@@ -251,12 +252,9 @@ public class OneClickLoginActivity2 extends Activity {
                 maps.put("brand", Build.BRAND + "_" + Build.MODEL);
                 maps.put("system", Build.VERSION.RELEASE);
                 maps.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled()) ? "0" : "1");
-                new BindJPushApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
-                    @Override
-                    public void onSuccess(ServerData serverData) {
-                        if ("1".equals(serverData.code)) {
-                            AppLog.i("message===" + serverData.message);
-                        }
+                new BindJPushApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData1 -> {
+                    if ("1".equals(serverData1.code)) {
+                        AppLog.i("message===" + serverData1.message);
                     }
                 });
                 //清空预取号缓存
@@ -265,7 +263,7 @@ public class OneClickLoginActivity2 extends Activity {
                 EventBus.getDefault().post(new Event<>(1));
                 ToastUtils.toast(mContext, "登录成功").show();
             } else {
-                ToastUtils.toast(mContext, serverData.message).show();
+                ToastUtils.toast(mContext, "接口错误").show();
             }
             finished();
         });
