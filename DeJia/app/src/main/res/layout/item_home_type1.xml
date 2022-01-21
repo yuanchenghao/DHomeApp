@@ -62,7 +62,6 @@
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/dp_8"
                     android:textColor="#919699"
                     android:textSize="@dimen/sp_12" />
 
@@ -70,6 +69,7 @@
                     android:id="@+id/user_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
                     android:textColor="#919699"
                     android:textSize="@dimen/sp_12" />
 

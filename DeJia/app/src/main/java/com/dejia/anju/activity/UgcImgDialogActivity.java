@@ -143,6 +143,7 @@ public class UgcImgDialogActivity extends BaseActivity {
 
     public void finished() {
         finish();
+        overridePendingTransition(0, R.anim.dialog_exit);
     }
 
     public static void invoke(Context context, UgcImgInfo ugcImgInfo) {

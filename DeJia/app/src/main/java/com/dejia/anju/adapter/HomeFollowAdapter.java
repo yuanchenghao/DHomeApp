@@ -216,6 +216,11 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             type4View.tv_name.setText("");
         }
+        if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getTime_set())) {
+            type4View.tv_time.setText(Util.toDBC(mDatas.get(position).getFollow_creator_article_list().getTime_set()));
+        } else {
+            type4View.tv_time.setText("");
+        }
         switch (mDatas.get(position).getFollow_creator_article_list().getUser_data().getIs_following()) {
             case 0:
                 type4View.tv_follow.setText("关注");

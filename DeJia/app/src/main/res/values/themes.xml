@@ -126,7 +126,7 @@
         <item name="android:windowExitAnimation">@anim/dialog_top_exit</item>
     </style>
 
-    <style name="DialogActivityStyle" parent="Theme.AppCompat.Light.Dialog">
+    <style name="DialogActivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>

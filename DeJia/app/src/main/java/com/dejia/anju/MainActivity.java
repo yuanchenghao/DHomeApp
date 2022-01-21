@@ -701,7 +701,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                ToastUtils.toast(mContext, "再按一次退出得家").show();
+                ToastUtils.toast(mContext, "再按一次退出得家APP").show();
                 mExitTime = System.currentTimeMillis();
             } else {
                 System.exit(0);
