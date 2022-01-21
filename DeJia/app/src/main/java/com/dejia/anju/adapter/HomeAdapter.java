@@ -20,6 +20,7 @@ import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.HomeIndexBean;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.SpanUtil;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.YMGridLayoutManager;
@@ -216,7 +217,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
-            type1View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+//            if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
+//                SpanUtil.
+//            }else{
+                type1View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+//            }
         } else {
             type1View.tv_context.setText("");
         }

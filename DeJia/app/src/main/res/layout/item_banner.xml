@@ -45,7 +45,6 @@
                 android:paddingBottom="2.5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_12_33a7ff"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -66,7 +65,6 @@
 
             <TextView
                 android:id="@+id/tv_context"
-                android:background="@drawable/shape_12_000000"
                 android:layout_width="wrap_content"
                 android:paddingLeft="@dimen/dp_6"
                 android:paddingRight="@dimen/dp_6"

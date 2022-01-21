@@ -45,6 +45,14 @@ public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<HomeIn
             }else{
                 holder.tv_title.setVisibility(View.GONE);
             }
+            if(!TextUtils.isEmpty(data.getSubtitle()) && !TextUtils.isEmpty(data.getDesc())){
+                holder.ll_location.setBackgroundResource(R.drawable.shape_12_33a7ff);
+                holder.tv_context.setBackgroundResource(R.drawable.shape_12_000000);
+            }else if(!TextUtils.isEmpty(data.getSubtitle()) && TextUtils.isEmpty(data.getDesc())){
+                holder.ll_location.setBackgroundResource(R.drawable.shape_12_33a7ff_all);
+            }else{
+                holder.tv_context.setBackgroundResource(R.drawable.shape_12_000000_all);
+            }
             if(!TextUtils.isEmpty(data.getSubtitle())){
                 holder.tv_name.setText(data.getSubtitle());
                 holder.tv_name.setVisibility(View.VISIBLE);
