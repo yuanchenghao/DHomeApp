@@ -33,6 +33,7 @@
             <com.youth.banner.Banner
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/dp_5"
                 android:layout_height="210dp"
                 app:layout_scrollFlags="scroll" />
 

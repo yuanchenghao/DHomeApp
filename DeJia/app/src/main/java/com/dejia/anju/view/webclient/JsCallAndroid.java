@@ -4,14 +4,10 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 
-import com.dejia.anju.AppLog;
 import com.dejia.anju.activity.UgcImgDialogActivity;
 import com.dejia.anju.model.UgcImgInfo;
-import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class JsCallAndroid {
     public Activity mContext;

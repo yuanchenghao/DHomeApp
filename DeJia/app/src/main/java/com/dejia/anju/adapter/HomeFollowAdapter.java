@@ -1,7 +1,14 @@
 package com.dejia.anju.adapter;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
 import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
@@ -17,6 +25,7 @@ import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.HomeFollowListBean;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.SpanUtil;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.YMGridLayoutManager;
@@ -237,6 +246,48 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             type4View.tv_context.setText("");
         }
+
+        if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getTitle())) {
+            if (mDatas.get(position).getFollow_creator_article_list().getBuilding() != null
+                    && mDatas.get(position).getFollow_creator_article_list().getBuilding().size() > 0
+                    && !TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getName())) {
+                StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getName());
+                stringBuffer.append("|").append(mDatas.get(position).getFollow_creator_article_list().getTitle());
+                SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
+                //设置分割线
+                Drawable drawable = mContext.getResources().getDrawable(R.drawable.title_segmentation);
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                ssb.setSpan(new SpanUtil.CenterSpaceImageSpan(drawable, SizeUtils.dp2px(5), SizeUtils.dp2px(5)),
+                        mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getName().length(),
+                        mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getName().length() + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                //设置点击和颜色
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#18619A"));
+                    }
+                }, 0, mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                type4View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type4View.tv_context.setText(ssb);
+            } else {
+                type4View.tv_context.setText(Util.toDBC(mDatas.get(position).getFollow_creator_article_list().getTitle()));
+            }
+        } else {
+            type4View.tv_context.setText("");
+        }
+
         if (mDatas.get(position).getFollow_creator_article_list().getBuilding() != null && mDatas.get(position).getFollow_creator_article_list().getBuilding().size() > 0) {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type4View.rv_build.setLayoutManager(layoutManager);

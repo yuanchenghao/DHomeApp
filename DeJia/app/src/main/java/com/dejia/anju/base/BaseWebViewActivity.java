@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.dejia.anju.mannger.ActivityManager;
 import com.dejia.anju.utils.Util;
-import com.lzy.okgo.OkGo;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.X2C;
 

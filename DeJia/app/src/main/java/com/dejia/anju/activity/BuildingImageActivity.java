@@ -26,7 +26,6 @@ import com.dejia.anju.api.HouseTypeBigImageApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
-import com.dejia.anju.fragment.PictureSlideFragment;
 import com.dejia.anju.model.BuildingImgInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
@@ -51,9 +50,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.OnClick;

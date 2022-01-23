@@ -70,6 +70,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -113,7 +116,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     LinearLayout ll_main;
     private Fragment homeFragment;
     private Fragment circleFragment;
-//    private Fragment toolFragment;
+    //    private Fragment toolFragment;
     private Fragment messageFragment;
     private Fragment myFragment;
     private FragmentManager manager;
@@ -127,12 +130,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private boolean interceptFlag;
     private ProgressBar pd;
     private Button cancelBt;
+    //定时任务线程池
+    private ScheduledExecutorService pool;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
         switch (msgEvent.getCode()) {
             case 0:
+                //退出登录
                 initFragment(0);
+                if (pool != null) {
+                    pool.shutdown();
+                }
+                break;
+            case 1:
+                //登录成功
+                //1秒延迟 30秒请求一次消息数接口
+                if (pool != null) {
+                    pool.scheduleAtFixedRate(() -> getMessageNum(), 1, 30, TimeUnit.SECONDS);
+                }
                 break;
         }
     }
@@ -177,10 +193,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         navigation.setLayoutParams(params);
         mWindowAnimationStyle = new PictureWindowAnimationStyle();
         mWindowAnimationStyle.ofAllAnimation(R.anim.picture_anim_up_in, R.anim.picture_anim_down_out);
+        pool = Executors.newScheduledThreadPool(1);
         //请求公用模块控制
         getMessageShow();
-        //获取消息提醒数
-        getMessageNum();
         //将侧边栏顶部延伸至status bar
         drawerLayout.setFitsSystemWindows(true);
         //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
@@ -223,7 +238,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     .setLink("/vue/privacyAgreement/")
                     .setRequest_param("")
                     .build();
-            WebUrlJumpManager.getInstance().invoke(mContext,"",webViewData);
+            WebUrlJumpManager.getInstance().invoke(mContext, "", webViewData);
         });
         navigation.getHeaderView(0).findViewById(R.id.ll_kill).setOnClickListener(v -> {
             //注销
@@ -265,12 +280,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     //查看版本
     private void getVersion() {
         new GetVersionApi().getCallBack(mContext, new HashMap<>(0), (BaseCallBackListener<ServerData>) serverData -> {
-            if("1".equals(serverData.code)){
+            if ("1".equals(serverData.code)) {
                 VersionInfo versionInfo = JSONUtil.TransformSingleBean(serverData.data, VersionInfo.class);
-                if(versionInfo != null && !TextUtils.isEmpty(versionInfo.getVer())){
-                    if(AppUtils.getAppVersionCode() == Integer.parseInt(versionInfo.getVer())){
-                        ToastUtils.toast(mContext,"当前版本是最新版本").show();
-                    }else{
+                if (versionInfo != null && !TextUtils.isEmpty(versionInfo.getVer())) {
+                    if (AppUtils.getAppVersionCode() == Integer.parseInt(versionInfo.getVer())) {
+                        ToastUtils.toast(mContext, "当前版本是最新版本").show();
+                    } else {
                         DialogUtils.showUpdataVersionDialog(mContext, versionInfo.getTitle(), "立即更新", "暂不更新", versionInfo.getStatus(), new DialogUtils.CallBack2() {
                             @Override
                             public void onYesClick() {
@@ -304,8 +319,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                             }
                         });
                     }
-                }else{
-                    ToastUtils.toast(mContext,"未获取到最新版本信息").show();
+                } else {
+                    ToastUtils.toast(mContext, "未获取到最新版本信息").show();
                 }
             }
         });
@@ -316,7 +331,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //        interceptFlag = false;
         DialogUtils.closeDialog();
 //        downLoadApk(versionInfo.getUrl());
-        Intent intent= new Intent();
+        Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
         Uri content_url = Uri.parse("http://dldir1.qq.com/dmpt/apkSet/9.9.5/qqcomic_android_9.9.5_dm306015005.apk");
         intent.setData(content_url);
@@ -325,12 +340,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void getMessageNum() {
         new MessageCountApi().getCallBack(mContext, new HashMap<>(0), (BaseCallBackListener<ServerData>) serverData -> {
-            if("1".equals(serverData.code)){
-                MessageCountInfo messageCountInfo = JSONUtil.TransformSingleBean(serverData.data,MessageCountInfo.class);
-                KVUtils.getInstance().encode("message_count",messageCountInfo);
-                if(messageCountInfo != null && messageCountInfo.getSum_num() > 0){
+            if ("1".equals(serverData.code)) {
+                MessageCountInfo messageCountInfo = JSONUtil.TransformSingleBean(serverData.data, MessageCountInfo.class);
+                KVUtils.getInstance().encode("message_count", messageCountInfo);
+                if (messageCountInfo != null && messageCountInfo.getSum_num() > 0) {
                     iv_dots.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     iv_dots.setVisibility(View.GONE);
                 }
             }

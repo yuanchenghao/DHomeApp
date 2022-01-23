@@ -1,7 +1,14 @@
 package com.dejia.anju.adapter;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +17,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
 import com.dejia.anju.api.ZanApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.MyArticleInfo;
 import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.SpanUtil;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.YMGridLayoutManager;
@@ -127,7 +136,42 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
         type1View.tv_follow.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
-            type1View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+            if (mDatas.get(position).getBuilding() != null
+                    && mDatas.get(position).getBuilding().size() > 0
+                    && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
+                stringBuffer.append("|").append(mDatas.get(position).getTitle());
+                SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
+                //设置分割线
+                Drawable drawable = mContext.getResources().getDrawable(R.drawable.title_segmentation);
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                ssb.setSpan(new SpanUtil.CenterSpaceImageSpan(drawable, SizeUtils.dp2px(5), SizeUtils.dp2px(5)),
+                        mDatas.get(position).getBuilding().get(0).getName().length(),
+                        mDatas.get(position).getBuilding().get(0).getName().length() + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                //设置点击和颜色
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getBuilding().get(0).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#18619A"));
+                    }
+                }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                type1View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type1View.tv_context.setText(ssb);
+            } else {
+                type1View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+            }
         } else {
             type1View.tv_context.setText("");
         }
@@ -162,7 +206,42 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
         type2View.tv_follow.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
-            type2View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+            if (mDatas.get(position).getBuilding() != null
+                    && mDatas.get(position).getBuilding().size() > 0
+                    && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
+                stringBuffer.append("|").append(mDatas.get(position).getTitle());
+                SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
+                //设置分割线
+                Drawable drawable = mContext.getResources().getDrawable(R.drawable.title_segmentation);
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                ssb.setSpan(new SpanUtil.CenterSpaceImageSpan(drawable, SizeUtils.dp2px(5), SizeUtils.dp2px(5)),
+                        mDatas.get(position).getBuilding().get(0).getName().length(),
+                        mDatas.get(position).getBuilding().get(0).getName().length() + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                //设置点击和颜色
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getBuilding().get(0).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#18619A"));
+                    }
+                }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                type2View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type2View.tv_context.setText(ssb);
+            } else {
+                type2View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+            }
         } else {
             type2View.tv_context.setText("");
         }
@@ -201,7 +280,42 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
         type3View.tv_follow.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
-            type3View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+            if (mDatas.get(position).getBuilding() != null
+                    && mDatas.get(position).getBuilding().size() > 0
+                    && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
+                stringBuffer.append("|").append(mDatas.get(position).getTitle());
+                SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
+                //设置分割线
+                Drawable drawable = mContext.getResources().getDrawable(R.drawable.title_segmentation);
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                ssb.setSpan(new SpanUtil.CenterSpaceImageSpan(drawable, SizeUtils.dp2px(5), SizeUtils.dp2px(5)),
+                        mDatas.get(position).getBuilding().get(0).getName().length(),
+                        mDatas.get(position).getBuilding().get(0).getName().length() + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                //设置点击和颜色
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getBuilding().get(0).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#18619A"));
+                    }
+                }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                type3View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type3View.tv_context.setText(ssb);
+            } else {
+                type3View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+            }
         } else {
             type3View.tv_context.setText("");
         }
@@ -254,7 +368,42 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
         type4View.tv_follow.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
-            type4View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+            if (mDatas.get(position).getBuilding() != null
+                    && mDatas.get(position).getBuilding().size() > 0
+                    && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
+                stringBuffer.append("|").append(mDatas.get(position).getTitle());
+                SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
+                //设置分割线
+                Drawable drawable = mContext.getResources().getDrawable(R.drawable.title_segmentation);
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                ssb.setSpan(new SpanUtil.CenterSpaceImageSpan(drawable, SizeUtils.dp2px(5), SizeUtils.dp2px(5)),
+                        mDatas.get(position).getBuilding().get(0).getName().length(),
+                        mDatas.get(position).getBuilding().get(0).getName().length() + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                //设置点击和颜色
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getBuilding().get(0).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#18619A"));
+                    }
+                }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                type4View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type4View.tv_context.setText(ssb);
+            } else {
+                type4View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+            }
         } else {
             type4View.tv_context.setText("");
         }
