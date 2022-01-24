@@ -408,7 +408,6 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             type4View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getUser_data().getUser_img()).setAutoPlayAnimations(true).build());
         } else {
             type4View.iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
-
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getNickname())) {
             type4View.tv_name.setText(Util.toDBC(mDatas.get(position).getUser_data().getNickname()));

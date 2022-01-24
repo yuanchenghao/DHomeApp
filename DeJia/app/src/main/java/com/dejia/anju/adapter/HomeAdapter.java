@@ -226,11 +226,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
-            type1View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
-            type1View.tv_context.setHighlightColor(Color.TRANSPARENT);
             if (mDatas.get(position).getBuilding() != null
                     && mDatas.get(position).getBuilding().size() > 0
                     && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                type1View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type1View.tv_context.setHighlightColor(Color.TRANSPARENT);
                 StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
                 stringBuffer.append("|").append(mDatas.get(position).getTitle());
                 SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
