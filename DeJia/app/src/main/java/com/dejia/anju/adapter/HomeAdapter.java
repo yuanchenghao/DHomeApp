@@ -2,6 +2,7 @@ package com.dejia.anju.adapter;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -225,6 +226,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
+            type1View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+            type1View.tv_context.setHighlightColor(Color.TRANSPARENT);
             if (mDatas.get(position).getBuilding() != null
                     && mDatas.get(position).getBuilding().size() > 0
                     && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
@@ -256,7 +259,23 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         ds.setColor(Color.parseColor("#18619A"));
                     }
                 }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                type1View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#1C2125"));
+                    }
+                }, mDatas.get(position).getBuilding().get(0).getName().length(), stringBuffer.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 type1View.tv_context.setText(ssb);
             } else {
                 type1View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
@@ -333,6 +352,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (mDatas.get(position).getBuilding() != null
                     && mDatas.get(position).getBuilding().size() > 0
                     && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                type2View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type2View.tv_context.setHighlightColor(Color.TRANSPARENT);
                 StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
                 stringBuffer.append("|").append(mDatas.get(position).getTitle());
                 SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
@@ -361,7 +382,23 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         ds.setColor(Color.parseColor("#18619A"));
                     }
                 }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                type2View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#1C2125"));
+                    }
+                }, mDatas.get(position).getBuilding().get(0).getName().length(), stringBuffer.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 type2View.tv_context.setText(ssb);
             } else {
                 type2View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
@@ -369,18 +406,113 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             type2View.tv_context.setText("");
         }
-        if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
-            YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
-            type2View.rv_build.setLayoutManager(layoutManager);
-            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-            if (mRecycleViewPool != null) {
-                type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+        type2View.tv_context.post(() -> {
+            if(type2View.tv_context.getLineCount() == 1){
+                if(!TextUtils.isEmpty(mDatas.get(position).getContent())){
+                    type2View.tv_des.setMaxLines(3);
+                    if (mDatas.get(position).getBuilding() != null
+                            && mDatas.get(position).getBuilding().size() > 0) {
+                        YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+                        type2View.rv_build.setLayoutManager(layoutManager);
+                        BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+                        if (mRecycleViewPool != null) {
+                            type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+                        }
+                        type2View.rv_build.setAdapter(buildAdapter);
+                        type2View.ll_location.setVisibility(View.VISIBLE);
+                    } else {
+                        type2View.ll_location.setVisibility(View.GONE);
+                    }
+                }else{
+                    type2View.tv_des.setVisibility(View.INVISIBLE);
+                    if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
+                        YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+                        type2View.rv_build_top.setLayoutManager(layoutManager);
+                        BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+                        if (mRecycleViewPool != null) {
+                            type2View.rv_build_top.setRecycledViewPool(mRecycleViewPool);
+                        }
+                        type2View.rv_build_top.setAdapter(buildAdapter);
+                        type2View.ll_location_top.setVisibility(View.VISIBLE);
+                    } else {
+                        type2View.ll_location_top.setVisibility(View.GONE);
+                        if (mDatas.get(position).getBuilding() != null
+                                && mDatas.get(position).getBuilding().size() > 0) {
+                            YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+                            type2View.rv_build.setLayoutManager(layoutManager);
+                            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+                            if (mRecycleViewPool != null) {
+                                type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+                            }
+                            type2View.rv_build.setAdapter(buildAdapter);
+                            type2View.ll_location.setVisibility(View.VISIBLE);
+                        } else {
+                            type2View.ll_location.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }else if(type2View.tv_context.getLineCount() == 2){
+                if(!TextUtils.isEmpty(mDatas.get(position).getContent())){
+                    type2View.tv_des.setMaxLines(2);
+                    if (mDatas.get(position).getBuilding() != null
+                            && mDatas.get(position).getBuilding().size() > 0) {
+                        YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+                        type2View.rv_build.setLayoutManager(layoutManager);
+                        BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+                        if (mRecycleViewPool != null) {
+                            type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+                        }
+                        type2View.rv_build.setAdapter(buildAdapter);
+                        type2View.ll_location.setVisibility(View.VISIBLE);
+                    } else {
+                        type2View.ll_location.setVisibility(View.GONE);
+                    }
+                }else{
+                    type2View.tv_des.setVisibility(View.INVISIBLE);
+                    if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
+                        YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+                        type2View.rv_build_top.setLayoutManager(layoutManager);
+                        BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+                        if (mRecycleViewPool != null) {
+                            type2View.rv_build_top.setRecycledViewPool(mRecycleViewPool);
+                        }
+                        type2View.rv_build_top.setAdapter(buildAdapter);
+                        type2View.ll_location_top.setVisibility(View.VISIBLE);
+                    } else {
+                        type2View.ll_location_top.setVisibility(View.GONE);
+                        if (mDatas.get(position).getBuilding() != null
+                                && mDatas.get(position).getBuilding().size() > 0) {
+                            YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+                            type2View.rv_build.setLayoutManager(layoutManager);
+                            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+                            if (mRecycleViewPool != null) {
+                                type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+                            }
+                            type2View.rv_build.setAdapter(buildAdapter);
+                            type2View.ll_location.setVisibility(View.VISIBLE);
+                        } else {
+                            type2View.ll_location.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }else if(type2View.tv_context.getLineCount() >= 3){
+                type2View.tv_des.setVisibility(View.GONE);
+                type2View.ll_location_top.setVisibility(View.GONE);
+                if (mDatas.get(position).getBuilding() != null
+                        && mDatas.get(position).getBuilding().size() > 0) {
+                    YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+                    type2View.rv_build.setLayoutManager(layoutManager);
+                    BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+                    if (mRecycleViewPool != null) {
+                        type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+                    }
+                    type2View.rv_build.setAdapter(buildAdapter);
+                    type2View.ll_location.setVisibility(View.VISIBLE);
+                } else {
+                    type2View.ll_location.setVisibility(View.GONE);
+                }
             }
-            type2View.rv_build.setAdapter(buildAdapter);
-            type2View.ll_location.setVisibility(View.VISIBLE);
-        } else {
-            type2View.ll_location.setVisibility(View.GONE);
-        }
+        });
         if (!TextUtils.isEmpty(mDatas.get(position).getImg().get(0).getImg())) {
             type2View.iv_img.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getImg().get(0).getImg()).setAutoPlayAnimations(true).build());
         }
@@ -442,6 +574,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (mDatas.get(position).getBuilding() != null
                     && mDatas.get(position).getBuilding().size() > 0
                     && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                type3View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type3View.tv_context.setHighlightColor(Color.TRANSPARENT);
                 StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
                 stringBuffer.append("|").append(mDatas.get(position).getTitle());
                 SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
@@ -470,7 +604,23 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         ds.setColor(Color.parseColor("#18619A"));
                     }
                 }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                type3View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#1C2125"));
+                    }
+                }, mDatas.get(position).getBuilding().get(0).getName().length(), stringBuffer.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 type3View.tv_context.setText(ssb);
             } else {
                 type3View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
@@ -567,6 +717,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (mDatas.get(position).getBuilding() != null
                     && mDatas.get(position).getBuilding().size() > 0
                     && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                type4View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type4View.tv_context.setHighlightColor(Color.TRANSPARENT);
                 StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
                 stringBuffer.append("|").append(mDatas.get(position).getTitle());
                 SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
@@ -595,7 +747,23 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         ds.setColor(Color.parseColor("#18619A"));
                     }
                 }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                type4View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#1C2125"));
+                    }
+                }, mDatas.get(position).getBuilding().get(0).getName().length(), stringBuffer.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 type4View.tv_context.setText(ssb);
             } else {
                 type4View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
@@ -715,6 +883,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView tv_follow;
         TextView tv_context;
         TextView tv_des;
+        LinearLayout ll_location_top;
+        RecyclerView rv_build_top;
         LinearLayout ll_location;
         RecyclerView rv_build;
 
@@ -731,6 +901,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_des = itemView.findViewById(R.id.tv_des);
             ll_location = itemView.findViewById(R.id.ll_location);
             rv_build = itemView.findViewById(R.id.rv_build);
+            ll_location_top = itemView.findViewById(R.id.ll_location_top);
+            rv_build_top = itemView.findViewById(R.id.rv_build_top);
             itemView.setOnClickListener(v -> mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition()));
             iv_person.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
             tv_name.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));

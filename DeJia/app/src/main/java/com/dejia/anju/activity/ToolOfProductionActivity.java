@@ -113,6 +113,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         mWindowAnimationStyle.ofAllAnimation(R.anim.picture_anim_up_in, R.anim.picture_anim_down_out);
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
         chooseResult = getIntent().getParcelableArrayListExtra("imgList");
+        ugcSaveApi = new UgcSaveApi();
         if (chooseResult == null) {
             chooseResult = new ArrayList<>();
         }
@@ -187,6 +188,12 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                     ToastUtils.toast(mContext, "请输入内容").show();
                     return;
                 }
+                if (toolSelectImgAdapter == null
+                        || toolSelectImgAdapter.getData() == null
+                        || toolSelectImgAdapter.getData().size() <= 0) {
+                    ToastUtils.toast(mContext, "请至少添加一张图片").show();
+                    return;
+                }
                 //先传图片
                 postImg();
                 break;
@@ -206,6 +213,8 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                     searchBuildingInfo = data.getParcelableExtra("name");
                     if (searchBuildingInfo != null && !TextUtils.isEmpty(searchBuildingInfo.getName())) {
                         tv_name.setText(searchBuildingInfo.getName());
+                    }else{
+                        tv_name.setText("提及楼盘、小区");
                     }
                 }
                 break;
@@ -244,16 +253,15 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
     private void postUgc(List<UgcUploadImageInfo> list) {
         if (list != null && list.size() > 0) {
             List imgList = new ArrayList();
-            for(int i = 0;i<list.size();i++){
+            for (int i = 0; i < list.size(); i++) {
                 HashMap map = new HashMap(0);
                 map.put("img", list.get(i).getPost_img_url());
                 imgList.add(map);
             }
-            ugcSaveApi = new UgcSaveApi();
             HashMap<String, Object> maps = new HashMap<>(0);
             maps.put("content", ed.getText().toString().trim());
             maps.put("image", GsonFactory.getSingletonGson().toJson(imgList).toString());
-            if(searchBuildingInfo != null){
+            if (searchBuildingInfo != null) {
                 List list1 = new ArrayList();
                 list1.add(searchBuildingInfo);
                 maps.put("rel_loupan", GsonFactory.getSingletonGson().toJson(list1).toString());

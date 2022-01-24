@@ -42,8 +42,6 @@ public class CircleFragment extends BaseWebViewFragment {
 
     @Override
     protected void initView(View view) {
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll.getLayoutParams();
-        layoutParams.topMargin = statusbarHeight;
         clientManager = new BaseWebViewClientMessage(mContext);
         mWebView.setWebViewClient(clientManager);
         ll_web.addView(mWebView);

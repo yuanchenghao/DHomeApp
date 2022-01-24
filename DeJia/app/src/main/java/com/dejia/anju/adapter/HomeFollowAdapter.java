@@ -251,6 +251,8 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             if (mDatas.get(position).getFollow_creator_article_list().getBuilding() != null
                     && mDatas.get(position).getFollow_creator_article_list().getBuilding().size() > 0
                     && !TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getName())) {
+                type4View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type4View.tv_context.setHighlightColor(Color.TRANSPARENT);
                 StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getName());
                 stringBuffer.append("|").append(mDatas.get(position).getFollow_creator_article_list().getTitle());
                 SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
@@ -279,7 +281,23 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         ds.setColor(Color.parseColor("#18619A"));
                     }
                 }, 0, mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                type4View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getFollow_creator_article_list().getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#1C2125"));
+                    }
+                }, mDatas.get(position).getFollow_creator_article_list().getBuilding().get(0).getName().length(), stringBuffer.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 type4View.tv_context.setText(ssb);
             } else {
                 type4View.tv_context.setText(Util.toDBC(mDatas.get(position).getFollow_creator_article_list().getTitle()));

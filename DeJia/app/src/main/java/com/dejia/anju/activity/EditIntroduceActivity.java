@@ -22,6 +22,7 @@ import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.utils.Util;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -82,8 +83,10 @@ public class EditIntroduceActivity extends BaseActivity implements OnClickListen
         rl_title.setLayoutParams(layoutParams);
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
         if (!TextUtils.isEmpty(userInfo.getPersonal_info())) {
-            ed.setHint(userInfo.getPersonal_info());
+            ed.setText(userInfo.getPersonal_info());
+            ed.setSelection(userInfo.getPersonal_info().length());
         }
+        Util.showSoftInputFromWindow(mContext, ed);
         ed.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -146,6 +149,7 @@ public class EditIntroduceActivity extends BaseActivity implements OnClickListen
                 //通知外部刷新
                 EventBus.getDefault().post(new Event<>(3));
                 ToastUtils.toast(mContext, "修改成功").show();
+                finish();
             } else {
                 ToastUtils.toast(mContext, serverData.message).show();
             }

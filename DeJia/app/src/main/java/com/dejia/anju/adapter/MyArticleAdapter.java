@@ -139,6 +139,8 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (mDatas.get(position).getBuilding() != null
                     && mDatas.get(position).getBuilding().size() > 0
                     && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                type1View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type1View.tv_context.setHighlightColor(Color.TRANSPARENT);
                 StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
                 stringBuffer.append("|").append(mDatas.get(position).getTitle());
                 SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
@@ -167,7 +169,23 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         ds.setColor(Color.parseColor("#18619A"));
                     }
                 }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                type1View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#1C2125"));
+                    }
+                }, mDatas.get(position).getBuilding().get(0).getName().length(), stringBuffer.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 type1View.tv_context.setText(ssb);
             } else {
                 type1View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
@@ -209,6 +227,8 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (mDatas.get(position).getBuilding() != null
                     && mDatas.get(position).getBuilding().size() > 0
                     && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                type2View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type2View.tv_context.setHighlightColor(Color.TRANSPARENT);
                 StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
                 stringBuffer.append("|").append(mDatas.get(position).getTitle());
                 SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
@@ -237,7 +257,23 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         ds.setColor(Color.parseColor("#18619A"));
                     }
                 }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                type2View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#1C2125"));
+                    }
+                }, mDatas.get(position).getBuilding().get(0).getName().length(), stringBuffer.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 type2View.tv_context.setText(ssb);
             } else {
                 type2View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
@@ -283,6 +319,8 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (mDatas.get(position).getBuilding() != null
                     && mDatas.get(position).getBuilding().size() > 0
                     && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                type3View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type3View.tv_context.setHighlightColor(Color.TRANSPARENT);
                 StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
                 stringBuffer.append("|").append(mDatas.get(position).getTitle());
                 SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
@@ -311,7 +349,23 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         ds.setColor(Color.parseColor("#18619A"));
                     }
                 }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                type3View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#1C2125"));
+                    }
+                }, mDatas.get(position).getBuilding().get(0).getName().length(), stringBuffer.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 type3View.tv_context.setText(ssb);
             } else {
                 type3View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
@@ -371,6 +425,8 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (mDatas.get(position).getBuilding() != null
                     && mDatas.get(position).getBuilding().size() > 0
                     && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                type4View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type4View.tv_context.setHighlightColor(Color.TRANSPARENT);
                 StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
                 stringBuffer.append("|").append(mDatas.get(position).getTitle());
                 SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
@@ -399,7 +455,23 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         ds.setColor(Color.parseColor("#18619A"));
                     }
                 }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                type4View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#1C2125"));
+                    }
+                }, mDatas.get(position).getBuilding().get(0).getName().length(), stringBuffer.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 type4View.tv_context.setText(ssb);
             } else {
                 type4View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));

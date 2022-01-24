@@ -40,18 +40,26 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <EditText
-        android:id="@+id/ed"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:textColor="#1C2125"
-        android:textSize="@dimen/sp_16"
-        android:textStyle="bold"
+        android:orientation="vertical"
         android:layout_marginLeft="@dimen/dp_20"
         android:layout_marginRight="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_5"
-        android:singleLine="true"
-        android:background="@drawable/shape_24_ffffff" />
+        android:background="@drawable/shape_24_ffffff">
+
+        <EditText
+            android:id="@+id/ed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#1C2125"
+            android:background="@null"
+            android:textSize="@dimen/sp_16"
+            android:textColorHint="#919699"
+            android:textStyle="bold"
+            android:hint="此刻你的想法..." />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"

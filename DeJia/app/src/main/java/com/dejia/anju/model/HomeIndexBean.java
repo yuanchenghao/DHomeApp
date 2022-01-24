@@ -102,6 +102,15 @@ public class HomeIndexBean {
         public java.util.List<ImgInfo> img;
         public String url;
         public String is_agree;
+        public String content;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
 
         public String getIs_agree() {
             return is_agree;

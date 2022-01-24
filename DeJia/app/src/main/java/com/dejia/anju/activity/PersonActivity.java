@@ -278,7 +278,11 @@ public class PersonActivity extends BaseActivity {
             }
             if (TextUtils.isEmpty(userInfo.getPersonal_info())) {
                 iv_write_icon.setVisibility(View.VISIBLE);
-                tv_introduce.setText("你还没有填写一句话简介");
+                if (!TextUtils.isEmpty(userId) && userId.equals(Util.getUid())) {
+                    tv_introduce.setText("你还没有填写一句话简介");
+                }else{
+                    tv_introduce.setText("TA还没有填写过简介");
+                }
             } else {
                 iv_write_icon.setVisibility(View.GONE);
                 tv_introduce.setText("简介：" + userInfo.getPersonal_info());

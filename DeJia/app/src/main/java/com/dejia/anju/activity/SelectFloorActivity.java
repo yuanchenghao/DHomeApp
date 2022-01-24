@@ -22,6 +22,7 @@ import com.dejia.anju.model.SearchBuildingInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.YMLinearLayoutManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
@@ -90,6 +91,7 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) rl_title.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
         rl_title.setLayoutParams(layoutParams);
+        Util.showSoftInputFromWindow(mContext, ed);
         ed.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -139,6 +141,11 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
             searchBuildingInfo = searchBuildingListAdapter.getData().get(position);
             ed.setText(searchBuildingListAdapter.getData().get(position).getName());
             ed.setSelection(searchBuildingListAdapter.getData().get(position).getName().length());
+            Intent intent = new Intent();
+            intent.putExtra("name", searchBuildingInfo);
+            setResult(101, intent);
+            searchBuildingInfo = null;
+            finish();
         });
     }
 

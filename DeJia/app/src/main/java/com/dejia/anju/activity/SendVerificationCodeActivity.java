@@ -30,6 +30,7 @@ import com.dejia.anju.event.Event;
 import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.Util;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
 
@@ -90,7 +91,7 @@ public class SendVerificationCodeActivity extends BaseActivity {
         //设置富文本
         tv_agreement.setMovementMethod(LinkMovementMethod.getInstance());
         tv_agreement.setText(setStringText());
-
+        Util.showSoftInputFromWindow(mContext, ed);
         ed.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
