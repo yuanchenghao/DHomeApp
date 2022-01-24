@@ -332,7 +332,7 @@ public class MyFragment extends BaseFragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
                 myArticleAdapter = null;
-                getUserInfo();
+//                getUserInfo();
                 getMyArticle();
             }
         });
