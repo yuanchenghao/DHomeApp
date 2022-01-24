@@ -106,6 +106,10 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
             @Override
             public void afterTextChanged(Editable s) {
                 getSearchList(ed.getText().toString().trim());
+//                //高亮
+//                if (searchBuildingListAdapter != null) {
+//                    searchBuildingListAdapter.changeText(s.toString());
+//                }
             }
         });
     }
@@ -118,7 +122,7 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
             if ("1".equals(serverData.code)) {
                 List<SearchBuildingInfo> buildingList = JSONUtil.jsonToArrayList(serverData.data, SearchBuildingInfo.class);
                 tv_des.setVisibility(View.GONE);
-                setBuildingList(buildingList);
+                setBuildingList(buildingList, building_name);
             } else {
                 tv_des.setVisibility(View.VISIBLE);
                 ToastUtils.toast(mContext, serverData.message).show();
@@ -127,7 +131,7 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
     }
 
     //设置楼盘搜索结果列表
-    private void setBuildingList(List<SearchBuildingInfo> buildingList) {
+    private void setBuildingList(List<SearchBuildingInfo> buildingList, String building_name) {
         YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         RecyclerView.ItemAnimator itemAnimator = rv.getItemAnimator();
         //取消局部刷新动画效果
@@ -135,7 +139,7 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
             ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);
         }
         rv.setLayoutManager(ymLinearLayoutManager);
-        searchBuildingListAdapter = new SearchBuildingListAdapter(mContext, R.layout.item_search_building_list, buildingList);
+        searchBuildingListAdapter = new SearchBuildingListAdapter(mContext, R.layout.item_search_building_list, buildingList, building_name);
         rv.setAdapter(searchBuildingListAdapter);
         searchBuildingListAdapter.setOnItemClickListener((adapter, view, position) -> {
             searchBuildingInfo = searchBuildingListAdapter.getData().get(position);

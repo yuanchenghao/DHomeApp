@@ -305,6 +305,7 @@
                         android:layout_marginTop="@dimen/dp_18"
                         android:layout_marginRight="@dimen/dp_20"
                         android:gravity="center_vertical"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <TextView
@@ -338,6 +339,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_20"
                         android:layout_marginRight="@dimen/dp_20"
+                        android:visibility="gone"
                         android:scrollbars="none" />
 
                     <LinearLayout

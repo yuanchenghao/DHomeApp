@@ -280,7 +280,7 @@ public class PersonActivity extends BaseActivity {
                 iv_write_icon.setVisibility(View.VISIBLE);
                 if (!TextUtils.isEmpty(userId) && userId.equals(Util.getUid())) {
                     tv_introduce.setText("你还没有填写一句话简介");
-                }else{
+                } else {
                     tv_introduce.setText("TA还没有填写过简介");
                 }
             } else {
@@ -318,8 +318,15 @@ public class PersonActivity extends BaseActivity {
                 RenZhengListAdapter renZhengListAdapter = new RenZhengListAdapter(mContext, R.layout.item_renzhen, userInfo.getAuth());
                 rv_renzheng.setAdapter(renZhengListAdapter);
                 rv_renzheng.setVisibility(View.VISIBLE);
+                ll_renzheng.setVisibility(View.VISIBLE);
             } else {
-                rv_renzheng.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(userId) && userId.equals(Util.getUid())) {
+                    rv_renzheng.setVisibility(View.VISIBLE);
+                    ll_renzheng.setVisibility(View.VISIBLE);
+                } else {
+                    rv_renzheng.setVisibility(View.GONE);
+                    ll_renzheng.setVisibility(View.GONE);
+                }
             }
         }
     }
