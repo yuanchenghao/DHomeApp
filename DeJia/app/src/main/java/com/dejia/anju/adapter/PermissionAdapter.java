@@ -22,7 +22,7 @@ public class PermissionAdapter extends BaseQuickAdapter<PermsissionData, BaseVie
 
     @Override
     protected void convert(BaseViewHolder helper, PermsissionData item) {
-        ((SimpleDraweeView)helper.getView(R.id.permission_img)).setController(Fresco.newDraweeControllerBuilder().setUri(item.getImg()+"").setAutoPlayAnimations(true).build());
+        ((SimpleDraweeView)helper.getView(R.id.permission_img)).setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + item.getImg()+"").setAutoPlayAnimations(true).build());
         helper.setText(R.id.permission_name,item.getName())
                 .setText(R.id.permission_desc,item.getDesc());
     }
