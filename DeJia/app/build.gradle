@@ -94,17 +94,21 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false // 是否进行混淆
-            debuggable true
-            aaptOptions.cruncherEnabled = false
-            aaptOptions.useNewCruncher = false
-            signingConfig signingConfigs.release
-        }
-        release {
-            minifyEnabled false
+            minifyEnabled true      //开启混淆
             debuggable false
             aaptOptions.cruncherEnabled = false
             aaptOptions.useNewCruncher = false
+            zipAlignEnabled true    // 已启用压缩
+            shrinkResources true    // 缩减资源
+            signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled true
+            debuggable false
+            aaptOptions.cruncherEnabled = false
+            aaptOptions.useNewCruncher = false
+            zipAlignEnabled true    // 已启用压缩
+            shrinkResources true    // 缩减资源
             signingConfig signingConfigs.release
         }
     }
