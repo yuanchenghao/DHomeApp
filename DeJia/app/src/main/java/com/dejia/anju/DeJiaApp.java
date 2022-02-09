@@ -9,8 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.webkit.WebView;
 
 import com.bun.miitmdid.core.JLibrary;
@@ -26,6 +24,7 @@ import org.qiyi.basecore.taskmanager.ParallelTask;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 import androidx.annotation.RequiresApi;
 import androidx.multidex.MultiDex;
