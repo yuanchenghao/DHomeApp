@@ -386,15 +386,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     public void receiveMessage(MessageBean.DataBean dataBean, String group_id) {
         if (tblist.size() < 2) {
             tblist.add(dataBean);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    content_lv.setLinearLayout(false);
-                    if (chatAdapter == null) {
-                        chatAdapter = new ChatAdapter(mContext, tblist);
-                    }
-                    content_lv.setAdapter(chatAdapter);
+            runOnUiThread(() -> {
+                content_lv.setLinearLayout(false);
+                if (chatAdapter == null) {
+                    chatAdapter = new ChatAdapter(mContext, tblist);
                 }
+                content_lv.setAdapter(chatAdapter);
             });
         } else {
 //            if (mId.equals(dataBean.getFromUserId())) {

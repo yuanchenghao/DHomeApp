@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Activity mContext;
-    private List<MessageBean.DataBean> userList = new ArrayList<>();
+    private List<MessageBean.DataBean> userList;
     //接收消息类型
     public static final int FROM_USER_MSG = 0;
     //发送消息类型
@@ -54,7 +54,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = null;
+        View view;
         RecyclerView.ViewHolder holder = null;
         switch (viewType) {
             case FROM_USER_MSG:
@@ -98,12 +98,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             int offsetX = Math.abs(copyPopWindow.getContentView().getMeasuredWidth() - holder.content.getWidth()) / 2;
             int offsetY = -(copyPopWindow.getContentView().getMeasuredHeight() + holder.content.getHeight());
             PopupWindowCompat.showAsDropDown(copyPopWindow, holder.content, offsetX, offsetY, Gravity.START);
-            copyPopWindow.setOnTextClickListener(new CopyPopWindow.OnTextClickListener() {
-                @Override
-                public void onTextClick() {
-                    Util.setClipboard(mContext, holder.content.getText().toString());
-                    ToastUtils.toast(mContext, "复制成功").show();
-                }
+            copyPopWindow.setOnTextClickListener(() -> {
+                Util.setClipboard(mContext, holder.content.getText().toString());
+                ToastUtils.toast(mContext, "复制成功").show();
             });
             return false;
         });
