@@ -95,7 +95,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false      //开启混淆
-            debuggable false
+            debuggable true
             aaptOptions.cruncherEnabled = false
             aaptOptions.useNewCruncher = false
             zipAlignEnabled true    // 已启用压缩

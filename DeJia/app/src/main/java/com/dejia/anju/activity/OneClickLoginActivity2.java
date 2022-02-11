@@ -49,6 +49,7 @@ import cn.jiguang.verifysdk.api.VerifyListener;
 import cn.jpush.android.api.JPushInterface;
 
 import static com.dejia.anju.base.Constants.baseTestService;
+import static com.dejia.anju.net.FinalConstant1.TEST_BASE_URL;
 
 
 /**
@@ -119,8 +120,8 @@ public class OneClickLoginActivity2 extends Activity {
         otherLogin.setLayoutParams(layoutParams);
 
         List<PrivacyBean> beanArrayList = new ArrayList<>();
-        beanArrayList.add(new PrivacyBean("《得家使用协议》", "http://172.16.10.200:8080/vue/userProtocol/", ""));
-        beanArrayList.add(new PrivacyBean("《得家用户隐私协议》", "http://172.16.10.200:8080/vue/privacyAgreement/", ""));
+        beanArrayList.add(new PrivacyBean("《得家使用协议》", "http://" + TEST_BASE_URL + "/vue/userProtocol/", ""));
+        beanArrayList.add(new PrivacyBean("《得家用户隐私协议》", "http://" + TEST_BASE_URL + "/vue/privacyAgreement/", ""));
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
                 .setAuthBGImgPath("main_bg")
                 .setNavColor(Color.parseColor("#FFFFFF"))
@@ -153,7 +154,7 @@ public class OneClickLoginActivity2 extends Activity {
                 .setUncheckedImgPath("umcsdk_uncheck_image")
                 .setCheckedImgPath("umcsdk_check_image")
                 .setSloganTextColor(0xff999999)
-                .setPrivacyText("登录即表示已阅读并同意","")
+                .setPrivacyText("登录即表示已阅读并同意", "")
                 .setPrivacyWithBookTitleMark(true)
                 .setLogoImgPath("loge_txt")
                 .setPrivacyTextSize(12)
@@ -225,7 +226,7 @@ public class OneClickLoginActivity2 extends Activity {
                 } else {
                     AppLog.i("code=" + code + ", message=" + content);
 //                    ToastUtils.toast(mContext, code + "").show();
-                    if(code != 6002){
+                    if (code != 6002) {
                         SendVerificationCodeActivity.invoke(OneClickLoginActivity2.this);
                     }
                     finished();

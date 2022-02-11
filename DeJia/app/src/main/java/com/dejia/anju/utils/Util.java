@@ -37,6 +37,8 @@ import com.dejia.anju.model.SessionidData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.ServerData;
 import com.hjq.gson.factory.GsonFactory;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cookie.store.CookieStore;
 
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
@@ -52,6 +54,8 @@ import java.util.regex.Pattern;
 
 import androidx.annotation.RequiresApi;
 import cn.jpush.android.api.JPushInterface;
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
 
 public final class Util {
     /**
@@ -213,12 +217,13 @@ public final class Util {
                 AppLog.i("message===" + serverData.message);
             }
         });
-//        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
-//        HttpUrl httpUrl = new HttpUrl.Builder().scheme("https").host("chat.yuemei.com").build();
-//        List<Cookie> cookies = cookieStore.loadCookie(httpUrl);
-//        cookieStore.removeCookie(httpUrl);
-//        Cookie yuemeiinfo = new Cookie.Builder().name("dejiainfo").value("").domain("chat.yuemei.com").expiresAt(1544493729973L).path("/").build();
-//        cookieStore.saveCookie(httpUrl, yuemeiinfo);
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        HttpUrl httpUrl = new HttpUrl.Builder().scheme("https").host("chat.yuemei.com").build();
+        List<Cookie> cookies = cookieStore.loadCookie(httpUrl);
+        cookieStore.removeCookie(httpUrl);
+        Cookie yuemeiinfo = new Cookie.Builder().name("dejiainfo").value("").domain("chat.yuemei.com").expiresAt(1544493729973L).path("/").build();
+        cookieStore.saveCookie(httpUrl, yuemeiinfo);
+
         KVUtils.getInstance().encode(Constants.UID,"0");
         KVUtils.getInstance().encode("user","");
         Util.setYuemeiInfo("");

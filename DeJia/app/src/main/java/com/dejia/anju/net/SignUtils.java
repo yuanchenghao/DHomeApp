@@ -26,20 +26,7 @@ import java.util.Map;
 public class SignUtils {
     private static String TAG = "SignUtils";
 
-    public static final String PRIVATE_KEY = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCnTOzsIroZzfwzY8VKYM6j/YvCUObwS0+naDuiB" +
-            "hYlVpRiQ43oZ+o1jWLpmm/l3cm98BqSmwunXCPHfQuo2YzFfRl9dtKYL3M2QCv2Mfg2iAUI8mi9tJZ5fbQonrqX9GJ0+a4Z1TYfD+9P+QomYyIUM2ZzzmOljkAc" +
-            "3iZK4K38Nlx/s3g8uuUp1kKPs8RGoeQCNwXSAseiq7cjmo+rU2aX/hSBbMM8OlR+pjFFZ8eU9KDVUUzukrj4ScN5kRQWR+KPfa4T/N8x68hPGSeKyJ1nLdKkB" +
-            "FMLRzK+RA0nDLvtKjzNq+N9HDi3fRoSJ4ry6iBVsUqXfO+mZqprNAWYQKuHAgMBAAECggEATUjxDejA9di9T/QgGMr9yq3/GSYMeSchReGV4rRTGK6VX4t7i8" +
-            "gtXs3Qyr+IP7UkVDUN4Xn0eTzMXoR6lWbia/ztgJMamCkbXQ1qAZJ16qMNSGPLVQ+Oj9MtHbKt2jKQJR+OeOqQ1Oqkj9opATC8dn6ELq1CRSGgpnVNVTvTw/W" +
-            "NsIPQ4hnte+8x+TfmXz2ARdo6OE8zuGVp4xCpSfUm7QOQTRTQMOM5y8k7SAFoVrAcKTfY3alIg7MTsl0X5I/Vbz1KgAsYrvPgU9EkZBuDEWGspn/ULFkkshvn" +
-            "Ne7bxfsuZ0xzM1fuRwnA/elZHDAfLBkUgU6gXmfwIRGFWY+GYQKBgQDQ4xlJq25tBH0F1FGBbzTAk3+W7TFwBk+c+uMnU2hb1unay8WCjlYGPbmh99b2kDoP3i" +
-            "LEDBVwYNOEeGrBcuRAjr6WM/hYW9fdTAgdZ3rS2N5pmVOU6JY64eSdnqKmWw15LNRoQgSp6p4vnx/v4cdGEMVhnhcv2/3eKCuUTYM5NwKBgQDNCKnUjC89tXjp" +
-            "3IX04te+vNGYSfrIsaIsVcOw30rHoWhmhR2uviYaZNpE7pnaU9iaRcukpjtgnWJp8qh/fac2N0fGflBnMbNKfT/MbNp6S0zMFVUM8TjYLLtbMIYkphowus1l1t9" +
-            "dFrlA2o9WoSMG8qtrvX7MThSxF950su8IMQKBgEiUD65ELWsdmx8SZXt2mzqqRTO4mGvXFYRyu8hnN6RpaPnHwYmaURN8EOrRBVTIShRHV4cMt8pDKlslx9oNR" +
-            "HeV4WypBAoXZ0qR52PoF4n5JlZEmwDrS3+MC3Ykr1jj3CuVQvwyrBIp3eqn/F3J8gZLP3mqh13uryeoh3PQ9t5DAoGBALqwLbrbndQpXZxK8CoHNnx0/r8UdW" +
-            "Wx4EFQIiv1VOiqfh4DDQDkIFueAuQLAUm7WJk3/fHAboZNJ6PikCvtpIgIE7GXp+weY+rqWmHvp4r870NQFS4AokqriDjC2RGbsHM4U/dri9v96dY0a5lshTE" +
-            "5Wn5yf3bVjZ+mZSaLGnyxAoGBALhTrfQ6Bc5uqAuOh9Q7kGpduSGRJ5Ge1Nh7o7Albh6CXoMRfGj8zIs1Vq9Eeb7SWsS/K1ORYfnQELTTGIQKtKL26q843iq" +
-            "aB0KzB4BQaQcLqSKJBgW+aFhGeshuQdTxBT284CLDwawyB41H+PUcd6AWOcJ7t+zCQJbiYodZE6PI";
+    public static final String PRIVATE_KEY = "MIICXAIBAAKBgQCnXAdQ32oEKzUPns66jGtOpvWNFSOhGjyc7npIZOibLkL/x5Lcn9xKi2RYyOdv/mGt/OTR95NXFiKcaQ6FSkIiqte5tVh85yfSaHpkdJ2bBfonRp/raxHV+JjX7WRIDtbB4s1uNhEcJBlJbSfhu2QaUKlR3M96ZZUbKL9NODGV8wIDAQABAoGAMk6jlFfUEnS6enuOQN081GOzpDkagK7WUYYOE/zhPuRlF2Xya4dSPMYx385kY3HgAuDmF4eILsFkngemacKspiqjE54GNU4tknwTehkqxZTDnXkUMgjvLSk8SDeztn+xRyatq5/Vtp4cNS2nNABWs4G122FT4ehLxidgrw47aIECQQDT75Xnub7MJRqBPOthtg3yFYNXSia6XNhkFyqpsZynUthMTbYAkbT924F85jIrKjcawYPw4VVVBaYD8OV+ZLpRAkEAyifWcW+1rgYWpA6PGtiY4hS+l2pqcFcj1PFPcPkgG0OTnTGQbMlj4H/13UdvHVDdVN4fOnss9pnFDC7ZDjw3AwJAKLAokXJhpQPCkOlHL10qVD25F3sO8Fx+1shz0lxc/Oq0yAFrXbSbkNkhhP8UxqC2L5bTY91+6nHJK5yGErv34QJAaNlGsOkWmt7PiWF/uZXTnZbSz2fDMucPT5ek81xS2bEv85zMYpAFfGAB3jX5nIPfd/AI1GUkifZxLAN0UpzKjwJBALvJyGvXIlkQ/XLAdzy9yrY5HpGHiGb5CAMaPVwt12q/bkcS/d1ncBfqW4gESic9jiKPa1nNTNUa4Yro9JITwu0=";
 
     private static final String RSA = "RSA";
 
@@ -66,12 +53,12 @@ public class SignUtils {
     }
 
     public static WebSignData getAddressAndHead(String url, Map<String, Object> paramMap, Map<String, Object> headMap) {
-        String tyUrl="";
+        String tyUrl = "";
         cookieManager.setCookie(url, "yuemeiinfo=" + Util.getYuemeiInfo());
         cookieManager.getCookie(url);
 //        if (url.startsWith("https://user.yuemei.com") || url.startsWith("https://sjapp.yuemei.com") ||url.startsWith("https://chat.yuemei.com")){
-            String params = SignUtils.buildHttpParam3(paramMap);
-            tyUrl = url + params;
+        String params = SignUtils.buildHttpParam3(paramMap);
+        tyUrl = url + params;
 //        }else {
 //            StringBuilder builder = new StringBuilder();
 //            for (Map.Entry<String, Object> entry : paramMap.entrySet()){
@@ -235,23 +222,23 @@ public class SignUtils {
     @SuppressLint("NewApi")
     public static Map<String, String> buildHttpParamMap(Map<String, Object> map) {
         Map<String, String> keyValues = new HashMap<>(0);
-        keyValues.put(FinalConstant1.CITY, URLEncoder.encode(Util.getCity()));
+        //URLEncoder.encode(Util.getCity())
+        keyValues.put(FinalConstant1.CITY, Util.getCity());
         keyValues.put(FinalConstant1.UID, Util.getUid());
         keyValues.put(FinalConstant1.VER, FinalConstant1.YUEMEI_VER);
         keyValues.put(FinalConstant1.DEVICE, FinalConstant1.YUEMEI_DEVICE);
         keyValues.put(FinalConstant1.MARKET, FinalConstant1.MYAPP_MARKET);
         keyValues.put(FinalConstant1.ONLYKEY, Util.getImei());
-//        String a = Util.getAppImei();
         keyValues.put(FinalConstant1.IMEI, Util.getImei());
         keyValues.put(FinalConstant1.ANDROID_OAID, KVUtils.getInstance().decodeString("oaid", ""));
-        keyValues.put(FinalConstant1.ANDROID_ID,Util.getAndroidId(DeJiaApp.getContext()));
+        keyValues.put(FinalConstant1.ANDROID_ID, Util.getAndroidId(DeJiaApp.getContext()));
         keyValues.put(FinalConstant1.APPFROM, "1");
         for (String key : map.keySet()) {
             Object value = map.get(key);
             //只要String类型的参数
             if (value instanceof String) {
                 keyValues.put(key, (String) value);
-            }else if (value instanceof Integer){
+            } else if (value instanceof Integer) {
                 keyValues.put(key, String.valueOf(value));
             }
         }

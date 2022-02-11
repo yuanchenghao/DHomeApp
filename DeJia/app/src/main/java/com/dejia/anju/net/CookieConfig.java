@@ -38,14 +38,14 @@ public class CookieConfig {
 
     //Caused by: java.lang.IllegalArgumentException: unexpected host: 172.16.10.200:8080
     public void setCookie(String scheme, String host, String domain) {
-//        String mYuemeiinfo = Util.getYuemeiInfo();
-//        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
-//        HttpUrl httpUrl = new HttpUrl.Builder().scheme(scheme).host(host).build();
-//        Cookie yuemeiinfo = new Cookie.Builder()
-//                .name("dejiainfo")
-//                .value(mYuemeiinfo)
-//                .domain(domain)
-//                .build();
-//        cookieStore.saveCookie(httpUrl, yuemeiinfo);
+        String mYuemeiinfo = Util.getYuemeiInfo();
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        HttpUrl httpUrl = new HttpUrl.Builder().scheme(scheme).host(host).build();
+        Cookie yuemeiinfo = new Cookie.Builder()
+                .name("dejiainfo")
+                .value(mYuemeiinfo)
+                .domain(domain)
+                .build();
+        cookieStore.saveCookie(httpUrl, yuemeiinfo);
     }
 }

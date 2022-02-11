@@ -49,9 +49,9 @@ public class FinalConstant1 {
     public static final String SYMBOL4 = "=";
     public static final String SYMBOL5 = "&";
     //域名
-    public static final String TEST_BASE_URL = "172.16.10.200:8080";
-    public static final String TEST_CHAT_BASE_URL = "172.16.10.200:88";
-    public static final String TEST_CHAT_SOCKET_BASE_URL = "172.16.10.200:7272";
+    public static final String TEST_BASE_URL = "api.dejiaapp.com";
+    public static final String TEST_CHAT_BASE_URL = "chat.dejiaapp.com";
+    public static final String TEST_CHAT_SOCKET_BASE_URL = "chats.dejiaapp.com";
     public static final String YUEMEI_DOMAIN_NAME = ".dejiaapp.com";
     public static final String BASE_URL = "api" + YUEMEI_DOMAIN_NAME;
     public static final String BASE_API_M_URL = "m" + YUEMEI_DOMAIN_NAME;

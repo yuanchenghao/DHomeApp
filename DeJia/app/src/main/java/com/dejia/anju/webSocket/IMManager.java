@@ -37,6 +37,8 @@ import okhttp3.HttpUrl;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 
+import static com.dejia.anju.net.FinalConstant1.TEST_CHAT_BASE_URL;
+
 public class IMManager implements ReceiveMessageCallBack, MessageStatus {
     public static final String TAG = "IMManager";
     private static IMManager instance;
@@ -196,7 +198,7 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
 
         cookieStore.saveCookie(httpUrl, yuemeiinfo);
         List<Cookie> cookies1 = cookieStore.loadCookie(httpUrl);
-        OkGo.post("http://172.16.10.200:88/chat/bind/")
+        OkGo.post("http://" +TEST_CHAT_BASE_URL+"/chat/bind/")
                 .cacheMode(CacheMode.DEFAULT)
                 .headers(headers)
                 .params(httpParams)

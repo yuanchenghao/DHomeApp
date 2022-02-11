@@ -189,7 +189,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             finish();
             return;
         }
-        //        setChatCookie();
+        setChatCookie();
         initListener();
         IMManager.setMessageCallBack(this);
         //获取页面信息
