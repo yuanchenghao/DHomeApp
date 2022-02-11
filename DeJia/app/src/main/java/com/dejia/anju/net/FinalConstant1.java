@@ -61,7 +61,7 @@ public class FinalConstant1 {
     public static final String BASE_NEWS_URL = "chat" + YUEMEI_DOMAIN_NAME;
     public static final String BASE_SERVICE = "chats" + YUEMEI_DOMAIN_NAME;
     public static final String BASE_EMPTY = "empty" + YUEMEI_DOMAIN_NAME;
-    public static final String HTML_CIRCLE = "http://"+TEST_BASE_URL +  "/vue/circleIndex/";
+    public static final String HTML_CIRCLE = "http://" + TEST_BASE_URL + "/vue/circleIndex/";
     //服务端地址
     public static final String API = "api";
 

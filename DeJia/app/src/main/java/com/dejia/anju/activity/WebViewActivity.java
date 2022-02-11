@@ -16,6 +16,8 @@ import com.dejia.anju.R;
 import com.dejia.anju.base.WebViewActivityImpl;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
+import com.dejia.anju.net.SignUtils;
+import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.view.CommonTopBar;
 import com.dejia.anju.view.MyPullRefresh;
@@ -24,11 +26,13 @@ import com.dejia.anju.view.webclient.JsCallAndroid;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
 
+import org.apache.http.util.EncodingUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +57,8 @@ public class WebViewActivity extends WebViewActivityImpl {
     private static final String JS_NAME = "android";
     private CommonTopBar mTopTitle;
     private String linkUrl;
+    private WebSignData addressAndHead;
+    private Map<String, Object> map;
 
     @Xml(layouts = "activity_web_view")
     @Override
@@ -277,9 +283,30 @@ public class WebViewActivity extends WebViewActivityImpl {
         if (mWebView != null && mWebViewData != null) {
             // 跳转并进行页面加载
             if (!TextUtils.isEmpty(linkUrl)) {
-                postUrl(linkUrl);
+                loadUrl(linkUrl);
             }
         }
+    }
+
+    public void loadUrl(String url) {
+        if (mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())) {
+            map = JSONUtil.getMapForJson(mWebViewData.getRequest_param());
+            addressAndHead = SignUtils.getAddressAndHead(url,map);
+        }else{
+            map = new HashMap<>(0);
+            addressAndHead = SignUtils.getAddressAndHead(url);
+        }
+        HashMap<String, Object> addressAndHeadMap = new HashMap<>(0);
+        for (String key : map.keySet()) {
+            Object value = map.get(key);
+            //只要String类型的参数
+            if (value instanceof String) {
+                addressAndHeadMap.put(key, (String) value);
+            } else if (value instanceof Integer) {
+                addressAndHeadMap.put(key, String.valueOf(value));
+            }
+        }
+        mWebView.postUrl(addressAndHead.getUrl(), EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
     }
 
 

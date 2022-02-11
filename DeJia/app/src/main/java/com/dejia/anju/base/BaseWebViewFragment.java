@@ -217,27 +217,7 @@ public abstract class BaseWebViewFragment extends BaseFragment {
     protected void onYmReceivedTitle(WebView view, String title) {
     }
 
-//    /**
-//     * 加载webView
-//     *
-//     * @param url
-//     * @param paramMap
-//     * @param headMap
-//     */
-//    protected void loadUrl(String url, Map<String, Object> paramMap, Map<String, Object> headMap) {
-//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap, headMap);
-//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
-//    }
-//
-//    protected void loadUrl(String url, Map<String, Object> paramMap) {
-//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap);
-//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
-//    }
-//
-//    protected void loadUrl(String url) {
-//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
-//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
-//    }
+
 
     protected void postUrl(String url) {
         WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
