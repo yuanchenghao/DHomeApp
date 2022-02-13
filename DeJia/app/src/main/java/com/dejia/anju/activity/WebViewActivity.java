@@ -287,11 +287,11 @@ public class WebViewActivity extends WebViewActivityImpl {
 
     public void loadUrl(String url) {
         if (mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())) {
-            addressAndHead = SignUtils.getAddressAndHead(url,JSONUtil.getMapForJson(mWebViewData.getRequest_param()));
-        }else{
+            addressAndHead = SignUtils.getAddressAndHead(url, JSONUtil.getMapForJson(mWebViewData.getRequest_param()));
+        } else {
             addressAndHead = SignUtils.getAddressAndHead(url);
         }
-        mWebView.loadUrl(addressAndHead.getUrl(),addressAndHead.getHttpHeaders());
+        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
     }
 
 

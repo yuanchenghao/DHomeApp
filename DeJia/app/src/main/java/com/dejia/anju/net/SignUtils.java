@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.internal.Utils;
+
 
 public class SignUtils {
     private static String TAG = "SignUtils";
@@ -222,15 +224,20 @@ public class SignUtils {
     @SuppressLint("NewApi")
     public static Map<String, String> buildHttpParamMap(Map<String, Object> map) {
         Map<String, String> keyValues = new HashMap<>(0);
-        //URLEncoder.encode(Util.getCity())
         keyValues.put(FinalConstant1.CITY, Util.getCity());
         keyValues.put(FinalConstant1.UID, Util.getUid());
         keyValues.put(FinalConstant1.VER, FinalConstant1.YUEMEI_VER);
         keyValues.put(FinalConstant1.DEVICE, FinalConstant1.YUEMEI_DEVICE);
         keyValues.put(FinalConstant1.MARKET, FinalConstant1.MYAPP_MARKET);
-        keyValues.put(FinalConstant1.ONLYKEY, Util.getImei());
-        keyValues.put(FinalConstant1.IMEI, Util.getImei());
-        keyValues.put(FinalConstant1.ANDROID_OAID, KVUtils.getInstance().decodeString("oaid", ""));
+        if (!TextUtils.isEmpty(Util.getImei())) {
+            keyValues.put(FinalConstant1.ONLYKEY, Util.getImei());
+        }
+        if (!TextUtils.isEmpty(Util.getAppImei())) {
+            keyValues.put(FinalConstant1.IMEI, Util.getAppImei());
+        }
+        if (!TextUtils.isEmpty(KVUtils.getInstance().decodeString("oaid", ""))) {
+            keyValues.put(FinalConstant1.ANDROID_OAID, KVUtils.getInstance().decodeString("oaid", ""));
+        }
         keyValues.put(FinalConstant1.ANDROID_ID, Util.getAndroidId(DeJiaApp.getContext()));
         keyValues.put(FinalConstant1.APPFROM, "1");
         for (String key : map.keySet()) {
