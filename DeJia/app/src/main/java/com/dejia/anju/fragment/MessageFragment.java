@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dejia.anju.AppLog;
+import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.adapter.MessageListAdapter;
@@ -29,6 +30,8 @@ import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.view.YMLinearLayoutManager;
+import com.dejia.anju.webSocket.IMManager;
+import com.dejia.anju.webSocket.UnReadMessageCallBack;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -57,7 +60,7 @@ import static android.provider.Settings.EXTRA_APP_PACKAGE;
  * @author ych
  * 私信列表页
  */
-public class MessageFragment extends BaseFragment implements View.OnClickListener {
+public class MessageFragment extends BaseFragment implements View.OnClickListener, UnReadMessageCallBack {
     @BindView(R.id.ll_title)
     LinearLayout ll_title;
     @BindView(R.id.ll_notice)
@@ -129,7 +132,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                             //如果改消息不存在刷新消息列表
                             this.getMessageList();
                         } else {
-                            //设置医院消息个数
+                            //设置消息个数
                             int noread = Integer.parseInt(mNoread);
                             this.messageListAdapter.setNoread(mPos, (noread + 1) + "");
                             this.messageListAdapter.notifyDataSetChanged();
@@ -146,6 +149,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        IMManager.setUnReadMessageCallBack(this);
     }
 
     @Override
@@ -177,6 +181,9 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         layoutParams.topMargin = statusbarHeight;
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
         setMultiOnClickListener(ll1, ll2, ll3, ll4, iv_close_notice, tv_open_notice);
+//        if (MainActivity.mBroadcastReceiver != null) {
+//            MainActivity.mBroadcastReceiver.setMessageFragmentActivity1(mContext);
+//        }
     }
 
     @Override
@@ -242,28 +249,30 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         HashMap<String, Object> map = new HashMap<>(0);
         map.put("page", page);
         new GetMessageListApi().getCallBack(mContext, map, (BaseCallBackListener<ServerData>) serverData -> {
-            if ("1".equals(serverData.code)) {
-                if (serverData.data != null) {
-                    messageListData = JSONUtil.jsonToArrayList(serverData.data, MessageListData.class);
-                    smartRefreshLayout.finishRefresh();
-                    if (messageListData.size() == 0) {
-                        if (smartRefreshLayout == null) {
-                            return;
+            if(mContext != null){
+                if ("1".equals(serverData.code)) {
+                    if (serverData.data != null) {
+                        messageListData = JSONUtil.jsonToArrayList(serverData.data, MessageListData.class);
+                        smartRefreshLayout.finishRefresh();
+                        if (messageListData.size() == 0) {
+                            if (smartRefreshLayout == null) {
+                                return;
+                            }
+                            smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                        } else {
+                            if (smartRefreshLayout == null) {
+                                return;
+                            }
+                            smartRefreshLayout.finishLoadMore();
                         }
-                        smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                        setMessageListAdapter();
                     } else {
-                        if (smartRefreshLayout == null) {
-                            return;
-                        }
-                        smartRefreshLayout.finishLoadMore();
+                        smartRefreshLayout.finishLoadMoreWithNoMoreData();
                     }
-                    setMessageListAdapter();
                 } else {
-                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                    smartRefreshLayout.finishRefresh();
+                    ToastUtils.toast(mContext, serverData.message).show();
                 }
-            } else {
-                smartRefreshLayout.finishRefresh();
-                ToastUtils.toast(mContext, serverData.message).show();
             }
         });
     }
@@ -384,5 +393,13 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                 }
                 break;
         }
+    }
+
+    //刷新未读消息数
+    @Override
+    public void onUnReadMessage() {
+        page = 1;
+        messageListAdapter = null;
+        getMessageList();
     }
 }

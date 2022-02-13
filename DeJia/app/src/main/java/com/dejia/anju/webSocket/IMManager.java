@@ -125,24 +125,24 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
                         intent.putExtra("groupUserId", webSocketBean.getGroupUserId() + "");
                         context.sendBroadcast(intent);
                     } else {
-                        if (!isChatActivityTop()) {  //如果在前台其他页面（非聊天页ChatActivity）
-                            Intent intent = new Intent(Constants.REFRESH_MESSAGE);
-                            intent.putExtra("message", webSocketBean.getAppcontent());
-                            intent.putExtra("time", webSocketBean.getTime());
-                            intent.putExtra("groupUserId", webSocketBean.getGroupUserId() + "");
-                            context.sendBroadcast(intent);
-                            Activity currentActivity = com.dejia.anju.mannger.ActivityManager.getInstance().getCurrentActivity();
-                            if (currentActivity != null && !currentActivity.isFinishing()) {
-                                String content = webSocketBean.getAppcontent();
-                                int classid = webSocketBean.getClassid();
-                                String hosName = webSocketBean.getHos_name();
-                                int hosId = webSocketBean.getHos_id();
-                                String fromClientImg = webSocketBean.getFrom_client_img();
-                                String fromClientId = webSocketBean.getFrom_client_id();
-                                String pos = webSocketBean.getPos();
-                                TopWindowUtils.show(currentActivity, hosName, content, fromClientImg, fromClientId, hosId + "", pos, classid);
-                            }
-                        }
+//                        if (!isChatActivityTop()) {  //如果在前台其他页面（非聊天页ChatActivity）
+//                            Intent intent = new Intent(Constants.REFRESH_MESSAGE);
+//                            intent.putExtra("message", webSocketBean.getAppcontent());
+//                            intent.putExtra("time", webSocketBean.getTime());
+//                            intent.putExtra("groupUserId", webSocketBean.getGroupUserId() + "");
+//                            context.sendBroadcast(intent);
+//                            Activity currentActivity = com.dejia.anju.mannger.ActivityManager.getInstance().getCurrentActivity();
+//                            if (currentActivity != null && !currentActivity.isFinishing()) {
+//                                String content = webSocketBean.getAppcontent();
+//                                int classid = webSocketBean.getClassid();
+//                                String hosName = webSocketBean.getHos_name();
+//                                int hosId = webSocketBean.getHos_id();
+//                                String fromClientImg = webSocketBean.getFrom_client_img();
+//                                String fromClientId = webSocketBean.getFrom_client_id();
+//                                String pos = webSocketBean.getPos();
+//                                TopWindowUtils.show(currentActivity, hosName, content);
+//                            }
+//                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

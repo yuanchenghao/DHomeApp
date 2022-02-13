@@ -2,6 +2,7 @@ package com.dejia.anju;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,6 +30,7 @@ import com.dejia.anju.api.MessageCountApi;
 import com.dejia.anju.api.MessageShowApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
+import com.dejia.anju.brodcast.SendMessageReceiver;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.fragment.CircleFragment;
 import com.dejia.anju.fragment.HomeFragment;
@@ -117,7 +119,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     LinearLayout ll_main;
     private Fragment homeFragment;
     private Fragment circleFragment;
-    //    private Fragment toolFragment;
     private Fragment messageFragment;
     private Fragment myFragment;
     private FragmentManager manager;
@@ -133,6 +134,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private Button cancelBt;
     //定时任务线程池
     private ScheduledExecutorService pool;
+//    private SendMessageReceiver mSendMessageReceiver;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -175,6 +177,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         //开屏阻断
         initOneClickLogin();
+
     }
 
     @Xml(layouts = "activity_main")
@@ -276,6 +279,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
 
         });
+
+//        if (mSendMessageReceiver == null) {
+//            IntentFilter intentFilter = new IntentFilter(SendMessageReceiver.ACTION);
+//            mSendMessageReceiver = new SendMessageReceiver();
+//            mContext.registerReceiver(mSendMessageReceiver, intentFilter);
+//        }
     }
 
     //查看版本

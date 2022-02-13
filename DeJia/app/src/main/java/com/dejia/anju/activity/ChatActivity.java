@@ -427,12 +427,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void downLoad() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                loadRecords();
-            }
-        }).start();
+        new Thread(() -> loadRecords()).start();
     }
 
 

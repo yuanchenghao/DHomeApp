@@ -29,7 +29,7 @@ public class TopWindowUtils {
     private Activity mActivity;
     public static final String TAG = "TopWindowUtils";
 
-    public static void show(final Activity activity, String title, String content, String hosimg, final String clientid, final String hosid, final String pos, int classid) {
+    public static void show(final Activity activity, String title, String content) {
         if (activity == null) {
             return;
         }
@@ -63,14 +63,6 @@ public class TopWindowUtils {
         tvContent1.setVisibility(View.GONE);
         tvContent2.setVisibility(View.GONE);
         tvTitle.setText(title);
-//        if (!activity.isFinishing()) {
-//            Glide.with(activity)
-//                    .load(hosimg)
-//                    .transform(new GlideCircleTransform(activity))
-//                    .placeholder(R.color._f6)
-//                    .error(R.color._f6).
-//                    into(tvImage);
-//        }
 
         popupWindow.getContentView().setOnTouchListener(new View.OnTouchListener() {
             float downY = 0;
@@ -86,9 +78,7 @@ public class TopWindowUtils {
                         break;
                     case MotionEvent.ACTION_MOVE:
                         float currentY = event.getY();
-                        Log.e(TAG, "onTouch: currentY-->" + currentY);
                         if ((downY - currentY) >= 10) {
-                            Log.e(TAG, "onTouch: up------");
                             popupWindow.dismiss();
                         }
                         break;
@@ -96,11 +86,6 @@ public class TopWindowUtils {
                         //检测移动的距离，如果很微小可以认为是点击事件
                         if (Math.abs(event.getX() - downX) < 10 && Math.abs(event.getY() - downY) < 10) {
                             popupWindow.dismiss();
-//                            Intent intent = new Intent(activity, ChatActivity.class);
-//                            intent.putExtra("directId", clientid);
-//                            intent.putExtra("objId", "0");
-//                            intent.putExtra("objType", "0");
-//                            activity.startActivity(intent);
                             return false;
                         }
                         break;
