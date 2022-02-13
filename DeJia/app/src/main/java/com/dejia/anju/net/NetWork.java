@@ -238,6 +238,7 @@ public class NetWork {
                     }
                 });
         String newString = removeOtherChar(httpParams.toString());
+        String a = bindData.getUrl();
         AppLog.i("post ---> " + bindData.getUrl() + newString);
     }
 

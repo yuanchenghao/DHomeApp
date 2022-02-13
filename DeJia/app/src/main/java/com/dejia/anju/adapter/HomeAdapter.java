@@ -2,7 +2,6 @@ package com.dejia.anju.adapter;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;

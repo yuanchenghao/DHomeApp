@@ -3,7 +3,6 @@ package com.dejia.anju.base;
 import android.annotation.SuppressLint;
 import android.net.http.SslError;
 import android.os.Build;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
@@ -18,7 +17,6 @@ import android.webkit.WebViewClient;
 
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
-import com.dejia.anju.utils.JSONUtil;
 
 import org.apache.http.util.EncodingUtils;
 
@@ -213,5 +211,27 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity {
         HashMap<String, Object> addressAndHeadMap = new HashMap<>(0);
         mWebView.postUrl(addressAndHead.getUrl(), EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
     }
+
+//    /**
+//     * 加载webView
+//     *
+//     * @param url
+//     * @param paramMap
+//     * @param headMap
+//     */
+//    protected void loadUrl(String url, Map<String, Object> paramMap, Map<String, Object> headMap) {
+//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap, headMap);
+//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+//    }
+//
+//    protected void loadUrl(String url, Map<String, Object> paramMap) {
+//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap);
+//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+//    }
+//
+//    protected void loadUrl(String url) {
+//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
+//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+//    }
 }
 

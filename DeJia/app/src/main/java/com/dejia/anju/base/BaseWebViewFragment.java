@@ -21,6 +21,7 @@ import com.dejia.anju.net.WebSignData;
 import org.apache.http.util.EncodingUtils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 @SuppressLint("Registered")
@@ -217,13 +218,33 @@ public abstract class BaseWebViewFragment extends BaseFragment {
     protected void onYmReceivedTitle(WebView view, String title) {
     }
 
+//    /**
+//     * 加载webView
+//     *
+//     * @param url
+//     * @param paramMap
+//     * @param headMap
+//     */
+//    protected void loadUrl(String url, Map<String, Object> paramMap, Map<String, Object> headMap) {
+//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap, headMap);
+//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+//    }
+//
+//    protected void loadUrl(String url, Map<String, Object> paramMap) {
+//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url, paramMap);
+//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+//    }
+//
+//    protected void loadUrl(String url) {
+//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
+//        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
+//    }
 
-
-    protected void postUrl(String url) {
-        WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
-        HashMap<String, Object> addressAndHeadMap = new HashMap<>(0);
-        mWebView.postUrl(url, EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
-    }
+//    protected void postUrl(String url) {
+//        WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
+//        HashMap<String, Object> addressAndHeadMap = new HashMap<>(0);
+//        mWebView.postUrl(url, EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
+//    }
 
 //    @Override
 //    public void onDestroy() {

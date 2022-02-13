@@ -26,13 +26,11 @@ import com.dejia.anju.view.webclient.JsCallAndroid;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
 
-import org.apache.http.util.EncodingUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +56,6 @@ public class WebViewActivity extends WebViewActivityImpl {
     private CommonTopBar mTopTitle;
     private String linkUrl;
     private WebSignData addressAndHead;
-    private Map<String, Object> map;
 
     @Xml(layouts = "activity_web_view")
     @Override
@@ -258,7 +255,7 @@ public class WebViewActivity extends WebViewActivityImpl {
             if (parent != null) {
                 ((ViewGroup) parent).removeView(mWebView);
             }
-            postUrl("about:blank");
+            loadUrl("about:blank");
             mWebView.stopLoading();
             mWebView.clearFormData();
             mWebView.clearMatches();
@@ -290,23 +287,11 @@ public class WebViewActivity extends WebViewActivityImpl {
 
     public void loadUrl(String url) {
         if (mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())) {
-            map = JSONUtil.getMapForJson(mWebViewData.getRequest_param());
-            addressAndHead = SignUtils.getAddressAndHead(url,map);
+            addressAndHead = SignUtils.getAddressAndHead(url,JSONUtil.getMapForJson(mWebViewData.getRequest_param()));
         }else{
-            map = new HashMap<>(0);
             addressAndHead = SignUtils.getAddressAndHead(url);
         }
-        HashMap<String, Object> addressAndHeadMap = new HashMap<>(0);
-        for (String key : map.keySet()) {
-            Object value = map.get(key);
-            //只要String类型的参数
-            if (value instanceof String) {
-                addressAndHeadMap.put(key, (String) value);
-            } else if (value instanceof Integer) {
-                addressAndHeadMap.put(key, String.valueOf(value));
-            }
-        }
-        mWebView.postUrl(addressAndHead.getUrl(), EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
+        mWebView.loadUrl(addressAndHead.getUrl(),addressAndHead.getHttpHeaders());
     }
 
 

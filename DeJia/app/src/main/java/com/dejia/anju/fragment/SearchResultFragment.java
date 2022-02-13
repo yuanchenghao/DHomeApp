@@ -18,10 +18,7 @@ import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
 import com.dejia.anju.view.webclient.JsCallAndroid;
 import com.zhangyue.we.x2c.ano.Xml;
 
-import org.apache.http.util.EncodingUtils;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +35,6 @@ public class SearchResultFragment extends BaseWebViewFragment {
     private WebViewData mWebViewData;
     private String linkUrl;
     private WebSignData addressAndHead;
-    private Map<String, Object> map;
 
     public static SearchResultFragment newInstance(WebViewData webViewData) {
         Bundle args = new Bundle();
@@ -120,23 +116,11 @@ public class SearchResultFragment extends BaseWebViewFragment {
 
     public void loadUrl(String url) {
         if (mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())) {
-            map = JSONUtil.getMapForJson(mWebViewData.getRequest_param());
-            addressAndHead = SignUtils.getAddressAndHead(url,map);
+            addressAndHead = SignUtils.getAddressAndHead(url,JSONUtil.getMapForJson(mWebViewData.getRequest_param()));
         }else{
-            map = new HashMap<>(0);
             addressAndHead = SignUtils.getAddressAndHead(url);
         }
-        HashMap<String, Object> addressAndHeadMap = new HashMap<>(0);
-        for (String key : map.keySet()) {
-            Object value = map.get(key);
-            //只要String类型的参数
-            if (value instanceof String) {
-                addressAndHeadMap.put(key, (String) value);
-            } else if (value instanceof Integer) {
-                addressAndHeadMap.put(key, String.valueOf(value));
-            }
-        }
-        mWebView.postUrl(addressAndHead.getUrl(), EncodingUtils.getBytes(SignUtils.buildHttpParam4(addressAndHeadMap), "UTF-8"));
+        mWebView.loadUrl(addressAndHead.getUrl(),addressAndHead.getHttpHeaders());
     }
 
     @Override
@@ -167,7 +151,7 @@ public class SearchResultFragment extends BaseWebViewFragment {
             if (parent != null) {
                 ((ViewGroup) parent).removeView(mWebView);
             }
-            postUrl("about:blank");
+            loadUrl("about:blank");
             mWebView.stopLoading();
             mWebView.clearFormData();
             mWebView.clearMatches();

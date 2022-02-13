@@ -2,13 +2,14 @@ package com.dejia.anju.fragment;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 
 import com.dejia.anju.R;
 import com.dejia.anju.base.BaseWebViewFragment;
 import com.dejia.anju.net.FinalConstant1;
+import com.dejia.anju.net.SignUtils;
+import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhangyue.we.x2c.ano.Xml;
@@ -84,6 +85,11 @@ public class CircleFragment extends BaseWebViewFragment {
      * 初始化
      */
     private void initWebVeiw() {
-        postUrl(FinalConstant1.HTML_CIRCLE);
+        loadUrl(FinalConstant1.HTML_CIRCLE);
+    }
+
+    public void loadUrl(String url){
+        WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
+        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
     }
 }

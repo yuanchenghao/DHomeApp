@@ -24,7 +24,6 @@ import org.qiyi.basecore.taskmanager.ParallelTask;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 import androidx.annotation.RequiresApi;
 import androidx.multidex.MultiDex;

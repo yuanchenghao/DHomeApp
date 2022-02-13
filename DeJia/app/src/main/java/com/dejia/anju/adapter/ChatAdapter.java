@@ -21,7 +21,6 @@ import com.dejia.anju.view.HttpTextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 

@@ -262,6 +262,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                     smartRefreshLayout.finishLoadMoreWithNoMoreData();
                 }
             } else {
+                smartRefreshLayout.finishRefresh();
                 ToastUtils.toast(mContext, serverData.message).show();
             }
         });
