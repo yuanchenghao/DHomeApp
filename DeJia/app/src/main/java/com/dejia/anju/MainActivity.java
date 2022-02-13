@@ -41,6 +41,7 @@ import com.dejia.anju.model.MessageShowInfo;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.model.VersionInfo;
 import com.dejia.anju.model.WebViewData;
+import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.GlideEngine;
@@ -212,7 +213,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         navigation.getHeaderView(0).findViewById(R.id.ll_about).setOnClickListener(v -> {
             drawerLayout.closeDrawers();
             //关于
-            ToastUtils.toast(mContext, "关于").show();
+            WebUrlJumpManager.getInstance().invoke(mContext, FinalConstant1.HTML_ABOUT,null);
         });
         navigation.getHeaderView(0).findViewById(R.id.ll_clean).setOnClickListener(v -> {
             DataCleanManager.deleteFolderFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.dejia.anju",
