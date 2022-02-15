@@ -7,12 +7,20 @@ import android.widget.LinearLayout;
 
 import com.dejia.anju.R;
 import com.dejia.anju.base.BaseWebViewFragment;
+import com.dejia.anju.event.Event;
+import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
+import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
+import com.dejia.anju.view.webclient.JsCallAndroid;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhangyue.we.x2c.ano.Xml;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -27,6 +35,21 @@ public class CircleFragment extends BaseWebViewFragment {
     @BindView(R.id.ll)
     LinearLayout ll;
     private BaseWebViewClientMessage clientManager;
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEventMainThread(Event msgEvent) {
+        switch (msgEvent.getCode()) {
+            case 1:
+                loadUrl(FinalConstant1.HTML_CIRCLE);
+                break;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
 
     public static CircleFragment newInstance() {
         Bundle args = new Bundle();
@@ -43,8 +66,12 @@ public class CircleFragment extends BaseWebViewFragment {
 
     @Override
     protected void initView(View view) {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         clientManager = new BaseWebViewClientMessage(mContext);
         mWebView.setWebViewClient(clientManager);
+        mWebView.addJavascriptInterface(new JsCallAndroid(mContext), "android");
         ll_web.addView(mWebView);
         //下拉刷新
         mRefreshWebView.setOnRefreshListener(refreshLayout -> initWebVeiw());

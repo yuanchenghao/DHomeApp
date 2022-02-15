@@ -210,6 +210,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             drawerLayout.closeDrawers();
             //退出登录
             Util.clearUserData(mContext);
+            EventBus.getDefault().post(new Event<>(0));
             initFragment(0);
         });
         navigation.getHeaderView(0).findViewById(R.id.iv_close).setOnClickListener(v -> drawerLayout.closeDrawers());

@@ -18,6 +18,7 @@ import com.dejia.anju.adapter.YmTabLayoutAdapter;
 import com.dejia.anju.api.GetCityApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.CityInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
@@ -25,6 +26,10 @@ import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.BaseCityPopWindow;
 import com.google.android.material.tabs.TabLayout;
 import com.zhangyue.we.x2c.ano.Xml;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +68,34 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private GetCityApi getCityApi;
     private BaseCityPopWindow cityPopWindow;
 
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEventMainThread(Event msgEvent) {
+        switch (msgEvent.getCode()){
+            case 0:
+                //退出
+            case 1:
+                //登录
+                if(ymTabLayoutAdapter != null){
+                    if (ymTabLayoutAdapter.getItem(mFragmentSelectedPos) instanceof RecommendFragment) {
+                        if (ymTabLayoutAdapter != null && (RecommendFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos) != null) {
+                            ((RecommendFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos)).refresh();
+                        }
+                    } else {
+                        if (ymTabLayoutAdapter != null && (FollowFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos) != null) {
+                            ((FollowFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos)).refresh();
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
         HomeFragment fragment = new HomeFragment();
@@ -78,6 +111,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initView(View view) {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ll_title.getLayoutParams();
         layoutParams.topMargin = statusbarHeight;
         cityPopWindow = new BaseCityPopWindow(mContext, ll_root, cityInfo);

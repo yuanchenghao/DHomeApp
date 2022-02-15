@@ -143,7 +143,7 @@ public class CancellationActivity extends BaseActivity implements OnClickListene
                 break;
             case R.id.button2:
                 Util.clearUserData(mContext);
-                //发登录广播
+                //发退出广播
                 EventBus.getDefault().post(new Event<>(0));
                 mContext.startActivity(new Intent(mContext, MainActivity.class));
                 break;

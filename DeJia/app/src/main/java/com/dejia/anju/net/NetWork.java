@@ -5,6 +5,7 @@ import android.content.Context;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.DeJiaApp;
 import com.dejia.anju.base.Constants;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.SessionidData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.ToastUtils;
@@ -17,6 +18,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -373,6 +375,7 @@ public class NetWork {
                         //用户账户异常 强制下线处理
                         ToastUtils.toast(DeJiaApp.getContext(), message).show();
                         Util.clearUserData(DeJiaApp.getContext());
+                        EventBus.getDefault().post(new Event<>(0));
                         serverData.code = code;
                         serverData.message = message;
                         cb.onServerCallback(serverData);

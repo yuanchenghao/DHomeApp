@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,14 @@ import android.widget.LinearLayout;
 
 import com.dejia.anju.R;
 import com.dejia.anju.base.WebViewActivityImpl;
+import com.dejia.anju.event.Event;
+import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.view.CommonTopBar;
 import com.dejia.anju.view.MyPullRefresh;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
@@ -99,8 +103,12 @@ public class WebViewActivity extends WebViewActivityImpl {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventCallBack(WebViewData webViewData) {
-
+    public void onEventCallBack(Event msgEvent) {
+        switch (msgEvent.getCode()){
+            case 1:
+                loadLink();
+                break;
+        }
     }
 
     @SuppressLint({"JavascriptInterface", "AddJavascriptInterface"})

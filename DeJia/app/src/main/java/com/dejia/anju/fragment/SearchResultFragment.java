@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.dejia.anju.R;
 import com.dejia.anju.base.BaseWebViewFragment;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
@@ -17,6 +18,10 @@ import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
 import com.dejia.anju.view.webclient.JsCallAndroid;
 import com.zhangyue.we.x2c.ano.Xml;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +49,14 @@ public class SearchResultFragment extends BaseWebViewFragment {
         return fragment;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEventMainThread(Event msgEvent) {
+        switch (msgEvent.getCode()) {
+            case 1:
+                loadLink();
+                break;
+        }
+    }
 
     @Xml(layouts = "fragment_search_result")
     @Override
@@ -53,6 +66,9 @@ public class SearchResultFragment extends BaseWebViewFragment {
 
     @Override
     protected void initView(View view) {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         mWebViewData = getArguments().getParcelable("webdata");
         if (mWebViewData != null && !TextUtils.isEmpty(mWebViewData.getLinkisJoint()) && "1".equals(mWebViewData.getLinkisJoint())) {
             //拼接
@@ -116,11 +132,11 @@ public class SearchResultFragment extends BaseWebViewFragment {
 
     public void loadUrl(String url) {
         if (mWebViewData.getRequest_param() != null && !TextUtils.isEmpty(mWebViewData.getRequest_param())) {
-            addressAndHead = SignUtils.getAddressAndHead(url,JSONUtil.getMapForJson(mWebViewData.getRequest_param()));
-        }else{
+            addressAndHead = SignUtils.getAddressAndHead(url, JSONUtil.getMapForJson(mWebViewData.getRequest_param()));
+        } else {
             addressAndHead = SignUtils.getAddressAndHead(url);
         }
-        mWebView.loadUrl(addressAndHead.getUrl(),addressAndHead.getHttpHeaders());
+        mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
     }
 
     @Override
@@ -143,6 +159,7 @@ public class SearchResultFragment extends BaseWebViewFragment {
     public void onDestroy() {
         DestroyWebView();
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void DestroyWebView() {

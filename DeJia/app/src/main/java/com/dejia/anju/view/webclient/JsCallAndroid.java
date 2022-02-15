@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 
+import com.dejia.anju.activity.OneClickLoginActivity2;
 import com.dejia.anju.activity.UgcImgDialogActivity;
 import com.dejia.anju.model.UgcImgInfo;
 import com.dejia.anju.utils.JSONUtil;
@@ -22,7 +23,9 @@ public class JsCallAndroid {
      */
     @JavascriptInterface
     public void appToShare() {
-        ToastUtils.toast(mContext, "正在开发中").show();
+        if (mContext != null) {
+            ToastUtils.toast(mContext, "正在开发中").show();
+        }
     }
 
     /**
@@ -30,7 +33,9 @@ public class JsCallAndroid {
      */
     @JavascriptInterface
     public void appGoBack() {
-        ((Activity) mContext).finish();
+        if (mContext != null) {
+            ((Activity) mContext).finish();
+        }
     }
 
 
@@ -39,11 +44,21 @@ public class JsCallAndroid {
      */
     @JavascriptInterface
     public void showUgcImg(String img) {
-        if (!TextUtils.isEmpty(img)) {
+        if (!TextUtils.isEmpty(img) && mContext != null) {
             UgcImgInfo ugcImgInfo = JSONUtil.TransformSingleBean(img, UgcImgInfo.class);
             if (ugcImgInfo != null && ugcImgInfo.getImgList().size() > 0) {
-                UgcImgDialogActivity.invoke(mContext,ugcImgInfo);
+                UgcImgDialogActivity.invoke(mContext, ugcImgInfo);
             }
+        }
+    }
+
+    /**
+     * 去登录
+     */
+    @JavascriptInterface
+    public void showAppLogin() {
+        if (mContext != null) {
+            OneClickLoginActivity2.invoke(mContext, "");
         }
     }
 }
