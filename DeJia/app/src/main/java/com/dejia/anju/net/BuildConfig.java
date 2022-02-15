@@ -7,7 +7,11 @@ import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.store.PersistentCookieStore;
 
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.logging.Level;
+
+import javax.net.ssl.X509TrustManager;
 
 
 public class BuildConfig {
@@ -39,11 +43,11 @@ public class BuildConfig {
 
                     //如果不想让框架管理cookie（或者叫session的保持）,以下不需要
                     //      .setCookieStore(new MemoryCookieStore())            //cookie使用内存缓存（app退出后，cookie消失）
-                    .setCookieStore(new PersistentCookieStore()) ;       //cookie持久化存储，如果cookie不过期，则一直有效
+                    .setCookieStore(new PersistentCookieStore());        //cookie持久化存储，如果cookie不过期，则一直有效
 
             //可以设置https的证书,以下几种方案根据需要自己设置
             // .setCertificates()                                  //方法一：信任所有证书,不安全有风险
-            //      .setCertificates(new SafeTrustManager())            //方法二：自定义信任规则，校验服务端证书
+//                  .setCertificates(new SafeTrustManager());            //方法二：自定义信任规则，校验服务端证书
             //      .setCertificates(getAssets().open("srca.cer"))      //方法三：使用预埋证书，校验服务端证书（自签名证书）
             //              //方法四：使用bks证书和密码管理客户端证书（双向认证），使用预埋证书，校验服务端证书（自签名证书）
             //      .setCertificates(getAssets().open("xxx.bks"), "123456", getAssets().open("yyy.cer"))//
@@ -75,4 +79,35 @@ public class BuildConfig {
         FinalConstant1.configInterface();
     }
 
+    private static class SafeTrustManager implements X509TrustManager {
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            try {
+                for (X509Certificate certificate : chain) {
+                    //检查证书是否过期，签名是否通过等
+                    certificate.checkValidity();
+                }
+            } catch (Exception e) {
+                throw new CertificateException(e);
+            }
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
+    }
+
+//    private class SafeHostnameVerifier implements HostnameVerifier {
+//        @Override
+//        public boolean verify(String hostname, SSLSession session) {
+//            //验证主机名是否匹配
+//            //return hostname.equals("server.jeasonlzy.com");
+//            return true;
+//        }
+//    }
 }

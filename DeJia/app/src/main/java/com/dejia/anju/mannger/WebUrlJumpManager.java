@@ -95,13 +95,13 @@ public class WebUrlJumpManager {
                         && "1".equals(webViewData.getLinkisJoint())
                         && !TextUtils.isEmpty(webViewData.getLink())) {
                     //需要拼接link
-                    stringBuffer.append(FinalConstant1.HTTP)
+                    stringBuffer.append(FinalConstant1.HTTPS)
                             .append(FinalConstant1.SYMBOL1)
                             .append(FinalConstant1.TEST_BASE_URL)
                             .append(webViewData.getLink());
                 } else {
                     //不需要拼接link
-                    stringBuffer.append(FinalConstant1.HTTP)
+                    stringBuffer.append(FinalConstant1.HTTPS)
                             .append(FinalConstant1.SYMBOL1)
                             .append(FinalConstant1.TEST_BASE_URL);
                 }
@@ -247,7 +247,7 @@ public class WebUrlJumpManager {
     private void post(String url, Map<String, Object> maps) {
         YMHttpParams httpParams = SignUtils.buildHttpParam5(maps);
         HttpHeaders headers = SignUtils.buildHttpHeaders(maps);
-        CookieConfig.getInstance().setCookie(FinalConstant1.HTTP, FinalConstant1.TEST_BASE_URL, FinalConstant1.TEST_BASE_URL);
+        CookieConfig.getInstance().setCookie(FinalConstant1.HTTPS, FinalConstant1.TEST_BASE_URL, FinalConstant1.TEST_BASE_URL);
         OkGo.post(url)
                 .cacheMode(CacheMode.DEFAULT)
                 .params(httpParams)

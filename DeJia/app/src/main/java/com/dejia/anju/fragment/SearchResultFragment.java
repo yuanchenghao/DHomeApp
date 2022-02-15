@@ -66,10 +66,10 @@ public class SearchResultFragment extends BaseWebViewFragment {
                         String value = map.get(key) + "";
                         builder.append(key).append("/").append(value).append("/");
                     }
-                    linkUrl = FinalConstant1.HTTP + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_BASE_URL
+                    linkUrl = FinalConstant1.HTTPS + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_BASE_URL
                             + mWebViewData.getLink() + builder;
                 } else {
-                    linkUrl = FinalConstant1.HTTP + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_BASE_URL
+                    linkUrl = FinalConstant1.HTTPS + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_BASE_URL
                             + mWebViewData.getLink();
                 }
             }

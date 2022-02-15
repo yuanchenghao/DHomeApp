@@ -26,7 +26,7 @@ public class Constants {
     public static final String baseUrl = FinalConstant1.HTTPS + FinalConstant1.SYMBOL1 + FinalConstant1.BASE_URL + "/";
     public static final String baseUserUrl = FinalConstant1.HTTPS + FinalConstant1.SYMBOL1 + FinalConstant1.BASE_USER_URL + "/";
     public static final String baseSearchUrl = FinalConstant1.HTTPS + FinalConstant1.SYMBOL1 + FinalConstant1.BASE_SEARCH_URL + "/";
-    public static final String baseTestService = FinalConstant1.WS + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_CHAT_SOCKET_BASE_URL + "/";
+    public static final String baseTestService = FinalConstant1.WSS + FinalConstant1.SYMBOL1 + FinalConstant1.TEST_CHAT_SOCKET_BASE_URL + "/";
     //消息页面刷新
     public static final String REFRESH_MESSAGE = "com.example.mybroadcast.REFRESH_MESSAGE";
 

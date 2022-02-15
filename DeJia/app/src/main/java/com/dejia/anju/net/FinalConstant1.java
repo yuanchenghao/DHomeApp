@@ -61,84 +61,84 @@ public class FinalConstant1 {
     public static final String BASE_NEWS_URL = "chat" + YUEMEI_DOMAIN_NAME;
     public static final String BASE_SERVICE = "chats" + YUEMEI_DOMAIN_NAME;
     public static final String BASE_EMPTY = "empty" + YUEMEI_DOMAIN_NAME;
-    public static final String HTML_CIRCLE = HTTP + SYMBOL1 + TEST_BASE_URL + "/vue/circleIndex/";
-    public static final String HTML_ABOUT = HTTP + SYMBOL1 + TEST_BASE_URL + "/vue/about/";
+    public static final String HTML_CIRCLE = HTTPS + SYMBOL1 + TEST_BASE_URL + "/vue/circleIndex/";
+    public static final String HTML_ABOUT = HTTPS + SYMBOL1 + TEST_BASE_URL + "/vue/about/";
     //服务端地址
     public static final String API = "api";
 
 
     public static void configInterface() {
         //首页数据 HomeApi
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "verificationcode", "getLoginVerificationCode", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "verificationcode", "getLoginVerificationCode", POST);
         //激活后一分钟请求
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "appvisit", "appReceiveOneMinute", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "appvisit", "appReceiveOneMinute", POST);
         //APP 激活记录
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "appvisit", "appreceive", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "appvisit", "appreceive", POST);
         //极光推送解绑
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "message", "jPushClose", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "message", "jPushClose", POST);
         //极光推送绑定
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "message", "jPushBind", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "message", "jPushBind", POST);
         //消息数
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "message", "messageCount", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "message", "messageCount", POST);
         //审核是否隐藏按钮
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "message", "show", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "message", "show", POST);
         //版本控制升级
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "message", "versions", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "message", "versions", POST);
         //我的粉丝（关注我的）
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "follow", "followingMe", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "follow", "followingMe", POST);
         //关注 取消关注
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "follow", "following", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "follow", "following", POST);
         //判断用户是否关注过某数据
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "follow", "isFollowing", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "follow", "isFollowing", POST);
         //我的关注
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "follow", "myFollowing", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "follow", "myFollowing", POST);
         //修改资料上传照片
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "uploadImg", UPLOAD);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "user", "uploadImg", UPLOAD);
         //验证码登录
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "verificationCodeLogin", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "user", "verificationCodeLogin", POST);
         //修改用户资料
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "setUser", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "user", "setUser", POST);
         //图片上传
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "ugc", "uploadImage", UPLOAD);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "ugc", "uploadImage", UPLOAD);
         //文章提交
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "ugc", "save", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "ugc", "save", POST);
         //获取用户信息
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "tour", "getBuilding", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "tour", "getBuilding", POST);
         //首页接口
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "home", "index", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "home", "index", POST);
         //获取城市列表
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "city", "city", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "city", "city", POST);
         //首页关注接口
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "home", "follow", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "home", "follow", POST);
         //我的文章
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "myArticle", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "user", "myArticle", POST);
         //获取用户信息
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "getUserInfo", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "user", "getUserInfo", POST);
         //获取用户信息
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "logout", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "user", "logout", POST);
         //一键登录
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "phoneLogin", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "user", "phoneLogin", POST);
         //赞 取消赞
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "user", "insertAgree", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "user", "insertAgree", POST);
         //小区图片大图浏览页面
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "building", "bigImg", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "building", "bigImg", POST);
         //户型大图浏览接口
-        NetWork.getInstance().regist(HTTP, TEST_BASE_URL, "building", "houseTypeBigImg", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_BASE_URL, "building", "houseTypeBigImg", POST);
 
         //私信
         //WebSocket解绑
-        NetWork.getInstance().regist(HTTP, TEST_CHAT_BASE_URL, "chat", "close", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "close", POST);
         //WebSocket绑定
-        NetWork.getInstance().regist(HTTP, TEST_CHAT_BASE_URL, "chat", "bind", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "bind", POST);
         //私信列表
-        NetWork.getInstance().regist(HTTP, TEST_CHAT_BASE_URL, "chat", "list", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "list", POST);
         //聊天页
-        NetWork.getInstance().regist(HTTP, TEST_CHAT_BASE_URL, "chat", "index", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "index", POST);
         //发私信
-        NetWork.getInstance().regist(HTTP, TEST_CHAT_BASE_URL, "chat", "send", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "send", POST);
         //聊天页面获取数据
-        NetWork.getInstance().regist(HTTP, TEST_CHAT_BASE_URL, "chat", "getMessage", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "getMessage", POST);
         //私信修改未读标示
-        NetWork.getInstance().regist(HTTP, TEST_CHAT_BASE_URL, "chat", "updateRead", POST);
+        NetWork.getInstance().regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "updateRead", POST);
     }
 }
