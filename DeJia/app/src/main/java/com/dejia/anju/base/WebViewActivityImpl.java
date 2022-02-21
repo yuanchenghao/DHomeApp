@@ -1,6 +1,7 @@
 package com.dejia.anju.base;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -135,6 +137,12 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity {
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
                 return super.onConsoleMessage(consoleMessage);
             }
+
+            @Override
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                onYmShowFileChooserChanged(webView,filePathCallback,fileChooserParams);
+                return true;
+            }
         });
 
     }
@@ -205,6 +213,11 @@ public abstract class WebViewActivityImpl extends BaseWebViewActivity {
     protected void onYmProgressChanged(WebView view, int newProgress) {
     }
 
+    /**
+     * onProgressChanged回调
+     */
+    protected void onYmShowFileChooserChanged(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+    }
 
     protected void postUrl(String url) {
         WebSignData addressAndHead = SignUtils.getAddressAndHead(url);

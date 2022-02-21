@@ -103,7 +103,7 @@ android {
         }
         release {
             minifyEnabled false
-            debuggable false
+            debuggable true
             aaptOptions.cruncherEnabled = false
             aaptOptions.useNewCruncher = false
             zipAlignEnabled true    // 已启用压缩

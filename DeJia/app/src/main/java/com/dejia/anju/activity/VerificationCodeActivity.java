@@ -104,6 +104,7 @@ public class VerificationCodeActivity extends BaseActivity {
         layoutParams.topMargin = statusbarHeight + SizeUtils.dp2px(20);
         tv_get_code.setEnabled(false);
         tv_phone.setText("已发送4位验证码至  " + mPhone);
+        Util.showSoftInputFromWindow(mContext, input.getEditText());
         countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
