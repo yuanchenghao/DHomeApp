@@ -9,6 +9,7 @@ import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -104,7 +105,8 @@ public class VerificationCodeActivity extends BaseActivity {
         layoutParams.topMargin = statusbarHeight + SizeUtils.dp2px(20);
         tv_get_code.setEnabled(false);
         tv_phone.setText("已发送4位验证码至  " + mPhone);
-        Util.showSoftInputFromWindow(mContext, input.getEditText());
+        //显示键盘
+        mContext.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {

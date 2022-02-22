@@ -51,6 +51,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int ITEM_TYPE_TOW = 2;       //长图文一张图类型
     private final int ITEM_TYPE_THTEE = 3;     //长图文多张图类型（2张之上）
     private final int ITEM_TYPE_FOUR = 4;      //短图文类型
+    private final int ITEM_TYPE_FIVE = 5;      //新增楼盘类型
     private LayoutInflater mInflater;
     private Activity mContext;
     private List<HomeIndexBean.HomeList> mDatas;
@@ -78,9 +79,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 //多图类型
                 return ITEM_TYPE_THTEE;
             }
-        } else {
+        } else if(mDatas.get(position).getArticle_type() == 2){
             //短图文类型
             return ITEM_TYPE_FOUR;
+        }else{
+            return ITEM_TYPE_FIVE;
         }
     }
 
@@ -108,9 +111,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case ITEM_TYPE_THTEE:
                 //长图文多张图类型（2张之上）
                 return new Type3ViewHolder(mInflater.inflate(R.layout.item_home_type3, parent, false));
-            default:
+            case ITEM_TYPE_FOUR:
                 //短图文类型
                 return new Type4ViewHolder(mInflater.inflate(R.layout.item_home_type3, parent, false));
+            default:
+                return new Type5ViewHolder(mInflater.inflate(R.layout.item_home_type5, parent, false));
         }
     }
 
@@ -192,8 +197,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             setType2View((Type2ViewHolder) holder, mDatas, position);
         } else if (holder instanceof Type3ViewHolder) {
             setType3View((Type3ViewHolder) holder, mDatas, position);
-        } else {
+        } else if(holder instanceof Type4ViewHolder){
             setType4View((Type4ViewHolder) holder, mDatas, position);
+        }else{
+            setType5View((Type5ViewHolder) holder, mDatas, position);
         }
     }
 
@@ -840,6 +847,111 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         });
     }
 
+    private void setType5View(Type5ViewHolder type5View, List<HomeIndexBean.HomeList> mDatas, int position) {
+        if (!TextUtils.isEmpty(mDatas.get(position).getTitle())) {
+            if (mDatas.get(position).getBuilding() != null
+                    && mDatas.get(position).getBuilding().size() > 0
+                    && !TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getName())) {
+                type5View.tv_context.setMovementMethod(LinkMovementMethod.getInstance());
+                type5View.tv_context.setHighlightColor(Color.TRANSPARENT);
+                StringBuffer stringBuffer = new StringBuffer(mDatas.get(position).getBuilding().get(0).getName());
+                stringBuffer.append("|").append(mDatas.get(position).getTitle());
+                SpannableStringBuilder ssb = new SpannableStringBuilder(stringBuffer);
+                //设置分割线
+                Drawable drawable = mContext.getResources().getDrawable(R.drawable.title_segmentation);
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                ssb.setSpan(new SpanUtil.CenterSpaceImageSpan(drawable, SizeUtils.dp2px(5), SizeUtils.dp2px(5)),
+                        mDatas.get(position).getBuilding().get(0).getName().length(),
+                        mDatas.get(position).getBuilding().get(0).getName().length() + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                //设置点击和颜色
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getBuilding().get(0).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getBuilding().get(0).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#18619A"));
+                    }
+                }, 0, mDatas.get(position).getBuilding().get(0).getName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                ssb.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                            WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        //取消下划线
+                        ds.setUnderlineText(false);
+                        //设置颜色
+                        ds.setColor(Color.parseColor("#1C2125"));
+                    }
+                }, mDatas.get(position).getBuilding().get(0).getName().length(), stringBuffer.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                type5View.tv_context.setText(ssb);
+            } else {
+                type5View.tv_context.setText(Util.toDBC(mDatas.get(position).getTitle()));
+            }
+        } else {
+            type5View.tv_context.setText("");
+        }
+        if (mDatas.get(position).getBuilding() != null && mDatas.get(position).getBuilding().size() > 0) {
+            YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+            type5View.rv_build.setLayoutManager(layoutManager);
+            BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
+            if (mRecycleViewPool != null) {
+                type5View.rv_build.setRecycledViewPool(mRecycleViewPool);
+            }
+            type5View.rv_build.setAdapter(buildAdapter);
+            type5View.ll_location.setVisibility(View.VISIBLE);
+        } else {
+            type5View.ll_location.setVisibility(View.GONE);
+        }
+        if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
+            if (mDatas.get(position).getImg().size() == 1) {
+                YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+                HomeItemImg3Adapter homeItemImgAdapter = new HomeItemImg3Adapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth());
+                type5View.rv_img.setLayoutManager(ymLinearLayoutManager);
+                if (mRecycleViewPool != null) {
+                    type5View.rv_img.setRecycledViewPool(mRecycleViewPool);
+                }
+                type5View.rv_img.setAdapter(homeItemImgAdapter);
+                homeItemImgAdapter.setListener(mList -> {
+                    if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                        WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                    }
+                });
+            } else {
+                YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
+                HomeItemImg3Adapter homeItemImgAdapter = new HomeItemImg3Adapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth());
+                type5View.rv_img.setLayoutManager(gridLayoutManager);
+                if (mRecycleViewPool != null) {
+                    type5View.rv_img.setRecycledViewPool(mRecycleViewPool);
+                }
+                type5View.rv_img.setAdapter(homeItemImgAdapter);
+                homeItemImgAdapter.setListener(mList -> {
+                    if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
+                        WebUrlJumpManager.getInstance().invoke(mContext, mDatas.get(position).getUrl(), null);
+                    }
+                });
+            }
+            type5View.rv_img.setVisibility(View.VISIBLE);
+        } else {
+            type5View.rv_img.setVisibility(View.GONE);
+        }
+    }
+
     public void setRecycleviewPool(RecyclerView.RecycledViewPool pool) {
         this.mRecycleViewPool = pool;
     }
@@ -937,6 +1049,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnClickListener(v -> mEventListener.onItemListener(v, mDatas.get(getLayoutPosition()), getLayoutPosition()));
             iv_person.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
             tv_name.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_data().getUser_id() + ""));
+        }
+    }
+
+    class Type5ViewHolder extends RecyclerView.ViewHolder{
+        TextView tv_context;
+        LinearLayout ll_location;
+        RecyclerView rv_build;
+        RecyclerView rv_img;
+
+        Type5ViewHolder(@NonNull View itemView){
+            super(itemView);
+            tv_context = itemView.findViewById(R.id.tv_context);
+            ll_location = itemView.findViewById(R.id.ll_location);
+            rv_build = itemView.findViewById(R.id.rv_build);
+            rv_img = itemView.findViewById(R.id.rv_img);
         }
     }
 

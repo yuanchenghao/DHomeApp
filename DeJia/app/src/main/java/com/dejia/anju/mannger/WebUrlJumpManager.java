@@ -7,17 +7,21 @@ import android.text.TextUtils;
 
 import com.dejia.anju.activity.BuildingImageActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
+import com.dejia.anju.activity.OneClickLoginActivity2;
 import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.activity.SearchActivity;
 import com.dejia.anju.activity.WebViewActivity;
 import com.dejia.anju.base.Constants;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.CookieConfig;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.YMHttpParams;
+import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.MapButtomDialogView;
 import com.dejia.anju.utils.ToastUtils;
 import com.lzy.okgo.OkGo;
@@ -33,6 +37,8 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static com.dejia.anju.utils.Util.isLogin;
 
 
 public class WebUrlJumpManager {
@@ -131,7 +137,7 @@ public class WebUrlJumpManager {
                                 String building_id = map.get("building_id") + "";
                                 int index = (int) map.get("index");
                                 if (!TextUtils.isEmpty(building_id)) {
-                                    BuildingImageActivity.invoke(mContext, building_id, index, "","1");
+                                    BuildingImageActivity.invoke(mContext, building_id, index, "", "1");
                                 }
                             }
                             break;
@@ -141,7 +147,7 @@ public class WebUrlJumpManager {
                                 String house_type_id = map.get("house_type_id") + "";
                                 int index = (int) map.get("index");
                                 if (!TextUtils.isEmpty(house_type_id)) {
-                                    BuildingImageActivity.invoke(mContext, "", index, house_type_id,"0");
+                                    BuildingImageActivity.invoke(mContext, "", index, house_type_id, "0");
                                 }
                             }
                             break;
@@ -165,6 +171,38 @@ public class WebUrlJumpManager {
                                     MapButtomDialogView mapButtomDialogView = new MapButtomDialogView(mContext);
                                     mapButtomDialogView.showView(name, lon, lat);
                                 }
+                            }
+                            break;
+                        case "openAddPost":
+                            if (!TextUtils.isEmpty(webViewData.getRequest_param())) {
+                                Map<String, Object> map = JSONUtil.getMapForJson(webViewData.getRequest_param());
+                                //没登录去登录
+                                if (!isLogin()) {
+                                    OneClickLoginActivity2.invoke(mContext, "");
+                                    return;
+                                }
+                                //判断是否完善信息
+                                UserInfo userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
+                                if (!TextUtils.isEmpty(userInfo.getIs_perfect()) && !"1".equals(userInfo.getIs_perfect())) {
+                                    DialogUtils.showCancellationDialog(mContext,
+                                            "发表内容前请先完善「头像」和「昵称」",
+                                            "去完善",
+                                            "取消", new DialogUtils.CallBack2() {
+                                                @Override
+                                                public void onYesClick() {
+                                                    DialogUtils.closeDialog();
+                                                    //去编辑资料页
+                                                    mContext.startActivity(new Intent(mContext, EditUserInfoActivity.class));
+                                                }
+
+                                                @Override
+                                                public void onNoClick() {
+                                                    DialogUtils.closeDialog();
+                                                }
+                                            });
+                                    return;
+                                }
+                                EventBus.getDefault().post(new Event<>(5, map));
                             }
                             break;
                     }

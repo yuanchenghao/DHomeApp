@@ -2,13 +2,16 @@ package com.dejia.anju.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -16,13 +19,11 @@ import android.widget.LinearLayout;
 import com.dejia.anju.R;
 import com.dejia.anju.base.WebViewActivityImpl;
 import com.dejia.anju.event.Event;
-import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.utils.JSONUtil;
-import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.view.CommonTopBar;
 import com.dejia.anju.view.MyPullRefresh;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
@@ -60,6 +61,9 @@ public class WebViewActivity extends WebViewActivityImpl {
     private CommonTopBar mTopTitle;
     private String linkUrl;
     private WebSignData addressAndHead;
+    public static final int REQUEST_FILE_PICKER = 1;
+    public ValueCallback<Uri> mFilePathCallback;
+    public ValueCallback<Uri[]> mFilePathCallbacks;
 
     @Xml(layouts = "activity_web_view")
     @Override
@@ -229,6 +233,47 @@ public class WebViewActivity extends WebViewActivityImpl {
 
     @Override
     protected void onYmPageFinished(WebView view, String url) {
+    }
+
+    @Override
+    protected void onYmShowFileChooserChanged(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+        if (mContext == null || mContext.isFinishing()) {
+            return;
+        }
+        mFilePathCallbacks = filePathCallback;
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        mContext.startActivityForResult(Intent.createChooser(intent, "File Chooser"), REQUEST_FILE_PICKER);
+    }
+
+    /**
+     * Activity回调处理
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 处理相机相册选择
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_FILE_PICKER) {
+            if (mFilePathCallback != null) {
+                Uri result = data == null || resultCode != Activity.RESULT_OK ? null : data.getData();
+                if (result != null) {
+                    mFilePathCallback.onReceiveValue(result);
+                } else {
+                    mFilePathCallback.onReceiveValue(null);
+                }
+            }
+            if (mFilePathCallbacks != null) {
+                Uri result = data == null || resultCode != Activity.RESULT_OK ? null : data.getData();
+                if (result != null) {
+                    mFilePathCallbacks.onReceiveValue(new Uri[]{result});
+                } else {
+                    mFilePathCallbacks.onReceiveValue(null);
+                }
+            }
+            mFilePathCallback = null;
+            mFilePathCallbacks = null;
+        }
     }
 
     @Override

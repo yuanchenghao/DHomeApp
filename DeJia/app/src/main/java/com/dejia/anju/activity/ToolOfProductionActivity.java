@@ -26,6 +26,7 @@ import com.dejia.anju.utils.GlideEngine;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.YMGridLayoutManager;
 import com.hjq.gson.factory.GsonFactory;
 import com.luck.picture.lib.PictureSelector;
@@ -45,6 +46,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -76,6 +78,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
     private SearchBuildingInfo searchBuildingInfo;
     private UpLoadUgcImageApi upLoadUgcImageApi;
     private UgcSaveApi ugcSaveApi;
+    private Map<String, Object> maps;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -113,11 +116,13 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         mWindowAnimationStyle.ofAllAnimation(R.anim.picture_anim_up_in, R.anim.picture_anim_down_out);
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
         chooseResult = getIntent().getParcelableArrayListExtra("imgList");
+        maps = (Map<String, Object>) getIntent().getSerializableExtra("map");
         ugcSaveApi = new UgcSaveApi();
         if (chooseResult == null) {
             chooseResult = new ArrayList<>();
         }
         setRecycleView();
+        Util.showSoftInputFromWindow(mContext,ed);
     }
 
     //设置图片列表
@@ -258,7 +263,9 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                 map.put("img", list.get(i).getPost_img_url());
                 imgList.add(map);
             }
-            HashMap<String, Object> maps = new HashMap<>(0);
+            if(maps == null || maps.size() <= 0){
+                HashMap<String, Object> maps = new HashMap<>(0);
+            }
             maps.put("content", ed.getText().toString().trim());
             maps.put("image", GsonFactory.getSingletonGson().toJson(imgList).toString());
             if (searchBuildingInfo != null) {

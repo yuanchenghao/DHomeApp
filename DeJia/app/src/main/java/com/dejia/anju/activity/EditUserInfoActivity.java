@@ -170,6 +170,11 @@ public class EditUserInfoActivity extends BaseActivity implements OnClickListene
             } else {
                 tv_sex.setVisibility(View.INVISIBLE);
             }
+            if(!TextUtils.isEmpty(userInfo.getPersonal_info())){
+                tv_introduce.setText(userInfo.getPersonal_info());
+            }else{
+                tv_introduce.setText("去完善");
+            }
         }
     }
 

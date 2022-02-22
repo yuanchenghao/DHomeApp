@@ -2,7 +2,6 @@ package com.dejia.anju;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,15 +21,14 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.dejia.anju.activity.CancellationActivity;
-import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.OneClickLoginActivity2;
 import com.dejia.anju.activity.ToolOfProductionActivity;
 import com.dejia.anju.api.GetVersionApi;
 import com.dejia.anju.api.MessageCountApi;
 import com.dejia.anju.api.MessageShowApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
+import com.dejia.anju.api.base.ToolInfoApi;
 import com.dejia.anju.base.BaseActivity;
-import com.dejia.anju.brodcast.SendMessageReceiver;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.fragment.CircleFragment;
 import com.dejia.anju.fragment.HomeFragment;
@@ -38,9 +36,9 @@ import com.dejia.anju.fragment.MessageFragment;
 import com.dejia.anju.fragment.MyFragment;
 import com.dejia.anju.mannger.DataCleanManager;
 import com.dejia.anju.mannger.WebUrlJumpManager;
+import com.dejia.anju.model.AddPostAlertInfo;
 import com.dejia.anju.model.MessageCountInfo;
 import com.dejia.anju.model.MessageShowInfo;
-import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.model.VersionInfo;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
@@ -70,9 +68,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -127,6 +127,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private long mExitTime;
     private PictureWindowAnimationStyle mWindowAnimationStyle;
     private MessageShowApi messageShowApi;
+    private ToolInfoApi toolInfoApi;
     //记录Fragment的位置
     public int position = 0;
     private boolean interceptFlag;
@@ -134,6 +135,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private Button cancelBt;
     //定时任务线程池
     private ScheduledExecutorService pool;
+    private Map<String, Object> map;
 //    private SendMessageReceiver mSendMessageReceiver;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -152,6 +154,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 if (pool != null) {
                     pool.scheduleAtFixedRate(() -> getMessageNum(), 1, 30, TimeUnit.SECONDS);
                 }
+                break;
+            case 5:
+                map = (Map<String, Object>) msgEvent.getData();
+                invokeToolActivity();
                 break;
         }
     }
@@ -200,6 +206,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         pool = Executors.newScheduledThreadPool(1);
         //请求公用模块控制
         getMessageShow();
+        getToolInfo();
         //将侧边栏顶部延伸至status bar
         drawerLayout.setFitsSystemWindows(true);
         //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
@@ -217,7 +224,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         navigation.getHeaderView(0).findViewById(R.id.ll_about).setOnClickListener(v -> {
             drawerLayout.closeDrawers();
             //关于
-            WebUrlJumpManager.getInstance().invoke(mContext, FinalConstant1.HTML_ABOUT,null);
+            WebUrlJumpManager.getInstance().invoke(mContext, FinalConstant1.HTML_ABOUT, null);
         });
         navigation.getHeaderView(0).findViewById(R.id.ll_clean).setOnClickListener(v -> {
             DataCleanManager.deleteFolderFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.dejia.anju",
@@ -286,6 +293,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //            mSendMessageReceiver = new SendMessageReceiver();
 //            mContext.registerReceiver(mSendMessageReceiver, intentFilter);
 //        }
+    }
+
+    private void getToolInfo() {
+        toolInfoApi = new ToolInfoApi();
+        toolInfoApi.getCallBack(mContext, new HashMap<>(0), (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                AddPostAlertInfo addPostAlertInfo = JSONUtil.TransformSingleBean(serverData.data, AddPostAlertInfo.class);
+                KVUtils.getInstance().encode("tool_info",addPostAlertInfo);
+            }
+        });
     }
 
     //查看版本
@@ -412,35 +429,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 initFragment(1);
                 break;
             case R.id.ll_tool:
-                if (!isLogin()) {
-                    //这里判断支不支持极光登录
-                    OneClickLoginActivity2.invoke(mContext, "");
-                    return;
-                }
-                UserInfo userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
-                if (!TextUtils.isEmpty(userInfo.getIs_perfect()) && !"1".equals(userInfo.getIs_perfect())) {
-                    DialogUtils.showCancellationDialog(mContext,
-                            "发表内容前请先完善「头像」和「昵称」",
-                            "去完善",
-                            "取消", new DialogUtils.CallBack2() {
-                                @Override
-                                public void onYesClick() {
-                                    DialogUtils.closeDialog();
-                                    //去编辑资料页
-                                    mContext.startActivity(new Intent(mContext, EditUserInfoActivity.class));
-                                }
+                AddPostAlertInfo addPostAlertInfo =  KVUtils.getInstance().decodeParcelable("tool_info",AddPostAlertInfo.class);
+                if(addPostAlertInfo != null && addPostAlertInfo.getAdd_post_alert().size() > 0){
+                    DialogUtils.showAddPostAlertDialog(mContext, addPostAlertInfo, new DialogUtils.CallBack3() {
+                        @Override
+                        public void onInvokeClick(String url) {
+                            DialogUtils.closeDialog();
+                            if(!TextUtils.isEmpty(url)){
+                                WebUrlJumpManager.getInstance().invoke(mContext,url,null);
+                            }
+                        }
 
-                                @Override
-                                public void onNoClick() {
-                                    DialogUtils.closeDialog();
-                                }
-                            });
-                    return;
+                        @Override
+                        public void onNoClick() {
+                            DialogUtils.closeDialog();
+                        }
+                    });
                 }
-                invokeToolActivity();
+//                invokeToolActivity();
                 break;
             case R.id.ll_message:
                 if (isLogin()) {
+                    if (iv_dots.getVisibility() == View.VISIBLE) {
+                        iv_dots.setVisibility(View.GONE);
+                    }
                     initFragment(3);
                 } else {
                     OneClickLoginActivity2.invoke(mContext, "");
@@ -525,6 +537,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (messageShowInfo != null && "1".equals(messageShowInfo.getPost_content_entry_style())) {
             //常规样式
             Intent i = new Intent(mContext, ToolOfProductionActivity.class);
+            i.putExtra("map", (Serializable) map);
             mContext.startActivity(i);
         } else {
             //直接选图
@@ -756,6 +769,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (chooseResult != null && chooseResult.size() > 0) {
                         Intent i = new Intent(mContext, ToolOfProductionActivity.class);
                         i.putParcelableArrayListExtra("imgList", (ArrayList<? extends Parcelable>) chooseResult);
+                        i.putExtra("map", (Serializable) map);
                         mContext.startActivity(i);
                     }
                     break;

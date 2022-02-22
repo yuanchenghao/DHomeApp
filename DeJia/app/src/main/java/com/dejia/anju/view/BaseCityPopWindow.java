@@ -5,7 +5,6 @@ import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
@@ -49,18 +48,8 @@ public class BaseCityPopWindow extends PopupWindow {
             setContentView(layout);
             update();
             setHotList();
-            iv_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss();
-                }
-            });
-            view_other.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss();
-                }
-            });
+            iv_close.setOnClickListener(v12 -> dismiss());
+            view_other.setOnClickListener(v1 -> dismiss());
         }
     }
 
@@ -76,12 +65,9 @@ public class BaseCityPopWindow extends PopupWindow {
             gv_city.setVisibility(View.GONE);
         }
         //周边城市点击
-        gv_city.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-                if (onAllClickListener != null) {
-                    onAllClickListener.onAllClick(mCityInfo.getHot_city().get(pos).getName());
-                }
+        gv_city.setOnItemClickListener((arg0, arg1, pos, arg3) -> {
+            if (onAllClickListener != null) {
+                onAllClickListener.onAllClick(mCityInfo.getHot_city().get(pos).getName(),mCityInfo.getHot_city().get(pos));
             }
         });
     }
@@ -140,7 +126,7 @@ public class BaseCityPopWindow extends PopupWindow {
     private OnAllClickListener onAllClickListener;
 
     public interface OnAllClickListener {
-        void onAllClick(String city);
+        void onAllClick(String city, CityInfo.HotCity hotCity);
     }
 
     public void setOnAllClickListener(OnAllClickListener onAllClickListener) {

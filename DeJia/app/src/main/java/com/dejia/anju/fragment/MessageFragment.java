@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dejia.anju.AppLog;
-import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.adapter.MessageListAdapter;

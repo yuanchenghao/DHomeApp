@@ -15,14 +15,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.dejia.anju.net.SignUtils;
-import com.dejia.anju.net.WebSignData;
-
-import org.apache.http.util.EncodingUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import androidx.annotation.Nullable;
 @SuppressLint("Registered")
 public abstract class BaseWebViewFragment extends BaseFragment {

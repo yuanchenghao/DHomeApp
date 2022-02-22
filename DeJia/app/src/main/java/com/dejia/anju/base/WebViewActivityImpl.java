@@ -23,7 +23,6 @@ import com.dejia.anju.net.WebSignData;
 import org.apache.http.util.EncodingUtils;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @SuppressLint("Registered")
 public abstract class WebViewActivityImpl extends BaseWebViewActivity {

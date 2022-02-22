@@ -22,6 +22,7 @@ import com.dejia.anju.event.Event;
 import com.dejia.anju.model.CityInfo;
 import com.dejia.anju.net.ServerData;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.BaseCityPopWindow;
 import com.google.android.material.tabs.TabLayout;
@@ -70,12 +71,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
-        switch (msgEvent.getCode()){
+        switch (msgEvent.getCode()) {
             case 0:
                 //退出
             case 1:
                 //登录
-                if(ymTabLayoutAdapter != null){
+                if (ymTabLayoutAdapter != null) {
                     if (ymTabLayoutAdapter.getItem(mFragmentSelectedPos) instanceof RecommendFragment) {
                         if (ymTabLayoutAdapter != null && (RecommendFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos) != null) {
                             ((RecommendFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos)).refresh();
@@ -129,7 +130,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         vp.setAdapter(ymTabLayoutAdapter);
         home_tab_layout.setupWithViewPager(vp);
         setTabmStyle();
-        setMultiOnClickListener(ll_area,iv_search);
+        setMultiOnClickListener(ll_area, iv_search);
         getCityList();
         home_tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -205,8 +206,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     } else {
                         cityPopWindow = new BaseCityPopWindow(mContext, ll_root, cityInfo);
                         cityPopWindow.showPop(statusbarHeight);
-                        cityPopWindow.setOnAllClickListener(city -> {
-                            if (!TextUtils.isEmpty(city)) {
+                        cityPopWindow.setOnAllClickListener((city, hotCity) -> {
+                            if (!TextUtils.isEmpty(city) && hotCity.getIs_start_using() == 1) {
                                 cityPopWindow.dismiss();
                                 tv_city.setText(city);
                                 Util.setCity(city);
@@ -219,6 +220,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                                         ((FollowFragment) ymTabLayoutAdapter.getItem(mFragmentSelectedPos)).refresh();
                                     }
                                 }
+                            } else {
+                                ToastUtils.toast(mContext, "暂未开放").show();
+                                cityPopWindow.dismiss();
                             }
                         });
                     }

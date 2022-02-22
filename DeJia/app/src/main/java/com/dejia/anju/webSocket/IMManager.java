@@ -1,13 +1,11 @@
 package com.dejia.anju.webSocket;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 
 import com.dejia.anju.AppLog;
 import com.dejia.anju.activity.ChatActivity;
-import com.dejia.anju.base.Constants;
 import com.dejia.anju.brodcast.SendMessageReceiver;
 import com.dejia.anju.model.MessageBean;
 import com.dejia.anju.model.Pong;
@@ -15,7 +13,6 @@ import com.dejia.anju.model.WebSocketBean;
 import com.dejia.anju.net.LoggingInterceptor;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.utils.JSONUtil;
-import com.dejia.anju.utils.TopWindowUtils;
 import com.dejia.anju.utils.Util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

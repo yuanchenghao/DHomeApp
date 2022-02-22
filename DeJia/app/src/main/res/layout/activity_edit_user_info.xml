@@ -156,6 +156,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right"
+            android:lines="1"
+            android:ellipsize="end"
             android:textColor="#6F7375"
             android:textSize="@dimen/sp_14" />
 

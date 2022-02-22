@@ -22,8 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.internal.Utils;
-
 
 public class SignUtils {
     private static String TAG = "SignUtils";

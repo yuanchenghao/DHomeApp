@@ -9,11 +9,18 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dejia.anju.R;
+import com.dejia.anju.adapter.AddPostAlertAdapter;
+import com.dejia.anju.model.AddPostAlertInfo;
+import com.dejia.anju.view.YMLinearLayoutManager;
 
 import java.lang.reflect.Field;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 
 /**
@@ -160,12 +167,74 @@ public class DialogUtils {
         }
     }
 
+    //发帖前弹层
+    public static void showAddPostAlertDialog(final Context context, AddPostAlertInfo addPostAlertInfo, final CallBack3 callBack) {
+        if (context == null) {
+            return;
+        }
+        closeDialog();
+        dialog = new Dialog(context, R.style.AnimBottomDialog);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            try {
+                Class decorViewClazz = Class.forName("com.android.internal.policy.DecorView");
+                Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
+                field.setAccessible(true);
+                //去掉高版本蒙层改为透明
+                field.setInt(dialog.getWindow().getDecorView(), Color.TRANSPARENT);
+            } catch (Exception e) {
+            }
+        }
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        View inflate = View.inflate(context, R.layout.dialog_add_post_alert, null);
+        dialog.setContentView(inflate);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setOnKeyListener((dialog, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                return true;
+            }
+            return false;
+        });
+        LinearLayout ll = inflate.findViewById(R.id.ll);
+        RecyclerView rv = inflate.findViewById(R.id.rv);
+        ImageView iv_close = inflate.findViewById(R.id.iv_close);
+        YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(context, RecyclerView.VERTICAL, false);
+        rv.setLayoutManager(layoutManager);
+        AddPostAlertAdapter addPostAlertAdapter = new AddPostAlertAdapter(context,R.layout.item_add_post_alert, addPostAlertInfo.getAdd_post_alert());
+        rv.setAdapter(addPostAlertAdapter);
+        addPostAlertAdapter.setOnItemClickListener((adapter, view, position) -> {
+            callBack.onInvokeClick(addPostAlertInfo.getAdd_post_alert().get(position).getUrl());
+        });
+        iv_close.setOnClickListener(v -> callBack.onNoClick());
+        if (dialog != null) {
+            Window dialogWindow = dialog.getWindow();
+            //解决不能全屏问题
+            dialogWindow.getDecorView().setPadding(0, 0, 0, 0);
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            dialogWindow.setAttributes(lp);
+            dialog.show();
+        }
+    }
+
     public interface CallBack {
         void onClick();
     }
 
     public interface CallBack2 {
         void onYesClick();
+
+        void onNoClick();
+    }
+
+    public interface CallBack3 {
+        void onInvokeClick(String url);
 
         void onNoClick();
     }

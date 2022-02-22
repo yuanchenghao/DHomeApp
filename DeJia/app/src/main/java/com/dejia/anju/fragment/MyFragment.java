@@ -418,7 +418,7 @@ public class MyFragment extends BaseFragment {
                         .setWebviewType("webview")
                         .setLinkisJoint("1")
                         .setIsHide("1")
-                        .setIsRefresh("1")
+                        .setIsRefresh("0")
                         .setEnableSafeArea("1")
                         .setBounces("1")
                         .setIsRemoveUpper("0")
