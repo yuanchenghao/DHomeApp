@@ -136,6 +136,36 @@
             android:value="c57834b4f4b1849f8763636613d70f8f">
         </meta-data>
         <meta-data
+            android:name="BaiduMobAd_STAT_ID"
+            android:value="dcb78f01ed" />
+        <!-- 是否开启错误日志统计，默认为false -->
+        <meta-data
+            android:name="BaiduMobAd_EXCEPTION_LOG"
+            android:value="true" />
+<!--        &lt;!&ndash; 渠道商编号 &ndash;&gt;-->
+<!--        <meta-data-->
+<!--            android:name="BaiduMobAd_CHANNEL"-->
+<!--            android:value="Baidu Market" />-->
+<!--        &lt;!&ndash; 日志仅在wifi网络下发送，默认为false &ndash;&gt;-->
+<!--        <meta-data-->
+<!--            android:name="BaiduMobAd_ONLY_WIFI"-->
+<!--            android:value="false" />-->
+
+<!--        &lt;!&ndash; 是否获取基站位置信息 ,默认为true &ndash;&gt;-->
+<!--        <meta-data-->
+<!--            android:name="BaiduMobAd_CELL_LOCATION"-->
+<!--            android:value="true" />-->
+
+<!--        &lt;!&ndash; 是否获取GPS位置信息，默认为true &ndash;&gt;-->
+<!--        <meta-data-->
+<!--            android:name="BaiduMobAd_GPS_LOCATION"-->
+<!--            android:value="true" />-->
+
+<!--        &lt;!&ndash; 是否获取WIFI位置信息，默认为true &ndash;&gt;-->
+<!--        <meta-data-->
+<!--            android:name="BaiduMobAd_WIFI_LOCATION"-->
+<!--            android:value="true" />-->
+        <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
         <meta-data
@@ -198,6 +228,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <!-- Optional -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->

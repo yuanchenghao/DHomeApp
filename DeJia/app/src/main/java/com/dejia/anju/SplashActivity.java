@@ -12,6 +12,7 @@ import android.view.View;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.baidu.mobstat.StatService;
 import com.bun.miitmdid.core.MdidSdkHelper;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.base.Constants;
@@ -139,6 +140,10 @@ public class SplashActivity extends BaseActivity {
         initTripartiteFramework();
         //初始化高德定位
         initLocation();
+        //初始化百度统计可采集
+        StatService.setAuthorizedState(mContext,true);
+        //百度统计开始
+        StatService.start(this);
         MainActivity.invoke(mContext);
         finish();
     }

@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.webkit.WebView;
 
+import com.baidu.mobstat.StatService;
 import com.bun.miitmdid.core.JLibrary;
 import com.bytedance.boost_multidex.BoostMultiDex;
 import com.dejia.anju.base.Constants;
@@ -123,6 +124,12 @@ public class DeJiaApp extends Application {
                     frescoConfig();
                 })
                 .addSubTask(() -> initJVerificationInterface())
+                .addSubTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        StatService.setAuthorizedState(getContext(),false);
+                    }
+                })
                 .execute();
     }
 

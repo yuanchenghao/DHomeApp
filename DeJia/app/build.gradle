@@ -232,6 +232,8 @@ dependencies {
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
     //PhotoView
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    //百度统计
+    implementation 'com.baidu.mobstat:mtj-sdk:latest.integration'
 }
 repositories {
     mavenCentral()
