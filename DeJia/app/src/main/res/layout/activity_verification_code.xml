@@ -43,16 +43,41 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <com.dejia.anju.view.VerificationCodeView
-            android:id="@+id/input"
+
+        <com.dejia.anju.view.VerificationCodeInputView
+            android:id="@+id/vciv_code"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            app:icv_et_number="4"
-            app:icv_et_width="56dp"
-            app:icv_et_text_size="30sp"
-            app:icv_et_text_color="#1C2125"
-            app:icv_et_bg_normal="@drawable/verification_edit_bg_normal"
-            app:icv_et_bg_focus="@drawable/verification_edit_bg_focus" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:vciv_et_background="@drawable/verification_edit_bg_normal"
+            app:vciv_et_foucs_background="@drawable/verification_edit_bg_focus"
+            app:vciv_et_cursor_color="#6F7375"
+            app:vciv_et_cursor_height="@dimen/dp_30"
+            app:vciv_et_cursor_width="@dimen/dp_1"
+            app:vciv_et_height="56dp"
+            app:vciv_et_inputType="number"
+            app:vciv_et_number="4"
+            app:vciv_et_text_color="@android:color/black"
+            app:vciv_et_text_size="18sp"
+            app:vciv_et_underline_default_color="#FFFFFF"
+            app:vciv_et_underline_focus_color="#FFFFFF"
+            app:vciv_et_underline_height="0dp"
+            app:vciv_et_underline_show="false"
+            app:vciv_et_width="56dp" />
+
+
+<!--        <com.dejia.anju.view.VerificationCodeView-->
+<!--            android:id="@+id/input"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="56dp"-->
+<!--            app:icv_et_number="4"-->
+<!--            app:icv_et_width="56dp"-->
+<!--            android:visibility="gone"-->
+<!--            app:icv_et_text_size="30sp"-->
+<!--            app:icv_et_text_color="#1C2125"-->
+<!--            app:icv_et_bg_normal="@drawable/verification_edit_bg_normal"-->
+<!--            app:icv_et_bg_focus="@drawable/verification_edit_bg_focus" />-->
 
     </LinearLayout>
 

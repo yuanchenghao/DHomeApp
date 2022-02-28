@@ -30,7 +30,6 @@ import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
-import com.dejia.anju.view.VerificationCodeView;
 import com.dejia.anju.webSocket.IMManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
@@ -46,7 +45,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jpush.android.api.JPushInterface;
-
+import com.dejia.anju.view.VerificationCodeInputView;
 import static com.dejia.anju.base.Constants.baseTestService;
 
 
@@ -62,14 +61,16 @@ public class VerificationCodeActivity extends BaseActivity {
     ImageView iv_close;
     @BindView(R.id.tv_phone)
     TextView tv_phone;
-    @BindView(R.id.input)
-    VerificationCodeView input;
+//    @BindView(R.id.input)
+//    VerificationCodeView input;
     @BindView(R.id.tv_get_code)
     TextView tv_get_code;
     @BindView(R.id.tv_bottom)
     TextView tv_bottom;
     @BindView(R.id.pb)
     ProgressBar pb;
+    @BindView(R.id.vciv_code)
+    VerificationCodeInputView vciv_code;
     private String mPhone;
     private CountDownTimer countDownTimer;
     private String verificationCode;
@@ -124,19 +125,19 @@ public class VerificationCodeActivity extends BaseActivity {
             }
         };
         countDownTimer.start();
-        input.setInputCompleteListener(new VerificationCodeView.InputCompleteListener() {
+        vciv_code.setOnInputListener(new VerificationCodeInputView.OnInputListener() {
             @Override
-            public void inputComplete() {
-                if (input.getInputContent().length() == 4) {
-                    verificationCode = input.getInputContent();
+            public void onComplete(String code) {
+                if (code.length() == 4) {
+                    verificationCode = code;
                     tv_get_code.setBackgroundResource(R.drawable.shape_24_33a7ff);
                     tv_get_code.setEnabled(true);
                 }
             }
 
             @Override
-            public void deleteContent() {
-                if (input.getInputContent().length() != 4) {
+            public void onInput(String code) {
+                if (code.length() != 4) {
                     tv_get_code.setBackgroundResource(R.drawable.shape_24_d5edfe);
                     tv_get_code.setEnabled(false);
                 } else {
@@ -145,6 +146,27 @@ public class VerificationCodeActivity extends BaseActivity {
                 }
             }
         });
+//        input.setInputCompleteListener(new VerificationCodeView.InputCompleteListener() {
+//            @Override
+//            public void inputComplete() {
+//                if (input.getInputContent().length() == 4) {
+//                    verificationCode = input.getInputContent();
+//                    tv_get_code.setBackgroundResource(R.drawable.shape_24_33a7ff);
+//                    tv_get_code.setEnabled(true);
+//                }
+//            }
+//
+//            @Override
+//            public void deleteContent() {
+//                if (input.getInputContent().length() != 4) {
+//                    tv_get_code.setBackgroundResource(R.drawable.shape_24_d5edfe);
+//                    tv_get_code.setEnabled(false);
+//                } else {
+//                    tv_get_code.setBackgroundResource(R.drawable.shape_24_33a7ff);
+//                    tv_get_code.setEnabled(true);
+//                }
+//            }
+//        });
 
     }
 
