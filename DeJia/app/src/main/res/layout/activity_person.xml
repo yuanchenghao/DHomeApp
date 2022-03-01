@@ -151,6 +151,23 @@
                             android:textColor="#FFFFFF"
                             android:textSize="@dimen/sp_12" />
 
+                        <TextView
+                            android:id="@+id/tv_follow_head"
+                            android:layout_marginRight="@dimen/dp_21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="关注"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            android:paddingLeft="@dimen/dp_20"
+                            android:paddingRight="@dimen/dp_20"
+                            android:paddingTop="@dimen/dp_4"
+                            android:paddingBottom="@dimen/dp_4"
+                            android:background="@drawable/shape_ffffff_button_2"
+                            android:textSize="@dimen/sp_16" />
+
                     </RelativeLayout>
 
                     <LinearLayout

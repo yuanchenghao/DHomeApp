@@ -302,12 +302,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type1View.ll_location.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
-            type1View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
-            type1View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
-            type1View.tv_user_type_flag.setVisibility(View.VISIBLE);
+            type1View.user_type.setText(" · "+mDatas.get(position).getUser_data().getAuth());
             type1View.user_type.setVisibility(View.VISIBLE);
         } else {
-            type1View.tv_user_type_flag.setVisibility(View.GONE);
             type1View.user_type.setVisibility(View.GONE);
         }
         type1View.tv_follow.setOnClickListener(v -> {
@@ -523,12 +520,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type2View.iv_img.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getImg().get(0).getImg()).setAutoPlayAnimations(true).build());
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
-            type2View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
-            type2View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
-            type2View.tv_user_type_flag.setVisibility(View.VISIBLE);
+            type2View.user_type.setText(" · "+mDatas.get(position).getUser_data().getAuth());
             type2View.user_type.setVisibility(View.VISIBLE);
         } else {
-            type2View.tv_user_type_flag.setVisibility(View.GONE);
             type2View.user_type.setVisibility(View.GONE);
         }
         type2View.tv_follow.setOnClickListener(v -> {
@@ -647,12 +641,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type3View.ll_location.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
-            type3View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
-            type3View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
-            type3View.tv_user_type_flag.setVisibility(View.VISIBLE);
+            type3View.user_type.setText(" · "+mDatas.get(position).getUser_data().getAuth());
             type3View.user_type.setVisibility(View.VISIBLE);
         } else {
-            type3View.tv_user_type_flag.setVisibility(View.GONE);
             type3View.user_type.setVisibility(View.GONE);
         }
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
@@ -790,12 +781,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             type4View.ll_location.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getUser_data().getAuth())) {
-            type4View.tv_user_type_flag.setText(mDatas.get(position).getUser_data().getAuth());
-            type4View.user_type.setText(mDatas.get(position).getUser_data().getAuth());
-            type4View.tv_user_type_flag.setVisibility(View.VISIBLE);
+            type4View.user_type.setText(" · "+mDatas.get(position).getUser_data().getAuth());
             type4View.user_type.setVisibility(View.VISIBLE);
         } else {
-            type4View.tv_user_type_flag.setVisibility(View.GONE);
             type4View.user_type.setVisibility(View.GONE);
         }
         if (mDatas.get(position).getImg() != null && mDatas.get(position).getImg().size() > 0) {
@@ -959,7 +947,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class Type1ViewHolder extends RecyclerView.ViewHolder {
         SimpleDraweeView iv_person;
         TextView tv_name;
-        TextView tv_user_type_flag;
         TextView tv_time;
         TextView user_type;
         TextView tv_follow;
@@ -971,7 +958,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             iv_person = itemView.findViewById(R.id.iv_person);
             tv_name = itemView.findViewById(R.id.tv_name);
-            tv_user_type_flag = itemView.findViewById(R.id.tv_user_type_flag);
             tv_time = itemView.findViewById(R.id.tv_time);
             user_type = itemView.findViewById(R.id.user_type);
             tv_follow = itemView.findViewById(R.id.tv_follow);
@@ -988,7 +974,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         SimpleDraweeView iv_person;
         SimpleDraweeView iv_img;
         TextView tv_name;
-        TextView tv_user_type_flag;
         TextView tv_time;
         TextView user_type;
         TextView tv_follow;
@@ -1004,7 +989,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             iv_person = itemView.findViewById(R.id.iv_person);
             iv_img = itemView.findViewById(R.id.iv_img);
             tv_name = itemView.findViewById(R.id.tv_name);
-            tv_user_type_flag = itemView.findViewById(R.id.tv_user_type_flag);
             tv_time = itemView.findViewById(R.id.tv_time);
             user_type = itemView.findViewById(R.id.user_type);
             tv_follow = itemView.findViewById(R.id.tv_follow);
@@ -1023,7 +1007,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class Type3ViewHolder extends RecyclerView.ViewHolder {
         SimpleDraweeView iv_person;
         TextView tv_name;
-        TextView tv_user_type_flag;
         TextView tv_time;
         TextView user_type;
         TextView tv_follow;
@@ -1037,7 +1020,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             iv_person = itemView.findViewById(R.id.iv_person);
             tv_name = itemView.findViewById(R.id.tv_name);
-            tv_user_type_flag = itemView.findViewById(R.id.tv_user_type_flag);
             tv_time = itemView.findViewById(R.id.tv_time);
             user_type = itemView.findViewById(R.id.user_type);
             tv_follow = itemView.findViewById(R.id.tv_follow);
@@ -1070,7 +1052,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class Type4ViewHolder extends RecyclerView.ViewHolder {
         SimpleDraweeView iv_person;
         TextView tv_name;
-        TextView tv_user_type_flag;
         TextView tv_time;
         TextView user_type;
         TextView tv_follow;
@@ -1088,7 +1069,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             iv_person = itemView.findViewById(R.id.iv_person);
             tv_name = itemView.findViewById(R.id.tv_name);
-            tv_user_type_flag = itemView.findViewById(R.id.tv_user_type_flag);
             tv_time = itemView.findViewById(R.id.tv_time);
             user_type = itemView.findViewById(R.id.user_type);
             tv_follow = itemView.findViewById(R.id.tv_follow);

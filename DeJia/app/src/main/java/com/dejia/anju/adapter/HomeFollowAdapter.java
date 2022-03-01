@@ -316,12 +316,12 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             type4View.ll_location.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUser_data().getAuth())) {
-            type4View.tv_user_type_flag.setText(mDatas.get(position).getFollow_creator_article_list().getUser_data().getAuth());
+//            type4View.tv_user_type_flag.setText(mDatas.get(position).getFollow_creator_article_list().getUser_data().getAuth());
             type4View.user_type.setText(mDatas.get(position).getFollow_creator_article_list().getUser_data().getAuth());
-            type4View.tv_user_type_flag.setVisibility(View.VISIBLE);
+//            type4View.tv_user_type_flag.setVisibility(View.VISIBLE);
             type4View.user_type.setVisibility(View.VISIBLE);
         } else {
-            type4View.tv_user_type_flag.setVisibility(View.GONE);
+//            type4View.tv_user_type_flag.setVisibility(View.GONE);
             type4View.user_type.setVisibility(View.GONE);
         }
         if (mDatas.get(position).getFollow_creator_article_list().getImg() != null
@@ -462,7 +462,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     class Type4ViewHolder extends RecyclerView.ViewHolder {
         private SimpleDraweeView iv_person;
         private TextView tv_name;
-        private TextView tv_user_type_flag;
+//        private TextView tv_user_type_flag;
         private TextView tv_time;
         private TextView user_type;
         private TextView tv_follow;
@@ -476,7 +476,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(itemView);
             iv_person = itemView.findViewById(R.id.iv_person);
             tv_name = itemView.findViewById(R.id.tv_name);
-            tv_user_type_flag = itemView.findViewById(R.id.tv_user_type_flag);
+//            tv_user_type_flag = itemView.findViewById(R.id.tv_user_type_flag);
             tv_time = itemView.findViewById(R.id.tv_time);
             user_type = itemView.findViewById(R.id.user_type);
             tv_follow = itemView.findViewById(R.id.tv_follow);

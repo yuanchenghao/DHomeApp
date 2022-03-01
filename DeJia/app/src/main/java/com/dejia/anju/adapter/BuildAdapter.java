@@ -17,7 +17,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class BuildAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class BuildAdapter extends RecyclerView.Adapter<BuildAdapter.BuildViewHolder>  {
     private LayoutInflater mInflater;
     private Context mContext;
     private List<HomeFollowBean.BuildsBean> mDatas;
@@ -30,26 +30,26 @@ public class BuildAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BuildViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new BuildViewHolder(mInflater.inflate(R.layout.item_build, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BuildViewHolder holder, int position) {
         if(position == 0){
-            ((BuildViewHolder)holder).iv_build.setVisibility(View.VISIBLE);
+            holder.iv_build.setVisibility(View.VISIBLE);
         }else{
-            ((BuildViewHolder)holder).iv_build.setVisibility(View.GONE);
+            holder.iv_build.setVisibility(View.GONE);
         }
         if(mDatas.size() > 1){
             if(!TextUtils.isEmpty(mDatas.get(position).getName())){
-                ((BuildViewHolder)holder).tv_build.setText(mDatas.get(position).getName());
-                ((BuildViewHolder)holder).tv_build.setVisibility(View.VISIBLE);
+                holder.tv_build.setText(mDatas.get(position).getName());
+                holder.tv_build.setVisibility(View.VISIBLE);
             }else{
-                ((BuildViewHolder)holder).tv_build.setVisibility(View.GONE);
+                holder.tv_build.setVisibility(View.GONE);
             }
         }else{
-            ((BuildViewHolder)holder).tv_build.setText(mDatas.get(position).getName() + " " + mDatas.get(position).getDesc());
+            holder.tv_build.setText(mDatas.get(position).getName());
         }
     }
 

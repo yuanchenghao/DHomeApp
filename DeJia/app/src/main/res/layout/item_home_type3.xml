@@ -44,18 +44,18 @@
                     android:textSize="@dimen/sp_14"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_user_type_flag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_8"
-                    android:paddingTop="@dimen/dp_2"
-                    android:paddingBottom="@dimen/dp_2"
-                    android:paddingLeft="@dimen/dp_6"
-                    android:paddingRight="@dimen/dp_6"
-                    android:background="@drawable/shape_ebf6ff_button_8"
-                    android:textColor="#33A7FF"
-                    android:textSize="9sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_user_type_flag"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="@dimen/dp_8"-->
+<!--                    android:paddingTop="@dimen/dp_2"-->
+<!--                    android:paddingBottom="@dimen/dp_2"-->
+<!--                    android:paddingLeft="@dimen/dp_6"-->
+<!--                    android:paddingRight="@dimen/dp_6"-->
+<!--                    android:background="@drawable/shape_ebf6ff_button_8"-->
+<!--                    android:textColor="#33A7FF"-->
+<!--                    android:textSize="9sp" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -74,7 +74,6 @@
                     android:id="@+id/user_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_8"
                     android:textColor="#919699"
                     android:textSize="@dimen/sp_12" />
 

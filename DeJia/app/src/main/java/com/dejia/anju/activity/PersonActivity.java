@@ -14,11 +14,14 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.MyArticleAdapter;
 import com.dejia.anju.adapter.RenZhengListAdapter;
+import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.GetMyArticleApi;
 import com.dejia.anju.api.GetUserInfoApi;
+import com.dejia.anju.api.IsFollowApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.mannger.WebUrlJumpManager;
+import com.dejia.anju.model.FollowAndCancelInfo;
 import com.dejia.anju.model.MessageShowInfo;
 import com.dejia.anju.model.MyArticleInfo;
 import com.dejia.anju.model.UserInfo;
@@ -107,10 +110,13 @@ public class PersonActivity extends BaseActivity {
     LinearLayout ll_renzheng;
     @BindView(R.id.ll_content)
     LinearLayout ll_content;
+    @BindView(R.id.tv_follow_head)
+    TextView tv_follow_head;
     private UserInfo userInfo;
     private String userId;
     private int page = 1;
     private MyArticleAdapter myArticleAdapter;
+    private IsFollowApi isFollowApi;
     private HashMap<String, Object> map = new HashMap<>(0);
 
     @Xml(layouts = "activity_person")
@@ -130,6 +136,28 @@ public class PersonActivity extends BaseActivity {
         rv_renzheng.setNestedScrollingEnabled(false);
         getUserInfo();
         getMyArticle();
+        getFollowInfo();
+    }
+
+    //判断是否关注
+    private void getFollowInfo() {
+        isFollowApi = new IsFollowApi();
+        HashMap<String, Object> hashMap = new HashMap<>(0);
+        hashMap.put("obj_id", userId);
+        hashMap.put("obj_type", "1");
+        isFollowApi.getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
+            @Override
+            public void onSuccess(ServerData serverData) {
+                if("1".equals(serverData.code)){
+                    FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
+                    if(followAndCancelInfo != null && followAndCancelInfo.getFollowing().equals("1")){
+                        tv_follow_head.setText("已关注");
+                    }else{
+                        tv_follow_head.setText("关注");
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -332,7 +360,7 @@ public class PersonActivity extends BaseActivity {
     }
 
     @SuppressLint("WrongConstant")
-    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow, R.id.ll_renzheng, R.id.ll_content})
+    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow, R.id.ll_renzheng, R.id.ll_content,R.id.tv_follow_head})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan_code:
@@ -430,7 +458,22 @@ public class PersonActivity extends BaseActivity {
                     WebUrlJumpManager.getInstance().invoke(mContext, "", webViewData);
                 }
                 break;
-
+            case R.id.tv_follow_head:
+                HashMap<String, Object> hashMap = new HashMap<>(0);
+                hashMap.put("obj_id", userId);
+                hashMap.put("obj_type", "1");
+                new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+                    if ("1".equals(serverData.code)) {
+                        FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                        if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing()) && followAndCancelInfo.getFollowing().equals("0")) {
+                            tv_follow_head.setText("关注");
+                        }else{
+                            tv_follow_head.setText("已关注");
+                        }
+                    }
+                    ToastUtils.toast(mContext, serverData.message).show();
+                });
+                break;
         }
     }
 
