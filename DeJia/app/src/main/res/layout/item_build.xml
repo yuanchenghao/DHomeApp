@@ -2,13 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginRight="@dimen/dp_8"
-    android:paddingLeft="@dimen/dp_12"
-    android:paddingTop="@dimen/dp_6"
-    android:paddingRight="@dimen/dp_12"
-    android:paddingBottom="@dimen/dp_6"
-    android:background="@drawable/shape_ebf6ff_button_14"
     android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_8"
+        android:paddingLeft="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_12"
+        android:paddingBottom="@dimen/dp_6"
+        android:background="@drawable/shape_ebf6ff_button_14">
 
     <ImageView
         android:id="@+id/iv_build"
@@ -22,6 +26,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#0095FF"
+        android:textSize="@dimen/sp_12" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="#6F7375"
+        android:visibility="gone"
         android:textSize="@dimen/sp_12" />
 
 </LinearLayout>

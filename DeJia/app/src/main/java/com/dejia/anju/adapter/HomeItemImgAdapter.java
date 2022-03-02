@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * @author ych
  */
-public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.ViewHolder> {
+public class HomeItemImgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private LayoutInflater mInflater;
     private Activity mContext;
@@ -52,26 +52,26 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(mInflater.inflate(R.layout.item_gallery, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if ("4".equals(mType) && mDatas.size() == 1) {
-            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.gallery.getLayoutParams();
+            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) ((ViewHolder)holder).gallery.getLayoutParams();
             linearParams.width = SizeUtils.dp2px(220);
             linearParams.height = SizeUtils.dp2px(165);
-            holder.gallery.setLayoutParams(linearParams);
+            ((ViewHolder)holder).gallery.setLayoutParams(linearParams);
         } else {
-            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) holder.gallery.getLayoutParams();
+            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) ((ViewHolder)holder).gallery.getLayoutParams();
             linearParams.width = (mWindowsWight - SizeUtils.dp2px(48)) / 3;
             linearParams.height = linearParams.width;
-            holder.gallery.setLayoutParams(linearParams);
+            ((ViewHolder)holder).gallery.setLayoutParams(linearParams);
         }
-        holder.gallery.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getImg()).setAutoPlayAnimations(true).build());
-        holder.delete.setVisibility(View.GONE);
-        holder.gallery.setOnClickListener(v -> {
+        ((ViewHolder)holder).gallery.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getImg()).setAutoPlayAnimations(true).build());
+        ((ViewHolder)holder).delete.setVisibility(View.GONE);
+        ((ViewHolder)holder).gallery.setOnClickListener(v -> {
             listener.item(mDatas);
         });
     }
@@ -87,8 +87,8 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<HomeItemImgAdapter.
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        public SimpleDraweeView gallery;
-        public ImageView delete;
+        private SimpleDraweeView gallery;
+        private ImageView delete;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);

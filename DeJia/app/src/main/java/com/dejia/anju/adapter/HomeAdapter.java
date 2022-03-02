@@ -114,8 +114,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case ITEM_TYPE_FOUR:
                 //短图文类型
                 return new Type4ViewHolder(mInflater.inflate(R.layout.item_home_type3, parent, false));
-            default:
+            case ITEM_TYPE_FIVE:
                 return new Type5ViewHolder(mInflater.inflate(R.layout.item_home_type5, parent, false));
+            default:
+                return new Type1ViewHolder(mInflater.inflate(R.layout.item_home_type1, parent, false));
         }
     }
 
@@ -293,9 +295,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type1View.rv_build.setLayoutManager(layoutManager);
             BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-            if (mRecycleViewPool != null) {
-                type1View.rv_build.setRecycledViewPool(mRecycleViewPool);
-            }
+//            if (mRecycleViewPool != null) {
+//                type1View.rv_build.setRecycledViewPool(mRecycleViewPool);
+//            }
             type1View.rv_build.setAdapter(buildAdapter);
             type1View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -418,9 +420,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
                         type2View.rv_build.setLayoutManager(layoutManager);
                         BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-                        if (mRecycleViewPool != null) {
-                            type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
-                        }
+//                        if (mRecycleViewPool != null) {
+//                            type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+//                        }
                         type2View.rv_build.setAdapter(buildAdapter);
                         type2View.ll_location.setVisibility(View.VISIBLE);
                     } else {
@@ -432,9 +434,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
                         type2View.rv_build_top.setLayoutManager(layoutManager);
                         BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-                        if (mRecycleViewPool != null) {
-                            type2View.rv_build_top.setRecycledViewPool(mRecycleViewPool);
-                        }
+//                        if (mRecycleViewPool != null) {
+//                            type2View.rv_build_top.setRecycledViewPool(mRecycleViewPool);
+//                        }
                         type2View.rv_build_top.setAdapter(buildAdapter);
                         type2View.ll_location_top.setVisibility(View.VISIBLE);
                     } else {
@@ -444,9 +446,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
                             type2View.rv_build.setLayoutManager(layoutManager);
                             BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-                            if (mRecycleViewPool != null) {
-                                type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
-                            }
+//                            if (mRecycleViewPool != null) {
+//                                type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+//                            }
                             type2View.rv_build.setAdapter(buildAdapter);
                             type2View.ll_location.setVisibility(View.VISIBLE);
                         } else {
@@ -462,9 +464,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
                         type2View.rv_build.setLayoutManager(layoutManager);
                         BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-                        if (mRecycleViewPool != null) {
-                            type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
-                        }
+//                        if (mRecycleViewPool != null) {
+//                            type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+//                        }
                         type2View.rv_build.setAdapter(buildAdapter);
                         type2View.ll_location.setVisibility(View.VISIBLE);
                     } else {
@@ -476,9 +478,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
                         type2View.rv_build_top.setLayoutManager(layoutManager);
                         BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-                        if (mRecycleViewPool != null) {
-                            type2View.rv_build_top.setRecycledViewPool(mRecycleViewPool);
-                        }
+//                        if (mRecycleViewPool != null) {
+//                            type2View.rv_build_top.setRecycledViewPool(mRecycleViewPool);
+//                        }
                         type2View.rv_build_top.setAdapter(buildAdapter);
                         type2View.ll_location_top.setVisibility(View.VISIBLE);
                     } else {
@@ -488,9 +490,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
                             type2View.rv_build.setLayoutManager(layoutManager);
                             BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-                            if (mRecycleViewPool != null) {
-                                type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
-                            }
+//                            if (mRecycleViewPool != null) {
+//                                type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+//                            }
                             type2View.rv_build.setAdapter(buildAdapter);
                             type2View.ll_location.setVisibility(View.VISIBLE);
                         } else {
@@ -506,9 +508,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
                     type2View.rv_build.setLayoutManager(layoutManager);
                     BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-                    if (mRecycleViewPool != null) {
-                        type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
-                    }
+//                    if (mRecycleViewPool != null) {
+//                        type2View.rv_build.setRecycledViewPool(mRecycleViewPool);
+//                    }
                     type2View.rv_build.setAdapter(buildAdapter);
                     type2View.ll_location.setVisibility(View.VISIBLE);
                 } else {
@@ -632,9 +634,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type3View.rv_build.setLayoutManager(layoutManager);
             BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-            if (mRecycleViewPool != null) {
-                type3View.rv_build.setRecycledViewPool(mRecycleViewPool);
-            }
+//            if (mRecycleViewPool != null) {
+//                type3View.rv_build.setRecycledViewPool(mRecycleViewPool);
+//            }
             type3View.rv_build.setAdapter(buildAdapter);
             type3View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -651,9 +653,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
             HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "3");
             type3View.rv_img.setLayoutManager(gridLayoutManager);
-            if (mRecycleViewPool != null) {
-                type3View.rv_img.setRecycledViewPool(mRecycleViewPool);
-            }
+//            if (mRecycleViewPool != null) {
+//                type3View.rv_img.setRecycledViewPool(mRecycleViewPool);
+//            }
             type3View.rv_img.setAdapter(homeItemImgAdapter);
             homeItemImgAdapter.setListener(mList -> {
                 if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
@@ -772,9 +774,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type4View.rv_build.setLayoutManager(layoutManager);
             BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-            if (mRecycleViewPool != null) {
-                type4View.rv_build.setRecycledViewPool(mRecycleViewPool);
-            }
+//            if (mRecycleViewPool != null) {
+//                type4View.rv_build.setRecycledViewPool(mRecycleViewPool);
+//            }
             type4View.rv_build.setAdapter(buildAdapter);
             type4View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -791,9 +793,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
                 HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "4");
                 type4View.rv_img.setLayoutManager(ymLinearLayoutManager);
-                if (mRecycleViewPool != null) {
-                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
-                }
+//                if (mRecycleViewPool != null) {
+//                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
+//                }
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
                 homeItemImgAdapter.setListener(mList -> {
                     if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
@@ -804,9 +806,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
                 HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth(), "4");
                 type4View.rv_img.setLayoutManager(gridLayoutManager);
-                if (mRecycleViewPool != null) {
-                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
-                }
+//                if (mRecycleViewPool != null) {
+//                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
+//                }
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
                 homeItemImgAdapter.setListener(mList -> {
                     if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
@@ -898,9 +900,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
             type5View.rv_build.setLayoutManager(layoutManager);
             BuildAdapter buildAdapter = new BuildAdapter(mContext, mDatas.get(position).getBuilding());
-            if (mRecycleViewPool != null) {
-                type5View.rv_build.setRecycledViewPool(mRecycleViewPool);
-            }
+//            if (mRecycleViewPool != null) {
+//                type5View.rv_build.setRecycledViewPool(mRecycleViewPool);
+//            }
             type5View.rv_build.setAdapter(buildAdapter);
             type5View.ll_location.setVisibility(View.VISIBLE);
         } else {
@@ -911,9 +913,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
                 HomeItemImg3Adapter homeItemImgAdapter = new HomeItemImg3Adapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth());
                 type5View.rv_img.setLayoutManager(ymLinearLayoutManager);
-                if (mRecycleViewPool != null) {
-                    type5View.rv_img.setRecycledViewPool(mRecycleViewPool);
-                }
+//                if (mRecycleViewPool != null) {
+//                    type5View.rv_img.setRecycledViewPool(mRecycleViewPool);
+//                }
                 type5View.rv_img.setAdapter(homeItemImgAdapter);
                 homeItemImgAdapter.setListener(mList -> {
                     if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {
@@ -924,9 +926,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
                 HomeItemImg3Adapter homeItemImgAdapter = new HomeItemImg3Adapter(mContext, mDatas.get(position).getImg(), ScreenUtils.getScreenWidth());
                 type5View.rv_img.setLayoutManager(gridLayoutManager);
-                if (mRecycleViewPool != null) {
-                    type5View.rv_img.setRecycledViewPool(mRecycleViewPool);
-                }
+//                if (mRecycleViewPool != null) {
+//                    type5View.rv_img.setRecycledViewPool(mRecycleViewPool);
+//                }
                 type5View.rv_img.setAdapter(homeItemImgAdapter);
                 homeItemImgAdapter.setListener(mList -> {
                     if (!TextUtils.isEmpty(mDatas.get(position).getUrl())) {

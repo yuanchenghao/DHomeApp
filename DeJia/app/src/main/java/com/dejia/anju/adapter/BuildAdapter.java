@@ -17,7 +17,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class BuildAdapter extends RecyclerView.Adapter<BuildAdapter.BuildViewHolder>  {
+public class BuildAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     private LayoutInflater mInflater;
     private Context mContext;
     private List<HomeFollowBean.BuildsBean> mDatas;
@@ -30,26 +30,33 @@ public class BuildAdapter extends RecyclerView.Adapter<BuildAdapter.BuildViewHol
 
     @NonNull
     @Override
-    public BuildViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new BuildViewHolder(mInflater.inflate(R.layout.item_build, parent, false));
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(mInflater.inflate(R.layout.item_build, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BuildViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(position == 0){
-            holder.iv_build.setVisibility(View.VISIBLE);
+            ((ViewHolder)holder).iv_build.setVisibility(View.VISIBLE);
         }else{
-            holder.iv_build.setVisibility(View.GONE);
+            ((ViewHolder)holder).iv_build.setVisibility(View.GONE);
         }
         if(mDatas.size() > 1){
             if(!TextUtils.isEmpty(mDatas.get(position).getName())){
-                holder.tv_build.setText(mDatas.get(position).getName());
-                holder.tv_build.setVisibility(View.VISIBLE);
+                ((ViewHolder)holder).tv_build.setText(mDatas.get(position).getName());
+                ((ViewHolder)holder).tv_build.setVisibility(View.VISIBLE);
             }else{
-                holder.tv_build.setVisibility(View.GONE);
+                ((ViewHolder)holder).tv_build.setVisibility(View.GONE);
             }
+            ((ViewHolder)holder).tv_desc.setVisibility(View.GONE);
         }else{
-            holder.tv_build.setText(mDatas.get(position).getName());
+            ((ViewHolder)holder).tv_build.setText(mDatas.get(position).getName());
+            if(!TextUtils.isEmpty(mDatas.get(position).getDesc())){
+                ((ViewHolder)holder).tv_desc.setText(mDatas.get(position).getDesc());
+                ((ViewHolder)holder).tv_desc.setVisibility(View.VISIBLE);
+            }else{
+                ((ViewHolder)holder).tv_desc.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -62,14 +69,16 @@ public class BuildAdapter extends RecyclerView.Adapter<BuildAdapter.BuildViewHol
         return size;
     }
 
-    class BuildViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_build;
         TextView tv_build;
+        TextView tv_desc;
 
-        BuildViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             iv_build = itemView.findViewById(R.id.iv_build);
             tv_build = itemView.findViewById(R.id.tv_build);
+            tv_desc = itemView.findViewById(R.id.tv_desc);
             itemView.setOnClickListener(v -> {
                 if(!TextUtils.isEmpty(mDatas.get(getLayoutPosition()).getUrl())){
                     WebUrlJumpManager.getInstance().invoke(mContext,mDatas.get(getLayoutPosition()).getUrl(),null);

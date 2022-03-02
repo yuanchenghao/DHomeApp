@@ -182,9 +182,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
         type1View.rv.setLayoutManager(layoutManager);
         HomeFollowItem1Adapter homeFollowItem1Adapter = new HomeFollowItem1Adapter(mContext, mDatas.get(position).getNo_follow_creator_list());
-        if (mRecycleViewPool != null) {
-            type1View.rv.setRecycledViewPool(mRecycleViewPool);
-        }
+//        if (mRecycleViewPool != null) {
+//            type1View.rv.setRecycledViewPool(mRecycleViewPool);
+//        }
         type1View.rv.setAdapter(homeFollowItem1Adapter);
     }
 
@@ -192,9 +192,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
         type2View.rv.setLayoutManager(layoutManager);
         HomeFollowItem2Adapter homeFollowItem2Adapter = new HomeFollowItem2Adapter(mContext, R.layout.item_follow_person, mDatas.get(position).getFollow_creator_list());
-        if (mRecycleViewPool != null) {
-            type2View.rv.setRecycledViewPool(mRecycleViewPool);
-        }
+//        if (mRecycleViewPool != null) {
+//            type2View.rv.setRecycledViewPool(mRecycleViewPool);
+//        }
         type2View.rv.setAdapter(homeFollowItem2Adapter);
     }
 
@@ -202,9 +202,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
         type3View.rv.setLayoutManager(layoutManager);
         HomeFollowItem3Adapter homeFollowItem3Adapter = new HomeFollowItem3Adapter(R.layout.item_follow_build, mDatas.get(position).getBuilds());
-        if (mRecycleViewPool != null) {
-            type3View.rv.setRecycledViewPool(mRecycleViewPool);
-        }
+//        if (mRecycleViewPool != null) {
+//            type3View.rv.setRecycledViewPool(mRecycleViewPool);
+//        }
         type3View.rv.setAdapter(homeFollowItem3Adapter);
         homeFollowItem3Adapter.setOnItemClickListener((adapter, view, position1) -> {
             if (!TextUtils.isEmpty(mDatas.get(position1).getBuilds().get(position1).getUrl())) {
@@ -330,9 +330,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 YMLinearLayoutManager ymLinearLayoutManager = new YMLinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
                 HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getFollow_creator_article_list().getImg(), ScreenUtils.getScreenWidth(), "4");
                 type4View.rv_img.setLayoutManager(ymLinearLayoutManager);
-                if (mRecycleViewPool != null) {
-                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
-                }
+//                if (mRecycleViewPool != null) {
+//                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
+//                }
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
                 homeItemImgAdapter.setListener(mList -> {
                     if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUrl())) {
@@ -343,9 +343,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 YMGridLayoutManager gridLayoutManager = new YMGridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
                 HomeItemImgAdapter homeItemImgAdapter = new HomeItemImgAdapter(mContext, mDatas.get(position).getFollow_creator_article_list().getImg(), ScreenUtils.getScreenWidth(), "4");
                 type4View.rv_img.setLayoutManager(gridLayoutManager);
-                if (mRecycleViewPool != null) {
-                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
-                }
+//                if (mRecycleViewPool != null) {
+//                    type4View.rv_img.setRecycledViewPool(mRecycleViewPool);
+//                }
                 type4View.rv_img.setAdapter(homeItemImgAdapter);
                 homeItemImgAdapter.setListener(mList -> {
                     if (!TextUtils.isEmpty(mDatas.get(position).getFollow_creator_article_list().getUrl())) {
@@ -405,9 +405,9 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         type5View.rv.setLayoutManager(layoutManager);
         HomeFollowItem5Adapter homeFollowItem5Adapter = new HomeFollowItem5Adapter(R.layout.item_no_follow_text, mDatas.get(position).getNo_follow_creator_article_list().getList());
-        if (mRecycleViewPool != null) {
-            type5View.rv.setRecycledViewPool(mRecycleViewPool);
-        }
+//        if (mRecycleViewPool != null) {
+//            type5View.rv.setRecycledViewPool(mRecycleViewPool);
+//        }
         type5View.rv.setAdapter(homeFollowItem5Adapter);
         homeFollowItem5Adapter.setOnItemClickListener((adapter, view, i) -> {
             if (!TextUtils.isEmpty(mDatas.get(position).getNo_follow_creator_article_list().getList().get(i).getUrl())) {

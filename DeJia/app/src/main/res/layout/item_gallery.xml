@@ -10,6 +10,7 @@
         android:id="@+id/im_show_gallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:placeholderImage="@mipmap/loading_more"
         app:fadeDuration="100"
         app:retryImageScaleType="centerCrop" />
 
