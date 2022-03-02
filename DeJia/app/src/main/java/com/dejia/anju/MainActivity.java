@@ -3,6 +3,7 @@ package com.dejia.anju;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -47,6 +48,7 @@ import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.GlideEngine;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
+import com.dejia.anju.utils.ProgDialog;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
 import com.dejia.anju.webSocket.IMManager;
@@ -67,8 +69,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,6 +85,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -207,6 +215,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         //请求公用模块控制
         getMessageShow();
         getToolInfo();
+        //请求版本更新
+        getVersion();
         //将侧边栏顶部延伸至status bar
         drawerLayout.setFitsSystemWindows(true);
         //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
@@ -338,7 +348,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                                                 }
                                             });
                                 }
-                                System.exit(0);
                             }
 
                             @Override
@@ -361,9 +370,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //        downLoadApk(versionInfo.getUrl());
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
-        Uri content_url = Uri.parse("http://dldir1.qq.com/dmpt/apkSet/9.9.5/qqcomic_android_9.9.5_dm306015005.apk");
+        Uri content_url = Uri.parse(versionInfo.getUrl());
         intent.setData(content_url);
         startActivity(intent);
+        System.exit(0);
     }
 
     private void getMessageNum() {
@@ -676,10 +686,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //    }
 
 
-    // 安装apk
+     //安装apk
 //    protected void installApk(File file) {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//判读版本是否在7.0以上
-//            Uri apkUri = FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", file);//在AndroidManifest中的android:authorities值
+//            //在AndroidManifest中的android:authorities值
+//            Uri apkUri = FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", file);
 //            Intent install = new Intent(Intent.ACTION_VIEW);
 //            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

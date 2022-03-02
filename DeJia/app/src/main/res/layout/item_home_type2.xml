@@ -150,6 +150,7 @@
             android:layout_height="82.5dp"
             android:layout_marginTop="5.5dp"
             android:layout_weight="0"
+            android:background="#F5F6F7"
             app:fadeDuration="100"
             app:retryImageScaleType="centerCrop" />
 
