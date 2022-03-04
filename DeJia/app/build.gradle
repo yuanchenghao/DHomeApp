@@ -40,7 +40,13 @@ android {
         debug {
             keyAlias 'dj'
             keyPassword 'DHomeApp@2021'
-            storeFile file('D:\\DHomeApp\\DeJia\\dejia.jks')
+            try {
+                if (file('/Users/yuanchenghao/DHomeApp/DeJia/dejia.jks').exists()) {
+                    storeFile file('/Users/yuanchenghao/DHomeApp/DeJia/dejia.jks')
+                } else {
+                    storeFile file('D:\\DHomeApp\\DeJia\\dejia.jks')
+                }
+            } catch (Exception e) {}
             storePassword 'DHomeApp@2021'
             v1SigningEnabled true
             v2SigningEnabled true
@@ -49,7 +55,13 @@ android {
         release {
             keyAlias 'dj'
             keyPassword 'DHomeApp@2021'
-            storeFile file('D:\\DHomeApp\\DeJia\\dejia.jks')
+            try {
+                if (file('/Users/yuanchenghao/DHomeApp/DeJia/dejia.jks').exists()) {
+                    storeFile file('/Users/yuanchenghao/DHomeApp/DeJia/dejia.jks')
+                } else {
+                    storeFile file('D:\\DHomeApp\\DeJia\\dejia.jks')
+                }
+            } catch (Exception e) {}
             storePassword 'DHomeApp@2021'
             v1SigningEnabled true
             v2SigningEnabled true
