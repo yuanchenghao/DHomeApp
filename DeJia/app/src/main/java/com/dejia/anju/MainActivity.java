@@ -167,6 +167,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 map = (Map<String, Object>) msgEvent.getData();
                 invokeToolActivity();
                 break;
+            default:
         }
     }
 
@@ -475,7 +476,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     OneClickLoginActivity2.invoke(mContext, "");
                 }
                 break;
-
+            default:
         }
     }
 
