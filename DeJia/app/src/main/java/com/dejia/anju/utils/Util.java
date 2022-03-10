@@ -40,6 +40,8 @@ import com.hjq.gson.factory.GsonFactory;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.text.DateFormat;
@@ -213,7 +215,7 @@ public final class Util {
         maps.put("reg_id", registrationID);
         new UnBindJPushApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
             @Override
-            public void onSuccess(ServerData serverData) {
+            public void onSuccess(@Nullable ServerData serverData) {
                 AppLog.i("message===" + serverData.message);
             }
         });

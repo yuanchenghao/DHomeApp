@@ -39,6 +39,8 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zhangyue.we.x2c.ano.Xml;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -147,7 +149,7 @@ public class PersonActivity extends BaseActivity {
         hashMap.put("obj_type", "1");
         isFollowApi.getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
             @Override
-            public void onSuccess(ServerData serverData) {
+            public void onSuccess(@Nullable ServerData serverData) {
                 if("1".equals(serverData.code)){
                     FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
                     if(followAndCancelInfo != null && followAndCancelInfo.getFollowing().equals("1")){
