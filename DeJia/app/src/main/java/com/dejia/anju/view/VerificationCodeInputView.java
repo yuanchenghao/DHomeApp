@@ -31,7 +31,6 @@ import com.dejia.anju.R;
 import com.dejia.anju.utils.AsteriskPasswordTransformationMethod;
 import com.dejia.anju.utils.Util;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;

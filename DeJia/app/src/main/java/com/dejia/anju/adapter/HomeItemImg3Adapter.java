@@ -32,7 +32,7 @@ public class HomeItemImg3Adapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.mContext = context;
         this.mDatas = datas;
         if (mDatas.size() >= 3) {
-            this.mDatas = this.mDatas.subList(0, 2);
+            this.mDatas = this.mDatas.subList(0, 3);
         }
         mInflater = LayoutInflater.from(context);
         this.mWindowsWight = windowsWight;
@@ -59,12 +59,12 @@ public class HomeItemImg3Adapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (mDatas.size() == 1) {
             RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) ((ViewHolder)holder).gallery.getLayoutParams();
             linearParams.width = mWindowsWight - SizeUtils.dp2px(40);
-            linearParams.height = (mWindowsWight - SizeUtils.dp2px(40)) / 9;
+            linearParams.height = (int) ((mWindowsWight - SizeUtils.dp2px(40)) / 9f);
             ((ViewHolder)holder).gallery.setLayoutParams(linearParams);
         } else {
             RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) ((ViewHolder)holder).gallery.getLayoutParams();
-            linearParams.width = (mWindowsWight - SizeUtils.dp2px(48)) / 3;
-            linearParams.height = linearParams.width;
+            linearParams.width = (int) ((mWindowsWight - SizeUtils.dp2px(48)) / 3f);
+            linearParams.height = (int) (linearParams.width / 110f * 83f);
             ((ViewHolder)holder).gallery.setLayoutParams(linearParams);
         }
         ((ViewHolder)holder).gallery.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getImg()).setAutoPlayAnimations(true).build());

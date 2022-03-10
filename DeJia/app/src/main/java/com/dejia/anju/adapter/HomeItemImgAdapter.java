@@ -34,7 +34,7 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.mDatas = datas;
         this.mType = type;
         if (mDatas.size() >= 3) {
-            this.mDatas = this.mDatas.subList(0, 2);
+            this.mDatas = this.mDatas.subList(0, 3);
         }
         mInflater = LayoutInflater.from(context);
         this.mWindowsWight = windowsWight;
@@ -59,19 +59,19 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if ("4".equals(mType) && mDatas.size() == 1) {
-            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) ((ViewHolder)holder).gallery.getLayoutParams();
+            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) ((ViewHolder) holder).gallery.getLayoutParams();
             linearParams.width = SizeUtils.dp2px(220);
             linearParams.height = SizeUtils.dp2px(165);
-            ((ViewHolder)holder).gallery.setLayoutParams(linearParams);
+            ((ViewHolder) holder).gallery.setLayoutParams(linearParams);
         } else {
-            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) ((ViewHolder)holder).gallery.getLayoutParams();
-            linearParams.width = (mWindowsWight - SizeUtils.dp2px(48)) / 3;
-            linearParams.height = linearParams.width;
-            ((ViewHolder)holder).gallery.setLayoutParams(linearParams);
+            RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) ((ViewHolder) holder).gallery.getLayoutParams();
+            linearParams.width = (int) ((mWindowsWight - SizeUtils.dp2px(48)) / 3f);
+            linearParams.height = (int) (linearParams.width / 110f * 83f);
+            ((ViewHolder) holder).gallery.setLayoutParams(linearParams);
         }
-        ((ViewHolder)holder).gallery.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getImg()).setAutoPlayAnimations(true).build());
-        ((ViewHolder)holder).delete.setVisibility(View.GONE);
-        ((ViewHolder)holder).gallery.setOnClickListener(v -> {
+        ((ViewHolder) holder).gallery.setController(Fresco.newDraweeControllerBuilder().setUri(mDatas.get(position).getImg()).setAutoPlayAnimations(true).build());
+        ((ViewHolder) holder).delete.setVisibility(View.GONE);
+        ((ViewHolder) holder).gallery.setOnClickListener(v -> {
             listener.item(mDatas);
         });
     }
@@ -106,6 +106,7 @@ public class HomeItemImgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public interface CallbackListener {
         /**
          * 图片点击
+         *
          * @param mList
          */
         void item(List<ImgInfo> mList);

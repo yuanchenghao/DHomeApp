@@ -30,6 +30,7 @@ import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
+import com.dejia.anju.view.VerificationCodeInputView;
 import com.dejia.anju.webSocket.IMManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
@@ -45,7 +46,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jpush.android.api.JPushInterface;
-import com.dejia.anju.view.VerificationCodeInputView;
+
 import static com.dejia.anju.base.Constants.baseTestService;
 
 
