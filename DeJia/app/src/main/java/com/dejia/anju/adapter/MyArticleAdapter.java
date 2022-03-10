@@ -32,6 +32,8 @@ import com.dejia.anju.view.YMLinearLayoutManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -763,7 +765,7 @@ public class MyArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     //没点过赞
                     new ZanApi().getCallBack(mContext, maps, new BaseCallBackListener<ServerData>() {
                         @Override
-                        public void onSuccess(ServerData serverData) {
+                        public void onSuccess(@Nullable ServerData serverData) {
                             if ("1".equals(serverData.code)) {
                                 ToastUtils.toast(mContext, "点赞成功").show();
                                 mDatas.get(getLayoutPosition()).setAgree_num(Integer.parseInt(mDatas.get(getLayoutPosition()).getAgree_num()) + 1 + "");

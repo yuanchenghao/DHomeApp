@@ -27,7 +27,7 @@ import com.dejia.anju.api.GetVersionApi;
 import com.dejia.anju.api.MessageCountApi;
 import com.dejia.anju.api.MessageShowApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
-import com.dejia.anju.api.base.ToolInfoApi;
+import com.dejia.anju.api.ToolInfoApi;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.fragment.CircleFragment;
