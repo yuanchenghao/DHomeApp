@@ -4,6 +4,9 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonToken;
 
 /**
+ *    author : Android 轮子哥
+ *    github : https://github.com/getActivity/GsonFactory
+ *    time   : 2021/02/02
  *    desc   : Json 解析异常监听器
  */
 public interface JsonCallback {

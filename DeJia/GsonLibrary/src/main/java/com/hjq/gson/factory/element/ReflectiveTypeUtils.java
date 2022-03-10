@@ -38,6 +38,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicLongArray;
 
 /**
+ *    author : Android 轮子哥
+ *    github : https://github.com/getActivity/GsonFactory
+ *    time   : 2020/12/08
  *    desc   : 反射工具类
  */
 public class ReflectiveTypeUtils {

@@ -6,6 +6,9 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
 /**
+ *    author : Android 轮子哥
+ *    github : https://github.com/getActivity/GsonFactory
+ *    time   : 2020/12/08
  *    desc   : 反射字段捆绑类，参考：{@link com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.BoundField}
  */
 public abstract class ReflectiveFieldBound {

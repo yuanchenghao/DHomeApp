@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
+ *    author : Android 轮子哥
+ *    github : https://github.com/getActivity/GsonFactory
+ *    time   : 2020/12/08
  *    desc   : Object 解析适配器，参考：{@link com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.Adapter}
  */
 public class ReflectiveTypeAdapter<T> extends TypeAdapter<T> {
