@@ -7,9 +7,6 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/GsonFactory
- *    time   : 2020/05/05
  *    desc   : boolean / Boolean 类型解析适配器，参考：{@link com.google.gson.internal.bind.TypeAdapters#BOOLEAN}
  */
 public class BooleanTypeAdapter extends TypeAdapter<Boolean> {

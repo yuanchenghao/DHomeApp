@@ -25,9 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/GsonFactory
- *    time   : 2020/11/10
  *    desc   : Gson 解析容错适配器
  */
 public final class GsonFactory {

@@ -15,9 +15,6 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/GsonFactory
- *    time   : 2020/12/08
  *    desc   : Array 解析适配器，参考：{@link com.google.gson.internal.bind.CollectionTypeAdapterFactory}
  */
 public class CollectionTypeAdapter<E> extends TypeAdapter<Collection<E>> {
