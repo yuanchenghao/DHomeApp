@@ -159,6 +159,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 map = (Map<String, Object>) msgEvent.getData();
                 invokeToolActivity();
                 break;
+            case 6:
+                if (isLogin()) {
+                    if (iv_dots.getVisibility() == View.VISIBLE) {
+                        iv_dots.setVisibility(View.GONE);
+                    }
+                    initFragment(3);
+                } else {
+                    OneClickLoginActivity2.invoke(mContext, "");
+                }
+                break;
             default:
         }
     }
@@ -184,6 +194,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         //开屏阻断
         initOneClickLogin();
+
 
     }
 
@@ -290,7 +301,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
 
         });
-
 //        if (mSendMessageReceiver == null) {
 //            IntentFilter intentFilter = new IntentFilter(SendMessageReceiver.ACTION);
 //            mSendMessageReceiver = new SendMessageReceiver();
@@ -303,7 +313,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         toolInfoApi.getCallBack(mContext, new HashMap<>(0), (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 AddPostAlertInfo addPostAlertInfo = JSONUtil.TransformSingleBean(serverData.data, AddPostAlertInfo.class);
-                KVUtils.getInstance().encode("tool_info",addPostAlertInfo);
+                KVUtils.getInstance().encode("tool_info", addPostAlertInfo);
             }
         });
     }
@@ -432,14 +442,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 initFragment(1);
                 break;
             case R.id.ll_tool:
-                AddPostAlertInfo addPostAlertInfo =  KVUtils.getInstance().decodeParcelable("tool_info",AddPostAlertInfo.class);
-                if(addPostAlertInfo != null && addPostAlertInfo.getAdd_post_alert().size() > 0){
+                AddPostAlertInfo addPostAlertInfo = KVUtils.getInstance().decodeParcelable("tool_info", AddPostAlertInfo.class);
+                if (addPostAlertInfo != null && addPostAlertInfo.getAdd_post_alert().size() > 0) {
                     DialogUtils.showAddPostAlertDialog(mContext, addPostAlertInfo, new DialogUtils.CallBack3() {
                         @Override
                         public void onInvokeClick(String url) {
                             DialogUtils.closeDialog();
-                            if(!TextUtils.isEmpty(url)){
-                                WebUrlJumpManager.getInstance().invoke(mContext,url,null);
+                            if (!TextUtils.isEmpty(url)) {
+                                WebUrlJumpManager.getInstance().invoke(mContext, url, null);
                             }
                         }
 
@@ -472,7 +482,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private void initFragment(int index) {
+    public void initFragment(int index) {
         this.position = index;
         manager = getSupportFragmentManager();
         // 开启事务
@@ -679,7 +689,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //    }
 
 
-     //安装apk
+    //安装apk
 //    protected void installApk(File file) {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//判读版本是否在7.0以上
 //            //在AndroidManifest中的android:authorities值
@@ -738,6 +748,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+//        if (mSendMessageReceiver != null) {
+//            unregisterReceiver(mSendMessageReceiver);
+//        }
     }
 
     @Override

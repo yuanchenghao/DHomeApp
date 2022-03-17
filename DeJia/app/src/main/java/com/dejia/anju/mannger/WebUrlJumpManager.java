@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.dejia.anju.MainActivity;
 import com.dejia.anju.activity.BuildingImageActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.OneClickLoginActivity2;
@@ -204,6 +205,10 @@ public class WebUrlJumpManager {
                                 }
                                 EventBus.getDefault().post(new Event<>(5, map));
                             }
+                            break;
+                        case "chatList":
+                            mContext.startActivity(new Intent(mContext, MainActivity.class));
+                            EventBus.getDefault().post(new Event<>(6));
                             break;
                     }
                 }

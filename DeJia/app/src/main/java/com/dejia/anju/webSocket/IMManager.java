@@ -7,6 +7,8 @@ import android.content.Intent;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.brodcast.SendMessageReceiver;
+import com.dejia.anju.fragment.MessageFragment;
+import com.dejia.anju.fragment.RecommendFragment;
 import com.dejia.anju.model.MessageBean;
 import com.dejia.anju.model.Pong;
 import com.dejia.anju.model.WebSocketBean;
@@ -107,21 +109,21 @@ public class IMManager implements ReceiveMessageCallBack, MessageStatus {
                     dataBean.setFromName(webSocketBean.getFrom_client_name());
                     dataBean.setContent(webSocketBean.getContent());
                     dataBean.handlerMessageTypeAndViewStatus();
-//                    if ("1".equals(Cfg.loadStr(context,FinalConstant.IS_SHENHE,""))){
-//                        return;
-//                    }
                     if (mMessageCallBack != null) {
                         mMessageCallBack.receiveMessage(dataBean, webSocketBean.getGroup_id() + "");
                     }
                     if (sUnReadMessageCallBack != null) {
                         sUnReadMessageCallBack.onUnReadMessage();
                     }
-                    if (Util.isBackground(context)) { //如果在后台发送广播
+                    if (Util.isBackground(context)) {
+                        //如果程序处于后台
                         Intent intent = new Intent(SendMessageReceiver.ACTION);
-                        intent.putExtra("message", webSocketBean.getAppcontent());
+                        //这个id不确定是不是需要传到聊天页的id
+                        intent.putExtra("id", webSocketBean.getClassid());
                         intent.putExtra("groupUserId", webSocketBean.getGroupUserId() + "");
                         context.sendBroadcast(intent);
                     } else {
+                        //如果程序处于前台
 //                        if (!isChatActivityTop()) {  //如果在前台其他页面（非聊天页ChatActivity）
 //                            Intent intent = new Intent(Constants.REFRESH_MESSAGE);
 //                            intent.putExtra("message", webSocketBean.getAppcontent());

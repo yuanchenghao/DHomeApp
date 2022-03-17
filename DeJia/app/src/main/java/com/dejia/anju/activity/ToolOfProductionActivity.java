@@ -2,7 +2,9 @@ package com.dejia.anju.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -63,6 +65,8 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
     LinearLayout ll_back;
     @BindView(R.id.ed)
     EditText ed;
+    @BindView(R.id.ed_title)
+    EditText ed_title;
     @BindView(R.id.tv_sure)
     TextView tv_sure;
     @BindView(R.id.rv)
@@ -79,6 +83,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
     private UpLoadUgcImageApi upLoadUgcImageApi;
     private UgcSaveApi ugcSaveApi;
     private Map<String, Object> maps;
+    private String defaultTitle = "";
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
@@ -117,12 +122,48 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         userInfo = KVUtils.getInstance().decodeParcelable("user", UserInfo.class);
         chooseResult = getIntent().getParcelableArrayListExtra("imgList");
         maps = (Map<String, Object>) getIntent().getSerializableExtra("map");
+        //判断是否有默认标题
+        if (maps != null && maps.size() > 0) {
+            for (String key : maps.keySet()) {
+                if (!TextUtils.isEmpty((String) maps.get("title"))) {
+                    defaultTitle = (String) maps.get("title");
+                }
+            }
+        }
+        if (!TextUtils.isEmpty(defaultTitle)) {
+            ed_title.setText(defaultTitle);
+        }
         ugcSaveApi = new UgcSaveApi();
         if (chooseResult == null) {
             chooseResult = new ArrayList<>();
         }
         setRecycleView();
-        Util.showSoftInputFromWindow(mContext,ed);
+        Util.showSoftInputFromWindow(mContext, ed_title);
+        ed_title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String str = s.toString();
+                if (str.length() > 60) {
+                    //截取前x位
+                    ed_title.setText(str.substring(0, 60));
+                    ed_title.requestFocus();
+                    //光标移动到最后
+                    ed_title.setSelection(ed_title.getText().length());
+                    ToastUtils.toast(mContext, "标题超过60个字，请修改").show();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+        });
     }
 
     //设置图片列表
@@ -186,23 +227,40 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         super.onClick(v);
         switch (v.getId()) {
             case R.id.ll_back:
+                if (Util.isFastDoubleClick()) {
+                    return;
+                }
                 finish();
                 break;
             case R.id.tv_sure:
+                tv_sure.setEnabled(false);
+                if (Util.isFastDoubleClick()) {
+                    return;
+                }
+                if (TextUtils.isEmpty(ed_title.getText().toString().trim())) {
+                    ToastUtils.toast(mContext, "请输入标题").show();
+                    tv_sure.setEnabled(true);
+                    return;
+                }
                 if (TextUtils.isEmpty(ed.getText().toString().trim())) {
                     ToastUtils.toast(mContext, "请输入内容").show();
+                    tv_sure.setEnabled(true);
                     return;
                 }
                 if (toolSelectImgAdapter == null
                         || toolSelectImgAdapter.getData() == null
                         || toolSelectImgAdapter.getData().size() <= 0) {
                     ToastUtils.toast(mContext, "请至少添加一张图片").show();
+                    tv_sure.setEnabled(true);
                     return;
                 }
                 //先传图片
                 postImg();
                 break;
             case R.id.ll_house:
+                if (Util.isFastDoubleClick()) {
+                    return;
+                }
                 Intent i = new Intent(mContext, SelectFloorActivity.class);
                 mContext.startActivityForResult(i, SELECT_REQUEST_CODE);
                 break;
@@ -218,7 +276,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                     searchBuildingInfo = data.getParcelableExtra("name");
                     if (searchBuildingInfo != null && !TextUtils.isEmpty(searchBuildingInfo.getName())) {
                         tv_name.setText(searchBuildingInfo.getName());
-                    }else{
+                    } else {
                         tv_name.setText("提及楼盘、小区");
                     }
                 }
@@ -237,6 +295,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
 
     //上传图片
     private void postImg() {
+        tv_sure.setEnabled(false);
         upLoadUgcImageApi = new UpLoadUgcImageApi();
         HashMap<String, Object> map = new HashMap<>(0);
         HttpParams httpParams = new HttpParams();
@@ -251,11 +310,13 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
             } else {
                 ToastUtils.toast(mContext, "图片上传失败请重试").show();
             }
+            tv_sure.setEnabled(true);
         });
     }
 
     //上传文章
     private void postUgc(List<UgcUploadImageInfo> list) {
+        tv_sure.setEnabled(false);
         if (list != null && list.size() > 0) {
             List imgList = new ArrayList();
             for (int i = 0; i < list.size(); i++) {
@@ -263,10 +324,11 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                 map.put("img", list.get(i).getPost_img_url());
                 imgList.add(map);
             }
-            if(maps == null || maps.size() <= 0){
-                HashMap<String, Object> maps = new HashMap<>(0);
+            if (maps == null || maps.size() <= 0) {
+                maps = new HashMap<>(0);
             }
             maps.put("content", ed.getText().toString().trim());
+            maps.put("title", ed_title.getText().toString().trim());
             maps.put("image", GsonFactory.getSingletonGson().toJson(imgList).toString());
             if (searchBuildingInfo != null) {
                 List list1 = new ArrayList();
@@ -281,9 +343,12 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                 } else {
                     ToastUtils.toast(mContext, serverData.message).show();
                 }
+                tv_sure.setEnabled(true);
             });
         } else {
             ToastUtils.toast(mContext, "图片数组为空请重试").show();
+            tv_sure.setEnabled(true);
         }
+
     }
 }
