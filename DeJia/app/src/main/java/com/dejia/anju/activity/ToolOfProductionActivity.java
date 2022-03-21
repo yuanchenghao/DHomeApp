@@ -1,10 +1,12 @@
 package com.dejia.anju.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import com.dejia.anju.model.SearchBuildingInfo;
 import com.dejia.anju.model.UgcUploadImageInfo;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.GlideEngine;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
@@ -139,6 +142,22 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         }
         setRecycleView();
         Util.showSoftInputFromWindow(mContext, ed_title);
+        ed.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                upDataSureUi();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         ed_title.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -156,6 +175,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                     ed_title.setSelection(ed_title.getText().length());
                     ToastUtils.toast(mContext, "标题超过60个字，请修改").show();
                 }
+                upDataSureUi();
             }
 
             @Override
@@ -164,6 +184,18 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
             }
 
         });
+    }
+
+    private void upDataSureUi() {
+        if (!TextUtils.isEmpty(ed_title.getText().toString().trim())
+                && !TextUtils.isEmpty(ed.getText().toString().trim())
+                && toolSelectImgAdapter != null
+                && toolSelectImgAdapter.getData() != null
+                && toolSelectImgAdapter.getData().size() > 0) {
+            tv_sure.setTextColor(Color.parseColor("#33A7FF"));
+        } else {
+            tv_sure.setTextColor(Color.parseColor("#D7D8D9"));
+        }
     }
 
     //设置图片列表
@@ -182,6 +214,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
             public void delete(int position) {
                 toolSelectImgAdapter.getData().remove(position);
                 toolSelectImgAdapter.setImageList(toolSelectImgAdapter.getData());
+                upDataSureUi();
             }
 
             @Override
@@ -230,7 +263,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                 if (Util.isFastDoubleClick()) {
                     return;
                 }
-                finish();
+                showExitDialog();
                 break;
             case R.id.tv_sure:
                 tv_sure.setEnabled(false);
@@ -267,6 +300,27 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
         }
     }
 
+    private void showExitDialog() {
+        if (!TextUtils.isEmpty(ed_title.getText().toString().trim())
+                || !TextUtils.isEmpty(ed.getText().toString().trim())
+                || (toolSelectImgAdapter != null && toolSelectImgAdapter.getData() != null && toolSelectImgAdapter.getData().size() > 0)) {
+            DialogUtils.showExitToolDialog(mContext, "本页已经输入的的文字和图片不会被保留，你确定返回上一页吗？", "返回上一页", "留在本页", new DialogUtils.CallBack2() {
+                @Override
+                public void onYesClick() {
+                    DialogUtils.closeDialog();
+                    finish();
+                }
+
+                @Override
+                public void onNoClick() {
+                    DialogUtils.closeDialog();
+                }
+            });
+        } else {
+            finish();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -289,6 +343,7 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                 if (picResult != null && picResult.size() > 0) {
                     toolSelectImgAdapter.setImageList(picResult);
                 }
+                upDataSureUi();
                 break;
         }
     }
@@ -353,6 +408,14 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
             ToastUtils.toast(mContext, "图片数组为空请重试").show();
             tv_sure.setEnabled(true);
         }
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showExitDialog();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
