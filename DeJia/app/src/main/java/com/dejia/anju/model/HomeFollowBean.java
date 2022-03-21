@@ -261,10 +261,11 @@ public class HomeFollowBean {
 
     public static class NoFollowCreatorList {
         public String nickname;
-        public String id;
+        public String user_id;
         public String user_img;
         public int is_following;
         public String url;
+        public String auth;
 
         public String getUrl() {
             return url;
@@ -282,12 +283,20 @@ public class HomeFollowBean {
             this.nickname = nickname;
         }
 
-        public String getId() {
-            return id;
+        public String getUser_id() {
+            return user_id;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setUser_id(String user_id) {
+            this.user_id = user_id;
+        }
+
+        public String getAuth() {
+            return auth;
+        }
+
+        public void setAuth(String auth) {
+            this.auth = auth;
         }
 
         public String getUser_img() {

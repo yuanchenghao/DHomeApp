@@ -74,10 +74,11 @@
         <EditText
             android:id="@+id/ed"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textColor="#1C2125"
             android:background="@null"
             android:textSize="@dimen/sp_16"
+            android:gravity="top"
             android:textColorHint="#919699"
             android:textStyle="bold"
             android:hint="正文" />

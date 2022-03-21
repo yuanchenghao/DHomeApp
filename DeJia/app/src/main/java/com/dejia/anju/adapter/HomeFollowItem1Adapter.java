@@ -85,8 +85,8 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 ((viewHolder) holder).tv_name.setText("");
             }
-            if (!TextUtils.isEmpty(noFollowCreatorList.getId())) {
-                ((viewHolder) holder).tv_tag.setText(noFollowCreatorList.getId());
+            if (!TextUtils.isEmpty(noFollowCreatorList.getAuth())) {
+                ((viewHolder) holder).tv_tag.setText(noFollowCreatorList.getAuth());
                 ((viewHolder) holder).tv_tag.setVisibility(View.VISIBLE);
             } else {
                 ((viewHolder) holder).tv_tag.setVisibility(View.INVISIBLE);
@@ -112,7 +112,7 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
             ((viewHolder) holder).tv_follow.setOnClickListener(v -> {
                 HashMap<String, Object> hashMap = new HashMap<>(0);
-                hashMap.put("obj_id", noFollowCreatorList.getId());
+                hashMap.put("obj_id", noFollowCreatorList.getUser_id());
                 hashMap.put("obj_type", "1");
                 new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
                     if ("1".equals(serverData.code)) {
@@ -145,7 +145,7 @@ public class HomeFollowItem1Adapter extends RecyclerView.Adapter<RecyclerView.Vi
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_tag = itemView.findViewById(R.id.tv_tag);
             tv_follow = itemView.findViewById(R.id.tv_follow);
-            itemView.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getId()));
+            itemView.setOnClickListener(v -> PersonActivity.invoke(mContext, mDatas.get(getLayoutPosition()).getUser_id()));
         }
     }
 }

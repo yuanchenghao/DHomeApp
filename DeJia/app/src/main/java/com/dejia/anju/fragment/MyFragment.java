@@ -263,11 +263,13 @@ public class MyFragment extends BaseFragment {
                     tv_sex.setText("男");
                     iv_sex.setImageResource(R.mipmap.boy);
                     ll_sex.setVisibility(View.VISIBLE);
+                    ll_sex.setBackgroundResource(R.drawable.shape_33a7ff_button_2);
                 } else if ("2".equals(userInfo.getSex())) {
                     //女
                     tv_sex.setText("女");
                     iv_sex.setImageResource(R.mipmap.girl);
                     ll_sex.setVisibility(View.VISIBLE);
+                    ll_sex.setBackgroundResource(R.drawable.shape_ffff8fac_button_2);
                 } else {
                     ll_sex.setVisibility(View.GONE);
                 }

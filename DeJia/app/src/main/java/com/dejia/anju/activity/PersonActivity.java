@@ -1,6 +1,7 @@
 package com.dejia.anju.activity;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -11,6 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SizeUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.MyArticleAdapter;
 import com.dejia.anju.adapter.RenZhengListAdapter;
@@ -59,7 +63,7 @@ public class PersonActivity extends BaseActivity {
     @BindView(R.id.ll_title)
     LinearLayout ll_title;
     @BindView(R.id.iv_person)
-    SimpleDraweeView iv_person;
+    ImageView iv_person;
     @BindView(R.id.tv_name)
     TextView tv_name;
     @BindView(R.id.ll_sex)
@@ -150,11 +154,11 @@ public class PersonActivity extends BaseActivity {
         isFollowApi.getCallBack(mContext, hashMap, new BaseCallBackListener<ServerData>() {
             @Override
             public void onSuccess(@Nullable ServerData serverData) {
-                if("1".equals(serverData.code)){
-                    FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data,FollowAndCancelInfo.class);
-                    if(followAndCancelInfo != null && followAndCancelInfo.getFollowing().equals("1")){
+                if ("1".equals(serverData.code)) {
+                    FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
+                    if (followAndCancelInfo != null && followAndCancelInfo.getFollowing().equals("1")) {
                         tv_follow_head.setText("已关注");
-                    }else{
+                    } else {
                         tv_follow_head.setText("关注");
                     }
                 }
@@ -282,9 +286,9 @@ public class PersonActivity extends BaseActivity {
                 tv_renzheng_title2.setText("");
             }
             if (!TextUtils.isEmpty(userInfo.getImg())) {
-                iv_person.setController(Fresco.newDraweeControllerBuilder().setUri(userInfo.getImg()).setAutoPlayAnimations(true).build());
+                Glide.with(mContext).load(userInfo.getImg()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(iv_person);
             } else {
-                iv_person.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.icon_default).setAutoPlayAnimations(true).build());
+                Glide.with(mContext).load(R.mipmap.icon_default).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(iv_person);
             }
             if (!TextUtils.isEmpty(userInfo.getNickname())) {
                 tv_name.setText(userInfo.getNickname());
@@ -295,11 +299,13 @@ public class PersonActivity extends BaseActivity {
                     tv_sex.setText("男");
                     iv_sex.setImageResource(R.mipmap.boy);
                     ll_sex.setVisibility(View.VISIBLE);
+                    ll_sex.setBackgroundResource(R.drawable.shape_33a7ff_button_2);
                 } else if ("2".equals(userInfo.getSex())) {
                     //女
                     tv_sex.setText("女");
                     iv_sex.setImageResource(R.mipmap.girl);
                     ll_sex.setVisibility(View.VISIBLE);
+                    ll_sex.setBackgroundResource(R.drawable.shape_ffff8fac_button_2);
                 } else {
                     ll_sex.setVisibility(View.GONE);
                 }
@@ -361,8 +367,8 @@ public class PersonActivity extends BaseActivity {
         }
     }
 
-    @SuppressLint("WrongConstant")
-    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow, R.id.ll_renzheng, R.id.ll_content,R.id.tv_follow_head})
+    @SuppressLint({"WrongConstant", "NewApi"})
+    @OnClick({R.id.iv_scan_code, R.id.edit_info, R.id.ll_introduce, R.id.iv_share, R.id.iv_close, R.id.ll_context, R.id.ll_zan, R.id.ll_fans, R.id.ll_follow, R.id.ll_renzheng, R.id.ll_content, R.id.tv_follow_head, R.id.iv_person})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_scan_code:
@@ -469,12 +475,21 @@ public class PersonActivity extends BaseActivity {
                         FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
                         if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing()) && followAndCancelInfo.getFollowing().equals("0")) {
                             tv_follow_head.setText("关注");
-                        }else{
+                        } else {
                             tv_follow_head.setText("已关注");
                         }
                     }
                     ToastUtils.toast(mContext, serverData.message).show();
                 });
+                break;
+            case R.id.iv_person:
+                Intent intent = new Intent(this, UserImageActivity.class);
+                intent.putExtra("imgUrl", userInfo.getImg());
+                if (android.os.Build.VERSION.SDK_INT >= 21) {
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this, iv_person, "showImage").toBundle());
+                }else{
+                    startActivity(intent);
+                }
                 break;
         }
     }

@@ -5,17 +5,22 @@
     android:background="#303233"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll1"
+    <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="220dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:overScrollMode="never"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
@@ -25,9 +30,8 @@
             android:id="@+id/iv_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="55dp"
-            android:layout_marginRight="150dp"
             android:layout_marginBottom="@dimen/dp_31"
             android:src="@mipmap/add_post_alert" />
     </LinearLayout>

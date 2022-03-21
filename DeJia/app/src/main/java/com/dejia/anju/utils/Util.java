@@ -17,6 +17,7 @@ import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.format.Time;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -73,6 +74,7 @@ public final class Util {
             return false;
         }
     }
+
     /**
      * 判断程序是否实在前台运行
      *
@@ -100,6 +102,7 @@ public final class Util {
         }
         return false;
     }
+
     /**
      * 赋值剪贴板内容
      */
@@ -113,20 +116,21 @@ public final class Util {
             }
         }
     }
+
     /**
      * 获取IMEI号
      *
      * @return
      */
     public static String getImei() {
-        if(KVUtils.getInstance().decodeInt("privacy_agreement") == 1){
+        if (KVUtils.getInstance().decodeInt("privacy_agreement") == 1) {
             String imei = ImeiUtils.getInstance().getImei();
             if (TextUtils.isEmpty(imei)) {
                 imei = ImeiUtils.getBringItem2();
                 ImeiUtils.getInstance().saveLocalItem(imei);
             }
             return imei;
-        }else{
+        } else {
             return "";
         }
     }
@@ -226,8 +230,8 @@ public final class Util {
         Cookie yuemeiinfo = new Cookie.Builder().name("dejiainfo").value("").domain("chat.yuemei.com").expiresAt(1544493729973L).path("/").build();
         cookieStore.saveCookie(httpUrl, yuemeiinfo);
 
-        KVUtils.getInstance().encode(Constants.UID,"0");
-        KVUtils.getInstance().encode("user","");
+        KVUtils.getInstance().encode(Constants.UID, "0");
+        KVUtils.getInstance().encode("user", "");
         Util.setYuemeiInfo("");
     }
 
@@ -237,7 +241,7 @@ public final class Util {
      * @return
      */
     public static String getYuemeiInfo() {
-        return KVUtils.getInstance().decodeString(Constants.YUEMEIINFO,"0").replace("+", "%2B");
+        return KVUtils.getInstance().decodeString(Constants.YUEMEIINFO, "0").replace("+", "%2B");
     }
 
     /**
@@ -304,7 +308,7 @@ public final class Util {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getAppImei() {
         String imei = null;
-        if(KVUtils.getInstance().decodeInt("privacy_agreement", 0) == 1){
+        if (KVUtils.getInstance().decodeInt("privacy_agreement", 0) == 1) {
             try {
                 TelephonyManager tm = (TelephonyManager) DeJiaApp.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
                 imei = tm.getImei();
@@ -313,7 +317,7 @@ public final class Util {
                 imei = "";
             }
             return imei;
-        }else{
+        } else {
             return "";
         }
     }
@@ -375,6 +379,7 @@ public final class Util {
 
     /**
      * 将时间戳转换为时间(判断是java时间戳还是php时间戳)
+     *
      * @param s
      * @return
      */
@@ -575,16 +580,16 @@ public final class Util {
     /**
      * 关键字高亮变色
      *
-     * @param color 变化的色值
-     * @param text 文字
+     * @param color   变化的色值
+     * @param text    文字
      * @param keyword 文字中的关键字
      * @return 结果SpannableString
      */
     public static SpannableString matcherSearchTitle(int color, String text, String keyword) {
         SpannableString s = new SpannableString(text);
-        keyword=escapeExprSpecialWord(keyword);
-        text=escapeExprSpecialWord(text);
-        if (text.contains(keyword)&&!TextUtils.isEmpty(keyword)){
+        keyword = escapeExprSpecialWord(keyword);
+        text = escapeExprSpecialWord(text);
+        if (text.contains(keyword) && !TextUtils.isEmpty(keyword)) {
             try {
                 Pattern p = Pattern.compile(keyword);
                 Matcher m = p.matcher(s);
@@ -593,7 +598,7 @@ public final class Util {
                     int end = m.end();
                     s.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
             }
         }
         return s;
@@ -607,7 +612,7 @@ public final class Util {
      */
     public static String escapeExprSpecialWord(String keyword) {
         if (!TextUtils.isEmpty(keyword)) {
-            String[] fbsArr = { "\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|" };
+            String[] fbsArr = {"\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|"};
             for (String key : fbsArr) {
                 if (keyword.contains(key)) {
                     keyword = keyword.replace(key, "\\" + key);
@@ -615,5 +620,48 @@ public final class Util {
             }
         }
         return keyword;
+    }
+
+    /**
+     * 判断当前系统时间是否在指定时间的范围内
+     *
+     * @param beginHour 开始小时，例如22
+     * @param beginMin  开始小时的分钟数，例如30
+     * @param endHour   结束小时，例如 8
+     * @param endMin    结束小时的分钟数，例如0
+     * @return true表示在范围内，否则false
+     */
+    public static boolean isCurrentInTimeScope(int beginHour, int beginMin, int endHour, int endMin) {
+        boolean result = false;
+        final long aDayInMillis = 1000 * 60 * 60 * 24;
+        final long currentTimeMillis = System.currentTimeMillis();
+
+        Time now = new Time();
+        now.set(currentTimeMillis);
+
+        Time startTime = new Time();
+        startTime.set(currentTimeMillis);
+        startTime.hour = beginHour;
+        startTime.minute = beginMin;
+
+        Time endTime = new Time();
+        endTime.set(currentTimeMillis);
+        endTime.hour = endHour;
+        endTime.minute = endMin;
+
+        if (!startTime.before(endTime)) {
+// 跨天的特殊情况（比如22:00-8:00）
+            startTime.set(startTime.toMillis(true) - aDayInMillis);
+            result = !now.before(startTime) && !now.after(endTime); // startTime <= now <= endTime
+            Time startTimeInThisDay = new Time();
+            startTimeInThisDay.set(startTime.toMillis(true) + aDayInMillis);
+            if (!now.before(startTimeInThisDay)) {
+                result = true;
+            }
+        } else {
+// 普通情况(比如 8:00 - 14:00)
+            result = !now.before(startTime) && !now.after(endTime); // startTime <= now <= endTime
+        }
+        return result;
     }
 }

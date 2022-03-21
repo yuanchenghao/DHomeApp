@@ -78,16 +78,14 @@
                         android:layout_height="wrap_content"
                         android:background="#33A7FF">
 
-                        <com.facebook.drawee.view.SimpleDraweeView
+                        <ImageView
                             android:id="@+id/iv_person"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_marginLeft="@dimen/dp_21"
                             android:layout_marginTop="@dimen/dp_11"
                             android:layout_marginBottom="@dimen/dp_24"
-                            app:fadeDuration="100"
-                            app:retryImageScaleType="centerCrop"
-                            app:roundAsCircle="true" />
+                            android:transitionName="showImage" />
 
                         <TextView
                             android:id="@+id/tv_name"

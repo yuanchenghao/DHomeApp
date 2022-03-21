@@ -30,8 +30,7 @@ public class CircleFragment extends BaseWebViewFragment {
     SmartRefreshLayout mRefreshWebView;
     @BindView(R.id.ll_web)
     LinearLayout ll_web;
-    @BindView(R.id.ll)
-    LinearLayout ll;
+
     private BaseWebViewClientMessage clientManager;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -113,7 +112,7 @@ public class CircleFragment extends BaseWebViewFragment {
         loadUrl(FinalConstant1.HTML_CIRCLE);
     }
 
-    public void loadUrl(String url){
+    public void loadUrl(String url) {
         WebSignData addressAndHead = SignUtils.getAddressAndHead(url);
         mWebView.loadUrl(addressAndHead.getUrl(), addressAndHead.getHttpHeaders());
     }

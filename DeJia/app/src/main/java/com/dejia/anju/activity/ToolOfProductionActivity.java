@@ -238,19 +238,19 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
                     return;
                 }
                 if (TextUtils.isEmpty(ed_title.getText().toString().trim())) {
-                    ToastUtils.toast(mContext, "请输入标题").show();
+                    ToastUtils.toast(mContext, "请填写标题").show();
                     tv_sure.setEnabled(true);
                     return;
                 }
                 if (TextUtils.isEmpty(ed.getText().toString().trim())) {
-                    ToastUtils.toast(mContext, "请输入内容").show();
+                    ToastUtils.toast(mContext, "请填写正文").show();
                     tv_sure.setEnabled(true);
                     return;
                 }
                 if (toolSelectImgAdapter == null
                         || toolSelectImgAdapter.getData() == null
                         || toolSelectImgAdapter.getData().size() <= 0) {
-                    ToastUtils.toast(mContext, "请至少添加一张图片").show();
+                    ToastUtils.toast(mContext, "请至少上传一张图片").show();
                     tv_sure.setEnabled(true);
                     return;
                 }
@@ -338,7 +338,11 @@ public class ToolOfProductionActivity extends BaseActivity implements OnClickLis
             //            maps.put("rel_house_type","");
             ugcSaveApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
-                    ToastUtils.toast(mContext, "上传文章成功").show();
+                    if (Util.isCurrentInTimeScope(0, 0, 9, 0)) {
+                        ToastUtils.toast(mContext, "文章已提交，通过审核后可见").show();
+                    } else {
+                        ToastUtils.toast(mContext, "文章已发表").show();
+                    }
                     finish();
                 } else {
                     ToastUtils.toast(mContext, serverData.message).show();
