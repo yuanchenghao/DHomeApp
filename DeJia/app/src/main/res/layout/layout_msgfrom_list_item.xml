@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/chat_list_left_shap"
+            android:textColor="@color/black"
             android:layout_marginLeft="@dimen/dp_10"
             android:paddingLeft="@dimen/dp_14"
             android:paddingRight="@dimen/dp_14"
