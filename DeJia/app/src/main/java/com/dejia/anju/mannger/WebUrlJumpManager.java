@@ -210,6 +210,20 @@ public class WebUrlJumpManager {
                             mContext.startActivity(new Intent(mContext, MainActivity.class));
                             EventBus.getDefault().post(new Event<>(6));
                             break;
+                        case "share":
+                            DialogUtils.showShareDialog(mContext, new DialogUtils.CallBack4() {
+                                @Override
+                                public void onShare1Click() {
+                                    ToastUtils.toast(mContext,"微信朋友").show();
+                                }
+
+                                @Override
+                                public void onShare2Click() {
+                                    ToastUtils.toast(mContext,"微信朋友").show();
+                                }
+                            });
+                            break;
+                        default:
                     }
                 }
             } else {

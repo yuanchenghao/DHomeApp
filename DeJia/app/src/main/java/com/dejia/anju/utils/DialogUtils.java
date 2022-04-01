@@ -219,7 +219,7 @@ public class DialogUtils {
             return;
         }
         closeDialog();
-        dialog = new Dialog(context, R.style.AnimBottomDialog);
+        dialog = new Dialog(context, R.style.MyDialog1);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
@@ -251,7 +251,7 @@ public class DialogUtils {
         ImageView iv_close = inflate.findViewById(R.id.iv_close);
         YMLinearLayoutManager layoutManager = new YMLinearLayoutManager(context, RecyclerView.VERTICAL, false);
         rv.setLayoutManager(layoutManager);
-        AddPostAlertAdapter addPostAlertAdapter = new AddPostAlertAdapter(context,R.layout.item_add_post_alert, addPostAlertInfo.getAdd_post_alert());
+        AddPostAlertAdapter addPostAlertAdapter = new AddPostAlertAdapter(context, R.layout.item_add_post_alert, addPostAlertInfo.getAdd_post_alert());
         rv.setAdapter(addPostAlertAdapter);
         addPostAlertAdapter.setOnItemClickListener((adapter, view, position) -> {
             callBack.onInvokeClick(addPostAlertInfo.getAdd_post_alert().get(position).getUrl());
@@ -269,6 +269,43 @@ public class DialogUtils {
         }
     }
 
+
+    //分享
+    public static void showShareDialog(final Context context, final CallBack4 callBack) {
+        if (context == null) {
+            return;
+        }
+        closeDialog();
+        dialog = new Dialog(context, R.style.MagicDialogTheme);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            try {
+                Class decorViewClazz = Class.forName("com.android.internal.policy.DecorView");
+                Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
+                field.setAccessible(true);
+                //去掉高版本蒙层改为透明
+                field.setInt(dialog.getWindow().getDecorView(), Color.TRANSPARENT);
+            } catch (Exception e) {
+            }
+        }
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        View inflate = View.inflate(context, R.layout.dialog_share, null);
+        LinearLayout ll_friend = inflate.findViewById(R.id.ll_friend);
+        LinearLayout ll_circle = inflate.findViewById(R.id.ll_circle);
+        dialog.setContentView(inflate);
+        dialog.setCanceledOnTouchOutside(true);
+        ll_friend.setOnClickListener(v -> callBack.onShare1Click());
+        ll_circle.setOnClickListener(v -> callBack.onShare2Click());
+        if (dialog != null) {
+            dialog.show();
+        }
+    }
+
     public interface CallBack {
         void onClick();
     }
@@ -277,6 +314,12 @@ public class DialogUtils {
         void onYesClick();
 
         void onNoClick();
+    }
+
+    public interface CallBack4 {
+        void onShare1Click();
+
+        void onShare2Click();
     }
 
     public interface CallBack3 {
