@@ -22,6 +22,8 @@ import com.dejia.anju.mannger.ImagePipelineConfigUtils;
 import com.dejia.anju.utils.KVUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.qiyi.basecore.taskmanager.ParallelTask;
 
@@ -126,13 +128,17 @@ public class DeJiaApp extends Application {
                     frescoConfig();
                 })
                 .addSubTask(() -> initJVerificationInterface())
-                .addSubTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        StatService.setAuthorizedState(getContext(),false);
-                    }
-                })
+                .addSubTask(() -> StatService.setAuthorizedState(getContext(), false))
+                .addSubTask(() -> initWeChat())
                 .execute();
+    }
+
+    //初始化微信SDK
+    private void initWeChat() {
+//        // 三个参数分别是上下文、应用的appId、是否检查签名（默认为false）
+//        IWXAPI mWxApi = WXAPIFactory.createWXAPI(this, "你的appId", true);
+//        // 注册
+//        mWxApi.registerApp("你的appId");
     }
 
     /**

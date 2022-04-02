@@ -246,6 +246,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     //百度统计
     implementation 'com.baidu.mobstat:mtj-sdk:latest.integration'
+    //微信
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }
 repositories {
     mavenCentral()

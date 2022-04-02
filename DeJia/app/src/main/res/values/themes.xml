@@ -25,6 +25,10 @@
         <item name="android:windowDisablePreview">true</item>
     </style>
 
+    <!-- 639版本主题 Application theme. -->
+    <style name="AppTheme639" parent="QMUI.Compat.NoActionBar">
+        <item name="qmui_config_color_blue">@color/white</item>
+    </style>
 
     <style name="MagicDialogTheme" parent="@android:style/Theme.Dialog">
         <!-- 边框 -->

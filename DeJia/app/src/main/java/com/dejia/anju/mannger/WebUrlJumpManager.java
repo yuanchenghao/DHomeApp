@@ -24,6 +24,7 @@ import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.MapButtomDialogView;
+import com.dejia.anju.utils.ShareUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
@@ -32,6 +33,7 @@ import com.lzy.okgo.model.HttpHeaders;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -211,15 +213,23 @@ public class WebUrlJumpManager {
                             EventBus.getDefault().post(new Event<>(6));
                             break;
                         case "share":
+                            if (!TextUtils.isEmpty(webViewData.getRequest_param())) {
+                                Map<String, Object> map = JSONUtil.getMapForJson(webViewData.getRequest_param());
+                                String obj_type = map.get("obj_type") + "";
+                                String obj_id = map.get("obj_id") + "";
+                            }
+                            //缺请求分享数据接口
                             DialogUtils.showShareDialog(mContext, new DialogUtils.CallBack4() {
                                 @Override
                                 public void onShare1Click() {
-                                    ToastUtils.toast(mContext,"微信朋友").show();
+                                    //微信朋友
+                                    DialogUtils.closeDialog();
                                 }
 
                                 @Override
                                 public void onShare2Click() {
-                                    ToastUtils.toast(mContext,"微信朋友").show();
+                                    //微信朋友圈
+                                    DialogUtils.closeDialog();
                                 }
                             });
                             break;

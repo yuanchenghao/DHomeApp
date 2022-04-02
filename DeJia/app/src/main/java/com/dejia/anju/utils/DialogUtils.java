@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -276,7 +277,7 @@ public class DialogUtils {
             return;
         }
         closeDialog();
-        dialog = new Dialog(context, R.style.MagicDialogTheme);
+        dialog = new Dialog(context, R.style.MyDialog1);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
@@ -294,6 +295,13 @@ public class DialogUtils {
             }
         }
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(params);
         View inflate = View.inflate(context, R.layout.dialog_share, null);
         LinearLayout ll_friend = inflate.findViewById(R.id.ll_friend);
         LinearLayout ll_circle = inflate.findViewById(R.id.ll_circle);
