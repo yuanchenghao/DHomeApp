@@ -12,6 +12,8 @@ import com.dejia.anju.activity.OneClickLoginActivity2;
 import com.dejia.anju.activity.PersonActivity;
 import com.dejia.anju.activity.SearchActivity;
 import com.dejia.anju.activity.WebViewActivity;
+import com.dejia.anju.api.GetShareDataApi;
+import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.Constants;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.model.UserInfo;
@@ -217,21 +219,33 @@ public class WebUrlJumpManager {
                                 Map<String, Object> map = JSONUtil.getMapForJson(webViewData.getRequest_param());
                                 String obj_type = map.get("obj_type") + "";
                                 String obj_id = map.get("obj_id") + "";
-                            }
-                            //缺请求分享数据接口
-                            DialogUtils.showShareDialog(mContext, new DialogUtils.CallBack4() {
-                                @Override
-                                public void onShare1Click() {
-                                    //微信朋友
-                                    DialogUtils.closeDialog();
-                                }
+                                if(!TextUtils.isEmpty(obj_type) && !TextUtils.isEmpty(obj_id)){
+                                    HashMap<String, Object> paramHash = new HashMap<>();
+                                    paramHash.put("obj_type", obj_type);
+                                    paramHash.put("obj_id", obj_id);
+//                                    new GetShareDataApi().getCallBack(mContext, paramHash, new BaseCallBackListener() {
+//                                        @Override
+//                                        public void onSuccess(Object o) {
+//
+//                                        }
+//                                    });
+                                    DialogUtils.showShareDialog(mContext, new DialogUtils.CallBack4() {
+                                        @Override
+                                        public void onShare1Click() {
+                                            //微信朋友
+                                            DialogUtils.closeDialog();
+                                        }
 
-                                @Override
-                                public void onShare2Click() {
-                                    //微信朋友圈
-                                    DialogUtils.closeDialog();
+                                        @Override
+                                        public void onShare2Click() {
+                                            //微信朋友圈
+                                            DialogUtils.closeDialog();
+                                        }
+                                    });
+                                }else{
+                                    ToastUtils.toast(mContext,"参数错误").show();
                                 }
-                            });
+                            }
                             break;
                         default:
                     }
