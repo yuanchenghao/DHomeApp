@@ -143,7 +143,7 @@ android {
         abi {
             enable false
             reset()
-            include "armeabi-v7a" //select ABIs to build APKs for
+            include "armeabi-v7a", "arm64-v8a"
             universalApk true //generate an additional APK that contains all the ABIs
         }
     }
