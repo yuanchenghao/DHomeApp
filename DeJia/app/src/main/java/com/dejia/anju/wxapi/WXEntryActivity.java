@@ -40,7 +40,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wxentry);
 
-        wxapi = WXAPIFactory.createWXAPI(this, "你的appId");
+        wxapi = WXAPIFactory.createWXAPI(this, "wx75e82ff2703afa28");
         wxapi.handleIntent(getIntent(), this);
     }
 

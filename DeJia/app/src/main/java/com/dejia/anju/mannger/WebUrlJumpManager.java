@@ -3,9 +3,11 @@ package com.dejia.anju.mannger;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
 import com.dejia.anju.MainActivity;
+import com.dejia.anju.R;
 import com.dejia.anju.activity.BuildingImageActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.OneClickLoginActivity2;
@@ -234,12 +236,14 @@ public class WebUrlJumpManager {
                                         public void onShare1Click() {
                                             //微信朋友
                                             DialogUtils.closeDialog();
+                                            ShareUtils.shareWeb(mContext,"https://www.baidu.com/","测试","标题", BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher),"1");
                                         }
 
                                         @Override
                                         public void onShare2Click() {
                                             //微信朋友圈
                                             DialogUtils.closeDialog();
+                                            ShareUtils.shareWeb(mContext,"https://www.baidu.com/","测试","标题", BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher),"2");
                                         }
                                     });
                                 }else{

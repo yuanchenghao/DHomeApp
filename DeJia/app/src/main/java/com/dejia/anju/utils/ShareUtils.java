@@ -23,16 +23,15 @@ public class ShareUtils {
      * 分享网页类型至微信
      *
      * @param context 上下文
-     * @param appId   微信的appId
      * @param webUrl  网页的url
      * @param title   网页标题
      * @param content 网页描述
      * @param bitmap  位图
      * @param type    类型 1好友 2朋友圈
      */
-    public static void shareWeb(Context context, String appId, String webUrl, String title, String content, Bitmap bitmap, String type) {
+    public static void shareWeb(Context context, String webUrl, String title, String content, Bitmap bitmap, String type) {
         // 通过appId得到IWXAPI这个对象
-        IWXAPI wxapi = WXAPIFactory.createWXAPI(context, appId);
+        IWXAPI wxapi = WXAPIFactory.createWXAPI(context, "wx75e82ff2703afa28");
         // 检查手机或者模拟器是否安装了微信
         if (!wxapi.isWXAppInstalled()) {
             ToastUtils.toast(context, "您还没有安装微信").show();

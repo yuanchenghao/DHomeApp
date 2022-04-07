@@ -135,10 +135,10 @@ public class DeJiaApp extends Application {
 
     //初始化微信SDK
     private void initWeChat() {
-//        // 三个参数分别是上下文、应用的appId、是否检查签名（默认为false）
-//        IWXAPI mWxApi = WXAPIFactory.createWXAPI(this, "你的appId", true);
-//        // 注册
-//        mWxApi.registerApp("你的appId");
+        // 三个参数分别是上下文、应用的appId、是否检查签名（默认为false）
+        IWXAPI mWxApi = WXAPIFactory.createWXAPI(this, "wx75e82ff2703afa28", true);
+        // 注册
+        mWxApi.registerApp("wx75e82ff2703afa28");
     }
 
     /**
