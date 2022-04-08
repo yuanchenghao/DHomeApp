@@ -120,8 +120,8 @@ public class OneClickLoginActivity2 extends Activity {
         otherLogin.setLayoutParams(layoutParams);
 
         List<PrivacyBean> beanArrayList = new ArrayList<>();
-        beanArrayList.add(new PrivacyBean("《得家使用协议》", "http://" + TEST_BASE_URL + "/vue/userProtocol/", ""));
-        beanArrayList.add(new PrivacyBean("《得家用户隐私协议》", "http://" + TEST_BASE_URL + "/vue/privacyAgreement/", ""));
+        beanArrayList.add(new PrivacyBean("《得家使用协议》", "https://icon.dejiaapp.com/front/dejia-user-app/userProtocal.html", ""));
+        beanArrayList.add(new PrivacyBean("《得家用户隐私协议》", "https://icon.dejiaapp.com/front/dejia-user-app/protocal.html", ""));
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
                 .setAuthBGImgPath("main_bg")
                 .setNavColor(Color.parseColor("#FFFFFF"))

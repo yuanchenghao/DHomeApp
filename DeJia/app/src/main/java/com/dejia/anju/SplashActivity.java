@@ -36,6 +36,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
+import cn.jiguang.api.utils.JCollectionAuth;
+import cn.jiguang.verifysdk.api.JVerificationInterface;
 
 import static android.app.Notification.EXTRA_CHANNEL_ID;
 import static android.provider.Settings.EXTRA_APP_PACKAGE;
@@ -78,6 +80,7 @@ public class SplashActivity extends BaseActivity {
                 @Override
                 public void onCancelClick(View v) {
                     //不同意
+                    JCollectionAuth.setAuth(mContext,false);
                     android.os.Process.killProcess(android.os.Process.myPid());
                     System.exit(1);
                 }
@@ -86,6 +89,7 @@ public class SplashActivity extends BaseActivity {
                 public void onConfirmClick(View v) {
                     //同意
                     KVUtils.getInstance().encode("privacy_agreement", 1);
+                    JCollectionAuth.setAuth(mContext,true);
                     privacyAgreementDialog.dismiss();
                     checkPermsission();
                 }
@@ -242,7 +246,16 @@ public class SplashActivity extends BaseActivity {
                     //接口注册
                     registeredInterface();
                 })
+                .addSubTask(() -> initJVerificationInterface())
                 .execute();
+    }
+
+    /**
+     * 极光一键登录
+     */
+    private void initJVerificationInterface() {
+        JVerificationInterface.setDebugMode(false);
+        JVerificationInterface.init(this, 5000, (code, msg) -> AppLog.i("code = " + code + " msg = " + msg));
     }
 
     private void initMdidSdk() {
