@@ -10,8 +10,8 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:requestLegacyExternalStorage = "true"
         android:theme="@style/AppTheme">
         <!--启动页-->
         <activity
@@ -22,6 +22,16 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!--deep-link - [scheme]://[host]/[path]?[query]>-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="dejiaapp.com"
+                    android:scheme="dejiaschemes" />
+            </intent-filter>
+
         </activity>
         <!--主页面-->
         <activity
@@ -82,8 +92,7 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.dejia.anju.activity.UgcImgDialogActivity"
-            android:theme="@style/DialogActivityStyle">
-        </activity>
+            android:theme="@style/DialogActivityStyle"></activity>
         <activity
             android:name="com.dejia.anju.activity.UserImageActivity"
             android:screenOrientation="portrait"></activity>
@@ -93,24 +102,24 @@
         <!-- since 2.1.1 optional 可选项，通过screenOrientation设置授权页面横竖屏展示  -->
         <activity
             android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"
-            android:theme="@android:style/Theme.Holo.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:launchMode="singleTop">
-        </activity>
+            android:theme="@android:style/Theme.Holo.NoActionBar"></activity>
         <!-- since 2.0.0 optional 可选项，使用一键登录功能必须添加  -->
         <!-- since 2.1.1 optional 可选项，通过screenOrientation设置授权页面横竖屏展示  -->
-        <activity android:name="cn.jiguang.verifysdk.CtLoginActivity"
+        <activity
+            android:name="cn.jiguang.verifysdk.CtLoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Holo.NoActionBar"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:launchMode="singleTop">
-        </activity>
+            android:theme="@android:style/Theme.Holo.NoActionBar"></activity>
         //极光推送相关
         <!-- Since JCore2.0.0 Required SDK核心功能-->
         <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
         <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
-        <service android:name="com.dejia.anju.service.PushService"
+        <service
+            android:name="com.dejia.anju.service.PushService"
             android:enabled="true"
             android:exported="false"
             android:process=":pushcore">
@@ -125,7 +134,7 @@
         <receiver
             android:name="com.dejia.anju.receiver.MessageReceiver"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
                 <category android:name="com.dejia.anju" />
@@ -133,11 +142,13 @@
         </receiver>
 
         //高德地图
-        <service android:name="com.amap.api.location.APSService"
+        <service
+            android:name="com.amap.api.location.APSService"
             android:foregroundServiceType="location"></service>
-        <meta-data android:name="com.amap.api.v2.apikey"
-            android:value="c57834b4f4b1849f8763636613d70f8f">
-        </meta-data>
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="c57834b4f4b1849f8763636613d70f8f"></meta-data>
         <meta-data
             android:name="BaiduMobAd_STAT_ID"
             android:value="dcb78f01ed" />
@@ -145,35 +156,36 @@
         <meta-data
             android:name="BaiduMobAd_EXCEPTION_LOG"
             android:value="true" />
-<!--        &lt;!&ndash; 渠道商编号 &ndash;&gt;-->
-<!--        <meta-data-->
-<!--            android:name="BaiduMobAd_CHANNEL"-->
-<!--            android:value="Baidu Market" />-->
-<!--        &lt;!&ndash; 日志仅在wifi网络下发送，默认为false &ndash;&gt;-->
-<!--        <meta-data-->
-<!--            android:name="BaiduMobAd_ONLY_WIFI"-->
-<!--            android:value="false" />-->
+        <!--        &lt;!&ndash; 渠道商编号 &ndash;&gt;-->
+        <!--        <meta-data-->
+        <!--            android:name="BaiduMobAd_CHANNEL"-->
+        <!--            android:value="Baidu Market" />-->
+        <!--        &lt;!&ndash; 日志仅在wifi网络下发送，默认为false &ndash;&gt;-->
+        <!--        <meta-data-->
+        <!--            android:name="BaiduMobAd_ONLY_WIFI"-->
+        <!--            android:value="false" />-->
 
-<!--        &lt;!&ndash; 是否获取基站位置信息 ,默认为true &ndash;&gt;-->
-<!--        <meta-data-->
-<!--            android:name="BaiduMobAd_CELL_LOCATION"-->
-<!--            android:value="true" />-->
+        <!--        &lt;!&ndash; 是否获取基站位置信息 ,默认为true &ndash;&gt;-->
+        <!--        <meta-data-->
+        <!--            android:name="BaiduMobAd_CELL_LOCATION"-->
+        <!--            android:value="true" />-->
 
-<!--        &lt;!&ndash; 是否获取GPS位置信息，默认为true &ndash;&gt;-->
-<!--        <meta-data-->
-<!--            android:name="BaiduMobAd_GPS_LOCATION"-->
-<!--            android:value="true" />-->
+        <!--        &lt;!&ndash; 是否获取GPS位置信息，默认为true &ndash;&gt;-->
+        <!--        <meta-data-->
+        <!--            android:name="BaiduMobAd_GPS_LOCATION"-->
+        <!--            android:value="true" />-->
 
-<!--        &lt;!&ndash; 是否获取WIFI位置信息，默认为true &ndash;&gt;-->
-<!--        <meta-data-->
-<!--            android:name="BaiduMobAd_WIFI_LOCATION"-->
-<!--            android:value="true" />-->
+        <!--        &lt;!&ndash; 是否获取WIFI位置信息，默认为true &ndash;&gt;-->
+        <!--        <meta-data-->
+        <!--            android:name="BaiduMobAd_WIFI_LOCATION"-->
+        <!--            android:value="true" />-->
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
         <meta-data
             android:name="ScopedStorage"
             android:value="true" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.FileProvider"
@@ -184,8 +196,11 @@
                 android:resource="@xml/provider_paths" />
         </provider>
         <!-- 解决 java.lang.NoClassDefFoundError: Failed resolution of: Lorg/apache/http/util/-->
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
@@ -209,16 +224,24 @@
     <!--用于申请调用A-GPS模块-->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
     <!--如果设置了target >= 28 如果需要启动后台定位则必须声明这个权限-->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!--如果您的应用需要后台定位权限，且有可能运行在Android Q设备上,并且设置了target>28，必须增加这个权限声明-->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="replace" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="replace" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        tools:node="replace" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:node="replace" />
 
     <!-- Required -->
-    <meta-data android:name="JPUSH_APPKEY" android:value="b0284645123918d186e6e164"/>
-    <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
+    <meta-data
+        android:name="JPUSH_APPKEY"
+        android:value="b0284645123918d186e6e164" />
+    <meta-data
+        android:name="JPUSH_CHANNEL"
+        android:value="developer-default" />
 
 
     //极光认证
