@@ -11,11 +11,6 @@ import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 import androidx.appcompat.widget.AppCompatImageView;
 
 
-/**
- * 自定义下拉刷新头1
- * Created by 裴成浩 on 2018/2/23.
- */
-
 public class CustomRefresh extends AppCompatImageView implements QMUIPullRefreshLayout.IRefreshView {
 
     private String TAG = "CustomRefresh";
