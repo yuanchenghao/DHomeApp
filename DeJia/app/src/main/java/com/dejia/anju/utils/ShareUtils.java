@@ -4,11 +4,17 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * 文 件 名: ShareUtils
@@ -29,7 +35,7 @@ public class ShareUtils {
      * @param bitmap  位图
      * @param type    类型 1好友 2朋友圈
      */
-    public static void shareWeb(Context context, String webUrl, String title, String content, Bitmap bitmap, String type) {
+    public static void shareWeb(Context context, String webUrl, String title, String content, String imgUrl, String type) {
         // 通过appId得到IWXAPI这个对象
         IWXAPI wxapi = WXAPIFactory.createWXAPI(context, "wx75e82ff2703afa28");
         // 检查手机或者模拟器是否安装了微信
@@ -47,23 +53,27 @@ public class ShareUtils {
         // 填写网页标题、描述、位图
         msg.title = title;
         msg.description = content;
-        // 如果没有位图，可以传null，会显示默认的图片
-        msg.setThumbImage(bitmap);
-
-        // 构造一个Req
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        // transaction用于唯一标识一个请求（可自定义）
-        req.transaction = "webpage";
-        // 上文的WXMediaMessage对象
-        req.message = msg;
-        // SendMessageToWX.Req.WXSceneSession是分享到好友会话
-        // SendMessageToWX.Req.WXSceneTimeline是分享到朋友圈
-        if (!TextUtils.isEmpty(type) && "1".equals(type)) {
-            req.scene = SendMessageToWX.Req.WXSceneSession;
-        } else {
-            req.scene = SendMessageToWX.Req.WXSceneTimeline;
-        }
-        // 向微信发送请求
-        wxapi.sendReq(req);
+        Glide.with(context).asBitmap().load(imgUrl).into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                // 如果没有位图，可以传null，会显示默认的图片
+                msg.setThumbImage(resource);
+                // 构造一个Req
+                SendMessageToWX.Req req = new SendMessageToWX.Req();
+                // transaction用于唯一标识一个请求（可自定义）
+                req.transaction = "webpage";
+                // 上文的WXMediaMessage对象
+                req.message = msg;
+                // SendMessageToWX.Req.WXSceneSession是分享到好友会话
+                // SendMessageToWX.Req.WXSceneTimeline是分享到朋友圈
+                if (!TextUtils.isEmpty(type) && "1".equals(type)) {
+                    req.scene = SendMessageToWX.Req.WXSceneSession;
+                } else {
+                    req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                }
+                // 向微信发送请求
+                wxapi.sendReq(req);
+            }
+        });
     }
 }

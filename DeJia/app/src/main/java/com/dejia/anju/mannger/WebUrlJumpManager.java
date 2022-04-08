@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.dejia.anju.AppLog;
 import com.dejia.anju.MainActivity;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.BuildingImageActivity;
@@ -18,10 +20,12 @@ import com.dejia.anju.api.GetShareDataApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.Constants;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.model.ShareDataInfo;
 import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.CookieConfig;
 import com.dejia.anju.net.FinalConstant1;
+import com.dejia.anju.net.ServerData;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.YMHttpParams;
 import com.dejia.anju.utils.DialogUtils;
@@ -30,6 +34,7 @@ import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.MapButtomDialogView;
 import com.dejia.anju.utils.ShareUtils;
 import com.dejia.anju.utils.ToastUtils;
+import com.dejia.anju.utils.Util;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
@@ -69,6 +74,9 @@ public class WebUrlJumpManager {
 
     public void invoke(Context mContext, String url, WebViewData mWebViewData) {
         this.mContext = mContext;
+        if (Util.isFastDoubleClick()) {
+            return;
+        }
         if (mWebViewData == null) {
             if (TextUtils.isEmpty(url)) {
                 return;
@@ -221,33 +229,34 @@ public class WebUrlJumpManager {
                                 Map<String, Object> map = JSONUtil.getMapForJson(webViewData.getRequest_param());
                                 String obj_type = map.get("obj_type") + "";
                                 String obj_id = map.get("obj_id") + "";
-                                if(!TextUtils.isEmpty(obj_type) && !TextUtils.isEmpty(obj_id)){
+                                if (!TextUtils.isEmpty(obj_type) && !TextUtils.isEmpty(obj_id)) {
                                     HashMap<String, Object> paramHash = new HashMap<>();
                                     paramHash.put("obj_type", obj_type);
                                     paramHash.put("obj_id", obj_id);
-//                                    new GetShareDataApi().getCallBack(mContext, paramHash, new BaseCallBackListener() {
-//                                        @Override
-//                                        public void onSuccess(Object o) {
-//
-//                                        }
-//                                    });
-                                    DialogUtils.showShareDialog(mContext, new DialogUtils.CallBack4() {
-                                        @Override
-                                        public void onShare1Click() {
-                                            //微信朋友
-                                            DialogUtils.closeDialog();
-                                            ShareUtils.shareWeb(mContext,"https://www.baidu.com/","测试","标题", BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher),"1");
-                                        }
+                                    new GetShareDataApi().getCallBack(mContext, paramHash, (BaseCallBackListener<ServerData>) s -> {
+                                        if ("1".equals(s.code)) {
+                                            ShareDataInfo shareDataInfo = JSONUtil.TransformSingleBean(s.data, ShareDataInfo.class);
+                                            if (shareDataInfo != null) {
+                                                DialogUtils.showShareDialog(mContext, new DialogUtils.CallBack4() {
+                                                    @Override
+                                                    public void onShare1Click() {
+                                                        //微信朋友
+                                                        DialogUtils.closeDialog();
+                                                        ShareUtils.shareWeb(mContext, shareDataInfo.getUrl(), "得家", shareDataInfo.getContent(), shareDataInfo.getImg(), "1");
+                                                    }
 
-                                        @Override
-                                        public void onShare2Click() {
-                                            //微信朋友圈
-                                            DialogUtils.closeDialog();
-                                            ShareUtils.shareWeb(mContext,"https://www.baidu.com/","测试","标题", BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher),"2");
+                                                    @Override
+                                                    public void onShare2Click() {
+                                                        //微信朋友圈
+                                                        DialogUtils.closeDialog();
+                                                        ShareUtils.shareWeb(mContext, shareDataInfo.getUrl(), "得家", shareDataInfo.getContent(), shareDataInfo.getImg(), "2");
+                                                    }
+                                                });
+                                            }
                                         }
                                     });
-                                }else{
-                                    ToastUtils.toast(mContext,"参数错误").show();
+                                } else {
+                                    ToastUtils.toast(mContext, "参数错误").show();
                                 }
                             }
                             break;
