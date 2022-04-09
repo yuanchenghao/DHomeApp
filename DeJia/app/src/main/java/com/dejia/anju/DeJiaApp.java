@@ -32,6 +32,7 @@ import java.lang.reflect.Method;
 
 import androidx.annotation.RequiresApi;
 import androidx.multidex.MultiDex;
+import cn.jiguang.verifysdk.api.JVerificationInterface;
 
 import static com.dejia.anju.base.Constants.STATE_NORMAL;
 
@@ -126,8 +127,6 @@ public class DeJiaApp extends Application {
                     //fresco图片加载框架
                     frescoConfig();
                 })
-<<<<<<< HEAD
-                .addSubTask(() -> initJVerificationInterface())
                 .addSubTask(() -> StatService.setAuthorizedState(getContext(), false))
                 .addSubTask(() -> initWeChat())
                 .execute();
@@ -140,21 +139,6 @@ public class DeJiaApp extends Application {
         // 注册
         mWxApi.registerApp("wx75e82ff2703afa28");
     }
-
-    /**
-     * 极光一键登录
-     */
-    private void initJVerificationInterface() {
-        JVerificationInterface.setDebugMode(true);
-        JVerificationInterface.init(this, 5000, (code, msg) -> AppLog.i("code = " + code + " msg = " + msg));
-    }
-=======
-                .addSubTask(() -> StatService.setAuthorizedState(getContext(),false))
-                .execute();
-    }
-
-
->>>>>>> test
 
 
     /**
