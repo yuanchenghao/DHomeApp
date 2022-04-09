@@ -22,6 +22,16 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!--deep-link - [scheme]://[host]/[path]?[query]>-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="dejiaapp.com"
+                    android:scheme="dejiaschemes" />
+            </intent-filter>
+
         </activity>
         <!--主页面-->
         <activity
@@ -104,6 +114,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar"></activity>
+<<<<<<< HEAD
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -111,6 +122,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme639" />
 
+=======
+>>>>>>> test
         //极光推送相关
         <!-- Since JCore2.0.0 Required SDK核心功能-->
         <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
