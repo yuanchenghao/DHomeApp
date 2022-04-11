@@ -6,174 +6,125 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-<!--    &lt;!&ndash;图片展示位置  &ndash;&gt;-->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/bbs_input_photo_ly"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical">-->
+    <LinearLayout
+        android:id="@+id/bbs_web_input_content1_ly2"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="13dp"
+        android:background="@drawable/shape_14_f5f6f7">
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rv_pic"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="81dp"-->
-<!--            android:layout_marginLeft="5.5dp"-->
-<!--            android:layout_marginTop="@dimen/dp_4"-->
-<!--            android:layout_marginBottom="@dimen/dp_1"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:scrollbars="none" />-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0.5dp"-->
-<!--            android:background="#F0F0F0" />-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-<!--    </LinearLayout>-->
+                <EditText
+                    android:id="@+id/bbs_web_input_content1_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@null"
+                    android:hint="来都来了，不评论一句吗？"
+                    android:textColorHint="#999999"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="50dp">-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
 
-<!--        &lt;!&ndash; 输入文字与照片的切换 &ndash;&gt;-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="45dp"-->
-<!--            android:background="#FFFFFF"-->
-<!--            android:orientation="horizontal">-->
+        <!-- 输入文字与照片的切换 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#FFFFFF"
+            android:orientation="horizontal">
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/write_que_bbs_add_photo_rly_container"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginLeft="@dimen/dp_10"-->
-<!--                android:background="#FFFFFF"-->
-<!--                android:orientation="horizontal">-->
+            <LinearLayout
+                android:id="@+id/write_que_bbs_add_photo_rly_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:background="#FFFFFF"
+                android:orientation="horizontal">
 
-<!--                <RelativeLayout-->
-<!--                    android:id="@+id/write_que_bbs_add_photo_rly"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="45dp"-->
-<!--                    android:visibility="visible">-->
+                <RelativeLayout
+                    android:id="@+id/write_que_bbs_add_photo_rly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:visibility="visible">
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerInParent="true"-->
-<!--                        android:orientation="horizontal">-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:orientation="horizontal">
 
-<!--                        <ImageView-->
-<!--                            android:id="@+id/up_photo_iv"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_gravity="center_vertical"-->
-<!--                            android:background="@drawable/pic_dialog" />-->
+                        <ImageView
+                            android:id="@+id/up_photo_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:background="@mipmap/pic_comment" />
 
-<!--                        <TextView-->
-<!--                            android:id="@+id/tv_photo"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_gravity="center_vertical"-->
-<!--                            android:text="图片"-->
-<!--                            android:textColor="#666666"-->
-<!--                            android:textSize="13sp"-->
-<!--                            android:visibility="visible" />-->
-<!--                    </LinearLayout>-->
-<!--                </RelativeLayout>-->
+                        <TextView
+                            android:id="@+id/tv_photo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="图片"
+                            android:layout_marginLeft="@dimen/dp_5"
+                            android:textColor="#666666"
+                            android:textSize="13sp"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </RelativeLayout>
 
-<!--                <RelativeLayout-->
-<!--                    android:id="@+id/write_que_bbs_input_rly"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="45dp"-->
-<!--                    android:visibility="gone">-->
+            </LinearLayout>
+        </LinearLayout>
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerInParent="true"-->
-<!--                        android:orientation="horizontal">-->
+        <Button
+            android:id="@+id/bbs_web_sumbit1_bt"
+            android:layout_width="58dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:gravity="right|center_vertical"
+            android:text="发送"
+            android:textColor="#CCCCCC"
+            android:textSize="@dimen/sp_14" />
+    </RelativeLayout>
 
-<!--                        <ImageView-->
-<!--                            android:id="@+id/input_wenzi_iv"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_gravity="center_vertical"-->
-<!--                            android:layout_marginLeft="8dp"-->
-<!--                            android:background="@drawable/keyboard" />-->
+    <!--图片展示位置  -->
+    <LinearLayout
+        android:id="@+id/bbs_input_photo_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_gravity="center_vertical"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:padding="2dp"-->
-<!--                            android:text="输入文字"-->
-<!--                            android:textColor="#bababa"-->
-<!--                            android:textSize="15sp" />-->
-<!--                    </LinearLayout>-->
-<!--                </RelativeLayout>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_pic"
+            android:layout_width="match_parent"
+            android:layout_height="81dp"
+            android:layout_marginLeft="5.5dp"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:orientation="horizontal"
+            android:scrollbars="none" />
 
-<!--            </LinearLayout>-->
-<!--        </LinearLayout>-->
-
-<!--        <Button-->
-<!--            android:id="@+id/bbs_web_sumbit1_bt"-->
-<!--            android:layout_width="58dp"-->
-<!--            android:layout_height="32dp"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_marginRight="10dp"-->
-<!--            android:background="@null"-->
-<!--            android:gravity="right|center_vertical"-->
-<!--            android:text="发送"-->
-<!--            android:textColor="#CCCCCC"-->
-<!--            android:textSize="@dimen/sp_14" />-->
-<!--    </RelativeLayout>-->
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/bbs_web_input_content1_ly2"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="65dp"-->
-<!--        android:layout_marginLeft="10dp"-->
-<!--        android:layout_marginRight="10dp"-->
-<!--        android:layout_marginBottom="13dp"-->
-<!--        android:background="@drawable/shape_f6f6f6">-->
-
-<!--        <ScrollView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <EditText-->
-<!--                    android:id="@+id/bbs_web_input_content1_et"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginLeft="10dp"-->
-<!--                    android:layout_marginTop="4dp"-->
-<!--                    android:layout_marginRight="10dp"-->
-<!--                    android:layout_marginBottom="5dp"-->
-<!--                    android:background="@null"-->
-<!--                    android:hint="来都来了，不评论一句吗？"-->
-<!--                    android:textColorHint="#999999"-->
-<!--                    android:textSize="@dimen/sp_14" />-->
-<!--            </LinearLayout>-->
-<!--        </ScrollView>-->
-<!--    </LinearLayout>-->
-
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/set_switch_photo_rly1"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="53dp"-->
-<!--        android:background="@color/white"-->
-<!--        android:visibility="gone" />-->
-
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/set_switch_photo_rly2"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="53dp"-->
-<!--        android:background="@color/white"-->
-<!--        android:visibility="gone" />-->
+    </LinearLayout>
 
 </LinearLayout>

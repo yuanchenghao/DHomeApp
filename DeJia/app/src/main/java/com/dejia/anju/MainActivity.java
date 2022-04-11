@@ -51,6 +51,7 @@ import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ShareUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
+import com.dejia.anju.view.DiaryCommentDialogView;
 import com.dejia.anju.webSocket.IMManager;
 import com.dejia.anju.webSocket.NetEvent;
 import com.dejia.anju.webSocket.NetStatus;
@@ -238,9 +239,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         });
         navigation.getHeaderView(0).findViewById(R.id.iv_close).setOnClickListener(v -> drawerLayout.closeDrawers());
         navigation.getHeaderView(0).findViewById(R.id.ll_about).setOnClickListener(v -> {
-            drawerLayout.closeDrawers();
-            //关于
-            WebUrlJumpManager.getInstance().invoke(mContext, FinalConstant1.HTML_ABOUT, null);
+//            drawerLayout.closeDrawers();
+//            //关于
+//            WebUrlJumpManager.getInstance().invoke(mContext, FinalConstant1.HTML_ABOUT, null);
+            DiaryCommentDialogView diaryCommentDialogView = new DiaryCommentDialogView(mContext,null);
+            diaryCommentDialogView.showDialog();
         });
         navigation.getHeaderView(0).findViewById(R.id.ll_clean).setOnClickListener(v -> {
             DataCleanManager.deleteFolderFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.dejia.anju",
@@ -776,9 +779,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             if (XXPermissions.isGranted(this, Permission.WRITE_EXTERNAL_STORAGE)) {
                 //获取权限成功
                 selectPic();
-            } else {
-                //获取权限失败
             }
+//            else {
+//                //获取权限失败
+//            }
         }
         if (resultCode == RESULT_OK) {
             switch (requestCode) {

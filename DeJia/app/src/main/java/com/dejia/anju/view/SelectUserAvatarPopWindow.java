@@ -30,34 +30,18 @@ public class SelectUserAvatarPopWindow extends PopupWindow {
         TextView tv_take_photo = layout.findViewById(R.id.tv_take_photo);
         TextView tv_select = layout.findViewById(R.id.tv_select);
         View v = layout.findViewById(R.id.view);
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
+        v.setOnClickListener(v1 -> dismiss());
+        tv_cancel.setOnClickListener(v12 -> dismiss());
+        tv_take_photo.setOnClickListener(v13 -> {
+            dismiss();
+            if (mOnTextClickListener!= null){
+                mOnTextClickListener.onTextClick();
             }
         });
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        tv_take_photo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                if (mOnTextClickListener!= null){
-                    mOnTextClickListener.onTextClick();
-                }
-            }
-        });
-        tv_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                if (mOnTextClickListener!= null){
-                    mOnTextClickListener.onTextClick2();
-                }
+        tv_select.setOnClickListener(v14 -> {
+            dismiss();
+            if (mOnTextClickListener!= null){
+                mOnTextClickListener.onTextClick2();
             }
         });
     }

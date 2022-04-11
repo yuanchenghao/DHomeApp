@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_72"
+        android:layout_height="@dimen/dp_72">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/item_grida_image"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            app:fadeDuration="100"
+            android:layout_gravity="bottom"
+            app:retryImageScaleType="centerCrop" />
+
+        <Button
+            android:id="@+id/item_grida_bt"
+            android:layout_width="@dimen/dp_17"
+            android:layout_height="@dimen/dp_17"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="7dp"
+            android:background="@mipmap/close_img_select_dialog"
+            android:focusable="false" />
+
+        <TextView
+            android:id="@+id/tv_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="4.5dp"
+            android:layout_marginBottom="4.5dp"
+            android:background="@drawable/shape_diary_coment_img_index_bg"
+            android:paddingLeft="@dimen/dp_3"
+            android:paddingRight="@dimen/dp_3"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
