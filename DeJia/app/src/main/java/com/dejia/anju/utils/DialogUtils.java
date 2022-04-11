@@ -305,10 +305,65 @@ public class DialogUtils {
         View inflate = View.inflate(context, R.layout.dialog_share, null);
         LinearLayout ll_friend = inflate.findViewById(R.id.ll_friend);
         LinearLayout ll_circle = inflate.findViewById(R.id.ll_circle);
+        TextView ll_button_dismiss2 = inflate.findViewById(R.id.ll_button_dismiss2);
         dialog.setContentView(inflate);
         dialog.setCanceledOnTouchOutside(true);
         ll_friend.setOnClickListener(v -> callBack.onShare1Click());
         ll_circle.setOnClickListener(v -> callBack.onShare2Click());
+        ll_button_dismiss2.setOnClickListener(v -> {
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+        });
+        if (dialog != null) {
+            dialog.show();
+        }
+    }
+
+    //分享
+    public static void showSelectPicDialog(final Context context, final CallBack5 callBack) {
+        if (context == null) {
+            return;
+        }
+        closeDialog();
+        dialog = new Dialog(context, R.style.MyDialog1);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            try {
+                Class decorViewClazz = Class.forName("com.android.internal.policy.DecorView");
+                Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
+                field.setAccessible(true);
+                //去掉高版本蒙层改为透明
+                field.setInt(dialog.getWindow().getDecorView(), Color.TRANSPARENT);
+            } catch (Exception e) {
+            }
+        }
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(params);
+        View inflate = View.inflate(context, R.layout.dialog_selec_pic, null);
+        LinearLayout ll_friend = inflate.findViewById(R.id.ll_friend);
+        LinearLayout ll_circle = inflate.findViewById(R.id.ll_circle);
+        TextView ll_button_dismiss2 = inflate.findViewById(R.id.ll_button_dismiss2);
+        dialog.setContentView(inflate);
+        dialog.setCanceledOnTouchOutside(true);
+        ll_friend.setOnClickListener(v -> callBack.onCreamrClick());
+        ll_circle.setOnClickListener(v -> callBack.onAlbumClick());
+        ll_button_dismiss2.setOnClickListener(v -> {
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+        });
         if (dialog != null) {
             dialog.show();
         }
@@ -328,6 +383,12 @@ public class DialogUtils {
         void onShare1Click();
 
         void onShare2Click();
+    }
+
+    public interface CallBack5 {
+        void onAlbumClick();
+
+        void onCreamrClick();
     }
 
     public interface CallBack3 {

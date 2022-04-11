@@ -26,6 +26,8 @@ import android.widget.TextView;
 
 import com.dejia.anju.R;
 import com.dejia.anju.model.CommentInfo;
+import com.dejia.anju.model.MessageListData;
+import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.GlideEngine;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
@@ -76,7 +78,7 @@ import com.luck.picture.lib.style.PictureWindowAnimationStyle;
 public class DiaryCommentDialogView extends AlertDialog {
 
     private CommentInfo mDatas;
-    private ArrayList<String> mResults = new ArrayList<>();
+    private List<String> mResults = new ArrayList<>();
     //发送按钮
     @BindView(R.id.bbs_web_sumbit1_bt)
     Button sumbitBt1;
@@ -109,8 +111,6 @@ public class DiaryCommentDialogView extends AlertDialog {
     private String sumbitContent2;
     private PicAdapter adapter;
     private PictureWindowAnimationStyle mWindowAnimationStyle;
-    public static final int REQUEST_CODE = 732;
-    private boolean isPhoto = false;
     ArrayList<JSONObject> typeData = new ArrayList<>();           //图片上传完成后返回的图片地址集合。key是本地存储路径，vle是服务器连接
     ArrayList<String> mResultsFinal = new ArrayList<>();           //图片压缩完成后图片本地地址集合。key是本地存储路径，vle是压缩后的本地路径
     public static final int IMAG_PROGRESS = 10;     //照片进度
@@ -197,6 +197,9 @@ public class DiaryCommentDialogView extends AlertDialog {
         window.setAttributes(params);
         window.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         setOnShowListener(dialog -> showKeyboard());
+
+        mWindowAnimationStyle = new PictureWindowAnimationStyle();
+        mWindowAnimationStyle.ofAllAnimation(R.anim.picture_anim_up_in, R.anim.picture_anim_down_out);
     }
 
     void findView(View view) {
@@ -324,7 +327,6 @@ public class DiaryCommentDialogView extends AlertDialog {
         public PicAdapter(Context context, List<String> data) {
             this.context = context;
             this.data = data;
-
         }
 
         @Override
@@ -335,28 +337,25 @@ public class DiaryCommentDialogView extends AlertDialog {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-            holder.item_grida_image.setController(Fresco.newDraweeControllerBuilder().setUri(mResults.get(position)).setAutoPlayAnimations(true).build());
+            holder.item_grida_image.setController(Fresco.newDraweeControllerBuilder().setUri("file://"+mResults.get(position)).setAutoPlayAnimations(true).build());
             holder.tv_index.setText(position + 1 + "/" + data.size());
-            holder.item_grida_bt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mResults.remove(position);
-                    if (mResults.size() >= 9) {
+            holder.item_grida_bt.setOnClickListener(v -> {
+                mResults.remove(position);
+                if (mResults.size() >= 9) {
 //                        upPhotoIv.setBackgroundResource(R.drawable.pic_gray_dialog);
-                        tv_photo.setTextColor(Color.parseColor("#CCCCCC"));
-                    } else {
+                    tv_photo.setTextColor(Color.parseColor("#CCCCCC"));
+                } else {
 //                        upPhotoIv.setBackgroundResource(R.drawable.pic_dialog);
-                        tv_photo.setTextColor(Color.parseColor("#666666"));
-                    }
-                    if (mResults.size() == 0) {
-                        photoLy.setVisibility(View.GONE);
-                    }
-                    notifyDataSetChanged();
+                    tv_photo.setTextColor(Color.parseColor("#666666"));
                 }
+                if (mResults.size() == 0) {
+                    photoLy.setVisibility(View.GONE);
+                }
+                notifyDataSetChanged();
             });
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
 //                    String paths = mResults.get(position);
 //                    Intent it = new Intent(mContext, EditImageActivity.class);
 //                    it.putExtra(EditImageActivity.FILE_PATH, paths);
@@ -364,13 +363,18 @@ public class DiaryCommentDialogView extends AlertDialog {
 //                    it.putExtra(EditImageActivity.EXTRA_OUTPUT, outputFile.getAbsolutePath());
 //                    it.putExtra("pos", position + "");
 //                    mContext.startActivityForResult(it, 9);
-                }
-            });
+//                }
+//            });
         }
 
         @Override
         public int getItemCount() {
             return data.size();
+        }
+
+        public void refresh(List<String> infos) {
+            data = infos;
+            notifyDataSetChanged();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -391,62 +395,17 @@ public class DiaryCommentDialogView extends AlertDialog {
     public void upLoadFile() {
         if (mResults.size() > 0) {
             for (int i = 0; i < mResults.size(); i++) {
-                // 压缩图片
-                String pathS = Environment.getExternalStorageDirectory().toString() + "/YueMei";
-                File path1 = new File(pathS);// 建立这个路径的文件或文件夹
-                if (!path1.exists()) {// 如果不存在，就建立文件夹
-                    path1.mkdirs();
-                }
-                File file = new File(path1, "yuemei_" + i + System.currentTimeMillis() + ".JPEG");
-                String desPath = file.getPath();
-//                FileUtils.compressPicture(mResults.get(i), desPath);
-//                int[] mImageWidthHeight = FileUtils.getImageWidthHeight(desPath);
-//                mKey = QiNuConfig.getKey();
-//                if (i == mResults.size() - 1) {
-//                    MyUploadImage.getMyUploadImage(mContext, mHandler, desPath, true).upCommentsList(mKey, mImageWidthHeight);
-//                } else {
-//                    MyUploadImage.getMyUploadImage(mContext, mHandler, desPath, false).upCommentsList(mKey, mImageWidthHeight);
-//                }
-                mResultsFinal.add(desPath);
+
             }
         }
     }
 
     //头像选择
     private void showBottomPop() {
-        SelectUserAvatarPopWindow selectUserAvatarPopWindow = new SelectUserAvatarPopWindow(mContext);
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.7f;
-        getWindow().setAttributes(lp);
-        selectUserAvatarPopWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams lp1 = getWindow().getAttributes();
-            lp1.alpha = 1f;
-            getWindow().setAttributes(lp1);
-        });
-        selectUserAvatarPopWindow.showAtLocation(mContext.getWindow().getDecorView().findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
-        selectUserAvatarPopWindow.setOnTextClickListener(new SelectUserAvatarPopWindow.OnTextClickListener() {
+        DialogUtils.showSelectPicDialog(mContext, new DialogUtils.CallBack5() {
             @Override
-            public void onTextClick() {
-                //拍照
-                PictureSelector.create(mContext)
-                        .openCamera(PictureMimeType.ofImage())
-                        .isAndroidQTransform(true)
-                        .isEnableCrop(true)
-                        .isCompress(true)// 是否压缩
-                        .compressQuality(60)// 图片压缩后输出质量 0~ 100
-                        .withAspectRatio(1, 1)
-                        .circleDimmedLayer(true)
-                        .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
-                        .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
-                        .freeStyleCropEnabled(false)// 裁剪框是否可拖拽
-                        .cutOutQuality(90)// 裁剪输出质量 默认100
-                        .minimumCompressSize(100)// 小于100kb的图片不压缩
-                        .imageEngine(GlideEngine.createGlideEngine())
-                        .forResult(PictureConfig.REQUEST_CAMERA);
-            }
-
-            @Override
-            public void onTextClick2() {
+            public void onAlbumClick() {
+                DialogUtils.closeDialog();
                 //相册选择
                 PictureSelector.create(mContext)
                         .openGallery(PictureMimeType.ofImage())
@@ -461,7 +420,7 @@ public class DiaryCommentDialogView extends AlertDialog {
                         .compressQuality(60)// 图片压缩后输出质量 0~ 100
                         .isZoomAnim(true)
                         .withAspectRatio(1, 1)
-                        .circleDimmedLayer(true)
+                        .circleDimmedLayer(false)
                         .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
                         .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
                         .freeStyleCropEnabled(false)// 裁剪框是否可拖拽
@@ -469,7 +428,28 @@ public class DiaryCommentDialogView extends AlertDialog {
                         .minimumCompressSize(100)// 小于100kb的图片不压缩
 //                        .isOpenClickSound(true)// 是否开启点击声音
                         .imageEngine(GlideEngine.createGlideEngine())
-                        .forResult(PictureConfig.CHOOSE_REQUEST);
+                        .forResult(PictureConfig.CHOOSE_REQUEST_COMMENT);
+            }
+
+            @Override
+            public void onCreamrClick() {
+                DialogUtils.closeDialog();
+                //拍照
+                PictureSelector.create(mContext)
+                        .openCamera(PictureMimeType.ofImage())
+                        .isAndroidQTransform(true)
+                        .isEnableCrop(true)
+                        .isCompress(true)// 是否压缩
+                        .compressQuality(60)// 图片压缩后输出质量 0~ 100
+                        .withAspectRatio(1, 1)
+                        .circleDimmedLayer(false)
+                        .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
+                        .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
+                        .freeStyleCropEnabled(false)// 裁剪框是否可拖拽
+                        .cutOutQuality(90)// 裁剪输出质量 默认100
+                        .minimumCompressSize(100)// 小于100kb的图片不压缩
+                        .imageEngine(GlideEngine.createGlideEngine())
+                        .forResult(PictureConfig.REQUEST_CAMERA_COMMENT);
             }
         });
     }
@@ -537,11 +517,12 @@ public class DiaryCommentDialogView extends AlertDialog {
         show();
     }
 
-    public void setmResults(ArrayList<String> mResults) {
-        this.mResults = mResults;
-        upLoadFile();
-        isPhoto = true;
-
+    public void setmResults(List<String> imgList) {
+        this.mResults = imgList;
+//        if (adapter != null) {
+//            adapter.refresh(mResults);
+//        }
+        gridviewInit();
     }
 
 

@@ -71,7 +71,6 @@ public class MessageListAdapter extends BaseQuickAdapter<MessageListData, BaseVi
     /**
      * 刷新数据
      */
-
     public void refresh(List<MessageListData> infos) {
         mData = infos;
         notifyDataSetChanged();

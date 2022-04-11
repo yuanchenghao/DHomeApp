@@ -239,11 +239,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         });
         navigation.getHeaderView(0).findViewById(R.id.iv_close).setOnClickListener(v -> drawerLayout.closeDrawers());
         navigation.getHeaderView(0).findViewById(R.id.ll_about).setOnClickListener(v -> {
-//            drawerLayout.closeDrawers();
-//            //关于
-//            WebUrlJumpManager.getInstance().invoke(mContext, FinalConstant1.HTML_ABOUT, null);
-            DiaryCommentDialogView diaryCommentDialogView = new DiaryCommentDialogView(mContext,null);
-            diaryCommentDialogView.showDialog();
+            drawerLayout.closeDrawers();
+            //关于
+            WebUrlJumpManager.getInstance().invoke(mContext, FinalConstant1.HTML_ABOUT, null);
         });
         navigation.getHeaderView(0).findViewById(R.id.ll_clean).setOnClickListener(v -> {
             DataCleanManager.deleteFolderFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.dejia.anju",

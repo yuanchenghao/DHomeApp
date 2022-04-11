@@ -14,6 +14,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dejia.anju.R;
@@ -25,9 +26,13 @@ import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.view.CommonTopBar;
+import com.dejia.anju.view.DiaryCommentDialogView;
 import com.dejia.anju.view.MyPullRefresh;
 import com.dejia.anju.view.webclient.BaseWebViewClientMessage;
 import com.dejia.anju.view.webclient.JsCallAndroid;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.zhangyue.we.x2c.ano.Xml;
 
@@ -55,6 +60,10 @@ public class WebViewActivity extends WebViewActivityImpl {
     FrameLayout mWebViewContainer;
     @BindView(R.id.web_view_refresh_container)
     MyPullRefresh mRefreshWebViewContainer;
+    @BindView(R.id.iv)
+    ImageView iv;
+    private List<String> imgList;
+    private DiaryCommentDialogView diaryCommentDialogView;
     private WebViewData mWebViewData;
     public static final String WEB_DATA = "WebData";
     private static final String JS_NAME = "android";
@@ -81,6 +90,11 @@ public class WebViewActivity extends WebViewActivityImpl {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        imgList = new ArrayList<>();
+        iv.setOnClickListener(v -> {
+            diaryCommentDialogView = new DiaryCommentDialogView(mContext,null);
+            diaryCommentDialogView.showDialog();
+        });
     }
 
     @Override
@@ -273,6 +287,23 @@ public class WebViewActivity extends WebViewActivityImpl {
             }
             mFilePathCallback = null;
             mFilePathCallbacks = null;
+        }
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST_COMMENT:
+                case PictureConfig.REQUEST_CAMERA_COMMENT:
+                    // 结果回调
+                    List<LocalMedia> chooseResult = PictureSelector.obtainMultipleResult(data);
+                    if (chooseResult != null && chooseResult.size() > 0) {
+                        if(diaryCommentDialogView != null){
+                            imgList.add(chooseResult.get(0).getCutPath());
+                            diaryCommentDialogView.setmResults(imgList);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
