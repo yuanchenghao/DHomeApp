@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
-import com.dejia.anju.api.followAndCancelApi;
+import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.mannger.WebUrlJumpManager;
 import com.dejia.anju.model.FollowAndCancelInfo;
@@ -361,7 +361,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getFollow_creator_article_list().getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
-            new followAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
                     FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
                     if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
@@ -418,7 +418,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
-            new followAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
                     FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
                     if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {

@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.SearchActivity;
 import com.dejia.anju.adapter.YmTabLayoutAdapter;
-import com.dejia.anju.api.getCityApi;
+import com.dejia.anju.api.GetCityApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
 import com.dejia.anju.event.Event;
@@ -66,7 +66,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     //当前选中
     private int mFragmentSelectedPos = 0;
     private CityInfo cityInfo;
-    private com.dejia.anju.api.getCityApi getCityApi;
+    private GetCityApi getCityApi;
     private BaseCityPopWindow cityPopWindow;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -237,7 +237,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void getCityList() {
-        getCityApi = new getCityApi();
+        getCityApi = new GetCityApi();
         getCityApi.getCallBack(mContext, new HashMap<>(0), (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 cityInfo = JSONUtil.TransformSingleBean(serverData.data, CityInfo.class);

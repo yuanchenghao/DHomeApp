@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
-import com.dejia.anju.api.getCodeApi;
+import com.dejia.anju.api.GetCodeApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
@@ -143,7 +143,7 @@ public class SendVerificationCodeActivity extends BaseActivity {
                 }
                 HashMap<String, Object> maps = new HashMap<>(0);
                 maps.put("phone", ed.getText().toString().trim());
-                new getCodeApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                new GetCodeApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
                     if ("1".equals(serverData.code)) {
                         VerificationCodeActivity.invoke(mContext, ed.getText().toString().trim());
                     }

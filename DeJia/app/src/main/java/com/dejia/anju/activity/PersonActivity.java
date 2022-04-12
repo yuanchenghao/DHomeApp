@@ -18,7 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.MyArticleAdapter;
 import com.dejia.anju.adapter.RenZhengListAdapter;
-import com.dejia.anju.api.followAndCancelApi;
+import com.dejia.anju.api.FollowAndCancelApi;
 import com.dejia.anju.api.GetMyArticleApi;
 import com.dejia.anju.api.GetUserInfoApi;
 import com.dejia.anju.api.IsFollowApi;
@@ -468,7 +468,7 @@ public class PersonActivity extends BaseActivity {
                 HashMap<String, Object> hashMap = new HashMap<>(0);
                 hashMap.put("obj_id", userId);
                 hashMap.put("obj_type", "1");
-                new followAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+                new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
                     if ("1".equals(serverData.code)) {
                         FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
                         if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing()) && followAndCancelInfo.getFollowing().equals("0")) {

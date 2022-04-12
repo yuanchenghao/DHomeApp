@@ -20,10 +20,10 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.ChatAdapter;
-import com.dejia.anju.api.chatIndexApi;
-import com.dejia.anju.api.chatSendApi;
-import com.dejia.anju.api.chatUpdateReadApi;
-import com.dejia.anju.api.getMessageApi;
+import com.dejia.anju.api.ChatIndexApi;
+import com.dejia.anju.api.ChatSendApi;
+import com.dejia.anju.api.ChatUpdateReadApi;
+import com.dejia.anju.api.GetMessageApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
@@ -84,13 +84,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     private String mId;
     private String mGroupId;
     //获取页面信息
-    private com.dejia.anju.api.chatIndexApi chatIndexApi;
+    private ChatIndexApi chatIndexApi;
     //获取私信消息
-    private com.dejia.anju.api.getMessageApi getMessageApi;
+    private GetMessageApi getMessageApi;
     //发私信
-    private com.dejia.anju.api.chatSendApi chatSendApi;
+    private ChatSendApi chatSendApi;
     //修改私信未读消息数
-    private com.dejia.anju.api.chatUpdateReadApi chatUpdateReadApi;
+    private ChatUpdateReadApi chatUpdateReadApi;
     //默认输入框的高度
     private int INPUT_HEIGHT = 51;
     public List<MessageBean.DataBean> tblist = new ArrayList<>();
@@ -197,7 +197,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void upDataChatRead() {
-        chatUpdateReadApi = new chatUpdateReadApi();
+        chatUpdateReadApi = new ChatUpdateReadApi();
         Map<String, Object> maps = new HashMap<>(0);
         maps.put("id", mId);
         chatUpdateReadApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
@@ -270,7 +270,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     private void getChatIndexInfo() {
         Map<String, Object> maps = new HashMap<>(0);
         maps.put("id", mId);
-        chatIndexApi = new chatIndexApi();
+        chatIndexApi = new ChatIndexApi();
         chatIndexApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 AppLog.i("获取页面信息成功");
@@ -294,7 +294,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         maps.put("id", mId);
         maps.put("page", "1");
 //        maps.put("msgtime", mDateTime);
-        getMessageApi = new getMessageApi();
+        getMessageApi = new GetMessageApi();
         getMessageApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 mDataList = JSONUtil.jsonToArrayList(serverData.data, MessageBean.DataBean.class);
@@ -338,7 +338,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         //类型 暂时只有文字
         maps.put("class_id", "1");
         maps.put("content", content);
-        chatSendApi = new chatSendApi();
+        chatSendApi = new ChatSendApi();
         chatSendApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 WebSocketBean webSocketBean = JSONUtil.TransformSingleBean(serverData.data, WebSocketBean.class);
@@ -443,7 +443,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             params.put("msgtime", mDateTime);
         }
         params.put("group_id", mGroupId);
-        new getMessageApi().getCallBack(mContext, params, (BaseCallBackListener<ServerData>) data -> {
+        new GetMessageApi().getCallBack(mContext, params, (BaseCallBackListener<ServerData>) data -> {
             if ("1".equals(data.code)) {
                 ArrayList<MessageBean.DataBean> dataBeen = JSONUtil.jsonToArrayList(data.data, MessageBean.DataBean.class);
                 if (CollectionUtils.isNotEmpty(dataBeen)) {

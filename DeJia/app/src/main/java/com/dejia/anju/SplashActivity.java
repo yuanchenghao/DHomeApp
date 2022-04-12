@@ -14,7 +14,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.baidu.mobstat.StatService;
 import com.bun.miitmdid.core.MdidSdkHelper;
-import com.dejia.anju.api.appReceiveApi;
+import com.dejia.anju.api.AppReceiveApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.base.Constants;
@@ -59,7 +59,7 @@ public class SplashActivity extends BaseActivity {
     public AMapLocationListener mLocationListener;
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
-    private com.dejia.anju.api.appReceiveApi appReceiveApi;
+    private AppReceiveApi appReceiveApi;
 
     @Xml(layouts = "activity_splash")
     @Override
@@ -160,7 +160,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void postAppReceive() {
-        appReceiveApi = new appReceiveApi();
+        appReceiveApi = new AppReceiveApi();
         HashMap<String, Object> maps = new HashMap<>(2);
         maps.put("brand", Build.BRAND + "_" + Build.MODEL);
         maps.put("system", Build.VERSION.RELEASE);

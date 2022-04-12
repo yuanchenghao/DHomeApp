@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
-import com.dejia.anju.api.bindJPushApi;
-import com.dejia.anju.api.getCodeApi;
+import com.dejia.anju.api.BindJPushApi;
+import com.dejia.anju.api.GetCodeApi;
 import com.dejia.anju.api.VerificationCodeLoginApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
@@ -215,7 +215,7 @@ public class VerificationCodeActivity extends BaseActivity {
                             maps1.put("brand", Build.BRAND + "_" + Build.MODEL);
                             maps1.put("system", Build.VERSION.RELEASE);
                             maps1.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled()) ? "0" : "1");
-                            new bindJPushApi().getCallBack(mContext, maps1, (BaseCallBackListener<ServerData>) serverData1 -> {
+                            new BindJPushApi().getCallBack(mContext, maps1, (BaseCallBackListener<ServerData>) serverData1 -> {
                                 if ("1".equals(serverData1.code)) {
                                     AppLog.i("message===" + serverData1.message);
                                 }
@@ -234,7 +234,7 @@ public class VerificationCodeActivity extends BaseActivity {
             case R.id.tv_bottom:
                 HashMap<String, Object> maps = new HashMap<>(0);
                 maps.put("phone", mPhone);
-                new getCodeApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+                new GetCodeApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
                     if ("1".equals(serverData.code)) {
                         countDownTimer.start();
                     }
