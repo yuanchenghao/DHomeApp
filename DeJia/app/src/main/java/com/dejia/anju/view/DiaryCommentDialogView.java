@@ -342,10 +342,8 @@ public class DiaryCommentDialogView extends AlertDialog {
             holder.item_grida_bt.setOnClickListener(v -> {
                 mResults.remove(position);
                 if (mResults.size() >= 9) {
-//                        upPhotoIv.setBackgroundResource(R.drawable.pic_gray_dialog);
                     tv_photo.setTextColor(Color.parseColor("#CCCCCC"));
                 } else {
-//                        upPhotoIv.setBackgroundResource(R.drawable.pic_dialog);
                     tv_photo.setTextColor(Color.parseColor("#666666"));
                 }
                 if (mResults.size() == 0) {
@@ -353,28 +351,11 @@ public class DiaryCommentDialogView extends AlertDialog {
                 }
                 notifyDataSetChanged();
             });
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    String paths = mResults.get(position);
-//                    Intent it = new Intent(mContext, EditImageActivity.class);
-//                    it.putExtra(EditImageActivity.FILE_PATH, paths);
-//                    File outputFile = FileUtils.getEmptyFile("yuemei" + System.currentTimeMillis() + ".jpg");
-//                    it.putExtra(EditImageActivity.EXTRA_OUTPUT, outputFile.getAbsolutePath());
-//                    it.putExtra("pos", position + "");
-//                    mContext.startActivityForResult(it, 9);
-//                }
-//            });
         }
 
         @Override
         public int getItemCount() {
             return data.size();
-        }
-
-        public void refresh(List<String> infos) {
-            data = infos;
-            notifyDataSetChanged();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -519,9 +500,6 @@ public class DiaryCommentDialogView extends AlertDialog {
 
     public void setmResults(List<String> imgList) {
         this.mResults = imgList;
-//        if (adapter != null) {
-//            adapter.refresh(mResults);
-//        }
         gridviewInit();
     }
 

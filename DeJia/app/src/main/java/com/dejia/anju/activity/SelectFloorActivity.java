@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.SearchBuildingListAdapter;
-import com.dejia.anju.api.GetBuildingInfoApi;
+import com.dejia.anju.api.getBuildingInfoApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.event.Event;
@@ -54,7 +54,7 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
     @BindView(R.id.rv)
     RecyclerView rv;
     public static final int SELECT_REQUEST_CODE = 100;
-    private GetBuildingInfoApi getBuildingInfoApi;
+    private com.dejia.anju.api.getBuildingInfoApi getBuildingInfoApi;
     private SearchBuildingListAdapter searchBuildingListAdapter;
     //选中的条目
     private SearchBuildingInfo searchBuildingInfo;
@@ -115,7 +115,7 @@ public class SelectFloorActivity extends BaseActivity implements OnClickListener
     }
 
     private void getSearchList(String building_name) {
-        getBuildingInfoApi = new GetBuildingInfoApi();
+        getBuildingInfoApi = new getBuildingInfoApi();
         HashMap<String, Object> maps = new HashMap<>(0);
         maps.put("building_name", building_name);
         getBuildingInfoApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {

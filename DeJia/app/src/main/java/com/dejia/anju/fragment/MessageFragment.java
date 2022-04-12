@@ -14,7 +14,7 @@ import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.ChatActivity;
 import com.dejia.anju.adapter.MessageListAdapter;
-import com.dejia.anju.api.GetMessageListApi;
+import com.dejia.anju.api.getMessageListApi;
 import com.dejia.anju.api.MessageCountApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseFragment;
@@ -247,7 +247,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     private void getMessageList() {
         HashMap<String, Object> map = new HashMap<>(0);
         map.put("page", page);
-        new GetMessageListApi().getCallBack(mContext, map, (BaseCallBackListener<ServerData>) serverData -> {
+        new getMessageListApi().getCallBack(mContext, map, (BaseCallBackListener<ServerData>) serverData -> {
             if(mContext != null){
                 if ("1".equals(serverData.code)) {
                     if (serverData.data != null) {

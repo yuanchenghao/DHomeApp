@@ -16,17 +16,17 @@ import java.util.List;
 //            uid: 7, // 当前登录人的用户 id
 
 public class CommentInfo {
-    private String showImgBtn;
+    private boolean showImgBtn;
     private String reply_id;
     private List<String> image;
     private String article_id;
     private String uid;
 
-    public String getShowImgBtn() {
+    public boolean isShowImgBtn() {
         return showImgBtn;
     }
 
-    public void setShowImgBtn(String showImgBtn) {
+    public void setShowImgBtn(boolean showImgBtn) {
         this.showImgBtn = showImgBtn;
     }
 

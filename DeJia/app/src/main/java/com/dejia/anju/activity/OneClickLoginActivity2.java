@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
-import com.dejia.anju.api.BindJPushApi;
+import com.dejia.anju.api.bindJPushApi;
 import com.dejia.anju.api.OneClickLoginApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.Constants;
@@ -49,7 +49,6 @@ import cn.jiguang.verifysdk.api.VerifyListener;
 import cn.jpush.android.api.JPushInterface;
 
 import static com.dejia.anju.base.Constants.baseTestService;
-import static com.dejia.anju.net.FinalConstant1.TEST_BASE_URL;
 
 
 /**
@@ -252,7 +251,7 @@ public class OneClickLoginActivity2 extends Activity {
                 maps.put("brand", Build.BRAND + "_" + Build.MODEL);
                 maps.put("system", Build.VERSION.RELEASE);
                 maps.put("is_notice", (NotificationManagerCompat.from(mContext).areNotificationsEnabled()) ? "0" : "1");
-                new BindJPushApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData1 -> {
+                new bindJPushApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData1 -> {
                     if ("1".equals(serverData1.code)) {
                         AppLog.i("message===" + serverData1.message);
                     }

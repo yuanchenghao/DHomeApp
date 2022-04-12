@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,14 @@ import android.widget.LinearLayout;
 import com.dejia.anju.R;
 import com.dejia.anju.base.WebViewActivityImpl;
 import com.dejia.anju.event.Event;
+import com.dejia.anju.model.CommentInfo;
+import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.utils.JSONUtil;
+import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.view.CommonTopBar;
 import com.dejia.anju.view.DiaryCommentDialogView;
 import com.dejia.anju.view.MyPullRefresh;
@@ -65,6 +69,7 @@ public class WebViewActivity extends WebViewActivityImpl {
     private List<String> imgList;
     private DiaryCommentDialogView diaryCommentDialogView;
     private WebViewData mWebViewData;
+    private CommentInfo commentInfo;
     public static final String WEB_DATA = "WebData";
     private static final String JS_NAME = "android";
     private CommonTopBar mTopTitle;
@@ -73,6 +78,26 @@ public class WebViewActivity extends WebViewActivityImpl {
     public static final int REQUEST_FILE_PICKER = 1;
     public ValueCallback<Uri> mFilePathCallback;
     public ValueCallback<Uri[]> mFilePathCallbacks;
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onEventMainThread(Event msgEvent) {
+        switch (msgEvent.getCode()) {
+            case 7:
+                commentInfo = (CommentInfo) msgEvent.getData();
+                if (commentInfo != null) {
+                    diaryCommentDialogView = new DiaryCommentDialogView(mContext, null);
+                    if (commentInfo.isShowImgBtn()) {
+                        diaryCommentDialogView.setPicturesChooseGone(false);
+                    } else {
+                        diaryCommentDialogView.setPicturesChooseGone(true);
+                    }
+                    if (!diaryCommentDialogView.isShowing()) {
+                        diaryCommentDialogView.showDialog();
+                    }
+                }
+                break;
+        }
+    }
 
     @Xml(layouts = "activity_web_view")
     @Override
@@ -92,7 +117,7 @@ public class WebViewActivity extends WebViewActivityImpl {
         }
         imgList = new ArrayList<>();
         iv.setOnClickListener(v -> {
-            diaryCommentDialogView = new DiaryCommentDialogView(mContext,null);
+            diaryCommentDialogView = new DiaryCommentDialogView(mContext, null);
             diaryCommentDialogView.showDialog();
         });
     }
@@ -122,7 +147,7 @@ public class WebViewActivity extends WebViewActivityImpl {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCallBack(Event msgEvent) {
-        switch (msgEvent.getCode()){
+        switch (msgEvent.getCode()) {
             case 1:
                 loadLink();
                 break;
@@ -295,7 +320,7 @@ public class WebViewActivity extends WebViewActivityImpl {
                     // 结果回调
                     List<LocalMedia> chooseResult = PictureSelector.obtainMultipleResult(data);
                     if (chooseResult != null && chooseResult.size() > 0) {
-                        if(diaryCommentDialogView != null){
+                        if (diaryCommentDialogView != null) {
                             imgList.add(chooseResult.get(0).getCutPath());
                             diaryCommentDialogView.setmResults(imgList);
                         }

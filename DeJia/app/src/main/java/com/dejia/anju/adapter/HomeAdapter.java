@@ -20,7 +20,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.R;
 import com.dejia.anju.activity.PersonActivity;
-import com.dejia.anju.api.FollowAndCancelApi;
+import com.dejia.anju.api.followAndCancelApi;
 import com.dejia.anju.api.ZanApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.mannger.WebUrlJumpManager;
@@ -313,7 +313,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
-            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+            new followAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
                     FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
                     if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
@@ -531,7 +531,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
-            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+            new followAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
                     FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
                     if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
@@ -669,7 +669,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
-            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+            new followAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
                     FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
                     if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {
@@ -824,7 +824,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             HashMap<String, Object> hashMap = new HashMap<>(0);
             hashMap.put("obj_id", mDatas.get(position).getUser_data().getUser_id());
             hashMap.put("obj_type", "1");
-            new FollowAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
+            new followAndCancelApi().getCallBack(mContext, hashMap, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
                     FollowAndCancelInfo followAndCancelInfo = JSONUtil.TransformSingleBean(serverData.data, FollowAndCancelInfo.class);
                     if (followAndCancelInfo != null && !TextUtils.isEmpty(followAndCancelInfo.getFollowing())) {

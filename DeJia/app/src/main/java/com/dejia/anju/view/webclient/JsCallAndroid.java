@@ -8,6 +8,7 @@ import android.webkit.JavascriptInterface;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.OneClickLoginActivity2;
 import com.dejia.anju.activity.UgcImgDialogActivity;
+import com.dejia.anju.event.Event;
 import com.dejia.anju.model.CommentInfo;
 import com.dejia.anju.model.UgcImgInfo;
 import com.dejia.anju.model.UserInfo;
@@ -16,6 +17,8 @@ import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.utils.ToastUtils;
 import com.dejia.anju.utils.Util;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class JsCallAndroid {
     public Activity mContext;
@@ -31,7 +34,7 @@ public class JsCallAndroid {
     @JavascriptInterface
     public void appToShare() {
         if (mContext != null) {
-            ToastUtils.toast(mContext, "正在开发中").show();
+//            ToastUtils.toast(mContext, "正在开发中").show();
         }
     }
 
@@ -103,7 +106,7 @@ public class JsCallAndroid {
             if (!TextUtils.isEmpty(json) && mContext != null) {
                 CommentInfo commentInfo = JSONUtil.TransformSingleBean(json, CommentInfo.class);
                 if (commentInfo != null) {
-
+                    EventBus.getDefault().post(new Event<>(7, commentInfo));
                 }
             }
         }

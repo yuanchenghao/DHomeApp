@@ -21,7 +21,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.PictureSlidePagerAdapter;
-import com.dejia.anju.api.BuildingBigImageApi;
+import com.dejia.anju.api.buildingBigImageApi;
 import com.dejia.anju.api.HouseTypeBigImageApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
@@ -137,7 +137,7 @@ public class BuildingImageActivity extends BaseActivity {
         } else {
             HashMap<String, Object> maps = new HashMap<>(0);
             maps.put("building_id", building_id);
-            new BuildingBigImageApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            new buildingBigImageApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
                     list = JSONUtil.jsonToArrayList(serverData.data, BuildingImgInfo.class);
                     setImageAdapter();
