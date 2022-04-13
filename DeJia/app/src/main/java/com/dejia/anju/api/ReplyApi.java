@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.dejia.anju.api.base.BaseCallBackApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
+import com.dejia.anju.api.base.BaseCallBackUploadApi;
 import com.dejia.anju.net.NetWork;
+import com.lzy.okgo.model.HttpParams;
 
 import java.util.Map;
 
@@ -16,9 +18,10 @@ import java.util.Map;
  * 修改备注：发评论
  */
 
-public class replyApi implements BaseCallBackApi {
+public class ReplyApi implements BaseCallBackUploadApi {
+
     @Override
-    public void getCallBack(Context context, Map<String, Object> maps, final BaseCallBackListener listener) {
-        NetWork.getInstance().call("ugc", "reply", maps, context, mData -> listener.onSuccess(mData));
+    public void getCallBack(Context context, Map<String, Object> maps, HttpParams uploadPamas, BaseCallBackListener listener) {
+        NetWork.getInstance().call("ugc", "reply", maps, uploadPamas,context, mData -> listener.onSuccess(mData));
     }
 }

@@ -64,8 +64,6 @@ public class WebViewActivity extends WebViewActivityImpl {
     FrameLayout mWebViewContainer;
     @BindView(R.id.web_view_refresh_container)
     MyPullRefresh mRefreshWebViewContainer;
-    @BindView(R.id.iv)
-    ImageView iv;
     private List<String> imgList;
     private DiaryCommentDialogView diaryCommentDialogView;
     private WebViewData mWebViewData;
@@ -83,16 +81,20 @@ public class WebViewActivity extends WebViewActivityImpl {
     public void onEventMainThread(Event msgEvent) {
         switch (msgEvent.getCode()) {
             case 7:
-                commentInfo = (CommentInfo) msgEvent.getData();
+                if(commentInfo != null && commentInfo.getImage().size() > 0){
+                    commentInfo.setImage(commentInfo.getImage());
+                }else{
+                    commentInfo = (CommentInfo) msgEvent.getData();
+                }
                 if (commentInfo != null) {
-                    diaryCommentDialogView = new DiaryCommentDialogView(mContext, null);
-                    if (commentInfo.isShowImgBtn()) {
-                        diaryCommentDialogView.setPicturesChooseGone(false);
-                    } else {
-                        diaryCommentDialogView.setPicturesChooseGone(true);
-                    }
+                    diaryCommentDialogView = new DiaryCommentDialogView(mContext, commentInfo);
                     if (!diaryCommentDialogView.isShowing()) {
                         diaryCommentDialogView.showDialog();
+                        if (commentInfo.isShowImgBtn()) {
+                            diaryCommentDialogView.setPicturesChooseGone(false);
+                        } else {
+                            diaryCommentDialogView.setPicturesChooseGone(true);
+                        }
                     }
                 }
                 break;
@@ -116,10 +118,7 @@ public class WebViewActivity extends WebViewActivityImpl {
             EventBus.getDefault().register(this);
         }
         imgList = new ArrayList<>();
-        iv.setOnClickListener(v -> {
-            diaryCommentDialogView = new DiaryCommentDialogView(mContext, null);
-            diaryCommentDialogView.showDialog();
-        });
+        commentInfo = new CommentInfo();
     }
 
     @Override
@@ -322,6 +321,7 @@ public class WebViewActivity extends WebViewActivityImpl {
                     if (chooseResult != null && chooseResult.size() > 0) {
                         if (diaryCommentDialogView != null) {
                             imgList.add(chooseResult.get(0).getCutPath());
+                            commentInfo.setImage(imgList);
                             diaryCommentDialogView.setmResults(imgList);
                         }
                     }
@@ -356,6 +356,7 @@ public class WebViewActivity extends WebViewActivityImpl {
             EventBus.getDefault().unregister(this);
         }
         super.onDestroy();
+        commentInfo = null;
     }
 
     private void DestroyWebView() {

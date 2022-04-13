@@ -92,8 +92,8 @@ public class DiaryCommentDialogView extends AlertDialog {
     @BindView(R.id.up_photo_iv)
     ImageView upPhotoIv;
     //选择图片整体
-    @BindView(R.id.write_que_bbs_add_photo_rly_container)
-    LinearLayout sCPhotoRlyContainer;
+    @BindView(R.id.ll_select_pic)
+    LinearLayout ll_select_pic;
     //选择图片整体
     @BindView(R.id.write_que_bbs_add_photo_rly)
     RelativeLayout sCPhotoRly;
@@ -107,46 +107,13 @@ public class DiaryCommentDialogView extends AlertDialog {
     @BindView(R.id.tv_photo)
     TextView tv_photo;
     private Activity mContext;
-    private float dp;
     private String sumbitContent2;
     private PicAdapter adapter;
     private PictureWindowAnimationStyle mWindowAnimationStyle;
     ArrayList<JSONObject> typeData = new ArrayList<>();           //图片上传完成后返回的图片地址集合。key是本地存储路径，vle是服务器连接
     ArrayList<String> mResultsFinal = new ArrayList<>();           //图片压缩完成后图片本地地址集合。key是本地存储路径，vle是压缩后的本地路径
-    public static final int IMAG_PROGRESS = 10;     //照片进度
-    public static final int IMAG_SUCCESS = 11;     //照片上传成功
-    public static final int IMAG_FAILURE = 12;     //照片上传失败
-    private Handler mHandler = new MyHandler(this);
     private String mKey;
     private Gson mGson;
-
-    private static class MyHandler extends Handler {
-        private final WeakReference<DiaryCommentDialogView> mActivity;
-
-        public MyHandler(DiaryCommentDialogView activity) {
-            mActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            DiaryCommentDialogView theActivity = mActivity.get();
-            if (theActivity != null) {
-                switch (msg.what) {
-                    case IMAG_PROGRESS:
-                        break;
-                    case IMAG_SUCCESS:
-                        String imgUrl = (String) msg.obj;
-                        int imageWidth = msg.arg1;
-                        int imageHeight = msg.arg2;
-                        JSONObject jsonObject = theActivity.setJson(imgUrl, imageWidth, imageHeight);
-                        theActivity.typeData.add(jsonObject);
-                        break;
-                    case IMAG_FAILURE:
-                        break;
-                }
-            }
-        }
-    }
 
     private JSONObject setJson(String imgUrl, int imageWidth, int imageHeight) {
         JSONObject jsonObject = new JSONObject();
@@ -200,6 +167,9 @@ public class DiaryCommentDialogView extends AlertDialog {
 
         mWindowAnimationStyle = new PictureWindowAnimationStyle();
         mWindowAnimationStyle.ofAllAnimation(R.anim.picture_anim_up_in, R.anim.picture_anim_down_out);
+        sCPhotoRly.setOnClickListener(v -> {
+            showBottomPop();
+        });
     }
 
     void findView(View view) {
@@ -243,20 +213,15 @@ public class DiaryCommentDialogView extends AlertDialog {
      */
     public void setPicturesChooseGone(boolean isGone) {
         if (isGone) {
-            sCPhotoRlyContainer.setVisibility(View.GONE);
+            ll_select_pic.setVisibility(View.GONE);
             photoLy.setVisibility(View.GONE);
         } else {
-            sCPhotoRlyContainer.setVisibility(View.VISIBLE);
+            ll_select_pic.setVisibility(View.VISIBLE);
         }
     }
 
     private void initBottHttp() {
         try {
-            sCPhotoRly.setOnClickListener(v -> {
-                showBottomPop();
-            });
-            // 滑动图片
-            dp = mContext.getResources().getDimension(R.dimen.dp);
             gridviewInit();
             // 提交
             sumbitBt1.setOnClickListener(arg0 -> {
@@ -305,7 +270,7 @@ public class DiaryCommentDialogView extends AlertDialog {
     public void gridviewInit() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         rv_pic.setLayoutManager(linearLayoutManager);
-        adapter = new PicAdapter(mContext, mResults);
+        adapter = new PicAdapter(mContext, mDatas);
         rv_pic.setAdapter(adapter);
         if (mResults.size() == 0) {
             photoLy.setVisibility(View.GONE);
@@ -322,11 +287,11 @@ public class DiaryCommentDialogView extends AlertDialog {
     class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
 
         private Context context;
-        private List<String> data;
+        private CommentInfo data;
 
-        public PicAdapter(Context context, List<String> data) {
-            this.context = context;
+        public PicAdapter(Context context, CommentInfo data) {
             this.data = data;
+            this.context = context;
         }
 
         @Override
@@ -337,16 +302,24 @@ public class DiaryCommentDialogView extends AlertDialog {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-            holder.item_grida_image.setController(Fresco.newDraweeControllerBuilder().setUri("file://"+mResults.get(position)).setAutoPlayAnimations(true).build());
-            holder.tv_index.setText(position + 1 + "/" + data.size());
+            if (position >= data.getImage().size() && position <= (9 - 1)) {
+                //添加图片
+                holder.item_grida_image.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.add).setAutoPlayAnimations(true).build());
+                holder.item_grida_bt.setVisibility(View.GONE);
+                holder.item_grida_image.setOnClickListener(v -> showBottomPop());
+            } else {
+                holder.item_grida_image.setController(Fresco.newDraweeControllerBuilder().setUri("file://"+data.getImage().get(position)).setAutoPlayAnimations(true).build());
+                holder.item_grida_bt.setVisibility(View.VISIBLE);
+            }
+//            holder.tv_index.setText(position + 1 + "/" + data.size());
             holder.item_grida_bt.setOnClickListener(v -> {
-                mResults.remove(position);
-                if (mResults.size() >= 9) {
+                data.getImage().remove(position);
+                if (data.getImage().size() >= 9) {
                     tv_photo.setTextColor(Color.parseColor("#CCCCCC"));
                 } else {
                     tv_photo.setTextColor(Color.parseColor("#666666"));
                 }
-                if (mResults.size() == 0) {
+                if (data.getImage().size() == 0) {
                     photoLy.setVisibility(View.GONE);
                 }
                 notifyDataSetChanged();
@@ -355,19 +328,23 @@ public class DiaryCommentDialogView extends AlertDialog {
 
         @Override
         public int getItemCount() {
-            return data.size();
+            if (data.getImage() == null || data.getImage().size() == 0) {
+                return 1;
+            } else {
+                return this.data.getImage().size() >= 9 ? 9 : this.data.getImage().size() + 1;
+            }
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             private SimpleDraweeView item_grida_image;
             private Button item_grida_bt;
-            private TextView tv_index;
+//            private TextView tv_index;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 item_grida_image = itemView.findViewById(R.id.item_grida_image);
                 item_grida_bt = itemView.findViewById(R.id.item_grida_bt);
-                tv_index = itemView.findViewById(R.id.tv_index);
+//                tv_index = itemView.findViewById(R.id.tv_index);
             }
         }
     }
@@ -381,7 +358,7 @@ public class DiaryCommentDialogView extends AlertDialog {
         }
     }
 
-    //头像选择
+    //照片 拍照选择
     private void showBottomPop() {
         DialogUtils.showSelectPicDialog(mContext, new DialogUtils.CallBack5() {
             @Override
