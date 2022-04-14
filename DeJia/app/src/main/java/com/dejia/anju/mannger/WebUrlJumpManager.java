@@ -3,13 +3,8 @@ package com.dejia.anju.mannger;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.text.TextUtils;
-import android.util.Log;
-
-import com.dejia.anju.AppLog;
 import com.dejia.anju.MainActivity;
-import com.dejia.anju.R;
 import com.dejia.anju.activity.BuildingImageActivity;
 import com.dejia.anju.activity.EditUserInfoActivity;
 import com.dejia.anju.activity.OneClickLoginActivity2;
@@ -41,8 +36,6 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.HttpHeaders;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.net.URL;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;

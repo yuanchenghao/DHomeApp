@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +14,17 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dejia.anju.R;
 import com.dejia.anju.base.WebViewActivityImpl;
 import com.dejia.anju.event.Event;
 import com.dejia.anju.model.CommentInfo;
-import com.dejia.anju.model.UserInfo;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
 import com.dejia.anju.net.SignUtils;
 import com.dejia.anju.net.WebSignData;
 import com.dejia.anju.utils.JSONUtil;
-import com.dejia.anju.utils.KVUtils;
 import com.dejia.anju.view.CommonTopBar;
 import com.dejia.anju.view.DiaryCommentDialogView;
 import com.dejia.anju.view.MyPullRefresh;
@@ -76,17 +72,22 @@ public class WebViewActivity extends WebViewActivityImpl {
     public static final int REQUEST_FILE_PICKER = 1;
     public ValueCallback<Uri> mFilePathCallback;
     public ValueCallback<Uri[]> mFilePathCallbacks;
+    private CommentInfo commentData;
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onEventMainThread(Event msgEvent) {
         switch (msgEvent.getCode()) {
             case 7:
-                if(commentInfo != null && commentInfo.getImage().size() > 0){
-                    commentInfo.setImage(commentInfo.getImage());
-                }else{
-                    commentInfo = (CommentInfo) msgEvent.getData();
-                }
+                commentInfo = (CommentInfo) msgEvent.getData();
                 if (commentInfo != null) {
+                    if (commentData != null) {
+                        if (!TextUtils.isEmpty(commentData.getContent())) {
+                            commentInfo.setContent(commentData.getContent());
+                        }
+                        if (commentData.getImage() != null && commentData.getImage() != null && commentData.getImage().size() > 0) {
+                            commentInfo.setImage(commentData.getImage());
+                        }
+                    }
                     diaryCommentDialogView = new DiaryCommentDialogView(mContext, commentInfo);
                     if (!diaryCommentDialogView.isShowing()) {
                         diaryCommentDialogView.showDialog();
@@ -97,6 +98,16 @@ public class WebViewActivity extends WebViewActivityImpl {
                         }
                     }
                 }
+                break;
+            case 8:
+                String data = (String) msgEvent.getData();
+                String js = "javascript:showCommentResults" + "(" + data + ")";
+                mWebView.evaluateJavascript(js, value -> {
+
+                });
+                break;
+            case 9:
+                commentData = (CommentInfo) msgEvent.getData();
                 break;
         }
     }
@@ -356,7 +367,7 @@ public class WebViewActivity extends WebViewActivityImpl {
             EventBus.getDefault().unregister(this);
         }
         super.onDestroy();
-        commentInfo = null;
+        commentData = null;
     }
 
     private void DestroyWebView() {

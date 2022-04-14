@@ -241,7 +241,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         navigation.getHeaderView(0).findViewById(R.id.ll_about).setOnClickListener(v -> {
             drawerLayout.closeDrawers();
             //关于
-            WebUrlJumpManager.getInstance().invoke(mContext, FinalConstant1.HTML_ABOUT, null);
+            WebViewData webViewData = new WebViewData.WebDataBuilder()
+                    .setWebviewType("webview")
+                    .setLinkisJoint("1")
+                    .setIsHide("1")
+                    .setIsRefresh("0")
+                    .setEnableSafeArea("1")
+                    .setBounces("1")
+                    .setIsRemoveUpper("0")
+                    .setEnableBottomSafeArea("0")
+                    .setBgColor("#F6F6F6")
+                    .setIs_back("0")
+                    .setIs_share("0")
+                    .setShare_data("0")
+                    .setLink("/vue/about/")
+                    .build();
+            WebUrlJumpManager.getInstance().invoke(mContext, "", webViewData);
         });
         navigation.getHeaderView(0).findViewById(R.id.ll_clean).setOnClickListener(v -> {
             DataCleanManager.deleteFolderFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.dejia.anju",

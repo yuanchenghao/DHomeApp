@@ -13,8 +13,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="13dp"
-        android:background="@drawable/shape_14_f5f6f7">
+        android:background="@drawable/shape_4_f5f6f7">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -33,7 +32,6 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
                     android:background="@null"
-                    android:hint="来都来了，不评论一句吗？"
                     android:textColorHint="#999999"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
@@ -42,12 +40,12 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="@dimen/dp_40">
 
         <!-- 输入文字与照片的切换 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:background="#FFFFFF"
             android:orientation="horizontal">
 
@@ -85,9 +83,19 @@
                             android:layout_gravity="center_vertical"
                             android:text="图片"
                             android:layout_marginLeft="@dimen/dp_5"
-                            android:textColor="#666666"
+                            android:textColor="#6F7375"
                             android:textSize="13sp"
                             android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/tv_photo_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/dp_5"
+                            android:text="0"
+                            android:textColor="#6F7375"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -118,7 +126,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_pic"
             android:layout_width="match_parent"
-            android:layout_height="81dp"
+            android:layout_height="64dp"
             android:layout_marginLeft="5.5dp"
             android:layout_marginTop="@dimen/dp_4"
             android:layout_marginBottom="@dimen/dp_1"

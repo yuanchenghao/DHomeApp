@@ -21,6 +21,15 @@ public class CommentInfo {
     private List<String> image;
     private String article_id;
     private String uid;
+    private String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public boolean isShowImgBtn() {
         return showImgBtn;

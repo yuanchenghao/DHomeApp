@@ -137,7 +137,7 @@ object FinalConstant1 {
         //获取分享数据
         instance!!.regist(HTTPS, TEST_BASE_URL, "share", "getShareData", EnumInterfaceType.POST)
         //发评论
-        instance!!.regist(HTTPS, TEST_BASE_URL, "ugc", "reply", EnumInterfaceType.UPLOAD)
+        instance!!.regist(HTTPS, TEST_BASE_URL, "ugc", "reply", EnumInterfaceType.POST)
 
         //私信
         //WebSocket解绑
