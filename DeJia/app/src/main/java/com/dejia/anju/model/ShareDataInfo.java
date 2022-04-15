@@ -13,6 +13,15 @@ public class ShareDataInfo {
     private String url;
     private String content;
     private String img;
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getUrl() {
         return url;

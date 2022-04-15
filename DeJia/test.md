@@ -214,3 +214,21 @@ AMS PMS WMS
 listview和recycleview 
 
 eventbus原理
+
+依赖传递
+加入我们项目中有A、B、C、D
+第一种情况：
+A implementation B
+B implementation C
+A可以直接访问B中资源，但不能直接访问C
+第二种情况：
+A implementation B
+B api C
+A 可以直接访问B和C中的资源
+第三种情况：
+A implementation B
+B implementation C
+C api D
+B可以直接访问C和D中资源
+而A只能访问B中资源
+原文链接：https://blog.csdn.net/geyuecang/article/details/105270669

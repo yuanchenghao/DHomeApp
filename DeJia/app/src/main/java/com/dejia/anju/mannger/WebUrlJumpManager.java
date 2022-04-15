@@ -235,14 +235,14 @@ public class WebUrlJumpManager {
                                                     public void onShare1Click() {
                                                         //微信朋友
                                                         DialogUtils.closeDialog();
-                                                        ShareUtils.shareWeb(mContext, shareDataInfo.getUrl(), "得家", shareDataInfo.getContent(), shareDataInfo.getImg(), "1");
+                                                        ShareUtils.shareWeb(mContext, shareDataInfo.getUrl(), shareDataInfo.getTitle(), shareDataInfo.getContent(), shareDataInfo.getImg(), "1");
                                                     }
 
                                                     @Override
                                                     public void onShare2Click() {
                                                         //微信朋友圈
                                                         DialogUtils.closeDialog();
-                                                        ShareUtils.shareWeb(mContext, shareDataInfo.getUrl(), "得家", shareDataInfo.getContent(), shareDataInfo.getImg(), "2");
+                                                        ShareUtils.shareWeb(mContext, shareDataInfo.getUrl(), shareDataInfo.getTitle(), shareDataInfo.getContent(), shareDataInfo.getImg(), "2");
                                                     }
                                                 });
                                             }
