@@ -1,5 +1,7 @@
 package com.dejia.anju.model;
 
+import com.luck.picture.lib.entity.LocalMedia;
+
 import java.util.List;
 
 /**
@@ -18,10 +20,19 @@ import java.util.List;
 public class CommentInfo {
     private boolean showImgBtn;
     private String reply_id;
-    private List<String> image;
+//    private List<String> image;
     private String article_id;
     private String uid;
     private String content;
+    private List<LocalMedia> localMediaList;
+
+    public List<LocalMedia> getLocalMediaList() {
+        return localMediaList;
+    }
+
+    public void setLocalMediaList(List<LocalMedia> localMediaList) {
+        this.localMediaList = localMediaList;
+    }
 
     public String getContent() {
         return content;
@@ -47,13 +58,13 @@ public class CommentInfo {
         this.reply_id = reply_id;
     }
 
-    public List<String> getImage() {
-        return image;
-    }
-
-    public void setImage(List<String> image) {
-        this.image = image;
-    }
+//    public List<String> getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(List<String> image) {
+//        this.image = image;
+//    }
 
     public String getArticle_id() {
         return article_id;

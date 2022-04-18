@@ -58,6 +58,7 @@ import butterknife.ButterKnife;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.style.PictureWindowAnimationStyle;
 import com.lzy.okgo.model.HttpParams;
 
@@ -65,7 +66,7 @@ import com.lzy.okgo.model.HttpParams;
 public class DiaryCommentDialogView extends AlertDialog {
 
     private CommentInfo mDatas;
-    private List<String> mResults = new ArrayList<>();
+    //    private List<String> mResults = new ArrayList<>();
     //发送按钮
     @BindView(R.id.bbs_web_sumbit1_bt)
     Button sumbitBt1;
@@ -95,6 +96,7 @@ public class DiaryCommentDialogView extends AlertDialog {
     TextView tv_photo;
     @BindView(R.id.tv_photo_num)
     TextView tv_photo_num;
+    private List<LocalMedia> chooseResult;
     private Activity mContext;
     private PicAdapter adapter;
     private PictureWindowAnimationStyle mWindowAnimationStyle;
@@ -104,6 +106,10 @@ public class DiaryCommentDialogView extends AlertDialog {
         super(context, R.style.MyDialog1);
         this.mContext = context;
         this.mDatas = sumbitPhotoDatas;
+        this.chooseResult = mDatas.getLocalMediaList();
+        if (chooseResult == null) {
+            chooseResult = new ArrayList<>();
+        }
     }
 
 
@@ -123,7 +129,7 @@ public class DiaryCommentDialogView extends AlertDialog {
         inputContentEt.requestFocus();
 
         findView(view);
-        initRecycle();
+        initRecycle(chooseResult);
         setContentView(view);
 
         setCancelable(false);
@@ -163,12 +169,12 @@ public class DiaryCommentDialogView extends AlertDialog {
     }
 
     private void postImg() {
-        if (adapter != null && adapter.getData() != null && adapter.getData().size() >= 0) {
+        if (adapter != null && adapter.getMediaData() != null && adapter.getMediaData().size() >= 0) {
             HashMap<String, Object> map = new HashMap<>(0);
             HttpParams httpParams = new HttpParams();
-            for (int i = 0; i < adapter.getData().size(); i++) {
-                httpParams.put(adapter.getData().get(i) + "",
-                        new File(adapter.getData().get(i)));
+            for (int i = 0; i < adapter.getMediaData().size(); i++) {
+                httpParams.put(adapter.getMediaData().get(i) + "",
+                        new File(adapter.getMediaData().get(i).getCompressPath()));
             }
             new UpLoadUgcImageApi().getCallBack(mContext, map, httpParams, (BaseCallBackListener<ServerData>) serverData -> {
                 if ("1".equals(serverData.code)) {
@@ -248,8 +254,11 @@ public class DiaryCommentDialogView extends AlertDialog {
         this.setOnCancelListener(dialog -> {
             if (mDatas != null) {
                 mDatas.setContent(inputContentEt.getText().toString().trim());
-                if (adapter != null && adapter.getCommentInfo() != null && adapter.getCommentInfo().getImage() != null) {
-                    mDatas.setImage(adapter.getCommentInfo().getImage());
+//                if (adapter != null && adapter.getCommentInfo() != null && adapter.getCommentInfo().getImage() != null) {
+//                    mDatas.setImage(adapter.getCommentInfo().getImage());
+//                }
+                if (adapter != null && adapter.getMediaData() != null && adapter.getMediaData().size() > 0) {
+                    mDatas.setLocalMediaList(adapter.getMediaData());
                 }
                 EventBus.getDefault().post(new Event<>(9, mDatas));
             }
@@ -275,23 +284,23 @@ public class DiaryCommentDialogView extends AlertDialog {
     /**
      * 初始化图片列表形式
      */
-    public void initRecycle() {
+    public void initRecycle(List<LocalMedia> chooseResult) {
 //        linearLayoutManager.setReverseLayout(true);//布局反向
 //        linearLayoutManager.setStackFromEnd(true);//数据反向
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         rv_pic.setLayoutManager(linearLayoutManager);
-        adapter = new PicAdapter(mContext, mDatas);
+        adapter = new PicAdapter(mContext, mDatas, chooseResult);
         rv_pic.setAdapter(adapter);
-        if (adapter != null && adapter.getData() != null) {
-            tv_photo_num.setText(adapter.getData().size() + "");
+        if (adapter != null && adapter.getMediaData() != null) {
+            tv_photo_num.setText(adapter.getMediaData().size() + "");
         }
-        if (mDatas != null && mDatas.getImage() != null && mDatas.getImage().size() > 0) {
-            mResults = mDatas.getImage();
-        }
-        if (mResults.size() == 0) {
+//        if (mDatas != null && mDatas.getImage() != null && mDatas.getImage().size() > 0) {
+//            mResults = mDatas.getImage();
+//        }
+        if (chooseResult.size() == 0) {
             photoLy.setVisibility(View.GONE);
         } else {
-            if (mResults.size() >= 9) {
+            if (chooseResult.size() >= 9) {
                 tv_photo.setTextColor(Color.parseColor("#CCCCCC"));
             } else {
                 tv_photo.setTextColor(Color.parseColor("#666666"));
@@ -304,10 +313,12 @@ public class DiaryCommentDialogView extends AlertDialog {
 
         private Context context;
         private CommentInfo data;
+        private List<LocalMedia> localMediaLst;
 
-        public PicAdapter(Context context, CommentInfo data) {
+        public PicAdapter(Context context, CommentInfo data, List<LocalMedia> list) {
             this.data = data;
             this.context = context;
+            this.localMediaLst = list;
         }
 
         @Override
@@ -318,24 +329,25 @@ public class DiaryCommentDialogView extends AlertDialog {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-            if (position == data.getImage().size() && position <= (9 - 1)) {
+            if (position == localMediaLst.size() && position <= (9 - 1)) {
                 //添加图片
                 holder.item_grida_image.setController(Fresco.newDraweeControllerBuilder().setUri("res://mipmap/" + R.mipmap.add).setAutoPlayAnimations(true).build());
                 holder.item_grida_bt.setVisibility(View.GONE);
                 holder.item_grida_image.setOnClickListener(v -> showBottomPop());
             } else {
-                holder.item_grida_image.setController(Fresco.newDraweeControllerBuilder().setUri("file://" + data.getImage().get(position)).setAutoPlayAnimations(true).build());
+                holder.item_grida_image.setController(Fresco.newDraweeControllerBuilder().setUri("file://" + adapter.getMediaData().get(position).getCompressPath()).setAutoPlayAnimations(true).build());
                 holder.item_grida_bt.setVisibility(View.VISIBLE);
             }
             holder.item_grida_bt.setOnClickListener(v -> {
-                data.getImage().remove(position);
-                tv_photo_num.setText(data.getImage().size() + "");
-                if (data.getImage().size() >= 9) {
+//                data.getImage().remove(position);
+                localMediaLst.remove(position);
+                tv_photo_num.setText(localMediaLst.size() + "");
+                if (localMediaLst.size() >= 9) {
                     tv_photo.setTextColor(Color.parseColor("#CCCCCC"));
                 } else {
                     tv_photo.setTextColor(Color.parseColor("#666666"));
                 }
-                if (data.getImage().size() == 0) {
+                if (localMediaLst.size() == 0) {
                     tv_photo_num.setText("0");
                     photoLy.setVisibility(View.GONE);
                 }
@@ -345,19 +357,23 @@ public class DiaryCommentDialogView extends AlertDialog {
 
         @Override
         public int getItemCount() {
-            if (data.getImage() == null || data.getImage().size() == 0) {
+            if (localMediaLst == null || localMediaLst.size() == 0) {
                 return 1;
             } else {
-                return this.data.getImage().size() >= 9 ? 9 : this.data.getImage().size() + 1;
+                return this.localMediaLst.size() >= 9 ? 9 : this.localMediaLst.size() + 1;
             }
         }
 
-        public List<String> getData() {
-            return data.getImage();
-        }
+//        public List<String> getData() {
+//            return data.getImage();
+//        }
 
         public CommentInfo getCommentInfo() {
             return data;
+        }
+
+        public List<LocalMedia> getMediaData() {
+            return localMediaLst;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -386,11 +402,11 @@ public class DiaryCommentDialogView extends AlertDialog {
                         .isAndroidQTransform(true)
                         .theme(R.style.picture_WeChat_style)
                         .isWeChatStyle(true)
-                        .selectionMode(PictureConfig.SINGLE)
-//                        .selectionData(toolSelectImgAdapter.getData())
-//                        .maxSelectNum(9)
+                        .selectionMode(PictureConfig.MULTIPLE)
+                        .selectionData(adapter.getMediaData())
+                        .maxSelectNum(9)
                         .setPictureWindowAnimationStyle(mWindowAnimationStyle)
-                        .isEnableCrop(true)
+                        .isEnableCrop(false)
                         .isCompress(true)// 是否压缩
                         .compressQuality(60)// 图片压缩后输出质量 0~ 100
                         .isZoomAnim(true)
@@ -436,9 +452,9 @@ public class DiaryCommentDialogView extends AlertDialog {
         show();
     }
 
-    public void setmResults(List<String> imgList) {
-        this.mResults = imgList;
-        initRecycle();
+    public void setmResults(List<LocalMedia> imgList) {
+        this.chooseResult = imgList;
+        initRecycle(chooseResult);
     }
 
 

@@ -84,8 +84,11 @@ public class WebViewActivity extends WebViewActivityImpl {
                         if (!TextUtils.isEmpty(commentData.getContent())) {
                             commentInfo.setContent(commentData.getContent());
                         }
-                        if (commentData.getImage() != null && commentData.getImage() != null && commentData.getImage().size() > 0) {
-                            commentInfo.setImage(commentData.getImage());
+//                        if (commentData.getImage() != null && commentData.getImage() != null && commentData.getImage().size() > 0) {
+//                            commentInfo.setImage(commentData.getImage());
+//                        }
+                        if(commentData.getLocalMediaList() != null && commentData.getLocalMediaList().size() > 0){
+                            commentInfo.setLocalMediaList(commentData.getLocalMediaList());
                         }
                     }
                     diaryCommentDialogView = new DiaryCommentDialogView(mContext, commentInfo);
@@ -331,9 +334,9 @@ public class WebViewActivity extends WebViewActivityImpl {
                     List<LocalMedia> chooseResult = PictureSelector.obtainMultipleResult(data);
                     if (chooseResult != null && chooseResult.size() > 0) {
                         if (diaryCommentDialogView != null) {
-                            imgList.add(chooseResult.get(0).getCutPath());
-                            commentInfo.setImage(imgList);
-                            diaryCommentDialogView.setmResults(imgList);
+//                            imgList.add(chooseResult.get(0).getCutPath());
+//                            commentInfo.setImage(imgList);
+                            diaryCommentDialogView.setmResults(chooseResult);
                         }
                     }
                     break;

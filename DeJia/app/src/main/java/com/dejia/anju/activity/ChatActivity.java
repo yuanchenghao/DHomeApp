@@ -203,7 +203,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         initListener();
         IMManager.setMessageCallBack(this);
         //获取页面信息
-        getChatIndexInfo();
+//        getChatIndexInfo();
     }
 
     private void upDataChatRead() {
@@ -390,35 +390,36 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 finish();
                 break;
             case R.id.iv_report:
+                showPopListView();
                 break;
         }
     }
 
     private void showPopListView(){
         View view = LayoutInflater.from(this).inflate(R.layout.pop_layout,null);
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPopWindow.dissmiss();
-                DialogUtils.showExitToolDialog(mContext, "如果您认为此条内容涉及政治、色情、赌博、毒品、人身攻击、隐私泄露等信息，您可以进行举报，我们会在核实后进行处理", "取消", "确认举报", new DialogUtils.CallBack2() {
-                    @Override
-                    public void onYesClick() {
-                        DialogUtils.closeDialog();
-                        postReplyInfo();
-                    }
+        View.OnClickListener listener = v -> {
+            mPopWindow.dissmiss();
+            DialogUtils.showExitToolDialog(mContext,
+                    "如果您认为此条内容涉及政治、色情、赌博、毒品、人身攻击、隐私泄露等信息，您可以进行举报，我们会在核实后进行处理",
+                    "确认举报",
+                    "取消",
+                    new DialogUtils.CallBack2() {
+                @Override
+                public void onYesClick() {
+                    DialogUtils.closeDialog();
+                    postReplyInfo();
+                }
 
-                    @Override
-                    public void onNoClick() {
-                        DialogUtils.closeDialog();
-                    }
-                });
-            }
+                @Override
+                public void onNoClick() {
+                    DialogUtils.closeDialog();
+                }
+            });
         };
-        view.findViewById(R.id.iv_report).setOnClickListener(listener);
+        view.findViewById(R.id.ll_pop).setOnClickListener(listener);
         mPopWindow = new CustomPopWindow.PopupWindowBuilder(this)
                 .setView(view)
-                //设置点击PopupWindow之外的地方，popWindow不关闭，如果不设置这个属性或者为true，则关闭
-                .enableOutsideTouchableDissmiss(false)
+                .enableOutsideTouchableDissmiss(true)
                 .create();
         mPopWindow.showAsDropDown(iv_report,0,10);
     }
