@@ -248,6 +248,8 @@ dependencies {
     implementation 'com.baidu.mobstat:mtj-sdk:latest.integration'
     //微信
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    //pop
+    implementation 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
 }
 repositories {
     mavenCentral()

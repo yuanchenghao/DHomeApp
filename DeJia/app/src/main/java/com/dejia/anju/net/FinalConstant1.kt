@@ -154,5 +154,7 @@ object FinalConstant1 {
         instance!!.regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "getMessage", EnumInterfaceType.POST)
         //私信修改未读标示
         instance!!.regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "updateRead", EnumInterfaceType.POST)
+        //举报
+        instance!!.regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "report", EnumInterfaceType.POST)
     }
 }

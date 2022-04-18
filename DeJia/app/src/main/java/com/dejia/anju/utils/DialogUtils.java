@@ -320,7 +320,7 @@ public class DialogUtils {
         }
     }
 
-    //分享
+    //分享选择
     public static void showSelectPicDialog(final Context context, final CallBack5 callBack) {
         if (context == null) {
             return;
