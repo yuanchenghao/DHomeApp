@@ -427,7 +427,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     private void postReplyInfo() {
         Map<String, Object> maps = new HashMap<>(0);
         maps.put("id", mId);
-        chatIndexApi = new ChatIndexApi();
         new ChatReportApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 ToastUtils.toast(mContext, "感谢您提供的举报，审核预计会在1-3个工作日内完成").show();

@@ -134,6 +134,10 @@ object FinalConstant1 {
         instance!!.regist(HTTPS, TEST_BASE_URL, "building", "houseTypeBigImg", EnumInterfaceType.POST)
         //发帖前弹层
         instance!!.regist(HTTPS, TEST_BASE_URL, "ugc", "addpostalert", EnumInterfaceType.POST)
+        //获取分享数据
+        instance!!.regist(HTTPS, TEST_BASE_URL, "share", "getShareData", EnumInterfaceType.POST)
+        //发评论
+        instance!!.regist(HTTPS, TEST_BASE_URL, "ugc", "reply", EnumInterfaceType.POST)
 
         //私信
         //WebSocket解绑
@@ -150,5 +154,7 @@ object FinalConstant1 {
         instance!!.regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "getMessage", EnumInterfaceType.POST)
         //私信修改未读标示
         instance!!.regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "updateRead", EnumInterfaceType.POST)
+        //举报
+        instance!!.regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "report", EnumInterfaceType.POST)
     }
 }

@@ -246,6 +246,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     //百度统计
     implementation 'com.baidu.mobstat:mtj-sdk:latest.integration'
+    //pop
+    implementation 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
 }
 repositories {
     mavenCentral()
