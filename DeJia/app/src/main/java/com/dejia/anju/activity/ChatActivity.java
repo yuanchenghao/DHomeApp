@@ -203,7 +203,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         initListener();
         IMManager.setMessageCallBack(this);
         //获取页面信息
-//        getChatIndexInfo();
+        getChatIndexInfo();
     }
 
     private void upDataChatRead() {
