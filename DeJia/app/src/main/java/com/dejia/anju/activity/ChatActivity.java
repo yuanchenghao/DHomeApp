@@ -7,10 +7,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.ChatAdapter;
 import com.dejia.anju.api.ChatIndexApi;
+import com.dejia.anju.api.ChatReportApi;
 import com.dejia.anju.api.ChatSendApi;
 import com.dejia.anju.api.ChatUpdateReadApi;
 import com.dejia.anju.api.GetMessageApi;
@@ -34,6 +37,7 @@ import com.dejia.anju.model.NoreadAndChatidInfo;
 import com.dejia.anju.model.WebSocketBean;
 import com.dejia.anju.net.NetWork;
 import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.DialogUtils;
 import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.SoftKeyBoardListener;
 import com.dejia.anju.utils.ToastUtils;
@@ -41,6 +45,7 @@ import com.dejia.anju.utils.Util;
 import com.dejia.anju.view.PullLoadMoreRecyclerView;
 import com.dejia.anju.webSocket.IMManager;
 import com.dejia.anju.webSocket.MessageCallBack;
+import com.example.zhouwei.library.CustomPopWindow;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 
@@ -55,6 +60,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
@@ -77,6 +84,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     EditText mess_et;
     @BindView(R.id.fl_root)
     FrameLayout fl_root;
+    @BindView(R.id.iv_report)
+    ImageView iv_report;
+    private CustomPopWindow mPopWindow;
     private boolean isFlag = false;
     //页码
     private String page = "2";
@@ -193,7 +203,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         initListener();
         IMManager.setMessageCallBack(this);
         //获取页面信息
-        getChatIndexInfo();
+//        getChatIndexInfo();
     }
 
     private void upDataChatRead() {
@@ -263,7 +273,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void initData() {
-        setMultiOnClickListener(ll_back);
+        setMultiOnClickListener(ll_back, iv_report);
     }
 
     //获取页面信息
@@ -348,25 +358,25 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 dataBean.setType(ChatAdapter.TO_USER_MSG);
                 dataBean.setContent(content);
                 tblist.add(dataBean);
-                if(tblist.size() < 2){
+                if (tblist.size() < 2) {
                     runOnUiThread(() -> {
                         content_lv.setLinearLayout(false);
-                        if(chatAdapter == null){
-                            chatAdapter = new ChatAdapter(mContext,tblist);
+                        if (chatAdapter == null) {
+                            chatAdapter = new ChatAdapter(mContext, tblist);
                         }
                     });
                 }
                 mHandler.sendEmptyMessage(SEND_OK);
-            }else{
+            } else {
                 dataBean.setMessageStatus(-1);
-                if(chatAdapter != null){
+                if (chatAdapter != null) {
                     chatAdapter.notifyDataSetChanged();
                 }
             }
         });
         NetWork.getInstance().setOnErrorCallBack((call, response, e) -> {
             dataBean.setMessageStatus(-1);
-            if(chatAdapter != null){
+            if (chatAdapter != null) {
                 chatAdapter.notifyDataSetChanged();
             }
         });
@@ -379,7 +389,52 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.ll_back:
                 finish();
                 break;
+            case R.id.iv_report:
+                showPopListView();
+                break;
         }
+    }
+
+    private void showPopListView(){
+        View view = LayoutInflater.from(this).inflate(R.layout.pop_layout,null);
+        View.OnClickListener listener = v -> {
+            mPopWindow.dissmiss();
+            DialogUtils.showExitToolDialog(mContext,
+                    "如果您认为此条内容涉及政治、色情、赌博、毒品、人身攻击、隐私泄露等信息，您可以进行举报，我们会在核实后进行处理",
+                    "确认举报",
+                    "取消",
+                    new DialogUtils.CallBack2() {
+                        @Override
+                        public void onYesClick() {
+                            DialogUtils.closeDialog();
+                            postReplyInfo();
+                        }
+
+                        @Override
+                        public void onNoClick() {
+                            DialogUtils.closeDialog();
+                        }
+                    });
+        };
+        view.findViewById(R.id.ll_pop).setOnClickListener(listener);
+        mPopWindow = new CustomPopWindow.PopupWindowBuilder(this)
+                .setView(view)
+                .enableOutsideTouchableDissmiss(true)
+                .create();
+        mPopWindow.showAsDropDown(iv_report,0,10);
+    }
+
+    private void postReplyInfo() {
+        Map<String, Object> maps = new HashMap<>(0);
+        maps.put("id", mId);
+        chatIndexApi = new ChatIndexApi();
+        new ChatReportApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                ToastUtils.toast(mContext, "感谢您提供的举报，审核预计会在1-3个工作日内完成").show();
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
+            }
+        });
     }
 
     @Override
@@ -395,8 +450,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             });
         } else {
 //            if (mId.equals(dataBean.getFromUserId())) {
-                tblist.add(dataBean);
-                mHandler.sendEmptyMessage(SEND_OK);
+            tblist.add(dataBean);
+            mHandler.sendEmptyMessage(SEND_OK);
 //            }
         }
     }
@@ -419,7 +474,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         content_lv.setLayoutParams(layoutParams);
     }
 
-    public static void invoke(Context context, String id,String groupId) {
+    public static void invoke(Context context, String id, String groupId) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("groupId", groupId);
