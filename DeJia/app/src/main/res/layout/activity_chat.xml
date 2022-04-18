@@ -52,6 +52,16 @@
             android:textColor="#919699"
             android:textSize="@dimen/sp_12"
             android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/iv_report"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:src="@mipmap/reply_chat"
+            android:layout_marginRight="@dimen/dp_16" />
     </RelativeLayout>
 
     <LinearLayout
