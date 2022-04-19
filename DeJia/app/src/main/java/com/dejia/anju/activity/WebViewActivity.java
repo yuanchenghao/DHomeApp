@@ -87,7 +87,7 @@ public class WebViewActivity extends WebViewActivityImpl {
 //                        if (commentData.getImage() != null && commentData.getImage() != null && commentData.getImage().size() > 0) {
 //                            commentInfo.setImage(commentData.getImage());
 //                        }
-                        if(commentData.getLocalMediaList() != null && commentData.getLocalMediaList().size() > 0){
+                        if(commentData.getLocalMediaList() != null && commentData.getLocalMediaList().size() > 0 && commentData.isShowImgBtn()){
                             commentInfo.setLocalMediaList(commentData.getLocalMediaList());
                         }
                     }
