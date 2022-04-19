@@ -232,3 +232,4 @@ C api D
 B可以直接访问C和D中资源
 而A只能访问B中资源
 原文链接：https://blog.csdn.net/geyuecang/article/details/105270669
+binder ams 组件化插件化 aop 安卓架构
