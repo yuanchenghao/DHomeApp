@@ -169,7 +169,10 @@ public class DiaryCommentDialogView extends AlertDialog {
     }
 
     private void postImg() {
-        if (adapter != null && adapter.getMediaData() != null && adapter.getMediaData().size() >= 0) {
+        sumbitBt1.setEnabled(false);
+        sumbitBt1.setText("发送中");
+        sumbitBt1.setTextColor(Color.parseColor("#CCCCCC"));
+        if (adapter != null && adapter.getMediaData() != null && adapter.getMediaData().size() > 0) {
             HashMap<String, Object> map = new HashMap<>(0);
             HttpParams httpParams = new HttpParams();
             for (int i = 0; i < adapter.getMediaData().size(); i++) {
@@ -181,6 +184,8 @@ public class DiaryCommentDialogView extends AlertDialog {
                     List<UgcUploadImageInfo> list = JSONUtil.jsonToArrayList(serverData.data, UgcUploadImageInfo.class);
                     postComment(list);
                 } else {
+                    sumbitBt1.setEnabled(true);
+                    sumbitBt1.setText("发送");
                     ToastUtils.toast(mContext, "图片上传失败请重试").show();
                 }
             });
@@ -205,7 +210,10 @@ public class DiaryCommentDialogView extends AlertDialog {
         maps.put("reply_id", adapter.getCommentInfo().getReply_id());
         maps.put("at_user_id", adapter.getCommentInfo().getUid());
         new ReplyApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+
             if ("1".equals(serverData.code)) {
+                sumbitBt1.setEnabled(true);
+                sumbitBt1.setText("发送");
                 EventBus.getDefault().post(new Event<>(8, serverData.data));
 //                ToastUtils.toast(mContext, "发表成功").show();
                 dismiss();
@@ -237,7 +245,7 @@ public class DiaryCommentDialogView extends AlertDialog {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() == 0) {
+                if (s.length() <= 5) {
                     sumbitBt1.setTextColor(Color.parseColor("#CCCCCC"));
                     sumbitBt1.setEnabled(false);
                 } else {

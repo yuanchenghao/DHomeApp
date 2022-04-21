@@ -223,7 +223,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         getMessageShow();
         getToolInfo();
         //请求版本更新
-        getVersion();
+//        getVersion();
         //将侧边栏顶部延伸至status bar
         drawerLayout.setFitsSystemWindows(true);
         //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
