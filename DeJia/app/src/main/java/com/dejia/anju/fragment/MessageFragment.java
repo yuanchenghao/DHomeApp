@@ -108,35 +108,33 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     public void onEventMainThread(Event msgEvent) {
         switch (msgEvent.getCode()) {
             case 2:
-                String mId = ((NoreadAndChatidInfo) msgEvent.getData()).getId();
-                String mNoread = ((NoreadAndChatidInfo) msgEvent.getData()).getNoread();
-                boolean refreshMessageList = true;
+//                String mId = ((NoreadAndChatidInfo) msgEvent.getData()).getId();
+//                String mNoread = ((NoreadAndChatidInfo) msgEvent.getData()).getNoread();
+//                boolean refreshMessageList = true;
                 if (mContext != null) {
                     if (messageListAdapter == null) {
                         return;
                     }
-                    List<MessageListData> mData = messageListAdapter.getData();
-                    for (int i = 0; i < mData.size(); i++) {
-                        if (mId.equals(mData.get(i).getId())) {
-                            refreshMessageList = false;
-                            mPos = i;
-                            break;
-                        }
-                    }
-                    AppLog.i("mPos === " + mPos);
-                    if (mContext != null) {
-                        if (refreshMessageList) {
+//                    List<MessageListData> mData = messageListAdapter.getData();
+//                    for (int i = 0; i < mData.size(); i++) {
+//                        if (mId.equals(mData.get(i).getId())) {
+//                            refreshMessageList = false;
+//                            mPos = i;
+//                            break;
+//                        }
+//                    }
+//                    AppLog.i("mPos === " + mPos);
+//                        if (refreshMessageList) {
                             this.page = 1;
                             this.messageListAdapter = null;
                             //如果改消息不存在刷新消息列表
                             this.getMessageList();
-                        } else {
-                            //设置消息个数
-                            int noread = Integer.parseInt(mNoread);
-                            this.messageListAdapter.setNoread(mPos, (noread + 1) + "");
-                            this.messageListAdapter.notifyDataSetChanged();
-                        }
-                    }
+//                        } else {
+//                            //设置消息个数
+//                            int noread = Integer.parseInt(mNoread);
+//                            this.messageListAdapter.setNoread(mPos, (noread) + "");
+//                            this.messageListAdapter.notifyDataSetChanged();
+//                        }
                 }
                 break;
         }
