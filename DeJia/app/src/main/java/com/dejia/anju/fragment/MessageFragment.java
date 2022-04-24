@@ -214,8 +214,8 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                 KVUtils.getInstance().encode("message_count", JSONUtil.TransformSingleBean(serverData.data, MessageCountInfo.class));
             }
             MessageCountInfo messageCountInfo = KVUtils.getInstance().decodeParcelable("message_count", MessageCountInfo.class);
-            if (messageCountInfo != null && messageCountInfo.getChat_num() > 0) {
-                item_inform_tv1.setText(messageCountInfo.getChat_num() + "");
+            if (messageCountInfo != null && messageCountInfo.getReply_me_num() > 0) {
+                item_inform_tv1.setText(messageCountInfo.getReply_me_num() + "");
                 item_inform_tv1.setVisibility(View.VISIBLE);
             } else {
                 item_inform_tv1.setVisibility(View.GONE);
@@ -398,6 +398,5 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         page = 1;
         messageListAdapter = null;
         getMessageList();
-        getMessageNum();
     }
 }
