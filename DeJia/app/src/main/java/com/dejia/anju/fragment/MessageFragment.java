@@ -398,5 +398,6 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         page = 1;
         messageListAdapter = null;
         getMessageList();
+        getMessageNum();
     }
 }

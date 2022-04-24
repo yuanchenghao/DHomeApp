@@ -215,7 +215,7 @@ public class DiaryCommentDialogView extends AlertDialog {
                 sumbitBt1.setEnabled(true);
                 sumbitBt1.setText("发送");
                 EventBus.getDefault().post(new Event<>(8, serverData.data));
-//                ToastUtils.toast(mContext, "发表成功").show();
+                ToastUtils.toast(mContext, "发表成功").show();
                 dismiss();
             } else {
                 ToastUtils.toast(mContext, serverData.message).show();
