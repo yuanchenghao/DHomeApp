@@ -304,12 +304,12 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (!NotificationManagerCompat.from(mContext).areNotificationsEnabled() && KVUtils.getInstance().decodeInt("is_first_active") == 1) {
-            //没开启
-            invokeSetting();
-        }else{
+//        if (!NotificationManagerCompat.from(mContext).areNotificationsEnabled() && KVUtils.getInstance().decodeInt("is_first_active") == 1) {
+//            //没开启
+//            invokeSetting();
+//        }else{
             invoke();
-        }
+//        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -317,12 +317,12 @@ public class SplashActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PermissionManager.REQUEST_SETTING_CODE) {
-            if (!NotificationManagerCompat.from(mContext).areNotificationsEnabled() && KVUtils.getInstance().decodeInt("is_first_active") == 1) {
-                //没开启
-                invokeSetting();
-            }else{
+//            if (!NotificationManagerCompat.from(mContext).areNotificationsEnabled() && KVUtils.getInstance().decodeInt("is_first_active") == 1) {
+//                //没开启
+//                invokeSetting();
+//            }else{
                 invoke();
-            }
+//            }
         }
     }
 
