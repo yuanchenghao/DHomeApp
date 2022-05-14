@@ -6,6 +6,15 @@ public class ChatIndexInfo {
     public String id;
     public String online;
     public String subtitle;
+    public ShieldingData shielding_data;
+
+    public ShieldingData getShielding_data() {
+        return shielding_data;
+    }
+
+    public void setShielding_data(ShieldingData shielding_data) {
+        this.shielding_data = shielding_data;
+    }
 
     public String getPushWelcome() {
         return pushWelcome;

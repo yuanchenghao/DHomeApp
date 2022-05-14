@@ -156,5 +156,9 @@ object FinalConstant1 {
         instance!!.regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "updateRead", EnumInterfaceType.POST)
         //举报
         instance!!.regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "report", EnumInterfaceType.POST)
+        //屏蔽
+        instance!!.regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "shielding", EnumInterfaceType.POST)
+        //取消屏蔽
+        instance!!.regist(HTTPS, TEST_CHAT_BASE_URL, "chat", "delShielding", EnumInterfaceType.POST)
     }
 }
