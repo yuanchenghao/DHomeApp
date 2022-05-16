@@ -72,6 +72,20 @@
         android:background="#ffffff"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tv_tips_shield"
+            android:textSize="13sp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_36"
+            android:textColor="#919699"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginBottom="7.5dp"
+            android:layout_marginTop="7.5dp" />
+
         <!-- 输入框-->
         <LinearLayout
             android:id="@+id/ll_input"

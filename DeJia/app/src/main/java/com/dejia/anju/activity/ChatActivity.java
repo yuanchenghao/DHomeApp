@@ -2,10 +2,15 @@ package com.dejia.anju.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.style.ClickableSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +27,11 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.dejia.anju.AppLog;
 import com.dejia.anju.R;
 import com.dejia.anju.adapter.ChatAdapter;
+import com.dejia.anju.api.ChatDelShieldingApi;
 import com.dejia.anju.api.ChatIndexApi;
 import com.dejia.anju.api.ChatReportApi;
 import com.dejia.anju.api.ChatSendApi;
+import com.dejia.anju.api.ChatShieldingApi;
 import com.dejia.anju.api.ChatUpdateReadApi;
 import com.dejia.anju.api.GetMessageApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
@@ -60,8 +67,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
@@ -86,6 +91,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     FrameLayout fl_root;
     @BindView(R.id.iv_report)
     ImageView iv_report;
+    @BindView(R.id.tv_tips_shield)
+    TextView tv_tips_shield;
     private CustomPopWindow mPopWindow;
     private boolean isFlag = false;
     //页码
@@ -115,6 +122,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     public static final int PULL_TO_REFRESH_DOWN = 0x0111;
     public int position; //加载滚动刷新位置
     private MessageBean.DataBean dataBean;
+    private ChatIndexInfo chatIndexInfo;
     private String domain = "dejiainfo";
     private long expiresAt = 1544493729973L;
     private String name = "";
@@ -284,18 +292,78 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         chatIndexApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 AppLog.i("获取页面信息成功");
-                ChatIndexInfo chatIndexInfo = JSONUtil.TransformSingleBean(serverData.data, ChatIndexInfo.class);
+                chatIndexInfo = JSONUtil.TransformSingleBean(serverData.data, ChatIndexInfo.class);
                 tv_name.setText(chatIndexInfo.getTitle());
                 tv_type.setText(chatIndexInfo.getSubtitle());
                 //获取聊天信息
                 getMessageInfo();
                 //更新未读消息数
                 upDataChatRead();
+                upDataShield();
             } else {
                 AppLog.i("获取页面信息失败");
                 ToastUtils.toast(mContext, serverData.message).show();
             }
         });
+    }
+
+    private void upDataShield() {
+        if (chatIndexInfo != null
+                && chatIndexInfo.getShielding_data() != null
+                && !TextUtils.isEmpty(chatIndexInfo.getShielding_data().getShielding())) {
+            if ("0".equals(chatIndexInfo.getShielding_data().getShielding())) {
+                tv_tips_shield.setVisibility(View.GONE);
+                ll_input.setVisibility(View.VISIBLE);
+            } else if ("1".equals(chatIndexInfo.getShielding_data().getShielding())) {
+                setSpanString();
+                tv_tips_shield.setVisibility(View.VISIBLE);
+                ll_input.setVisibility(View.GONE);
+            } else {
+                setSpanString();
+                tv_tips_shield.setVisibility(View.VISIBLE);
+                ll_input.setVisibility(View.GONE);
+            }
+        } else {
+            tv_tips_shield.setVisibility(View.GONE);
+            ll_input.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setSpanString() {
+        if (!TextUtils.isEmpty(chatIndexInfo.getShielding_data().getButton_title())) {
+            SpannableString spannableString = new SpannableString(chatIndexInfo.getShielding_data().getDesc() + chatIndexInfo.getShielding_data().getButton_title());
+            spannableString.setSpan(new ClickableSpan() {
+                @Override
+                public void onClick(View widget) {
+                    DialogUtils.showExitToolDialog(mContext,
+                            "取消屏蔽后，你可以继续收到来自此用户新发送的消息",
+                            "取消屏蔽",
+                            "暂不",
+                            new DialogUtils.CallBack2() {
+                                @Override
+                                public void onYesClick() {
+                                    DialogUtils.closeDialog();
+                                    postDelShieldInfo();
+                                }
+
+                                @Override
+                                public void onNoClick() {
+                                    DialogUtils.closeDialog();
+                                }
+                            });
+                }
+
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setColor(Color.parseColor("#0095FF"));
+                    ds.setUnderlineText(false); //是否设置下划线
+                }
+            }, chatIndexInfo.getShielding_data().getDesc().length(), chatIndexInfo.getShielding_data().getDesc().length() + chatIndexInfo.getShielding_data().getButton_title().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tv_tips_shield.setText(spannableString);
+        } else {
+            tv_tips_shield.setText(chatIndexInfo.getShielding_data().getDesc());
+        }
     }
 
     //获取私信信息
@@ -395,33 +463,86 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private void showPopListView(){
-        View view = LayoutInflater.from(this).inflate(R.layout.pop_layout,null);
-        View.OnClickListener listener = v -> {
+    private void showPopListView() {
+        View view = LayoutInflater.from(this).inflate(R.layout.pop_layout, null);
+        if (chatIndexInfo != null
+                && chatIndexInfo.getShielding_data() != null
+                && !TextUtils.isEmpty(chatIndexInfo.getShielding_data().getShielding())
+                && chatIndexInfo.getShielding_data().getShielding().equals("0")) {
+            ((TextView) view.findViewById(R.id.tv_shield)).setText("屏蔽此用户");
+        } else {
+            ((TextView) view.findViewById(R.id.tv_shield)).setText("取消屏蔽");
+        }
+        View.OnClickListener listener1 = v -> {
             mPopWindow.dissmiss();
             DialogUtils.showExitToolDialog(mContext,
                     "如果您认为此条内容涉及政治、色情、赌博、毒品、人身攻击、隐私泄露等信息，您可以进行举报，我们会在核实后进行处理",
                     "确认举报",
-                    "取消",
+                    "暂不",
                     new DialogUtils.CallBack2() {
-                @Override
-                public void onYesClick() {
-                    DialogUtils.closeDialog();
-                    postReplyInfo();
-                }
+                        @Override
+                        public void onYesClick() {
+                            DialogUtils.closeDialog();
+                            postReplyInfo();
+                        }
 
-                @Override
-                public void onNoClick() {
-                    DialogUtils.closeDialog();
-                }
-            });
+                        @Override
+                        public void onNoClick() {
+                            DialogUtils.closeDialog();
+                        }
+                    });
         };
-        view.findViewById(R.id.ll_pop).setOnClickListener(listener);
+        View.OnClickListener listener2 = v -> {
+            if (chatIndexInfo != null
+                    && chatIndexInfo.getShielding_data() != null
+                    && !TextUtils.isEmpty(chatIndexInfo.getShielding_data().getShielding())
+                    && chatIndexInfo.getShielding_data().getShielding().equals("0")) {
+                //去屏蔽
+                mPopWindow.dissmiss();
+                DialogUtils.showExitToolDialog(mContext,
+                        "屏蔽此用户后，对方将无法再向你发送消息，直到你主动取消屏蔽",
+                        "确认屏蔽",
+                        "暂不",
+                        new DialogUtils.CallBack2() {
+                            @Override
+                            public void onYesClick() {
+                                DialogUtils.closeDialog();
+                                postShieldInfo();
+                            }
+
+                            @Override
+                            public void onNoClick() {
+                                DialogUtils.closeDialog();
+                            }
+                        });
+            } else {
+                //取消屏蔽
+                mPopWindow.dissmiss();
+                DialogUtils.showExitToolDialog(mContext,
+                        "取消屏蔽后，你可以继续收到来自此用户新发送的消息",
+                        "取消屏蔽",
+                        "暂不",
+                        new DialogUtils.CallBack2() {
+                            @Override
+                            public void onYesClick() {
+                                DialogUtils.closeDialog();
+                                postDelShieldInfo();
+                            }
+
+                            @Override
+                            public void onNoClick() {
+                                DialogUtils.closeDialog();
+                            }
+                        });
+            }
+        };
+        view.findViewById(R.id.tv_report).setOnClickListener(listener1);
+        view.findViewById(R.id.tv_shield).setOnClickListener(listener2);
         mPopWindow = new CustomPopWindow.PopupWindowBuilder(this)
                 .setView(view)
                 .enableOutsideTouchableDissmiss(true)
                 .create();
-        mPopWindow.showAsDropDown(iv_report,0,10);
+        mPopWindow.showAsDropDown(iv_report, 0, 10);
     }
 
     private void postReplyInfo() {
@@ -430,6 +551,32 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         new ChatReportApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
                 ToastUtils.toast(mContext, "感谢您提供的举报，审核预计会在1-3个工作日内完成").show();
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
+            }
+        });
+    }
+
+    private void postShieldInfo() {
+        Map<String, Object> maps = new HashMap<>(0);
+        maps.put("id", mId);
+        new ChatShieldingApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                getChatIndexInfo();
+                ToastUtils.toast(mContext, "屏蔽成功").show();
+            } else {
+                ToastUtils.toast(mContext, serverData.message).show();
+            }
+        });
+    }
+
+    private void postDelShieldInfo() {
+        Map<String, Object> maps = new HashMap<>(0);
+        maps.put("id", mId);
+        new ChatDelShieldingApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                getChatIndexInfo();
+                ToastUtils.toast(mContext, "屏蔽已取消").show();
             } else {
                 ToastUtils.toast(mContext, serverData.message).show();
             }

@@ -16,9 +16,21 @@
         android:paddingBottom="@dimen/dp_10">
 
         <TextView
+            android:id="@+id/tv_report"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="举报此对话"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tv_shield"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="屏蔽此用户"
             android:textStyle="bold"
             android:textSize="13sp"
             android:gravity="center"
