@@ -138,6 +138,8 @@ object FinalConstant1 {
         instance!!.regist(HTTPS, TEST_BASE_URL, "share", "getShareData", EnumInterfaceType.POST)
         //发评论
         instance!!.regist(HTTPS, TEST_BASE_URL, "ugc", "reply", EnumInterfaceType.POST)
+        //搜索词
+        instance!!.regist(HTTPS, TEST_BASE_URL, "search", "sug", EnumInterfaceType.POST)
 
         //私信
         //WebSocket解绑

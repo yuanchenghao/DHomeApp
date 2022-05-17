@@ -43,7 +43,9 @@ import com.lzy.okgo.cookie.store.CookieStore;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -61,6 +63,22 @@ import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 
 public final class Util {
+
+    /**
+     * 中文转Unicode
+     *
+     * @param string
+     * @return
+     */
+    public static String unicodeEncode(String string) {
+        try {
+            return URLEncoder.encode(string, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return string;
+        }
+    }
+
     /**
      * 判断Activity是否Destroy
      *

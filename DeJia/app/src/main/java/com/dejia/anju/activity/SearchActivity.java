@@ -9,25 +9,36 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dejia.anju.R;
+import com.dejia.anju.adapter.SearchKeywordsAdapter;
+import com.dejia.anju.api.SearchKeyApi;
+import com.dejia.anju.api.base.BaseCallBackListener;
 import com.dejia.anju.base.BaseActivity;
 import com.dejia.anju.fragment.SearchHistoryFragment;
 import com.dejia.anju.fragment.SearchResultFragment;
 import com.dejia.anju.model.HistorySearchWords;
+import com.dejia.anju.model.SearchKeyInfo;
 import com.dejia.anju.model.WebViewData;
 import com.dejia.anju.net.FinalConstant1;
+import com.dejia.anju.net.ServerData;
+import com.dejia.anju.utils.JSONUtil;
 import com.dejia.anju.utils.Util;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import org.kymjs.aframe.database.KJDB;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 public class SearchActivity extends BaseActivity implements View.OnClickListener {
@@ -39,10 +50,17 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     ImageView iv_close_et;
     @BindView(R.id.tv_quit)
     TextView tv_quit;
+    @BindView(R.id.search_keywords_recycler)
+    RecyclerView searchKeywordsRecycler;
+    @BindView(R.id.search_result_fragment)
+    FrameLayout search_result_fragment;
+    //判断是否是手动设置的
+    private boolean isSetContent = false;
     private KJDB mKjdb;
     private SearchHistoryFragment searchHistoryFragment;
     private SearchResultFragment searchResultFragment;
-    private boolean isResultVisable;
+    private SearchKeyApi searchKeyApi;
+    private SearchKeywordsAdapter mKeyAdater;
 
     @Xml(layouts = "activity_search")
     @Override
@@ -66,9 +84,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         searchHistoryFragment = SearchHistoryFragment.newInstance();
         setActivityFragment(R.id.search_result_fragment, searchHistoryFragment);
         searchHistoryFragment.setOnEventClickListener((v, key) -> {
+            isSetContent = true;
             Util.hideSoftKeyboard(mContext);
             ed.setText(key);
-//                ed.setSelection(key.length());
             ed.clearFocus();
             setResultFragment();
         });
@@ -76,9 +94,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     //设置结果页
     private void setResultFragment() {
-        isResultVisable = true;
         saveRecord(ed.getText().toString().trim());
         invokeWebSearchActivity(ed.getText().toString().trim());
+        searchKeywordsRecycler.setVisibility(View.GONE);
     }
 
     @Override
@@ -95,6 +113,15 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     iv_close_et.setVisibility(View.INVISIBLE);
                 } else {
                     iv_close_et.setVisibility(View.VISIBLE);
+                }
+                if (!TextUtils.isEmpty(s)) {
+                    if (isSetContent) {
+                        isSetContent = false;
+                    } else {
+                        sendSearchKey();
+                    }
+                } else {
+                    searchKeywordsRecycler.setVisibility(View.GONE);
                 }
             }
 
@@ -113,9 +140,43 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             return false;
         });
         ed.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus && isResultVisable) {
-                isResultVisable = false;
-                setHistoryFragment();
+            if (hasFocus && !TextUtils.isEmpty(ed.getText().toString().trim())) {
+                sendSearchKey();
+            }
+        });
+    }
+
+    private void sendSearchKey() {
+        searchKeyApi = new SearchKeyApi();
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("key", Util.unicodeEncode(ed.getText().toString().trim()));
+        searchKeyApi.getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
+            if ("1".equals(serverData.code)) {
+                ArrayList<SearchKeyInfo> list = JSONUtil.jsonToArrayList(serverData.data, SearchKeyInfo.class);
+                //是否有联想词
+                if (list != null && list.size() > 0 && !TextUtils.isEmpty(ed.getText().toString().trim())) {
+                    //如果存在联想词：显示联想词页面
+                    searchKeywordsRecycler.setVisibility(View.VISIBLE);
+                    if (mKeyAdater == null) {
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                        searchKeywordsRecycler.setLayoutManager(linearLayoutManager);
+                        mKeyAdater = new SearchKeywordsAdapter(mContext, list);
+                        searchKeywordsRecycler.setAdapter(mKeyAdater);
+                        mKeyAdater.setOnEventClickListener((v, keys, keys2) -> {
+                            isSetContent = true;
+                            //隐藏软键盘
+                            Util.hideSoftKeyboard(mContext);
+                            ed.setText(keys);
+                            ed.clearFocus();
+                            setResultFragment();
+                        });
+                    } else {
+                        mKeyAdater.replaceData(list);
+                    }
+                } else {
+                    //如果不存在联想词
+                    searchKeywordsRecycler.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -153,6 +214,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             case R.id.iv_close_et:
                 ed.setText("");
                 ed.requestFocusFromTouch();
+                setHistoryFragment();
                 break;
         }
     }
