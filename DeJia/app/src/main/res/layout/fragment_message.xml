@@ -30,9 +30,13 @@
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableLoadMore="true">
 
-        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+<!--        <com.scwang.smartrefresh.layout.header.ClassicsHeader-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
+
+        <com.dejia.anju.base.smart.YMRefreshHeader
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:layout_width="match_parent"

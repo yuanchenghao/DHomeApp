@@ -1,7 +1,6 @@
 package com.dejia.anju.base.smart;
 
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,27 +14,17 @@ import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 
-import java.io.IOException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
-import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.GifImageView;
-
-import static android.widget.RelativeLayout.CENTER_IN_PARENT;
-import static com.blankj.utilcode.util.SnackbarUtils.addView;
 
 
 /**
  * 自定义SmartRefreshLayout刷新头
  */
-public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader {
-    private int mRotateAniTime = 300;     //刷新完成后的延迟时间
-//    private AnimationDrawable animationDrawable;
-    private GifImageView iv_loading;
-//    private GifDrawable gifFromResource;
-
+public class YMRefreshHeader extends RelativeLayout implements RefreshHeader {
+    //刷新完成后的延迟时间
+    private int mRotateAniTime = 2000;
 
     public YMRefreshHeader(@NonNull Context context) {
         this(context, null);
@@ -51,20 +40,17 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
         initViews(attrs,context);
     }
 
-    protected void initViews(AttributeSet attrs, Context context) {
+    protected void initViews(AttributeSet attrs, Context context){
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtil.dp2px(80));
         params.addRule(CENTER_IN_PARENT);
         setLayoutParams(params);
         View headerView = View.inflate(context, R.layout.head_view, null);
-        iv_loading = headerView.findViewById(R.id.head_loading);
-//        try {
-//            gifFromResource = new GifDrawable(getResources(), R.drawable.loading);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+//        iv_loading = headerView.findViewById(R.id.head_loading);
+//        GifDrawable gifFromResource = new GifDrawable( getResources(), R.drawable.loading);
+//        iv_loading.setImageResource(gifFromResource);
         addView(headerView, params);
         //设置高度
-        setMinimumHeight(DensityUtil.dp2px(80));
+        setMinimumHeight(DensityUtil.dp2px(40));
     }
 
     @NonNull
@@ -93,7 +79,7 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
      */
     @Override
     public void onStartAnimator(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
-//        gifFromResource.start();
+//        animationDrawable.start();
     }
 
     /**
@@ -105,8 +91,8 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
      */
     @Override
     public int onFinish(@NonNull RefreshLayout refreshLayout, boolean success) {
-//        gifFromResource.stop();
-        clearAnimation();
+//        animationDrawable.stop();
+//        clearAnimation();
         return mRotateAniTime;
     }
 
@@ -186,4 +172,6 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
     public boolean isSupportHorizontalDrag() {
         return false;
     }
+
+
 }

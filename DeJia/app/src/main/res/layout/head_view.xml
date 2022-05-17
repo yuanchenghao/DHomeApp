@@ -6,7 +6,7 @@
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/head_loading"
         android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
         android:src="@drawable/loading" />
 </RelativeLayout>

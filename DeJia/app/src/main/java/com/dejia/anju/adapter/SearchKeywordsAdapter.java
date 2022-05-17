@@ -62,7 +62,7 @@ public class SearchKeywordsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 while (m.find()) {
                     int start = m.start();
                     int end = m.end();
-                    s.setSpan(new ForegroundColorSpan(Color.RED), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    s.setSpan(new ForegroundColorSpan(Color.parseColor("#33A7FF")), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
                 viewHolder.mName.setText(s);
             } catch (Exception e) {
