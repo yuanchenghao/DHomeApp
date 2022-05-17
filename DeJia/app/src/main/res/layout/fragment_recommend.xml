@@ -11,10 +11,12 @@
         android:layout_height="wrap_content"
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableLoadMore="true">
-
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+<!--        <com.dejia.anju.base.smart.YMRefreshHeader-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"

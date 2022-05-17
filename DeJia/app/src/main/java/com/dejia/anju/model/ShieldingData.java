@@ -9,18 +9,18 @@ package com.dejia.anju.model;
  */
 public class ShieldingData {
     //0正常1已屏蔽2被屏蔽
-    public String Shielding;
+    public String shielding;
     //描述
     public String desc;
     //有没有按钮
     public String button_title;
 
     public String getShielding() {
-        return Shielding;
+        return shielding;
     }
 
     public void setShielding(String shielding) {
-        Shielding = shielding;
+        this.shielding = shielding;
     }
 
     public String getDesc() {

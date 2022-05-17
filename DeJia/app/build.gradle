@@ -10,8 +10,8 @@ android {
         applicationId "com.dejia.anju"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 3
-        versionName "1.0.5"
+        versionCode 4
+        versionName "1.0.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -250,6 +250,8 @@ dependencies {
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     //pop
     implementation 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
+    //gifview
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.24'
 }
 repositories {
     mavenCentral()

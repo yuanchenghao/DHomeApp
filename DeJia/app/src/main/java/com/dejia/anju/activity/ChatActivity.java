@@ -10,6 +10,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ import com.dejia.anju.model.ChatIndexInfo;
 import com.dejia.anju.model.ChatUpdateReadInfo;
 import com.dejia.anju.model.MessageBean;
 import com.dejia.anju.model.NoreadAndChatidInfo;
+import com.dejia.anju.model.ShieldingData;
 import com.dejia.anju.model.WebSocketBean;
 import com.dejia.anju.net.NetWork;
 import com.dejia.anju.net.ServerData;
@@ -331,6 +333,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     private void setSpanString() {
         if (!TextUtils.isEmpty(chatIndexInfo.getShielding_data().getButton_title())) {
+            tv_tips_shield.setMovementMethod(LinkMovementMethod.getInstance());
             SpannableString spannableString = new SpannableString(chatIndexInfo.getShielding_data().getDesc() + chatIndexInfo.getShielding_data().getButton_title());
             spannableString.setSpan(new ClickableSpan() {
                 @Override
@@ -392,15 +395,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     chatAdapter = new ChatAdapter(mContext, tblist);
                     content_lv.setAdapter(chatAdapter);
                 } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            content_lv.setLinearLayout(false);
-                            if (chatAdapter == null) {
-                                chatAdapter = new ChatAdapter(mContext, tblist);
-                            }
-                            content_lv.setAdapter(chatAdapter);
+                    runOnUiThread(() -> {
+                        content_lv.setLinearLayout(false);
+                        if (chatAdapter == null) {
+                            chatAdapter = new ChatAdapter(mContext, tblist);
                         }
+                        content_lv.setAdapter(chatAdapter);
                     });
                 }
             } else {
@@ -562,7 +562,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         maps.put("id", mId);
         new ChatShieldingApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
-                getChatIndexInfo();
+                ShieldingData shieldingData = JSONUtil.TransformSingleBean(serverData.data, ShieldingData.class);
+                chatIndexInfo.setShielding_data(shieldingData);
+                upDataShield();
                 ToastUtils.toast(mContext, "屏蔽成功").show();
             } else {
                 ToastUtils.toast(mContext, serverData.message).show();
@@ -575,7 +577,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         maps.put("id", mId);
         new ChatDelShieldingApi().getCallBack(mContext, maps, (BaseCallBackListener<ServerData>) serverData -> {
             if ("1".equals(serverData.code)) {
-                getChatIndexInfo();
+                ShieldingData shieldingData = JSONUtil.TransformSingleBean(serverData.data, ShieldingData.class);
+                chatIndexInfo.setShielding_data(shieldingData);
+                upDataShield();
                 ToastUtils.toast(mContext, "屏蔽已取消").show();
             } else {
                 ToastUtils.toast(mContext, serverData.message).show();

@@ -1,10 +1,11 @@
 package com.dejia.anju.base.smart;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.dejia.anju.R;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
@@ -14,18 +15,27 @@ import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 
+import java.io.IOException;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
+
+import static android.widget.RelativeLayout.CENTER_IN_PARENT;
+import static com.blankj.utilcode.util.SnackbarUtils.addView;
 
 
 /**
  * 自定义SmartRefreshLayout刷新头
  */
 public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader {
-    private final String TAG = "YMRefreshHeader";
     private int mRotateAniTime = 300;     //刷新完成后的延迟时间
-    private AnimationDrawable animationDrawable;
+//    private AnimationDrawable animationDrawable;
+    private GifImageView iv_loading;
+//    private GifDrawable gifFromResource;
+
 
     public YMRefreshHeader(@NonNull Context context) {
         this(context, null);
@@ -38,18 +48,21 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
     public YMRefreshHeader(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        initViews(attrs);
+        initViews(attrs,context);
     }
 
-    protected void initViews(AttributeSet attrs) {
-        //设置自定义刷新属性
-        TypedArray arr = getContext().obtainStyledAttributes(attrs, R.styleable.CustomRefresh1, 0, 0);
-
-        //为自定义属性赋值
-        if (arr != null) {
-            mRotateAniTime = arr.getInt(R.styleable.CustomRefresh1_ptr_rotate_ani_time, mRotateAniTime);
-        }
-
+    protected void initViews(AttributeSet attrs, Context context) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtil.dp2px(80));
+        params.addRule(CENTER_IN_PARENT);
+        setLayoutParams(params);
+        View headerView = View.inflate(context, R.layout.head_view, null);
+        iv_loading = headerView.findViewById(R.id.head_loading);
+//        try {
+//            gifFromResource = new GifDrawable(getResources(), R.drawable.loading);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        addView(headerView, params);
         //设置高度
         setMinimumHeight(DensityUtil.dp2px(80));
     }
@@ -80,7 +93,7 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
      */
     @Override
     public void onStartAnimator(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
-        animationDrawable.start();
+//        gifFromResource.start();
     }
 
     /**
@@ -92,7 +105,7 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
      */
     @Override
     public int onFinish(@NonNull RefreshLayout refreshLayout, boolean success) {
-        animationDrawable.stop();
+//        gifFromResource.stop();
         clearAnimation();
         return mRotateAniTime;
     }
@@ -102,17 +115,14 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
         switch (newState) {
             case None:
             case PullDownToRefresh:
-                setImageResource(R.drawable.sx_three_mao_start);
-                animationDrawable = (AnimationDrawable) getDrawable();
-                if(onEventClickListener != null){
-                    onEventClickListener.onPullDownToRefresh();
-                }
+//                setImageResource(R.drawable.sx_three_mao_start);
+//                animationDrawable = (AnimationDrawable) getDrawable();
                 break;
             case ReleaseToRefresh:
                 break;
             case Refreshing:
-                setImageResource(R.drawable.sx_three_mao);
-                animationDrawable = (AnimationDrawable) getDrawable();
+//                setImageResource(R.drawable.sx_three_mao);
+//                animationDrawable = (AnimationDrawable) getDrawable();
                 break;
         }
     }
@@ -176,16 +186,4 @@ public class YMRefreshHeader extends AppCompatImageView implements RefreshHeader
     public boolean isSupportHorizontalDrag() {
         return false;
     }
-
-    public interface OnEventClickListener {
-        //查看SKU事件回调
-        void onPullDownToRefresh();
-    }
-
-    private OnEventClickListener onEventClickListener;
-
-    public void setOnStateChangedListener(OnEventClickListener onEventClickListener) {
-        this.onEventClickListener = onEventClickListener;
-    }
-
 }
