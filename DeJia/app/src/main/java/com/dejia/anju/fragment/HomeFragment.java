@@ -122,7 +122,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initData(View view) {
-        titleList.add("推荐");
+        titleList.add("头条");
         titleList.add("关注");
         fragmentList.add(RecommendFragment.newInstance());
         fragmentList.add(FollowFragment.newInstance());
