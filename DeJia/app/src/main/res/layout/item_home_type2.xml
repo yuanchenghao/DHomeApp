@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_22"
         android:orientation="horizontal">
 
@@ -89,7 +89,8 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="关注"
-            android:textColor="#F6511D"
+            android:textStyle="bold"
+            android:textColor="#919699"
             android:textSize="@dimen/sp_14" />
 
     </LinearLayout>
@@ -97,8 +98,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_7"
         android:orientation="horizontal">
 
@@ -162,8 +163,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:layout_marginTop="@dimen/dp_12"
-        android:layout_marginRight="@dimen/dp_20"
-        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_16"
+        android:layout_marginLeft="@dimen/dp_16"
         android:orientation="horizontal">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -176,8 +177,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_16"
         android:background="#E7EDF2" />
 </LinearLayout>

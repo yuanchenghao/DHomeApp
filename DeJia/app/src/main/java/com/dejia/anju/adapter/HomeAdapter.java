@@ -134,8 +134,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         case "follow":
                             if (mDatas.get(position).getUser_data().getIs_following() == 0) {
                                 type1ViewHolder.tv_follow.setText("关注");
+                                type1ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if (mDatas.get(position).getUser_data().getIs_following() == 1) {
                                 type1ViewHolder.tv_follow.setText("已关注");
+                                type1ViewHolder.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
                             } else {
                                 type1ViewHolder.tv_follow.setText("互相关注");
                             }
@@ -149,8 +151,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         case "follow":
                             if (mDatas.get(position).getUser_data().getIs_following() == 0) {
                                 type2ViewHolder.tv_follow.setText("关注");
+                                type2ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if (mDatas.get(position).getUser_data().getIs_following() == 1) {
                                 type2ViewHolder.tv_follow.setText("已关注");
+                                type2ViewHolder.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
                             } else {
                                 type2ViewHolder.tv_follow.setText("互相关注");
                             }
@@ -164,8 +168,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         case "follow":
                             if (mDatas.get(position).getUser_data().getIs_following() == 0) {
                                 type3ViewHolder.tv_follow.setText("关注");
+                                type3ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if (mDatas.get(position).getUser_data().getIs_following() == 1) {
                                 type3ViewHolder.tv_follow.setText("已关注");
+                                type3ViewHolder.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
                             } else {
                                 type3ViewHolder.tv_follow.setText("互相关注");
                             }
@@ -179,8 +185,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         case "follow":
                             if ("0".equals(mDatas.get(position).getUser_data().getIs_following())) {
                                 type4ViewHolder.tv_follow.setText("关注");
+                                type4ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if ("1".equals(mDatas.get(position).getUser_data().getIs_following())) {
                                 type4ViewHolder.tv_follow.setText("已关注");
+                                type4ViewHolder.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
                             } else {
                                 type4ViewHolder.tv_follow.setText("互相关注");
                             }
@@ -225,9 +233,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         switch (mDatas.get(position).getUser_data().getIs_following()) {
             case 0:
                 type1View.tv_follow.setText("关注");
+                type1View.tv_follow.setTextColor(Color.parseColor("#919699"));
                 break;
             case 1:
                 type1View.tv_follow.setText("已关注");
+                type1View.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
                 break;
             case 2:
                 type1View.tv_follow.setText("互相关注");
@@ -345,9 +355,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         switch (mDatas.get(position).getUser_data().getIs_following()) {
             case 0:
                 type2View.tv_follow.setText("关注");
+                type2View.tv_follow.setTextColor(Color.parseColor("#919699"));
                 break;
             case 1:
                 type2View.tv_follow.setText("已关注");
+                type2View.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
                 break;
             case 2:
                 type2View.tv_follow.setText("互相关注");
@@ -564,9 +576,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         switch (mDatas.get(position).getUser_data().getIs_following()) {
             case 0:
                 type3View.tv_follow.setText("关注");
+                type3View.tv_follow.setTextColor(Color.parseColor("#919699"));
                 break;
             case 1:
                 type3View.tv_follow.setText("已关注");
+                type3View.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
                 break;
             case 2:
                 type3View.tv_follow.setText("互相关注");
@@ -704,9 +718,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         switch (mDatas.get(position).getUser_data().getIs_following()) {
             case 0:
                 type4View.tv_follow.setText("关注");
+                type4View.tv_follow.setTextColor(Color.parseColor("#919699"));
                 break;
             case 1:
                 type4View.tv_follow.setText("已关注");
+                type4View.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
                 break;
             case 2:
                 type4View.tv_follow.setText("互相关注");

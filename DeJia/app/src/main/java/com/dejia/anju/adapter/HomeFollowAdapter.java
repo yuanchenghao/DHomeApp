@@ -126,8 +126,10 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         case "follow":
                             if (mDatas.get(position).getFollow_creator_article_list().getUser_data().getIs_following() == 0) {
                                 type4ViewHolder.tv_follow.setText("关注");
+                                type4ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if (mDatas.get(position).getFollow_creator_article_list().getUser_data().getIs_following() == 1) {
                                 type4ViewHolder.tv_follow.setText("已关注");
+                                type4ViewHolder.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
                             } else {
                                 type4ViewHolder.tv_follow.setText("互相关注");
                             }
@@ -141,8 +143,10 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         case "follow":
                             if (mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getIs_following() == 0) {
                                 type5ViewHolder.tv_follow.setText("关注");
+                                type5ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if (mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getIs_following() == 1) {
                                 type5ViewHolder.tv_follow.setText("已关注");
+                                type5ViewHolder.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                             } else {
                                 type5ViewHolder.tv_follow.setText("互相关注");
                             }
@@ -233,9 +237,11 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         switch (mDatas.get(position).getFollow_creator_article_list().getUser_data().getIs_following()) {
             case 0:
                 type4View.tv_follow.setText("关注");
+                type4View.tv_follow.setTextColor(Color.parseColor("#919699"));
                 break;
             case 1:
                 type4View.tv_follow.setText("已关注");
+                type4View.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                 break;
             case 2:
                 type4View.tv_follow.setText("互相关注");
@@ -394,9 +400,11 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         switch (mDatas.get(position).getNo_follow_creator_article_list().getUser_data().getIs_following()) {
             case 0:
                 type5View.tv_follow.setText("关注");
+                type5View.tv_follow.setTextColor(Color.parseColor("#919699"));
                 break;
             case 1:
                 type5View.tv_follow.setText("已关注");
+                type5View.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                 break;
             case 2:
                 type5View.tv_follow.setText("互相关注");

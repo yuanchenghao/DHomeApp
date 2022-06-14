@@ -8,9 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_22"
-        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_16"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -79,14 +79,13 @@
             android:id="@+id/tv_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_ebf6ff_button_2"
             android:gravity="center_vertical"
             android:paddingLeft="16.5dp"
             android:paddingTop="@dimen/dp_4"
             android:paddingRight="16.5dp"
             android:paddingBottom="@dimen/dp_4"
             android:text="关注"
-            android:textColor="#33A7FF"
+            android:textColor="#919699"
             android:textSize="@dimen/sp_14"
             android:textStyle="bold" />
 
@@ -96,8 +95,8 @@
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
         android:scrollbars="none" />
 
 </LinearLayout>
