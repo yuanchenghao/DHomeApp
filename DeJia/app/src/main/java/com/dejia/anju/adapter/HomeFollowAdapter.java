@@ -129,7 +129,7 @@ public class HomeFollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                 type4ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if (mDatas.get(position).getFollow_creator_article_list().getUser_data().getIs_following() == 1) {
                                 type4ViewHolder.tv_follow.setText("已关注");
-                                type4ViewHolder.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
+                                type4ViewHolder.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                             } else {
                                 type4ViewHolder.tv_follow.setText("互相关注");
                             }

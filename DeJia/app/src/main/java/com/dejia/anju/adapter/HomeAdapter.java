@@ -137,7 +137,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                 type1ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if (mDatas.get(position).getUser_data().getIs_following() == 1) {
                                 type1ViewHolder.tv_follow.setText("已关注");
-                                type1ViewHolder.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
+                                type1ViewHolder.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                             } else {
                                 type1ViewHolder.tv_follow.setText("互相关注");
                             }
@@ -154,7 +154,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                 type2ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if (mDatas.get(position).getUser_data().getIs_following() == 1) {
                                 type2ViewHolder.tv_follow.setText("已关注");
-                                type2ViewHolder.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
+                                type2ViewHolder.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                             } else {
                                 type2ViewHolder.tv_follow.setText("互相关注");
                             }
@@ -171,7 +171,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                 type3ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if (mDatas.get(position).getUser_data().getIs_following() == 1) {
                                 type3ViewHolder.tv_follow.setText("已关注");
-                                type3ViewHolder.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
+                                type3ViewHolder.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                             } else {
                                 type3ViewHolder.tv_follow.setText("互相关注");
                             }
@@ -188,7 +188,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                 type4ViewHolder.tv_follow.setTextColor(Color.parseColor("#919699"));
                             } else if ("1".equals(mDatas.get(position).getUser_data().getIs_following())) {
                                 type4ViewHolder.tv_follow.setText("已关注");
-                                type4ViewHolder.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
+                                type4ViewHolder.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                             } else {
                                 type4ViewHolder.tv_follow.setText("互相关注");
                             }
@@ -237,7 +237,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
             case 1:
                 type1View.tv_follow.setText("已关注");
-                type1View.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
+                type1View.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                 break;
             case 2:
                 type1View.tv_follow.setText("互相关注");
@@ -359,7 +359,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
             case 1:
                 type2View.tv_follow.setText("已关注");
-                type2View.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
+                type2View.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                 break;
             case 2:
                 type2View.tv_follow.setText("互相关注");
@@ -580,7 +580,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
             case 1:
                 type3View.tv_follow.setText("已关注");
-                type3View.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
+                type3View.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                 break;
             case 2:
                 type3View.tv_follow.setText("互相关注");
@@ -722,7 +722,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
             case 1:
                 type4View.tv_follow.setText("已关注");
-                type4View.tv_follow.setTextColor(Color.parseColor("##D7D8D9"));
+                type4View.tv_follow.setTextColor(Color.parseColor("#D7D8D9"));
                 break;
             case 2:
                 type4View.tv_follow.setText("互相关注");
