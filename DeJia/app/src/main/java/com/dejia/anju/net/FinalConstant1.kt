@@ -140,6 +140,10 @@ object FinalConstant1 {
         instance!!.regist(HTTPS, TEST_BASE_URL, "ugc", "reply", EnumInterfaceType.POST)
         //搜索词
         instance!!.regist(HTTPS, TEST_BASE_URL, "search", "sug", EnumInterfaceType.POST)
+        //原生视频详情接口
+        instance!!.regist(HTTPS, TEST_BASE_URL, "video", "index", EnumInterfaceType.POST)
+        //视频播放加次数的接口
+        instance!!.regist(HTTPS, TEST_BASE_URL, "video", "addViews", EnumInterfaceType.POST)
 
         //私信
         //WebSocket解绑

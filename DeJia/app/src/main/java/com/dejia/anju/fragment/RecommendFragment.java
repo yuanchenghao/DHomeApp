@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.dejia.anju.R;
+import com.dejia.anju.activity.VideoDetailsActivity;
 import com.dejia.anju.adapter.BannerAdapter;
 import com.dejia.anju.adapter.HomeAdapter;
 import com.dejia.anju.api.HomeIndexApi;

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.dejia.anju.R;
 import com.dejia.anju.activity.SearchActivity;
+import com.dejia.anju.activity.VideoDetailsActivity;
 import com.dejia.anju.adapter.YmTabLayoutAdapter;
 import com.dejia.anju.api.GetCityApi;
 import com.dejia.anju.api.base.BaseCallBackListener;
@@ -231,7 +232,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_search:
-                SearchActivity.invoke(mContext);
+//                SearchActivity.invoke(mContext);
+                VideoDetailsActivity.invoke(mContext,"123");
                 break;
         }
     }

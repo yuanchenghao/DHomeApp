@@ -162,6 +162,10 @@ public class WebUrlJumpManager {
                         case "searchIndex":
                             SearchActivity.invoke(mContext);
                             break;
+                        case "videoInfo":
+                            //这里跳转视频页
+
+                            break;
                     }
                 }
             } else if (!TextUtils.isEmpty(webViewData.getWebviewType()) && "other".equals(webViewData.getWebviewType())) {

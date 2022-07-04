@@ -10,8 +10,8 @@ android {
         applicationId "com.dejia.anju"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 4
-        versionName "1.0.6"
+        versionCode 5
+        versionName "1.0.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -252,6 +252,12 @@ dependencies {
     implementation 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
     //gifview
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.24'
+    implementation 'cn.jzvd:jiaozivideoplayer:7.7.0'
+    implementation ('com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.2-release-jitpack'){
+        exclude group: 'androidx.appcompat', module: 'appcompat'
+    }
+    implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-aliplay:v8.3.2-release-jitpack'
+
 }
 repositories {
     mavenCentral()
